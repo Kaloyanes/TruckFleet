@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+definePageMeta({
+  middleware: 'auth',
+})
 
 
 async function login() {
@@ -34,11 +37,14 @@ let password = "";
 </script>
 
 <template>
-  <div class="w-full flex flex-col justify-center">
-    <input type="text" v-model="email" />
-    <input type="password" v-model="password" />
+  <div class="w-full flex justify-center items-center h-screen">
+    <div class="w-1/4 flex flex-col p-8 bg-slate-400 rounded-2xl">
 
-    <button @click="login">Login</button>
+      <input type="text" v-model="email" />
+      <input type="password" v-model="password" />
+
+      <Button @click="login" class="w-1/3 self-center">Login</Button>
+    </div>
   </div>
 </template>
 

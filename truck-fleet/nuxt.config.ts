@@ -3,7 +3,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     "@nuxtjs/tailwindcss",
-    "@nuxtjs/supabase"
+    "@nuxtjs/supabase",
+    "shadcn-nuxt"
   ],
   css: [
     "@/assets/css/tailwind.css",
@@ -13,6 +14,9 @@ export default defineNuxtConfig({
     url: process.env["SUPABASE_URL"],
     key: process.env["SUPABASE_KEY"],
     redirect: false,
+  },
+  shadcn: {
+    componentDir: "./components/ui"
   }
 
 
