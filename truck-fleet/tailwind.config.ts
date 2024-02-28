@@ -4,6 +4,7 @@ const animate = require("tailwindcss-animate")
 module.exports = {
   darkMode: ["class"],
   safelist: ["dark"],
+
   content: [
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
@@ -13,6 +14,7 @@ module.exports = {
     "./error.vue",
   ],
   theme: {
+
     container: {
       center: true,
       padding: "2rem",
@@ -88,5 +90,8 @@ module.exports = {
       },
     },
   },
-  plugins: [animate],
+  daisyui: {
+    themes: ["light", "dark", "forest"],
+  },
+  plugins: [animate, require('daisyui')],
 }

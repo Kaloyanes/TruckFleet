@@ -1,3 +1,4 @@
 export type TestModel = {
-  test: string;
+  id: number;
+  name: string;
 }

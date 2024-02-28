@@ -29,6 +29,7 @@
   "devDependencies": {
     "@nuxtjs/supabase": "^1.1.6",
     "@nuxtjs/tailwindcss": "^6.11.4",
+    "daisyui": "^4.7.2",
     "shadcn-nuxt": "^0.9.0",
     "typescript": "^5.3.3"
   }
