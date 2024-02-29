@@ -1,24 +1,26 @@
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
 
-  // const user = useSupabaseUser();
+  const user = useSupabaseUser();
 
-  // // if ((to.path === '/login' || to.path === '/register') && user.value !== null) {
-  // //   return navigateTo({
-  // //     path: '/'
-  // //   })
-  // // }
-
-  // console.log('user', user.value);
-
-  // if (user.value === null) {
+  // if ((to.path === '/login' || to.path === '/register') && user.value !== null) {
   //   return navigateTo({
-  //     path: '/login',
-  //     query: {
-  //       redirect: to.fullPath
-  //     }
+  //     path: '/'
   //   })
   // }
+
+  console.log('user', user.value);
+
+  const localePath = useLocalePath()
+
+  if (user.value === null) {
+    return navigateTo({
+      path: localePath('/login'),
+      query: {
+        redirect: to.fullPath
+      }
+    })
+  }
 
 
 })

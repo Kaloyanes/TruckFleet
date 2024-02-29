@@ -1,23 +1,24 @@
-<script lang="ts" setup>
-const { data, refresh } = await useFetch("/api/countries");
-
-
-</script>
-
-
 <template>
-  <div>
-    <ul>
-      <li v-for="country in data" :key="country['id']">
-        {{ country["name"] }}
-      </li>
-    </ul>
+  <div class="h-full">
+    <a href="#" v-for="locale in availableLocales" :key="locale.code" @click.prevent.stop="setLocale(locale.code)">
+      {{ locale.name }}
+    </a>
 
-    <Button @click="refresh">Refresh</Button>
-
+    <p class="mt-5">{{ $t("welcome") }}</p>
   </div>
 </template>
 
 
-<style>
-</style>
+<script lang="ts" setup>
+definePageMeta({
+  layout: 'default',
+})
+
+const { locale, setLocale, locales } = useI18n();
+
+const availableLocales = computed(() => {
+  return locales.value.filter(i => i.code !== locale.value)
+})
+
+</script>
+

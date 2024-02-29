@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 definePageMeta({
   middleware: 'auth',
+  pageTransition: { name: 'fade', mode: 'out-in' }
 })
 
 async function signOut() {

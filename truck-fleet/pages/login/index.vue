@@ -3,28 +3,25 @@
 <template>
   <div class="w-full flex justify-center items-center h-screen">
     <div class="flex flex-col p-8">
-      <Card class="rounded-3xl bg-opacity-55 backdrop-blur-xl text-white bg-primary">
-        <CardHeader>
-          <CardTitle>Login into Truck Fleet</CardTitle>
-        </CardHeader>
-        <CardContent class="flex flex-col justify-center items-center gap-4">
-          <input class="input input-primary input-bordered text-white w-full rounded-full " type="text" v-model="email" />
+      <div class="rounded-3xl p-8 overflow-hidden gap-6 flex flex-col text-white bg-base-300">
+        <div class="py-2">
+          <h1 class="text-xl font-bold">{{ $t("login") }}</h1>
+        </div>
+        <input class="input input-primary input-bordered text-white w-full rounded-full " type="text" v-model="email" />
 
-          <div class="flex relative w-full ">
-            <input class="input input-primary input-bordered text-white w-full rounded-full "
-              :type="maskPassword ? 'text' : 'password'" v-model="password" />
-            <button class="btn btn-primary btn-circle absolute right-0" @click="() => maskPassword = !maskPassword">
-              <span class="text-black p-2">
-                <img :src="maskPassword ? '/eye-slash-svgrepo-com.svg' : '/eye-svgrepo-com.svg'" height="25" />
+        <div class="flex relative w-full ">
+          <input class="input input-primary input-bordered text-white w-full rounded-full "
+            :type="maskPassword ? 'text' : 'password'" v-model="password" />
+          <button class="btn btn-primary btn-circle absolute right-0" @click="() => maskPassword = !maskPassword">
+            <span class="text-black p-2">
+              <img class="stroke-white fill-white"
+                :src="maskPassword ? '/eye-slash-svgrepo-com.svg' : '/eye-svgrepo-com.svg'" height="25" />
 
-              </span>
-            </button>
-          </div>
-        </CardContent>
-        <CardFooter class="justify-center ">
-          <button @click="login" class="self-center btn w-full btn-primary text-white">Login</button>
-        </CardFooter>
-      </Card>
+            </span>
+          </button>
+        </div>
+        <button @click="login" class="self-center btn w-full btn-primary text-white">{{ $t("login") }}</button>
+      </div>
 
 
     </div>

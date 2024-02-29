@@ -5,7 +5,7 @@
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "assets/css/tailwind.css",
-    "baseColor": "slate",
+    "baseColor": "#505050",
     "cssVariables": true
   },
   "framework": "nuxt",
