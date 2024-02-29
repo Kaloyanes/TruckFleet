@@ -1,17 +1,4 @@
-<script lang="ts" setup>
-definePageMeta({
-  middleware: 'auth',
-  pageTransition: { name: 'fade', mode: 'out-in' }
-})
 
-async function signOut() {
-  const auth = useSupabaseClient().auth;
-
-  await auth.signOut();
-
-  navigateTo("/login");
-}
-</script>
 
 <template>
   <div>
@@ -25,3 +12,20 @@ async function signOut() {
 
 <style>
 </style>
+
+<script lang="ts" setup>
+definePageMeta({
+  middleware: 'auth',
+  pageTransition: { name: 'fade', mode: 'out-in' }
+})
+
+async function signOut() {
+  const auth = useSupabaseClient().auth;
+
+  await auth.signOut();
+
+  const router = useRouter();
+
+  router.push('/');
+}
+</script>

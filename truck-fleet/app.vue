@@ -1,9 +1,7 @@
 <template>
   <ClientOnly>
     <NuxtLayout :data-theme="isDark ? 'forest' : 'light'">
-      <ClientOnly>
-        <NuxtPage :data-theme="isDark ? 'forest' : 'light'" class="h-screen" />
-      </ClientOnly>
+      <NuxtPage :data-theme="isDark ? 'forest' : 'light'" class="h-screen" />
     </NuxtLayout>
   </ClientOnly>
 </template>

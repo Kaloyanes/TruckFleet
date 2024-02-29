@@ -12,6 +12,9 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "@vueuse/nuxt",
+    'nuxt-icon',
+    '@vee-validate/nuxt',
+    '@formkit/auto-animate',
   ],
   css: [
     "@/assets/css/tailwind.css",
@@ -43,9 +46,20 @@ export default defineNuxtConfig({
       redirectOn: 'root' // recommended
     },
   },
+  autoAnimate: {
+    duration: 0.5,
+
+  },
   site: {
     url: "http://localhost:3000",
   },
+  routeRules: {
+    // Homepage pre-rendered at build time
+    '/': { ssr: true, prerender: false, },
+    '/dashboard/**': { swr: 3600 },
+    '/blog/**': { isr: true },
+    '/admin/**': { ssr: false }
+  }
 
 
 
