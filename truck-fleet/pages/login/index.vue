@@ -42,6 +42,10 @@ async function login() {
 
 }
 
+onKeyStroke(['Enter'], (e) => {
+  e.preventDefault();
+  login();
+})
 
 </script>
 

@@ -5,15 +5,17 @@
       @click.prevent.stop="setLocale(locale.code)">
       {{ locale.name }}
     </a>
-    <button @click="toggleDark()">
-      Is Dark: {{ isDark }}
-    </button>
+    <UButton>
+      Is Dark:
+    </UButton>
+
+
   </div>
 </template>
 
 <script setup lang="ts">
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+
+
 const { locale, setLocale, locales } = useI18n();
 
 const availableLocales = computed(() => {

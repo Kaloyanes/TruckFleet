@@ -5,16 +5,15 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
   modules: [
-    "@nuxtjs/tailwindcss",
     "@nuxtjs/supabase",
     "@nuxtjs/i18n",
     "nuxt-simple-sitemap",
     "@nuxtjs/google-fonts",
     "@hypernym/nuxt-anime",
     "@vueuse/nuxt",
-    'nuxt-icon',
     '@vee-validate/nuxt',
     '@formkit/auto-animate',
+    '@nuxt/ui',
   ],
   css: [
     "@/assets/css/tailwind.css",
@@ -59,6 +58,10 @@ export default defineNuxtConfig({
     '/dashboard/**': { swr: 3600 },
     '/blog/**': { isr: true },
     '/admin/**': { ssr: false }
+  },
+  ui: {
+    global: true,
+
   }
 
 

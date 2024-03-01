@@ -4,7 +4,7 @@
   <div>
     <h1>Dashboard</h1>
 
-    <Button @click="signOut">Sign Out</Button>
+    <button @click="signOut">Sign Out</button>
 
   </div>
 </template>

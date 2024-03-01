@@ -1,15 +1,15 @@
 <template>
   <div class="h-full">
-
-
-    <p class="mt-5">INDEX</p>
+    <p class="pt-5">INDEX</p>
   </div>
+
+  <UButton>Hello</UButton>
 </template>
 
 
 <script lang="ts" setup>
 definePageMeta({
-  layout: 'default',
+
 })
 
 
