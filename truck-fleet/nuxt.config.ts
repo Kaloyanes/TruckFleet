@@ -1,70 +1,27 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
-
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  ssr: true,
-  modules: [
-    "@nuxtjs/supabase",
-    "@nuxtjs/i18n",
-    "nuxt-simple-sitemap",
-    "@nuxtjs/google-fonts",
-    "@hypernym/nuxt-anime",
-    "@vueuse/nuxt",
-    '@vee-validate/nuxt',
-    '@formkit/auto-animate',
-    '@nuxt/ui',
-  ],
+  modules: ["nuxt-vuefire"],
   css: [
     "@/assets/css/tailwind.css",
   ],
-  components: true,
-  supabase: {
-    url: process.env["SUPABASE_URL"],
-    key: process.env["SUPABASE_KEY"],
-    redirect: false,
+  vuefire: {
+    config: {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.FIREBASE_APP_ID,
+      measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+    }
   },
-  i18n: {
-    strategy: "no_prefix",
-    defaultLocale: 'en',
-    locales: [
-      {
-        code: 'en',
-        name: 'English'
-      },
-      {
-        code: 'bg',
-        name: 'Bulgarian'
-      }
-    ],
-    vueI18n: './i18n.config.ts',
-    customRoutes: 'config',
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root' // recommended
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
     },
   },
-  autoAnimate: {
-    duration: 0.5,
-
-  },
-  site: {
-    url: "http://localhost:3000",
-  },
-  routeRules: {
-    // Homepage pre-rendered at build time
-    '/': { ssr: true, prerender: false, },
-    '/dashboard/**': { swr: 3600 },
-    '/blog/**': { isr: true },
-    '/admin/**': { ssr: false }
-  },
-  ui: {
-    global: true,
-
-  }
-
-
 
 
 })
