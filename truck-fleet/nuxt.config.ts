@@ -1,7 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["nuxt-vuefire"],
+  experimental: {
+    viewTransition: true,
+  },
+  modules: [
+    "nuxt-vuefire",
+    "@nuxt/ui",
+    "@nuxtjs/color-mode",
+    "@vee-validate/nuxt",
+  ],
+  colorMode: {
+    classSuffix: "",
+    fallback: 'dark',
+    storageKey: 'color-mode',
+  },
   css: [
     "@/assets/css/tailwind.css",
   ],
@@ -22,6 +35,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+
 
 
 })

@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-definePageMeta({
-  layout: 'default'
-})
-
 
 </script>
 
 <template>
   <div>
-    <h1 class="text-">faksjiod</h1>
+    <h1>Hlel</h1>
   </div>
 </template>
+
+<style lang="scss"></style>
