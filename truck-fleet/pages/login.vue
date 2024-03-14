@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+definePageMeta({
+  middleware: 'login'
+})
+
+import { signInWithEmailAndPassword } from '@firebase/auth';
 import * as yup from 'yup';
 
 useSeoMeta({
@@ -25,10 +30,29 @@ const errorMessage = ref<string | undefined>(undefined);
 
 const maskPassword = ref<boolean>(true);
 
-function login() {
+let auth = useFirebaseAuth();
+
+async function login() {
   if (!schema.validateSync(state)) {
+
     return;
   }
+
+  await auth?.authStateReady();
+
+  if (auth === null) {
+    errorMessage.value = 'An error occurred while trying to login. Please try again later.';
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, state.email, state.password);
+  } catch (error: any) {
+    errorMessage.value = error.message;
+    return;
+  }
+
+  await navigateTo('/', { replace: true });
 }
 
 </script>

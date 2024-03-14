@@ -10,8 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@firebase/app-types": "^0.9.0",
     "@nuxt/ui": "^2.14.2",
     "@vee-validate/nuxt": "^4.12.6",
+    "@vee-validate/yup": "^4.12.6",
+    "firebase-admin": "^11.11.1",
+    "firebase-functions": "^4.8.0",
     "nuxt": "^3.10.3",
     "nuxt-vuefire": "^1.0.2",
     "vue": "^3.4.21",

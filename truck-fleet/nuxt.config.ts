@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   experimental: {
     viewTransition: true,
   },
+  ssr: false,
   modules: [
     "nuxt-vuefire",
     "@nuxt/ui",
@@ -19,6 +20,9 @@ export default defineNuxtConfig({
     "@/assets/css/tailwind.css",
   ],
   vuefire: {
+    auth: {
+      enabled: true,
+    },
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
       authDomain: process.env.FIREBASE_AUTH_DOMAIN,
