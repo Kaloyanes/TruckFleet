@@ -1,13 +1,16 @@
 <script lang="ts" setup>
+
 definePageMeta({
-  middleware: 'auth',
+  layout: 'navigation',
+  middleware: [
+    'auth',
+    'dashboard'
+  ],
 })
 </script>
 
 <template>
   <div>
-    <h1>Hlel</h1>
+    <NuxtPage />
   </div>
 </template>
-
-<style lang="scss"></style>

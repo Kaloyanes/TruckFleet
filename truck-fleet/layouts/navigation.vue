@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { collection, doc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 let isOpen = ref(false);
 
 let route = useRoute();
@@ -24,11 +24,24 @@ if (route.name !== 'login') {
 const toast = useToast()
 
 const actions = [
-  { id: 'new-file', label: 'Add new file', icon: 'i-heroicons-document-plus', click: () => toast.add({ title: 'New file added!' }), shortcuts: ['⌘', 'N'] },
-  { id: 'new-folder', label: 'Add new folder', icon: 'i-heroicons-folder-plus', click: () => toast.add({ title: 'New folder added!' }), shortcuts: ['⌘', 'F'] },
-  { id: 'hashtag', label: 'Add hashtag', icon: 'i-heroicons-hashtag', click: () => toast.add({ title: 'Hashtag added!' }), shortcuts: ['⌘', 'H'] },
-  { id: 'label', label: 'Add label', icon: 'i-heroicons-tag', click: () => toast.add({ title: 'Label added!' }), shortcuts: ['⌘', 'L'], }
-]
+  {
+    id: 'profile',
+    label: 'Profile',
+    icon: 'i-heroicons-user-circle',
+    click: () => {
+      router.push('profile');
+    },
+  },
+  {
+    id: 'logout',
+    label: 'Logout',
+    icon: 'i-heroicons-exclamation-circle',
+    click: () => {
+
+      router.push('/logout');
+    }
+  }
+];
 
 let router = useRouter()
 
@@ -51,9 +64,7 @@ let groups = [
 let user = useCurrentUser();
 
 let db = useFirestore();
-let profileDoc = useDocument(computed(() =>
-  doc(collection(db, 'contacts'), user.value?.uid ?? 'none')
-));
+
 
 const {
   data: profile,
@@ -64,25 +75,27 @@ let links = computed(() => [[{
     src: user.value?.photoURL,
     alt: user.value?.displayName
   },
-  label: `${profile.value?.name ?? 'Login'}`,
-
+  label: `${profile.value?.name}`,
+  to: `profile`,
 }, {
-  label: 'Installation',
-  icon: 'i-heroicons-home',
-  to: '/getting-started/installation'
-}, {
-  label: 'Vertical Navigation',
+  label: 'Dashboard',
   icon: 'i-heroicons-chart-bar',
-  to: `${route.path.startsWith('/dev') ? '/dev' : ''}/components/vertical-navigation`
+  to: '/dashboard/home'
 }, {
-  label: 'Command Palette',
-  icon: 'i-heroicons-command-line',
-  to: '/components/command-palette'
-}], [
+  label: 'Orders',
+  icon: 'i-material-symbols-receipt',
+  to: `orders`
+}
+], [
   {
     label: 'Alert',
     icon: 'i-heroicons-exclamation-circle',
     to: '/components/alert'
+  },
+  {
+    label: 'Sign Out',
+    icon: 'i-teenyicons-signin-outline',
+    to: '/logout'
   }
 ]]);
 
@@ -95,9 +108,15 @@ let links = computed(() => [[{
     </UModal>
 
     <div class="flex">
-      <UVerticalNavigation :links="links" />
+      <UVerticalNavigation :links="links" class="flex-[0.2] md:block hidden py-8 px-3">
+        <template #default="{ link }">
+          <span class="group-hover:text-primary relative">{{ link.label }}</span>
+        </template>
+      </UVerticalNavigation>
 
-      <slot />
+      <div class="flex-1">
+        <slot />
+      </div>
     </div>
   </div>
 </template>

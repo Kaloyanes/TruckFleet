@@ -10,7 +10,6 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-
     extend: {
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",

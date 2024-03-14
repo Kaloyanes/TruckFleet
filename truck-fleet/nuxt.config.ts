@@ -10,6 +10,8 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@nuxtjs/color-mode",
     "@vee-validate/nuxt",
+    "@formkit/auto-animate",
+    "@nuxtjs/google-fonts",
   ],
   colorMode: {
     classSuffix: "",
@@ -40,6 +42,11 @@ export default defineNuxtConfig({
     },
   },
 
+  googleFonts: {
+    families: {
+      Inter: true,
+    }
+  }
 
 
 })
