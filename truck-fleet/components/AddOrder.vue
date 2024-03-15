@@ -67,9 +67,11 @@ async function uploadOrder() {
   <div>
     <UButton @click="isVisible = true">Add Order</UButton>
 
-    <UModal v-model="isVisible">
-      <div class="p-8 ">
-        <h1 class="text-2xl text-center">Add Order</h1>
+    <USlideover v-model="isVisible" class="overflow-y-scroll h-full">
+      <UCard class="flex flex-col flex-1 p-8" :ui="{
+      body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800'
+    }">
+        <h1 class=" text-2xl text-center">Add Order</h1>
         <UForm :state="docValue" class="flex flex-col gap-3">
 
           <UFormGroup label="Addition">
@@ -109,7 +111,7 @@ async function uploadOrder() {
           </UFormGroup>
 
           <UFormGroup label="Documents">
-            <div v-for="(document, index) in docValue.documents" :key="index" class="flex flex-col gap-3">
+            <div v-for="( document, index ) in  docValue.documents " :key="index" class="flex flex-col gap-3">
               <UInput v-model="document.title" />
 
             </div>
@@ -144,7 +146,8 @@ async function uploadOrder() {
           </UFormGroup>
 
           <UFormGroup label="Order Time">
-            <UInput v-model="docValue.orderTime" />
+            <!-- <UInput v-model="docValue.orderTime" /> -->
+            <DatePickerButton v-model="Timestamp.now" />
           </UFormGroup>
 
           <UFormGroup label="Order Weight">
@@ -211,9 +214,10 @@ async function uploadOrder() {
         <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
 
           <UButton @click="isVisible = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
-          <UButton @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add Order</UButton>
+          <UButton @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add Order
+          </UButton>
         </div>
-      </div>
-    </UModal>
+      </UCard>
+    </USlideover>
   </div>
 </template>
