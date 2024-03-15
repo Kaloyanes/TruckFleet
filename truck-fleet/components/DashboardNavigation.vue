@@ -40,11 +40,11 @@ let links = computed(() => [[{
 </script>
 
 <template>
-  <div class="sticky top-0 flex-[0.2] md:block hidden  box-border h-screen overflow-y-auto ">
+  <div class="sticky top-0 lg:flex-[0.2]  absoule -left-full md:block  box-border h-screen overflow-y-auto ">
 
     <UVerticalNavigation :links="links" class="py-8 px-3 ">
       <template #default="{ link }">
-        <span class="group-hover:text-primary relative">{{ link.label }}</span>
+        <span class="group-hover:text-primary relative hidden lg:block ">{{ link.label }}</span>
       </template>
     </UVerticalNavigation>
   </div>

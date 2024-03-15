@@ -20,7 +20,7 @@ useSeoMeta({
 
     <UDivider class="py-5" />
 
-    <div class="overflow-x-scroll flex-1 max-w-[83.3vw]  ">
+    <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw]  ">
 
       <OrderTable />
     </div>

@@ -10,7 +10,7 @@ export type Order = {
   companyOrder: string;
   countryCode: string;
   courseNumber: number;
-  documentsUrls: string[];
+  documents: { title: string, link: string }[];
   driver: string;
   fromToMaps: number;
   isDone: boolean;
@@ -33,5 +33,5 @@ export type Order = {
   totalRoadCost: number;
   truckWeight: number;
   ETA: Timestamp;
-  id: string;
+  id: string | null;
 }
