@@ -1,22 +1,26 @@
 <script setup lang="ts">
+import { Timestamp } from 'firebase/firestore';
 import { DatePicker as VCalendarDatePicker } from 'v-calendar';
 import 'v-calendar/dist/style.css';
-import type { DatePickerDate, DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker.js';
 
 const props = defineProps({
   modelValue: {
-    type: [Date, Object] as PropType<DatePickerDate | DatePickerRangeObject | null>,
+    type: Timestamp,
     default: null
+  },
+  range: {
+    type: Boolean,
+    default: false
   }
 })
 
 const emit = defineEmits(['update:model-value', 'close'])
 
 const date = computed({
-  get: () => props.modelValue,
+  get: () => props.modelValue.toDate(),
   set: (value) => {
-    emit('update:model-value', value)
-    emit('close')
+    emit('update:model-value', Timestamp.fromDate(value)),
+      emit('close')
   }
 })
 
@@ -30,9 +34,9 @@ const attrs = {
 </script>
 
 <template>
-  <!-- <VCalendarDatePicker v-if="date && (typeof date === 'object')" v-model.range="date" :columns="2"
-    v-bind="{ ...attrs, ...$attrs }" /> -->
-  <VCalendarDatePicker v-model="date" v-bind="{ ...attrs, ...$attrs }" />
+  <VCalendarDatePicker v-if="props.range" v-model.range="date" mode="dateTime" hide-time-header :columns="2"
+    v-bind="{ ...attrs, ...$attrs }" />
+  <VCalendarDatePicker v-else v-model="date" mode="dateTime" hide-time-header v-bind="{ ...attrs, ...$attrs }" is24hr />
 </template>
 
 <style>

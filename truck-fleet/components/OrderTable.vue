@@ -70,7 +70,6 @@ function getDate(row: any) {
     <template #documents-data="{ row }">
       <div class="flex flex-col gap-2">
         <a :href="url.link" v-for="url in row.documents" target="_blank">{{ url.title }}</a>
-        <a :href="url.link" v-for="url in row.documents" target="_blank">{{ url.title }}</a>
       </div>
     </template>
   </UTable>
