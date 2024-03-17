@@ -96,10 +96,15 @@ const docValue = reactive({
   totalKmMaps: 500,
   totalRoadCost: 1000,
   truckWeight: 1000,
-  ETA: Timestamp.fromDate(
-    new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-  ),
-  id: null,
+
+  pickUpTime: {
+    start: Timestamp.fromDate(
+      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+    ),
+    end: Timestamp.fromDate(
+      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+    ),
+  }
 });
 
 
@@ -117,7 +122,7 @@ onMounted(() => {
 async function uploadOrder() {
 
   docValue.documents = Array.from(inputRef.value?.files || []);
-  console.log('Uploading order', docValue.documents);
+  console.log('Uploading order', docValue.pickUpTime);
   // isUploading.value = true;
   // await addDoc(docRef, docValue);
   // isUploading.value = false;
@@ -174,11 +179,19 @@ async function clear() {
   docValue.totalKmMaps = 500;
   docValue.totalRoadCost = 1000;
   docValue.truckWeight = 1000;
-  docValue.ETA = Timestamp.fromDate(
-    new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-  );
-  docValue.id = null;
+  // docValue.ETA = Timestamp.fromDate(
+  //   new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+  // );
+  docValue.pickUpTime = {
+    start: Timestamp.fromDate(
+      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+    ),
+    end: Timestamp.fromDate(
+      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+    ),
+  }
 }
+
 </script>
 
 <template>
@@ -192,8 +205,8 @@ async function clear() {
         <h1 class=" text-2xl text-center">Add Order</h1>
         <UForm :state="docValue" class="flex flex-col gap-3">
 
-          <UFormGroup label="ETA" required>
-            <DatePickerButton v-model="(docValue.ETA as Timestamp)" />
+          <UFormGroup label="Pick Up Time" required>
+            <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
           </UFormGroup>
 
           <UFormGroup label="Delivery Address" required>

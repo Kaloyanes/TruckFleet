@@ -2,37 +2,39 @@
 import { format } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 
-
-
-
 const props = defineProps({
   modelValue: {
-    type: Timestamp,
+    type: new Object() as () => {
+      start: Timestamp,
+      end: Timestamp
+    },
     default: null
   },
-  range: {
-    type: Boolean,
-    default: false
-  }
+
 })
 
 const emit = defineEmits(['update:model-value'])
 
+const formattedDateStart = ref<Date>(new Date(Date.now.toString()))
+
 const date = computed({
   get: () => props.modelValue,
   set: (value) => {
+    console.log(value);
     emit('update:model-value', value)
+
   }
 })
 </script>
 
 <template>
   <UPopover :popper="{ placement: 'bottom-start' }">
-    <UButton icon="i-heroicons-calendar-days-20-solid"
-      :label="format(new Date((date as Timestamp).toMillis()), 'd.MM.yyyy HH:mm')" />
+    <UButton icon="i-heroicons-calendar-days-20-solid">
+      {{ format(date.start.toDate(), "dd.MM.yyyy HH:mm") }} - {{ format(date.end.toDate(), "dd.MM.yyyy HH:mm") }}
+    </UButton>
 
     <template #panel="{ close }">
-      <DatePicker v-model="date" @close="close" />
+      <DateRangePicker v-model="date" />
     </template>
   </UPopover>
 </template>

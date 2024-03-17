@@ -5,22 +5,24 @@ import 'v-calendar/dist/style.css';
 
 const props = defineProps({
   modelValue: {
-    type: Timestamp,
+    type: new Object() as () => {
+      start: Timestamp,
+      end: Timestamp
+    },
     default: null
   },
-  range: {
-    type: Boolean,
-    default: false
-  }
 })
 
 const emit = defineEmits(['update:model-value', 'close'])
 
 const date = computed({
-  get: () => props.modelValue.toDate(),
+  get: () => props.modelValue,
   set: (value) => {
-    emit('update:model-value', Timestamp.fromDate(value)),
-      emit('close')
+    console.log(value);
+    emit('update:model-value', {
+      start: Timestamp.fromDate((value.start as any)),
+      end: Timestamp.fromDate((value.end as any))
+    })
   }
 })
 
@@ -34,9 +36,8 @@ const attrs = {
 </script>
 
 <template>
-  <VCalendarDatePicker v-if="props.range" v-model.range="date" mode="dateTime" hide-time-header :columns="2"
+  <VCalendarDatePicker v-model.range="date" mode="dateTime" hide-time-header :columns="1"
     v-bind="{ ...attrs, ...$attrs }" />
-  <VCalendarDatePicker v-else v-model="date" mode="dateTime" hide-time-header v-bind="{ ...attrs, ...$attrs }" is24hr />
 </template>
 
 <style>
