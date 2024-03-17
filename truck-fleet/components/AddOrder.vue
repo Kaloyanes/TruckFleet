@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Timestamp, collection } from 'firebase/firestore';
-import type { Order } from '~/models/Order';
 
 let route = useRoute();
 const isVisible = ref(route.query.add === 'true');
@@ -63,7 +62,7 @@ const euCountries = [
   { label: 'Vatican City', value: 'VA' }
 ]
 
-const docValue = reactive<Order>({
+const docValue = reactive({
   addition: null,
   addressCode: 123,
   avgCourse: 4.5,
@@ -73,10 +72,7 @@ const docValue = reactive<Order>({
   companyOrder: 'ORD456',
   countryCode: 'BG',
   courseNumber: 1,
-  documents: [
-    { title: 'Document 1', link: 'https://example.com/document1' },
-    { title: 'Document 2', link: 'https://example.com/document2' },
-  ],
+  documents: [] as File[],
   driver: 'Jane Smith',
   fromToMaps: 10,
   isDone: false,
@@ -108,11 +104,20 @@ const docValue = reactive<Order>({
 
 
 const isUploading = ref(false);
+const inputRef = ref<HTMLInputElement | null>(null);
+
+onMounted(() => {
+  if (isVisible.value) {
+    inputRef.value = document.querySelector('#document-upload') as HTMLInputElement;
+    console.log('inputRef', inputRef.value);
+  }
+})
+
 
 async function uploadOrder() {
 
-  console.log('Uploading order', docValue.ETA.toDate());
-
+  docValue.documents = Array.from(inputRef.value?.files || []);
+  console.log('Uploading order', docValue.documents);
   // isUploading.value = true;
   // await addDoc(docRef, docValue);
   // isUploading.value = false;
@@ -123,6 +128,7 @@ async function uploadOrder() {
 
 const loading = ref(false)
 
+
 async function search(q: string) {
   loading.value = true
 
@@ -132,13 +138,54 @@ async function search(q: string) {
 
   return users
 }
+
+async function clear() {
+
+  docValue.addition = null;
+  docValue.addressCode = 15;
+  docValue.avgCourse = 4.5;
+  docValue.clientRef = null;
+  docValue.clientWorker = 'John Doe';
+  docValue.companyId = 'ABC123';
+  docValue.companyOrder = 'ORD456';
+  docValue.countryCode = 'BG';
+  docValue.courseNumber = 1;
+  docValue.documents = [];
+  docValue.driver = 'Jane Smith';
+  docValue.fromToMaps = 10;
+  docValue.isDone = false;
+  docValue.isLoaded = true;
+  docValue.orderInCourse = 2;
+  docValue.orderSize = 'Large';
+  docValue.orderSum = 1000;
+  docValue.orderTime = Timestamp.fromDate(
+    new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+  );
+  docValue.orderWeight = 500;
+  docValue.realTime = Timestamp.now();
+  docValue.roadCost = 200;
+  docValue.roadCostUTA = 150;
+  docValue.servicedBy = 'Service Provider';
+  docValue.servicedKm = 100;
+  docValue.speditor = 'Speditor';
+  docValue.speditorProfit = 50;
+  docValue.subCourse = 1;
+  docValue.target = 50;
+  docValue.totalKmMaps = 500;
+  docValue.totalRoadCost = 1000;
+  docValue.truckWeight = 1000;
+  docValue.ETA = Timestamp.fromDate(
+    new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+  );
+  docValue.id = null;
+}
 </script>
 
 <template>
   <div>
     <UButton @click="isVisible = true">Add Order</UButton>
 
-    <USlideover v-model="isVisible" class="overflow-y-scroll h-full">
+    <USlideover v-model="isVisible" class="overflow-y-scroll h-full" @close="clear">
       <UCard class="flex flex-col flex-1 p-8" :ui="{
       body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800'
     }">
@@ -191,7 +238,7 @@ async function search(q: string) {
           </UFormGroup>
 
           <UFormGroup label="Documents">
-            <UInput type="file" :multiple="true" />
+            <UInput type="file" id="document-upload" multiple="multiple" v-model="docValue.documents" ref="inputRef" />
           </UFormGroup>
         </UForm>
 
