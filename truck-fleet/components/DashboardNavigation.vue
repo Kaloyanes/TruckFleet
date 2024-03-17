@@ -23,6 +23,12 @@ let links = computed(() => [[{
   label: 'Orders',
   icon: 'i-material-symbols-receipt',
   to: `orders`
+},
+{
+  label: 'Trucks',
+  icon: 'i-heroicons-truck',
+  to: `trucks`
+
 }
 ], [
   {

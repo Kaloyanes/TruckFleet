@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@formkit/auto-animate",
     "@nuxtjs/google-fonts",
+    "@nuxtjs/sitemap"
   ],
   colorMode: {
     classSuffix: "",
