@@ -1,8 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
   devtools: { enabled: true },
   experimental: {
     viewTransition: true,
+  },
+  app: {
+    pageTransition: {
+      name: 'page', mode: 'out-in', type: 'transition',
+    },
   },
   ssr: false,
   modules: [
@@ -38,7 +44,9 @@ export default defineNuxtConfig({
   },
   postcss: {
     plugins: {
-      tailwindcss: {},
+      tailwindcss: {
+        config: "./tailwind.config.js",
+      },
       autoprefixer: {},
     },
   },

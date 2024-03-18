@@ -5,7 +5,7 @@ import type { Order } from '~/models/Order';
 const db = useFirestore();
 
 const columns = [
-  { key: 'time', label: "Time" },
+  { key: 'pickUpTime', label: "Pick Up Time" },
   { key: 'countryCode', label: 'Country Code' },
   { key: 'documents', label: 'Documents' },
   { key: 'addressCode', label: 'Address Code' },

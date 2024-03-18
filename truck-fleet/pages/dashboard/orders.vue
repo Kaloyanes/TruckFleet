@@ -8,7 +8,7 @@ useSeoMeta({
 
 <template>
   <div>
-    <div class="sticky top-0  bg-zinc-300 dark:bg-zinc-900 z-20 rounded-b-xl">
+    <div class="sticky top-0 z-20 rounded-b-xl">
 
       <h1 class="text-center text-3xl py-4">Orders</h1>
 

@@ -10,7 +10,7 @@ let user = useCurrentUser();
     <Transition>
 
       <NuxtLink :to="user ? '/dashboard' : '/login'">
-        <UButton>
+        <UButton :key="user">
           {{ user ? 'Dashboard' : 'Login' }}
         </UButton>
       </NuxtLink>

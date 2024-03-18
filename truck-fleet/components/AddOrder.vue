@@ -63,40 +63,6 @@ const euCountries = [
 ]
 
 const docValue = reactive({
-  addition: null,
-  addressCode: 123,
-  avgCourse: 4.5,
-  clientRef: null,
-  clientWorker: 'John Doe',
-  companyId: 'ABC123',
-  companyOrder: 'ORD456',
-  countryCode: 'BG',
-  courseNumber: 1,
-  documents: [] as File[],
-  driver: 'Jane Smith',
-  fromToMaps: 10,
-  isDone: false,
-  isLoaded: true,
-  orderInCourse: 2,
-  orderSize: 'Large',
-  orderSum: 1000,
-  orderTime: Timestamp.fromDate(
-    new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-  ),
-  orderWeight: 500,
-  realTime: Timestamp.now(),
-  roadCost: 200,
-  roadCostUTA: 150,
-  servicedBy: 'Service Provider',
-  servicedKm: 100,
-  speditor: 'Speditor',
-  speditorProfit: 50,
-  subCourse: 1,
-  target: 50,
-  totalKmMaps: 500,
-  totalRoadCost: 1000,
-  truckWeight: 1000,
-
   pickUpTime: {
     start: Timestamp.fromDate(
       new Date(Math.ceil(Date.now() / 1800000) * 1800000)
@@ -104,7 +70,17 @@ const docValue = reactive({
     end: Timestamp.fromDate(
       new Date(Math.ceil(Date.now() / 1800000) * 1800000)
     ),
-  }
+  },
+  deliveryTime: {
+    start: Timestamp.fromDate(
+      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+    ),
+    end: Timestamp.fromDate(
+      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+    ),
+  },
+  documents: [] as File[],
+
 });
 
 
@@ -121,7 +97,7 @@ onMounted(() => {
 
 async function uploadOrder() {
 
-  docValue.documents = Array.from(inputRef.value?.files || []);
+  // docValue.documents = Array.from(inputRef.value?.files || []);
   console.log('Uploading order', docValue.pickUpTime);
   // isUploading.value = true;
   // await addDoc(docRef, docValue);
@@ -144,41 +120,21 @@ async function search(q: string) {
   return users
 }
 
+const loadingCountries = ref(false)
+async function searchCountries(q: string) {
+  loadingCountries.value = true
+
+  const countries = euCountries.filter((country) => country.label.toLowerCase().includes(q.toLowerCase()))
+
+  loadingCountries.value = false
+
+  return countries
+
+}
+
 async function clear() {
 
-  docValue.addition = null;
-  docValue.addressCode = 15;
-  docValue.avgCourse = 4.5;
-  docValue.clientRef = null;
-  docValue.clientWorker = 'John Doe';
-  docValue.companyId = 'ABC123';
-  docValue.companyOrder = 'ORD456';
-  docValue.countryCode = 'BG';
-  docValue.courseNumber = 1;
-  docValue.documents = [];
-  docValue.driver = 'Jane Smith';
-  docValue.fromToMaps = 10;
-  docValue.isDone = false;
-  docValue.isLoaded = true;
-  docValue.orderInCourse = 2;
-  docValue.orderSize = 'Large';
-  docValue.orderSum = 1000;
-  docValue.orderTime = Timestamp.fromDate(
-    new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-  );
-  docValue.orderWeight = 500;
-  docValue.realTime = Timestamp.now();
-  docValue.roadCost = 200;
-  docValue.roadCostUTA = 150;
-  docValue.servicedBy = 'Service Provider';
-  docValue.servicedKm = 100;
-  docValue.speditor = 'Speditor';
-  docValue.speditorProfit = 50;
-  docValue.subCourse = 1;
-  docValue.target = 50;
-  docValue.totalKmMaps = 500;
-  docValue.totalRoadCost = 1000;
-  docValue.truckWeight = 1000;
+
   // docValue.ETA = Timestamp.fromDate(
   //   new Date(Math.ceil(Date.now() / 1800000) * 1800000)
   // );
@@ -198,8 +154,8 @@ async function clear() {
   <div>
     <UButton @click="isVisible = true">Add Order</UButton>
 
-    <USlideover v-model="isVisible" class="overflow-y-scroll h-full" @close="clear">
-      <UCard class="flex flex-col flex-1 p-8" :ui="{
+    <USlideover v-model="isVisible" class="overflow-y-scroll h-full " @close="clear">
+      <UCard class="flex flex-col flex-1 p-8 dark:bg-cod-gray-950" :ui="{
       body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800'
     }">
         <h1 class=" text-2xl text-center">Add Order</h1>
@@ -209,49 +165,8 @@ async function clear() {
             <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
           </UFormGroup>
 
-          <UFormGroup label="Delivery Address" required>
-            <div class="flex flex-col gap-3">
-              <USelect v-model="docValue.countryCode" :options="euCountries.sort()" />
-              <UInput v-model="docValue.addressCode" type="number" label="Address Code" />
-            </div>
-          </UFormGroup>
-
-          <UFormGroup label="Order Prize" required>
-            <UInput v-model="docValue.orderSum" type="number">
-              <template #trailing>
-                <span class="text-gray-500 dark:text-gray-400 text-xs">EUR</span>
-              </template>
-            </UInput>
-          </UFormGroup>
-
-          <UFormGroup label="Order Size" required>
-            <UInput v-model="docValue.orderSize" />
-          </UFormGroup>
-
-          <UFormGroup label="Order Weight" required>
-            <UInput v-model="docValue.orderWeight" type="number" />
-          </UFormGroup>
-
-          <UFormGroup label="From To Maps">
-            <UInput v-model="docValue.fromToMaps" type="number" />
-          </UFormGroup>
-
-          <UFormGroup label="Select Company" required>
-            <UInputMenu v-model="docValue.companyId" placeholder="Select a company or type it here" autocomplete
-              :search="search" :loading="loading" option-attribute="name" trailing by="id" />
-          </UFormGroup>
-
-          <UFormGroup label="Company Worker">
-            <UInput v-model="docValue.clientWorker" />
-          </UFormGroup>
-
-          <UFormGroup label="Driver">
-            <UInputMenu v-model="docValue.driver" placeholder="Select a driver" autocomplete :search="search"
-              :loading="loading" option-attribute="name" trailing by="id" />
-          </UFormGroup>
-
           <UFormGroup label="Documents">
-            <UInput type="file" id="document-upload" multiple="multiple" v-model="docValue.documents" ref="inputRef" />
+            <UInput type="file" id="document-upload" multiple="multiple" ref="inputRef" />
           </UFormGroup>
         </UForm>
 
