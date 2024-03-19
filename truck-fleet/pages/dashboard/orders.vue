@@ -3,7 +3,7 @@ useSeoMeta({
   titleTemplate: "%s - Orders"
 })
 
-
+let currentSelectedTruckIndex = ref(0);
 </script>
 
 <template>
@@ -19,10 +19,8 @@ useSeoMeta({
     </div>
 
     <UDivider class="py-5" />
+    <OrderTruckTabs />
 
-    <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw]  ">
-
-      <OrderTable />
-    </div>
+    <NuxtPage />
   </div>
 </template>

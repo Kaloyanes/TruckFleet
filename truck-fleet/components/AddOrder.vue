@@ -80,7 +80,8 @@ const docValue = reactive({
     ),
   },
   documents: [] as File[],
-
+  pickUpAddress: '',
+  deliveryAddress: '',
 });
 
 
@@ -158,11 +159,25 @@ async function clear() {
       <UCard class="flex flex-col flex-1 p-8 dark:bg-cod-gray-950" :ui="{
       body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800'
     }">
-        <h1 class=" text-2xl text-center">Add Order</h1>
+        <h1 class=" text-xl pb-5">Add Order</h1>
+
+
         <UForm :state="docValue" class="flex flex-col gap-3">
 
           <UFormGroup label="Pick Up Time" required>
             <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
+          </UFormGroup>
+
+          <UFormGroup label="Pick Up Address" required>
+            <UInput v-model="docValue.pickUpAddress" />
+          </UFormGroup>
+
+          <UFormGroup label="Delivery Time" required>
+            <DateRangePickerButton v-model="docValue.deliveryTime" :range="true" />
+          </UFormGroup>
+
+          <UFormGroup label="Delivery Address" required>
+            <UInput v-model="docValue.deliveryAddress" />
           </UFormGroup>
 
           <UFormGroup label="Documents">
