@@ -3,7 +3,9 @@ useSeoMeta({
   titleTemplate: "%s - Orders"
 })
 
-let currentSelectedTruckIndex = ref(0);
+if (useRoute().path === "/dashboard/orders") {
+  await navigateTo("/dashboard/orders/all")
+}
 </script>
 
 <template>

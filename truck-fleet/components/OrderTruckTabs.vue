@@ -24,10 +24,18 @@ const {
 
 // Create the links for every truck
 
-const links = computed(() => trucks.value?.map((truck: any) => ({
-  label: truck.licensePlate,
-  to: `/dashboard/orders/${truck.licensePlate}`
-})));
+const links = computed(() =>
+  [
+    {
+      label: 'All',
+      to: '/dashboard/orders/all'
+    },
+    ...trucks.value?.map((truck: any) => ({
+      label: truck.licensePlate,
+      to: `/dashboard/orders/${truck.licensePlate}`
+    }))
+  ]
+);
 </script>
 
 <template>
