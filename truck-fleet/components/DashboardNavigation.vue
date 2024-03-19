@@ -22,7 +22,7 @@ let links = computed(() => [[{
 }, {
   label: 'Orders',
   icon: 'i-material-symbols-receipt',
-  to: `orders`
+  to: `/dashboard/orders/all`
 },
 {
   label: 'Trucks',

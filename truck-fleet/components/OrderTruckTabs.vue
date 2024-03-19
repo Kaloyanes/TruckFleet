@@ -12,7 +12,8 @@ const {
   promise
 } = await useProfileDoc();
 
-await promise;
+await promise.value;
+console.log(profile.value);
 let id = profile.value!.type === 'speditor' ? profile.value!.companyId : profile.value!.id;
 
 
@@ -46,8 +47,7 @@ const links = computed(() =>
 
     <div v-if="!pending && !trucks.length">No trucks found</div>
 
-    <UHorizontalNavigation :links>
+    <UHorizontalNavigation :links />
 
-    </UHorizontalNavigation>
   </div>
 </template>

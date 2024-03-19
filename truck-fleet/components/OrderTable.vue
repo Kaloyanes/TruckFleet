@@ -1,6 +1,13 @@
 <script lang="ts" setup>
-import { collection } from 'firebase/firestore';
+import { collection, query, where } from 'firebase/firestore';
 import type { Order } from '~/models/Order';
+
+const props = defineProps({
+  licensePlate: {
+    type: String,
+    default: 'all'
+  },
+})
 
 const db = useFirestore();
 
@@ -40,11 +47,20 @@ const columns = [
   { key: 'id', label: 'ID' },
 ];
 
+const orderRef = collection(db, 'orders');
+const modifiedQuery = (ref: any) => {
+  if (props.licensePlate === 'all') {
+    return ref;
+  }
+  return query(ref, where('truck', '==', props.licensePlate));
+};
+
+
 const {
   data: orders,
   pending,
   promise,
-} = useCollection<Order>(collection(db, 'orders'));
+} = useCollection<Order>(modifiedQuery(orderRef));
 
 const todayDateWithTime = new Date();
 
@@ -61,16 +77,19 @@ function getDate(row: any) {
 </script>
 
 <template>
-  <UTable :rows="orders" :loading="pending" :columns="columns">
-    <template #time-data="{ row }">
-      <h1>
-        {{ getDate(row).getHours() }}:00
-      </h1>
-    </template>
-    <template #documents-data="{ row }">
-      <div class="flex flex-col gap-2">
-        <a :href="url.link" v-for="url in row.documents" target="_blank">{{ url.title }}</a>
-      </div>
-    </template>
-  </UTable>
+  <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw]  ">
+
+    <UTable :rows="orders" :loading="pending" :columns="columns">
+      <template #time-data="{ row }">
+        <h1>
+          {{ getDate(row).getHours() }}:00
+        </h1>
+      </template>
+      <template #documents-data="{ row }">
+        <div class="flex flex-col gap-2">
+          <a :href="url.link" v-for="url in row.documents" target="_blank">{{ url.title }}</a>
+        </div>
+      </template>
+    </UTable>
+  </div>
 </template>

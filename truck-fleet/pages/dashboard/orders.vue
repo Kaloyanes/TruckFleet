@@ -3,9 +3,9 @@ useSeoMeta({
   titleTemplate: "%s - Orders"
 })
 
-if (useRoute().path === "/dashboard/orders") {
-  await navigateTo("/dashboard/orders/all")
-}
+definePageMeta({
+  middleware: 'order',
+})
 </script>
 
 <template>

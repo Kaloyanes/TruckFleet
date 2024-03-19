@@ -4,7 +4,8 @@
 
 <template>
   <div>
-    <h1>Orders</h1>
+
+    <OrderTable />
   </div>
 </template>
 
