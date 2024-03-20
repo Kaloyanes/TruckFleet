@@ -14,7 +14,7 @@ let links = computed(() => [[{
     alt: user.value?.displayName
   },
   label: `${profile.value?.name}`,
-  to: `profile`,
+  to: `/dashboard/profile`,
 }, {
   label: 'Dashboard',
   icon: 'i-heroicons-chart-bar',
@@ -22,12 +22,12 @@ let links = computed(() => [[{
 }, {
   label: 'Orders',
   icon: 'i-material-symbols-receipt',
-  to: `/dashboard/orders/all`
+  to: `/dashboard/orders`
 },
 {
   label: 'Trucks',
   icon: 'i-heroicons-truck',
-  to: `trucks`
+  to: `/dashboard/trucks`
 
 }
 ], [

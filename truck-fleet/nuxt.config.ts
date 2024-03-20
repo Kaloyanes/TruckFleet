@@ -9,6 +9,11 @@ export default defineNuxtConfig({
     pageTransition: {
       name: 'page', mode: 'out-in', type: 'transition',
     },
+    head: {
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }
+      ]
+    }
   },
   ssr: false,
   modules: [
@@ -40,7 +45,9 @@ export default defineNuxtConfig({
       messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       appId: process.env.FIREBASE_APP_ID,
       measurementId: process.env.FIREBASE_MEASUREMENT_ID,
-    }
+
+    },
+    optionsApiPlugin: 'firestore',
   },
   postcss: {
     plugins: {
@@ -55,7 +62,8 @@ export default defineNuxtConfig({
     families: {
       Inter: true,
     }
-  }
+  },
+
 
 
 })

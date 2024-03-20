@@ -4,7 +4,6 @@
 
 <template>
   <div>
-
     <OrderTable />
   </div>
 </template>

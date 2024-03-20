@@ -47,7 +47,12 @@ const columns = [
   { key: 'id', label: 'ID' },
 ];
 
-const orderRef = collection(db, 'orders');
+
+console.log(useFirestore())
+
+const id = await useCompanyId();
+
+const orderRef = query(collection(db, 'orders'), where('companyId', '==', id.value));
 const modifiedQuery = (ref: any) => {
   if (props.licensePlate === 'all') {
     return ref;
@@ -61,8 +66,6 @@ const {
   pending,
   promise,
 } = useCollection<Order>(modifiedQuery(orderRef));
-
-const todayDateWithTime = new Date();
 
 promise.value.then(() => {
   console.log('Orders loaded');

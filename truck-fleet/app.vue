@@ -1,13 +1,26 @@
 <script lang="ts" setup>
+
 useSeoMeta({
   title: 'Truck Fleet',
 })
+
+const colorMode = useColorMode()
+
+useHead({
+  link: [
+    { rel: 'icon', type: 'image/x-icon', href: colorMode.value === 'dark' ? '/lightFavicon.svg' : '/favicon.svg' }
+  ]
+})
+
+initFirestoreWithLocalCache();
+// Change settings of vuefire
+
 
 </script>
 
 
 <template>
-  <NuxtLoadingIndicator />
+  <NuxtLoadingIndicator color="primary" />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
