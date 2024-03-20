@@ -8,8 +8,12 @@ export default {
     "./app.vue",
     "./error.vue",
   ],
+
   darkMode: 'class',
   theme: {
+    fontFamily: {
+      'sans': ['Inter', 'sans-serif'],
+    },
     extend: {
       colors: {
         'cod-gray': {
@@ -20,7 +24,7 @@ export default {
           '400': '#888888',
           '500': '#6d6d6d',
           '600': '#5d5d5d',
-          '700': '#4f4f4f',
+          '700': '#ffffff',
           '800': '#454545',
           '900': '#3d3d3d',
           '950': '#070707',

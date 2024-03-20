@@ -15,13 +15,13 @@ if (useRoute().fullPath === "/dashboard/orders") {
       <h1 class="text-center text-3xl py-4">Orders</h1>
 
       <div class="flex p-2">
-        <AddOrder />
+        <LazyAddOrder />
       </div>
 
     </div>
 
     <UDivider class="py-5" />
-    <OrderTruckTabs />
+    <LazyOrderTruckTabs />
 
     <NuxtPage />
   </div>

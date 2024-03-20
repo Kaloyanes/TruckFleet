@@ -153,7 +153,7 @@ async function clear() {
 
 <template>
   <div>
-    <UButton @click="isVisible = true">Add Order</UButton>
+    <UButton @click="isVisible = true" class="dark:text-black">Add Order</UButton>
 
     <USlideover v-model="isVisible" class="overflow-y-scroll h-full " @close="clear">
       <UCard class="flex flex-col flex-1 p-8 dark:bg-cod-gray-950" :ui="{

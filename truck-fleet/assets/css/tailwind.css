@@ -9,7 +9,6 @@
 
   html,
   body {
-    font-family: "Inter", sans-serif;
     font-size: 16px;
     @apply dark:bg-cod-gray-950;
     line-height: 1.5;
