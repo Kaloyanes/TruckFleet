@@ -17,10 +17,16 @@
     "@tanstack/vue-table": "^8.13.2",
     "@vee-validate/nuxt": "^4.12.6",
     "@vee-validate/yup": "^4.12.6",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
     "date-fns": "^2.30.0",
     "firebase-admin": "^11.11.1",
     "firebase-functions": "^4.8.0",
+    "lucide-vue-next": "^0.359.0",
     "nuxt-vuefire": "^1.0.2",
+    "radix-vue": "^1.5.3",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7",
     "v-calendar": "^3.1.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
@@ -33,6 +39,8 @@
     "nuxt": "^3.11.1",
     "postcss": "^8.4.35",
     "sass": "^1.71.1",
-    "tailwindcss": "^3.4.1"
+    "shadcn-nuxt": "^0.10.2",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.2"
   }
 }

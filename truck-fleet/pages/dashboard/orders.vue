@@ -1,16 +1,19 @@
 <script lang="ts" setup>
 useSeoMeta({
   titleTemplate: "%s - Orders"
+
 })
 
-if (useRoute().fullPath === "/dashboard/orders") {
-  navigateTo("/dashboard/orders/all")
-}
+definePageMeta({
+  middleware: "order",
+})
+
+
 </script>
 
 <template>
   <div>
-    <div class="sticky top-0 z-20 rounded-b-xl">
+    <div class="sticky top-0 z-20 rounded-b-xl dark:bg-cod-gray-950">
 
       <h1 class="text-center text-3xl py-4">Orders</h1>
 
@@ -18,10 +21,10 @@ if (useRoute().fullPath === "/dashboard/orders") {
         <LazyAddOrder />
       </div>
 
+      <UDivider class="py-5" />
+      <LazyOrderTruckTabs />
     </div>
 
-    <UDivider class="py-5" />
-    <LazyOrderTruckTabs />
 
     <NuxtPage />
   </div>

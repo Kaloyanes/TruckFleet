@@ -56,11 +56,7 @@ let links = computed(() => [[{
       </template>
 
     </UVerticalNavigation>
-    <div class="justify-end">
-      <UButton>
-        Sign out
-      </UButton>
-    </div>
+
   </div>
 </template>
 

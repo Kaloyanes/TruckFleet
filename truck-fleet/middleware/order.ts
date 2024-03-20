@@ -1,7 +1,10 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  console.log(to);
+  console.log("Order middleware", to);
 
-  if (to.fullPath === "/dashboard/orders/") {
-    await navigateTo("/dashboard/orders/all")
+  if (to.path === "/dashboard/orders") {
+    await useRouter().replace("/dashboard/orders/all");
+    return;
   }
+
+  return;
 })

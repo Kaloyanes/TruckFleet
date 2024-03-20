@@ -1,7 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true,
+    },
+  },
   experimental: {
     viewTransition: true,
   },
@@ -23,8 +29,20 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@formkit/auto-animate",
     "@nuxtjs/google-fonts",
-    "@nuxtjs/sitemap"
+    "@nuxtjs/sitemap",
+    '@nuxtjs/tailwindcss', 'shadcn-nuxt'
   ],
+   shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: '',
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: './components/ui'
+  },
   colorMode: {
     classSuffix: "",
     fallback: 'dark',

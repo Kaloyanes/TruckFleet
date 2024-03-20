@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+definePageMeta({
+  middleware: 'profile',
+})
+
 const route = useRoute()
 
 const links = [{
@@ -7,11 +11,11 @@ const links = [{
     src: 'https://avatars.githubusercontent.com/u/739984?v=4'
   },
   badge: 100,
-  to: 'account'
+  to: '/dashboard/profile/account'
 }, {
   label: 'General',
   icon: 'i-heroicons-home',
-  to: 'general'
+  to: '/dashboard/profile/general'
 }, {
   label: 'Horizontal Navigation',
   icon: 'i-heroicons-chart-bar',
@@ -21,6 +25,7 @@ const links = [{
   icon: 'i-heroicons-command-line',
   to: '/components/command-palette'
 }]
+
 
 
 

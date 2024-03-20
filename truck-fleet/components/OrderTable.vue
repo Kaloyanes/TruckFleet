@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { collection, query, where } from 'firebase/firestore';
 import type { Order } from '~/models/Order';
 
@@ -70,29 +75,51 @@ const {
 promise.value.then(() => {
   console.log('Orders loaded');
   console.log(orders.value);
-
 });
 
-function getDate(row: any) {
-  return new Date((row as Order).realTime.toMillis());
-};
 
 </script>
 
 <template>
-  <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw]  ">
+  <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw] h-[76vh] relative overflow-auto ">
+    <Table>
+      <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950">
+        <TableRow>
+          <TableHead class="w-[100px]">
+            Time
+          </TableHead>
+          <TableHead class='flex items-center gap-2'>
+            Status
+            <Popover>
+              <PopoverTrigger>
+                <UButton icon="i-material-symbols-filter-alt" size="2xs" />
+              </PopoverTrigger>
+              <PopoverContent>
+                <div class="flex flex-col gap-2">
+                  <a href="https://google.com" target="_blank">Google</a>
+                  <a href="https://facebook.com" target="_blank">Facebook</a>
+                </div>
+              </PopoverContent>
+            </Popover>
 
-    <UTable :rows="orders" :loading="pending" :columns="columns">
-      <template #time-data="{ row }">
-        <h1>
-          {{ getDate(row).getHours() }}:00
-        </h1>
-      </template>
-      <template #documents-data="{ row }">
-        <div class="flex flex-col gap-2">
-          <a :href="url.link" v-for="url in row.documents" target="_blank">{{ url.title }}</a>
-        </div>
-      </template>
-    </UTable>
+          </TableHead>
+          <TableHead>Method</TableHead>
+          <TableHead class="text-right">
+            Amount
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow v-for="order in orders">
+          <TableCell class="font-medium">
+          </TableCell>
+          <TableCell> {{ order.driver }}</TableCell>
+          <TableCell>Credit Card</TableCell>
+          <TableCell class="text-right">
+            $250.00
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   </div>
 </template>
