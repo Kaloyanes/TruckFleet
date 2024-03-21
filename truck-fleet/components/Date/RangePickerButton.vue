@@ -22,7 +22,6 @@ const date = computed({
   set: (value) => {
     console.log(value);
     emit('update:model-value', value)
-
   }
 })
 </script>

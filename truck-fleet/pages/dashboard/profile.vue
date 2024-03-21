@@ -13,8 +13,8 @@ const links = [{
   badge: 100,
   to: '/dashboard/profile/account'
 }, {
-  label: 'General',
-  icon: 'i-heroicons-home',
+  label: 'Settings',
+  icon: 'i-heroicons-cog',
   to: '/dashboard/profile/general'
 }, {
   label: 'Horizontal Navigation',

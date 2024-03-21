@@ -10,6 +10,12 @@ defineShortcuts({
       isOpen.value = !isOpen.value;
     }
   },
+  f1: {
+    usingInput: true,
+    handler: () => {
+      isOpen.value = !isOpen.value;
+    }
+  },
   escape: {
     usingInput: true,
     whenever: [isOpen],
@@ -36,6 +42,16 @@ const pages = [
     icon: 'i-material-symbols-receipt',
     click: () => goToRoute('/dashboard/orders')
   },
+  {
+    label: 'Trucks',
+    icon: 'i-heroicons-truck',
+    click: () => goToRoute('/dashboard/trucks')
+  },
+  {
+    label: 'Settings',
+    icon: 'i-heroicons-cog',
+    click: () => goToRoute('/dashboard/profile/general')
+  }
 
 ];
 
@@ -45,11 +61,16 @@ const actions = [
     label: 'Add Order',
     icon: 'i-heroicons-plus-circle',
     click: () => {
-      isOpen.value = false;
-      if (!useRoute().path.includes('/dashboard/orders/'))
-        useRouter().replace('/dashboard/orders/all');
+      (document.activeElement as HTMLElement).blur();
 
-      let state = useState('add');
+      isOpen.value = false;
+      let route = useRoute();
+      let router = useRouter();
+
+      if (!route.path.includes('/dashboard/orders/'))
+        router.replace('/dashboard/orders/all');
+
+      let state = useState('addOrder');
       state.value = true;
     }
   },

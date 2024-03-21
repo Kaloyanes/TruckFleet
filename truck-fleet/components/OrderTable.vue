@@ -4,9 +4,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { format } from 'date-fns';
 import { collection, query, where } from 'firebase/firestore';
-import type { Order } from '~/models/Order';
-import ContextMenu from './ui/context-menu/ContextMenu.vue';
+import { TableCell } from './ui/table';
 
 const props = defineProps({
   licensePlate: {
@@ -71,18 +71,70 @@ const {
   data: orders,
   pending,
   promise,
-} = useCollection<Order>(modifiedQuery(orderRef));
+} = useCollection(modifiedQuery(orderRef));
 
-promise.value.then(() => {
-  console.log('Orders loaded');
-  console.log(orders.value);
+await promise;
+console.log(orders.value);
+
+const startDate = new Date(Date.now() - 1000 * 60 * 60 * 24 * 30);
+startDate.setMinutes(0);
+
+const endDate = new Date();
+endDate.setMonth(startDate.getMonth() + 2);
+
+// TODO: COMBINE ORDERS AND DATES IN ONE ARRAY
+const dates = ref<Date[]>([]);
+
+function generateDates() {
+  let hoursAdd = 1;
+
+  let currentDate = new Date(startDate);
+
+
+  while (currentDate < endDate) {
+    dates.value.push(new Date(currentDate));
+    if (currentDate.getHours() >= 19 || currentDate.getHours() < 8) {
+      hoursAdd = 2;
+    }
+    else {
+      hoursAdd = 1;
+    }
+    currentDate.setHours(currentDate.getHours() + hoursAdd);
+  }
+
+
+  setTimeout(() => {
+    scrollToCurrentDate();
+  }, 500)
+}
+
+function scrollToCurrentDate() {
+  const currentDateElement = document.querySelector('.current-date');
+
+  console.log(currentDateElement);
+
+  if (currentDateElement) {
+    currentDateElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+  }
+}
+
+
+onMounted(() => {
+  generateDates();
 });
 
+let current = new Date(Date.now());
+
+current.setMinutes(0);
+
+function checkDates(otherDate: Date) {
+  return current.getTime() === otherDate.getTime();
+}
 
 </script>
 
 <template>
-  <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw] h-[77.5vh] relative overflow-auto ">
+  <div class="overflow-x-scroll flex-1 h-[77.5vh] relative overflow-auto ">
     <Table>
       <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950">
         <TableRow>
@@ -93,7 +145,7 @@ promise.value.then(() => {
             Status
             <Popover>
               <PopoverTrigger>
-                <UButton icon="i-material-symbols-filter-alt" size="2xs" />
+                <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
               </PopoverTrigger>
               <PopoverContent>
                 <div class="flex flex-col gap-2">
@@ -108,35 +160,20 @@ promise.value.then(() => {
           <TableHead class="text-right">
             Amount
           </TableHead>
-          <TableHead v-for="i in new Array(25)">Method</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <ContextMenu v-for="order in orders">
-          <ContextMenuTrigger>
-            <TableRow>
-              <TableCell class="font-medium">
-              </TableCell>
-              <TableCell> {{ order.driver }}</TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell class="text-right">
-                $250.00
-              </TableCell>
-            </TableRow>
-          </ContextMenuTrigger>
-          <ContextMenuContent class="flex flex-col gap-2">
-            <ContextMenuItem class="gap-2">
-              <UIcon name="i-material-symbols-edit" :size="20" />
-              Edit
-            </ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuItem class="bg-destructive gap-2">
-              <UIcon name="i-material-symbols-delete" :size="20" />
-              Delete
-            </ContextMenuItem>
-
-          </ContextMenuContent>
-        </ContextMenu>
+        <TableRow v-for="date in dates" ref="currentDateRefElement">
+          <TableCell class="font-medium" :data-date="format(date, `HH:mm dd/MM/yyyy`)"
+            :class="checkDates(date) ? 'current-date bg-red-600' : ''">
+            {{ format(date, "HH:mm dd/MM/yyyy") }}
+          </TableCell>
+          <TableCell>{{ "sd" }}</TableCell>
+          <TableCell>Credit Card</TableCell>
+          <TableCell class="text-right">
+            $250.00
+          </TableCell>
+        </TableRow>
       </TableBody>
 
     </Table>

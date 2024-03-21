@@ -23,7 +23,7 @@ definePageMeta({
       </div>
 
       <!-- <UDivider class="py-5" /> -->
-      <LazyOrderTruckTabs />
+      <OrderTruckTabs />
     </div>
 
 

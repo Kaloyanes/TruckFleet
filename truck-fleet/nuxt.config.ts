@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     '@nuxtjs/tailwindcss', 'shadcn-nuxt'
   ],
-   shadcn: {
+  shadcn: {
     /**
      * Prefix for all the imported component
      */
@@ -81,7 +81,6 @@ export default defineNuxtConfig({
       Inter: true,
     }
   },
-
 
 
 })

@@ -49,6 +49,11 @@ async function login() {
   }
 
   await navigateTo('/dashboard', { replace: true });
+
+  useToast().add({
+    title: 'Login Successful',
+    description: 'You have successfully logged in.',
+  });
 }
 
 </script>

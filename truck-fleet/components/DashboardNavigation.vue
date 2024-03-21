@@ -43,16 +43,26 @@ let links = computed(() => [[{
   }
 ]]);
 
+const showLabel = useState<boolean>('showLabel');
+
+function hideLabel() {
+  showLabel.value = !showLabel.value;
+}
+
 </script>
 
 <template>
-  <div
-    class="sticky top-0 lg:flex-[0.2]  absoule -left-full md:block  box-border h-screen overflow-y-auto flex flex-col">
-
-
+  <div class="sticky top-0   transition-all duration-300 -left-full block  box-border h-screen overflow-y-auto  "
+    :class="showLabel ? ' lg:flex-[0.2] max-w-none' : 'lg:flex-[0.06] xl:flex-[0.04] max-w-[65px] '">
+    <UButton @click="hideLabel" variant="ghost" :icon="showLabel ?
+      'i-material-symbols-menu-open' :
+      'i-mdi-menu-close'" class="absolute right-3 z-50 top-1 hidden lg:block " size='2xs' />
     <UVerticalNavigation :links="links" class="py-8 px-3 ">
+
       <template #default="{ link }">
-        <span class="group-hover:text-primary relative hidden lg:block ">{{ link.label }}</span>
+        <span class="group-hover:text-primary relative hidden transition-all duration-300"
+          :class="(showLabel) ? 'lg:block' : 'hidden'">{{
+      link.label }}</span>
       </template>
 
     </UVerticalNavigation>
