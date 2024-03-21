@@ -3,92 +3,95 @@ let isOpen = ref(false);
 
 let route = useRoute();
 
-if (route.name !== 'login') {
-  defineShortcuts({
-    meta_p: {
-      usingInput: true,
-      handler: () => {
-        isOpen.value = !isOpen.value;
-      }
-    },
-    escape: {
-      usingInput: true,
-      whenever: [isOpen],
-      handler: () => { isOpen.value = false }
-
+defineShortcuts({
+  meta_p: {
+    usingInput: true,
+    handler: () => {
+      isOpen.value = !isOpen.value;
     }
-  })
-}
+  },
+  escape: {
+    usingInput: true,
+    whenever: [isOpen],
+    handler: () => { isOpen.value = false }
+
+  }
+})
 
 const toast = useToast()
 
-const actions = [
+const pages = [
   {
-    id: 'profile',
     label: 'Profile',
     icon: 'i-heroicons-user-circle',
-    click: () => {
-      router.push('profile');
-    },
+    click: () => goToRoute('/dashboard/profile')
   },
   {
-    id: 'dashboard',
     label: 'Dashboard',
     icon: 'i-heroicons-chart-bar',
-    click: () => {
-      router.push('/dashboard/home');
-    }
+    click: () => goToRoute('/dashboard/home')
   },
   {
-    id: 'orders',
     label: 'Orders',
     icon: 'i-material-symbols-receipt',
-    click: () => {
-      router.push('orders');
-    }
+    click: () => goToRoute('/dashboard/orders')
   },
-  {
-    id: 'logout',
-    label: 'Logout',
-    icon: 'i-heroicons-exclamation-circle',
-    click: () => {
-      router.push('/logout');
-    }
-  },
+
+];
+
+const actions = [
   {
     id: 'add-order',
     label: 'Add Order',
     icon: 'i-heroicons-plus-circle',
     click: () => {
-      navigateTo('orders?add=true');
+      isOpen.value = false;
+      if (!useRoute().path.includes('/dashboard/orders/'))
+        useRouter().replace('/dashboard/orders/all');
+
+      let state = useState('add');
+      state.value = true;
     }
-  }
-];
+  },
+  {
+    id: 'logout',
+    label: 'Logout',
+    icon: 'material-symbols:logout',
+    click: () => goToRoute('/logout')
+  },
+
+]
 
 let router = useRouter()
+let selectedValue = ref('')
 
-function onSelect(option: any) {
 
-  console.log(option);
-  if (option.click) {
-    option.click();
-  }
-
+function goToRoute(route: string) {
+  router.push(route);
   isOpen.value = false;
 }
-
-let groups = [
-  {
-    key: 'commands', label: 'Commands', commands: actions, icon: 'fas fa-terminal'
-  }
-]
 </script>
 
 <template>
   <div>
-    <UModal v-model="isOpen">
-      <UCommandPalette :groups="groups" @update:model-value="onSelect" />
-    </UModal>
+    <CommandDialog v-model:open="isOpen">
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Pages">
+          <CommandItem v-for="page in pages" :value="page.label.toLowerCase()" @click="page.click">
+            <Icon :name="page.icon" class="mr-2" size="20" />
+            {{ page.label }}
+          </CommandItem>
+        </CommandGroup>
+        <CommandGroup heading="Actions">
+          <CommandItem v-for="action in actions" :key="action.id" :value="action.id" @click="action.click">
+            <Icon :name="action.icon" class="mr-2" size="20" />
+            {{ action.label }}
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </CommandDialog>
   </div>
 </template>
 

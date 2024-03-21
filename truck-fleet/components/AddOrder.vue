@@ -2,7 +2,7 @@
 import { Timestamp, collection } from 'firebase/firestore';
 
 let route = useRoute();
-const isVisible = ref(route.query.add === 'true');
+const isVisible = useState('add', () => route.query.add === 'true');
 
 const db = useFirestore();
 const docRef = collection(db, 'orders');
@@ -61,6 +61,8 @@ const euCountries = [
   { label: 'United Kingdom', value: 'GB' },
   { label: 'Vatican City', value: 'VA' }
 ]
+
+const slug = computed(() => useRoute().params.slug);
 
 const docValue = reactive({
   pickUpTime: {
@@ -160,8 +162,7 @@ async function clear() {
       body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800'
     }">
         <h1 class=" text-xl pb-5">Add Order</h1>
-
-
+        <h1>{{ slug }}</h1>
         <UForm :state="docValue" class="flex flex-col gap-3">
 
           <UFormGroup label="Pick Up Time" required>

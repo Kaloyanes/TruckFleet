@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/popover';
 import { collection, query, where } from 'firebase/firestore';
 import type { Order } from '~/models/Order';
+import ContextMenu from './ui/context-menu/ContextMenu.vue';
 
 const props = defineProps({
   licensePlate: {
@@ -81,7 +82,7 @@ promise.value.then(() => {
 </script>
 
 <template>
-  <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw] h-[76vh] relative overflow-auto ">
+  <div class="overflow-x-scroll flex-1 max-w-[84vw] lg:max-w-[83.3vw] h-[77.5vh] relative overflow-auto ">
     <Table>
       <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950">
         <TableRow>
@@ -107,19 +108,37 @@ promise.value.then(() => {
           <TableHead class="text-right">
             Amount
           </TableHead>
+          <TableHead v-for="i in new Array(25)">Method</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="order in orders">
-          <TableCell class="font-medium">
-          </TableCell>
-          <TableCell> {{ order.driver }}</TableCell>
-          <TableCell>Credit Card</TableCell>
-          <TableCell class="text-right">
-            $250.00
-          </TableCell>
-        </TableRow>
+        <ContextMenu v-for="order in orders">
+          <ContextMenuTrigger>
+            <TableRow>
+              <TableCell class="font-medium">
+              </TableCell>
+              <TableCell> {{ order.driver }}</TableCell>
+              <TableCell>Credit Card</TableCell>
+              <TableCell class="text-right">
+                $250.00
+              </TableCell>
+            </TableRow>
+          </ContextMenuTrigger>
+          <ContextMenuContent class="flex flex-col gap-2">
+            <ContextMenuItem class="gap-2">
+              <UIcon name="i-material-symbols-edit" :size="20" />
+              Edit
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem class="bg-destructive gap-2">
+              <UIcon name="i-material-symbols-delete" :size="20" />
+              Delete
+            </ContextMenuItem>
+
+          </ContextMenuContent>
+        </ContextMenu>
       </TableBody>
+
     </Table>
   </div>
 </template>
