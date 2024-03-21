@@ -78,12 +78,14 @@ function goToRoute(route: string) {
       <CommandInput placeholder="Type a command or search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
+
         <CommandGroup heading="Pages">
           <CommandItem v-for="page in pages" :value="page.label.toLowerCase()" @click="page.click">
             <Icon :name="page.icon" class="mr-2" size="20" />
             {{ page.label }}
           </CommandItem>
         </CommandGroup>
+
         <CommandGroup heading="Actions">
           <CommandItem v-for="action in actions" :key="action.id" :value="action.id" @click="action.click">
             <Icon :name="action.icon" class="mr-2" size="20" />
