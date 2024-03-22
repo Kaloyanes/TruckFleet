@@ -86,9 +86,12 @@ await promise.value;
 const startDate = new Date(Date.now());
 startDate.setMonth(startDate.getMonth() - 1);
 startDate.setMinutes(0);
+startDate.setSeconds(0);
 
 const endDate = new Date();
 endDate.setMonth(startDate.getMonth() + 2);
+endDate.setMinutes(0);
+endDate.setSeconds(0)
 
 // TODO: COMBINE ORDERS AND DATES IN ONE ARRAY
 const dates = ref<{
@@ -107,14 +110,13 @@ function generateDates() {
       date: new Date(currentDate),
       order: orders.value.find((order: any) => {
         let orderDate = (order.realTime as Timestamp).toDate();
-
-
         orderDate.setMinutes(0);
         orderDate.setSeconds(0);
-        console.log(orderDate);
 
+        currentDate.setMinutes(0);
+        currentDate.setSeconds(0);
 
-        return orderDate.getTime() === currentDate.getTime();
+        return orderDate.toLocaleString() === currentDate.toLocaleString();
       })
     });
 
@@ -128,11 +130,11 @@ function generateDates() {
   }, 0)
 }
 
-function scrollToCurrentDate() {
+function scrollToCurrentDate(behavior: ScrollBehavior = 'instant') {
   const currentDateElement = document.querySelector('.current-date');
 
   if (currentDateElement) {
-    currentDateElement.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
+    currentDateElement.scrollIntoView({ behavior, block: 'center', inline: 'center' });
   }
 }
 
@@ -141,13 +143,35 @@ onMounted(() => {
   generateDates();
 });
 
+
 let current = new Date(Date.now());
 
 current.setMinutes(0);
 current.setSeconds(0);
 function checkDates(otherDate: Date) {
-  return current.getTime() === otherDate.getTime();
+  return current.toLocaleString() === otherDate.toLocaleString();
 }
+
+setInterval(() => {
+  const currentTime = new Date();
+  currentTime.setMinutes(0);
+  currentTime.setSeconds(0);
+
+
+  if (currentTime.toLocaleString() !== current.toLocaleString()) {
+    const currentDateElement = document.querySelector('.current-date');
+    if (currentDateElement) {
+      currentDateElement.classList.remove('current-date');
+    }
+
+    current = new Date(currentTime);
+
+    const nextDateElement = document.querySelector(`[data-date="${currentTime.toLocaleString()}"]`);
+    if (nextDateElement) {
+      nextDateElement.classList.add('current-date');
+    }
+  }
+}, 1000);
 
 </script>
 
@@ -182,13 +206,13 @@ function checkDates(otherDate: Date) {
       </TableHeader>
       <TableBody>
         <TableRow v-for="info in dates" ref="currentDateRefElement">
-          <TableCell class="font-medium" :data-date="format(info.date, `HH:mm dd/MM/yyyy`)"
-            :class="checkDates(info.date) ? 'current-date bg-primary text-black' : ''">
+          <TableCell class="font-medium transition-all duration-600" :data-date="info.date.toLocaleString()"
+            :class="checkDates(info.date) ? 'current-date ' : ''">
             {{ format(info.date, "HH:mm dd/MM/yyyy") }}
           </TableCell>
           <TableCell>
           </TableCell>
-          {{ info.order?.driver ?? 'kys' }}
+          {{ info.order?.driver ?? '' }}
           <TableCell>
 
           </TableCell>
@@ -201,3 +225,9 @@ function checkDates(otherDate: Date) {
     </Table>
   </div>
 </template>
+
+<style scoped>
+.current-date {
+  @apply bg-primary text-black;
+}
+</style>
