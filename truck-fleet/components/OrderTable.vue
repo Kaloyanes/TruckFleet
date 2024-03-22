@@ -5,6 +5,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { format } from 'date-fns';
+import type { Timestamp } from 'firebase-admin/firestore';
 import { collection, query, where } from 'firebase/firestore';
 import { TableCell } from './ui/table';
 
@@ -54,11 +55,9 @@ const columns = [
 ];
 
 
-console.log(useFirestore())
+const companyId = await useCompanyId();
 
-const id = await useCompanyId();
-
-const orderRef = query(collection(db, 'orders'), where('companyId', '==', id.value));
+const orderRef = query(collection(db, 'orders'), where('companyId', '==', companyId.value));
 const modifiedQuery = (ref: any) => {
   if (props.licensePlate === 'all') {
     return ref;
@@ -71,10 +70,14 @@ const {
   data: orders,
   pending,
   promise,
-} = useCollection(modifiedQuery(orderRef));
+} = useCollection(modifiedQuery(orderRef), {
+  snapshotListenOptions: {
+    source: 'default'
+  }
+});
 
-await promise;
-console.log(orders.value);
+await promise.value;
+console.log('orders', orders.value);
 
 const startDate = new Date(Date.now() - 1000 * 60 * 60 * 24 * 30);
 startDate.setMinutes(0);
@@ -83,7 +86,10 @@ const endDate = new Date();
 endDate.setMonth(startDate.getMonth() + 2);
 
 // TODO: COMBINE ORDERS AND DATES IN ONE ARRAY
-const dates = ref<Date[]>([]);
+const dates = ref<{
+  date: Date;
+  order: any | undefined;
+}[]>([]);
 
 function generateDates() {
   let hoursAdd = 1;
@@ -92,9 +98,19 @@ function generateDates() {
 
 
   while (currentDate < endDate) {
-    dates.value.push(new Date(currentDate));
+    dates.value.push({
+      date: new Date(currentDate),
+      order: orders.value.find((order: any) => {
+        const orderDate = (order.realTime as Timestamp).toDate();
+        orderDate.setMinutes(0);
+        orderDate.setSeconds(0);
+        currentDate.setSeconds(0);
+
+        return orderDate.getTime() === currentDate.getTime();
+      })
+    });
     if (currentDate.getHours() >= 19 || currentDate.getHours() < 8) {
-      hoursAdd = 2;
+      hoursAdd = 1;
     }
     else {
       hoursAdd = 1;
@@ -105,7 +121,7 @@ function generateDates() {
 
   setTimeout(() => {
     scrollToCurrentDate();
-  }, 500)
+  }, 0)
 }
 
 function scrollToCurrentDate() {
@@ -114,7 +130,7 @@ function scrollToCurrentDate() {
   console.log(currentDateElement);
 
   if (currentDateElement) {
-    currentDateElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    currentDateElement.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
   }
 }
 
@@ -126,8 +142,11 @@ onMounted(() => {
 let current = new Date(Date.now());
 
 current.setMinutes(0);
-
+current.setSeconds(0);
 function checkDates(otherDate: Date) {
+
+
+
   return current.getTime() === otherDate.getTime();
 }
 
@@ -136,7 +155,7 @@ function checkDates(otherDate: Date) {
 <template>
   <div class="overflow-x-scroll flex-1 h-[77.5vh] relative overflow-auto ">
     <Table>
-      <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950">
+      <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950 w-full">
         <TableRow>
           <TableHead class="w-[100px]">
             Time
@@ -163,15 +182,19 @@ function checkDates(otherDate: Date) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="date in dates" ref="currentDateRefElement">
-          <TableCell class="font-medium" :data-date="format(date, `HH:mm dd/MM/yyyy`)"
-            :class="checkDates(date) ? 'current-date bg-red-600' : ''">
-            {{ format(date, "HH:mm dd/MM/yyyy") }}
+        <TableRow v-for="info in dates" ref="currentDateRefElement">
+          <TableCell class="font-medium" :data-date="format(info.date, `HH:mm dd/MM/yyyy`)"
+            :class="checkDates(info.date) ? 'current-date bg-primary text-black' : ''">
+            {{ format(info.date, "HH:mm dd/MM/yyyy") }}
           </TableCell>
-          <TableCell>{{ "sd" }}</TableCell>
-          <TableCell>Credit Card</TableCell>
-          <TableCell class="text-right">
-            $250.00
+          <TableCell>
+          </TableCell>
+          {{ info.order?.driver ?? 'kys' }}
+          <TableCell>
+
+          </TableCell>
+          <TableCell>
+
           </TableCell>
         </TableRow>
       </TableBody>
