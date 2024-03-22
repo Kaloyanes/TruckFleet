@@ -52,12 +52,14 @@ function hideLabel() {
 </script>
 
 <template>
-  <div class="sticky top-0   transition-all duration-300 -left-full block  box-border h-screen overflow-y-auto  "
-    :class="showLabel ? ' lg:flex-[0.2] max-w-none' : 'lg:flex-[0.06] xl:flex-[0.04] max-w-[65px] '">
+  <div class="sticky top-0 transition-all duration-300 -left-full block  box-border h-screen overflow-y-auto  "
+    :class="showLabel ? ' lg:flex-[0.2] max-w-none' : 'flex-[0.05] max-w-[66px]   '">
     <UButton @click="hideLabel" variant="ghost" :icon="showLabel ?
       'i-material-symbols-menu-open' :
       'i-mdi-menu-close'" class="absolute right-3 z-50 top-1 hidden lg:block " size='2xs' />
-    <UVerticalNavigation :links="links" class="py-8 px-3 ">
+    <UVerticalNavigation :links="links" class="py-8 px-3 w-full">
+
+
 
       <template #default="{ link }">
         <span class="group-hover:text-primary relative hidden transition-all duration-300"

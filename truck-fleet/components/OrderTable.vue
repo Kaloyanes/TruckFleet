@@ -71,15 +71,20 @@ const {
   pending,
   promise,
 } = useCollection(modifiedQuery(orderRef), {
-  snapshotListenOptions: {
-    source: 'default'
-  }
+
 });
 
+promise.value.then((v) => {
+  console.log('promise resolved orders laoded')
+  console.log('v', v);
+  console.log('orders', orders.value);
+})
 await promise.value;
-console.log('orders', orders.value);
 
-const startDate = new Date(Date.now() - 1000 * 60 * 60 * 24 * 30);
+
+
+const startDate = new Date(Date.now());
+startDate.setMonth(startDate.getMonth() - 1);
 startDate.setMinutes(0);
 
 const endDate = new Date();
@@ -101,20 +106,19 @@ function generateDates() {
     dates.value.push({
       date: new Date(currentDate),
       order: orders.value.find((order: any) => {
-        const orderDate = (order.realTime as Timestamp).toDate();
+        let orderDate = (order.realTime as Timestamp).toDate();
+
+
         orderDate.setMinutes(0);
         orderDate.setSeconds(0);
-        currentDate.setSeconds(0);
+        console.log(orderDate);
+
 
         return orderDate.getTime() === currentDate.getTime();
       })
     });
-    if (currentDate.getHours() >= 19 || currentDate.getHours() < 8) {
-      hoursAdd = 1;
-    }
-    else {
-      hoursAdd = 1;
-    }
+
+
     currentDate.setHours(currentDate.getHours() + hoursAdd);
   }
 
@@ -126,8 +130,6 @@ function generateDates() {
 
 function scrollToCurrentDate() {
   const currentDateElement = document.querySelector('.current-date');
-
-  console.log(currentDateElement);
 
   if (currentDateElement) {
     currentDateElement.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
@@ -144,9 +146,6 @@ let current = new Date(Date.now());
 current.setMinutes(0);
 current.setSeconds(0);
 function checkDates(otherDate: Date) {
-
-
-
   return current.getTime() === otherDate.getTime();
 }
 
