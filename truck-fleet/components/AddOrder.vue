@@ -106,7 +106,6 @@ async function uploadOrder() {
 
 let colRef = collection(db, 'companiesWorkedWith');
 const { data: companies, promise: companyPromise } = useCollection(colRef, {
-  once: true,
 });
 
 await companyPromise;
@@ -131,67 +130,70 @@ async function clear() {
 
 <template>
   <div>
-    <UButton @click="isOpen = true" class="dark:text-black">Add Order</UButton>
+    <Sheet>
+      <SheetTrigger>
+        <UButton class="dark:text-black">Add Order</UButton>
+      </SheetTrigger>
+      <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg">
+        <SheetHeader>
+          <SheetTitle>Add Order</SheetTitle>
+          <h1>{{ slug }}</h1>
+          <UForm :state="docValue" class="flex flex-col gap-3">
 
-    <USlideover v-model="isOpen" class="overflow-y-scroll h-full" @close="clear" :ui="{
-      background: 'bg-transparent',
+            <UFormGroup label="Pick Up Time" required>
+              <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
+            </UFormGroup>
 
-    }">
-      <UCard class="flex flex-col flex-1 p-8 dark:bg-cod-gray-950 rounded-r-none" :ui="{
-      body: { base: 'flex-1 bg-transparent' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800'
-    }">
-        <h1 class=" text-xl pb-5">Add Order</h1>
-        <h1>{{ slug }}</h1>
-        <UForm :state="docValue" class="flex flex-col gap-3">
+            <UFormGroup label="Pick Up Address" required>
+              <UInput v-model="docValue.pickUpAddress" />
+            </UFormGroup>
 
-          <UFormGroup label="Pick Up Time" required>
-            <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
-          </UFormGroup>
+            <UFormGroup label="Delivery Time" required>
+              <DateRangePickerButton v-model="docValue.deliveryTime" :range="true" />
+            </UFormGroup>
 
-          <UFormGroup label="Pick Up Address" required>
-            <UInput v-model="docValue.pickUpAddress" />
-          </UFormGroup>
+            <UFormGroup label="Delivery Address" required>
+              <UInput v-model="docValue.deliveryAddress" />
+            </UFormGroup>
 
-          <UFormGroup label="Delivery Time" required>
-            <DateRangePickerButton v-model="docValue.deliveryTime" :range="true" />
-          </UFormGroup>
+            <UFormGroup label="Country" required>
+              <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country" />
+            </UFormGroup>
 
-          <UFormGroup label="Delivery Address" required>
-            <UInput v-model="docValue.deliveryAddress" />
-          </UFormGroup>
+            <UFormGroup label="Company" required>
+              <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name', 'colors']"
+                v-model="docValue.customerCompany">
+                <template #option-empty="{ query }">
+                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                    <p>Company Not Found</p>
+                    <CompanyAddDialog />
+                  </div>
+                </template>
+              </UInputMenu>
 
-          <UFormGroup label="Country" required>
-            <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country" />
-          </UFormGroup>
+            </UFormGroup>
 
-          <UFormGroup label="Company" required>
-            <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name', 'colors']"
-              v-model="docValue.customerCompany">
-              <template #option-empty="{ query }">
-                <div class="p-3 text-center">
-                  <p>Company Not Found</p>
-                  <UButton @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
-                </div>
-              </template>
-            </UInputMenu>
+            <UFormGroup label="Worker" required>
+              <UInput v-model="docValue.worker" />
+            </UFormGroup>
 
-          </UFormGroup>
+            <UFormGroup label="Documents">
+              <UInput type="file" id="document-upload" multiple="multiple" />
+            </UFormGroup>
+          </UForm>
 
-          <UFormGroup label="Worker" required>
-            <UInput v-model="docValue.worker" />
-          </UFormGroup>
+          <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
+            <SheetClose as-child>
+              <UButton @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
+            </SheetClose>
+            <SheetClose as-child>
+              <UButton @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add Order
+              </UButton>
+            </SheetClose>
+          </div>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
 
-          <UFormGroup label="Documents">
-            <UInput type="file" id="document-upload" multiple="multiple" />
-          </UFormGroup>
-        </UForm>
-
-        <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
-          <UButton @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
-          <UButton @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add Order
-          </UButton>
-        </div>
-      </UCard>
-    </USlideover>
   </div>
 </template>
