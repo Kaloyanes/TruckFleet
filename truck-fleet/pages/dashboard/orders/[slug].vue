@@ -5,6 +5,6 @@ let slug = useRoute().params.slug;
 
 <template>
   <div>
-    <LazyOrderTable :license-plate="slug as string" />
+    <OrderTable :license-plate="slug as string" />
   </div>
 </template>

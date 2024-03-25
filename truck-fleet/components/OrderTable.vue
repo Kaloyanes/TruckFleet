@@ -4,10 +4,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { format } from 'date-fns';
 import type { Timestamp } from 'firebase-admin/firestore';
 import { collection, query, where } from 'firebase/firestore';
 import { TableCell } from './ui/table';
+
+import { format } from 'date-fns';
 
 const props = defineProps({
   licensePlate: {
@@ -93,17 +94,22 @@ endDate.setMonth(startDate.getMonth() + 2);
 endDate.setMinutes(0);
 endDate.setSeconds(0)
 
-// TODO: COMBINE ORDERS AND DATES IN ONE ARRAY
 const dates = ref<{
   date: Date;
   order: any | undefined;
 }[]>([]);
 
+let cs = computed(() => {
+  console.log('orders', orders.value);
+  dates.value = [];
+  generateDates();
+});
+
+let scrolledOnce = false;
+
 function generateDates() {
   let hoursAdd = 1;
-
   let currentDate = new Date(startDate);
-
 
   while (currentDate < endDate) {
     dates.value.push({
@@ -117,17 +123,18 @@ function generateDates() {
         currentDate.setSeconds(0);
 
         return orderDate.toLocaleString() === currentDate.toLocaleString();
-      })
+      }),
     });
-
 
     currentDate.setHours(currentDate.getHours() + hoursAdd);
   }
 
 
   setTimeout(() => {
-    scrollToCurrentDate();
-  }, 0)
+    console.log(scrolledOnce)
+    if (!scrolledOnce)
+      scrollToCurrentDate();
+  }, 100)
 }
 
 function scrollToCurrentDate(behavior: ScrollBehavior = 'instant') {
@@ -135,6 +142,7 @@ function scrollToCurrentDate(behavior: ScrollBehavior = 'instant') {
 
   if (currentDateElement) {
     currentDateElement.scrollIntoView({ behavior, block: 'center', inline: 'center' });
+    scrolledOnce = true;
   }
 }
 
@@ -173,61 +181,95 @@ setInterval(() => {
   }
 }, 1000);
 
+
 </script>
 
 <template>
-  <div class="overflow-x-scroll flex-1 h-[77.5vh] relative overflow-auto ">
-    <Table>
-      <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950 w-full">
-        <TableRow>
-          <TableHead class="w-[100px]">
-            Time
-          </TableHead>
-          <TableHead class='flex items-center gap-2'>
-            Status
-            <Popover>
-              <PopoverTrigger>
-                <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-              </PopoverTrigger>
-              <PopoverContent>
-                <div class="flex flex-col gap-2">
-                  <a href="https://google.com" target="_blank">Google</a>
-                  <a href="https://facebook.com" target="_blank">Facebook</a>
-                </div>
-              </PopoverContent>
-            </Popover>
+  {{ cs }}
+  <div class="grid auto-rows-max">
+    <div class="w-full flex-1 relative overflow-auto max-h-[75vh]  ">
+      <Table>
+        <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950/30 bg-opacity-40 backdrop-blur-md w-full">
+          <TableRow>
+            <TableHead class="w-[75px]">
+              Date
+            </TableHead>
+            <TableHead class="w-[75px]">
+              Time
+            </TableHead>
+            <TableHead class='flex items-center gap-2'>
+              Item
+              <Popover>
+                <PopoverTrigger>
+                  <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div class="flex flex-col gap-2">
+                    <a href="https://google.com" target="_blank">Google</a>
+                    <a href="https://facebook.com" target="_blank">Facebook</a>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </TableHead>
+            <TableHead>
+              3
+            </TableHead>
+            <TableHead>
+              4
+            </TableHead>
+            <TableHead>
+              5
+            </TableHead>
+            <TableHead>
+              6
+            </TableHead>
+            <TableHead>
+              6
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow v-for="info in dates" ref="currentDateRefElement">
+            <TableCell class="font-medium transition-all duration-600 text-center"
+              :data-date="info.date.toLocaleString()" :class="checkDates(info.date) ? 'current-date ' : ''">
+              {{ format(info.date, "dd/MM/yyyy") }}
+            </TableCell>
+            <TableCell class="font-medium transition-all duration-600 text-center"
+              :data-date="info.date.toLocaleString()" :class="checkDates(info.date) ? 'current-date ' : ''">
+              {{ format(info.date, "HH:mm") }}
+            </TableCell>
+            <TableCell>
+              1
+            </TableCell>
+            <TableCell>
+              {{ info.order?.driver ?? '' }}
+              2
+            </TableCell>
+            <TableCell>
+              3
+            </TableCell>
+            <TableCell>
+              4
+            </TableCell>
+            <TableCell>
+              5
+            </TableCell>
+            <TableCell>
+              6
+            </TableCell>
+          </TableRow>
 
-          </TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead class="text-right">
-            Amount
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow v-for="info in dates" ref="currentDateRefElement">
-          <TableCell class="font-medium transition-all duration-600" :data-date="info.date.toLocaleString()"
-            :class="checkDates(info.date) ? 'current-date ' : ''">
-            {{ format(info.date, "HH:mm dd/MM/yyyy") }}
-          </TableCell>
-          <TableCell>
-          </TableCell>
-          {{ info.order?.driver ?? '' }}
-          <TableCell>
+        </TableBody>
 
-          </TableCell>
-          <TableCell>
+      </Table>
 
-          </TableCell>
-        </TableRow>
-      </TableBody>
-
-    </Table>
+    </div>
   </div>
+
 </template>
 
 <style scoped>
 .current-date {
-  @apply bg-primary text-black;
+  @apply bg-primary text-black selection:bg-neutral-300;
 }
 </style>
