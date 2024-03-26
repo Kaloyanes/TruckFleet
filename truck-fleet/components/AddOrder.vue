@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { Timestamp, collection } from 'firebase/firestore';
+import type { DocumentReference } from 'firebase/firestore';
+import { Timestamp, collection, doc } from 'firebase/firestore';
 
 let route = useRoute();
 const isOpen = useState('addOrder', () => route.query.add === 'true');
@@ -57,6 +58,8 @@ const euCountries = [
 
 const slug = computed(() => useRoute().params.slug);
 
+const companyDocRef: ComputedRef<DocumentReference> = computed(() => doc(db, `companiesWorkedWith/${docValue.customerCompanyId}`));
+
 const docValue = reactive({
   pickUpTime: {
     start: Timestamp.fromDate(
@@ -78,9 +81,11 @@ const docValue = reactive({
   pickUpAddress: '',
   deliveryAddress: '',
   country: '',
-  customerCompany: '',
+  customerCompanyId: '',
+  customerCompany: companyDocRef.value,
   worker: ''
 });
+
 
 
 const isUploading = ref(false);
@@ -126,72 +131,84 @@ async function clear() {
   }
 }
 
+const isModalOpen = useState('addCompanyModal', () => false)
+function openCompanyAddDialog() {
+
+  isOpen.value = false
+  setTimeout(() => {
+    isModalOpen.value = true
+  }, 500);
+}
+
 </script>
 
 <template>
   <div>
-    <Sheet>
+    <Sheet :open="isOpen" @update:open="(e) => isOpen = e">
       <SheetTrigger>
         <UButton class="dark:text-black">Add Order</UButton>
       </SheetTrigger>
       <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg">
         <SheetHeader>
           <SheetTitle>Add Order</SheetTitle>
-          <h1>{{ slug }}</h1>
-          <UForm :state="docValue" class="flex flex-col gap-3">
-
-            <UFormGroup label="Pick Up Time" required>
-              <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
-            </UFormGroup>
-
-            <UFormGroup label="Pick Up Address" required>
-              <UInput v-model="docValue.pickUpAddress" />
-            </UFormGroup>
-
-            <UFormGroup label="Delivery Time" required>
-              <DateRangePickerButton v-model="docValue.deliveryTime" :range="true" />
-            </UFormGroup>
-
-            <UFormGroup label="Delivery Address" required>
-              <UInput v-model="docValue.deliveryAddress" />
-            </UFormGroup>
-
-            <UFormGroup label="Country" required>
-              <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country" />
-            </UFormGroup>
-
-            <UFormGroup label="Company" required>
-              <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name', 'colors']"
-                v-model="docValue.customerCompany">
-                <template #option-empty="{ query }">
-                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
-                    <p>Company Not Found</p>
-                    <CompanyAddDialog />
-                  </div>
-                </template>
-              </UInputMenu>
-
-            </UFormGroup>
-
-            <UFormGroup label="Worker" required>
-              <UInput v-model="docValue.worker" />
-            </UFormGroup>
-
-            <UFormGroup label="Documents">
-              <UInput type="file" id="document-upload" multiple="multiple" />
-            </UFormGroup>
-          </UForm>
-
-          <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
-            <SheetClose as-child>
-              <UButton @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
-            </SheetClose>
-            <SheetClose as-child>
-              <UButton @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add Order
-              </UButton>
-            </SheetClose>
-          </div>
         </SheetHeader>
+        <h1>{{ slug }}</h1>
+        <UForm :state="docValue" class="flex flex-col gap-3">
+
+          <UFormGroup label="Pick Up Time" required>
+            <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
+          </UFormGroup>
+
+          <UFormGroup label="Pick Up Address" required>
+            <UInput v-model="docValue.pickUpAddress" />
+          </UFormGroup>
+
+          <UFormGroup label="Delivery Time" required>
+            <DateRangePickerButton v-model="docValue.deliveryTime" :range="true" />
+          </UFormGroup>
+
+          <UFormGroup label="Delivery Address" required>
+            <UInput v-model="docValue.deliveryAddress" />
+          </UFormGroup>
+
+          <UFormGroup label="Country" required>
+            <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country" />
+          </UFormGroup>
+
+          <UFormGroup label="Company" required>
+            <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name', 'colors']"
+              v-model="docValue.customerCompany">
+              <template #option-empty="{ query }">
+                <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                  <p>Company Not Found</p>
+                  <UButton @click="openCompanyAddDialog" variant="soft" class="flex-1 flex justify-center self-center">
+                    Add
+                    Company
+                  </UButton>
+                </div>
+              </template>
+            </UInputMenu>
+
+          </UFormGroup>
+
+          <UFormGroup label="Worker" required>
+            <UInput v-model="docValue.worker" />
+          </UFormGroup>
+
+          <UFormGroup label="Documents">
+            <UInput type="file" id="document-upload" multiple="multiple" />
+          </UFormGroup>
+        </UForm>
+
+        <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
+          <SheetClose as-child>
+            <UButton @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
+          </SheetClose>
+          <SheetClose as-child>
+            <UButton @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add Order
+            </UButton>
+          </SheetClose>
+        </div>
       </SheetContent>
     </Sheet>
 

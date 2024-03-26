@@ -20,6 +20,7 @@ definePageMeta({
 
       <div class="flex p-2">
         <AddOrder />
+        <CompanyAddDialog />
       </div>
 
       <!-- <UDivider class="py-5" /> -->
