@@ -1,11 +1,22 @@
 <script lang="ts" setup>
-import type { DocumentReference } from 'firebase/firestore';
-import { Timestamp, collection, doc } from 'firebase/firestore';
+import { Timestamp, collection, doc, query, where } from 'firebase/firestore';
 
 let route = useRoute();
 const isOpen = useState('addOrder', () => route.query.add === 'true');
 
+const companyId = await useCompanyId();
 const db = useFirestore();
+
+// TODO: ADD DRIVERS TO THE SEARCH AND CHANGE THE INPUT TO INPUT MENU
+const { data: companies, promise: companyPromise } = useCollection(collection(db, 'companiesWorkedWith'));
+const { data: trucks, promise: truckPromise } = useCollection(query(collection(db, 'trucks'), where('companyId', '==', companyId.value)));
+
+
+
+await companyPromise;
+await truckPromise;
+
+
 const docRef = collection(db, 'orders');
 
 const euCountries = [
@@ -58,8 +69,6 @@ const euCountries = [
 
 const slug = computed(() => useRoute().params.slug);
 
-const companyDocRef: ComputedRef<DocumentReference> = computed(() => doc(db, `companiesWorkedWith/${docValue.customerCompanyId}`));
-
 const docValue = reactive({
   pickUpTime: {
     start: Timestamp.fromDate(
@@ -81,9 +90,16 @@ const docValue = reactive({
   pickUpAddress: '',
   deliveryAddress: '',
   country: '',
-  customerCompanyId: '',
-  customerCompany: companyDocRef.value,
-  worker: ''
+  customerCompany: {
+    id: '',
+    ref: doc(db, 'companiesWorkedWith', 'some'),
+    worker: '',
+  },
+  truckInfo: {
+    licensePlate: slug.value ?? '',
+    ref: doc(db, 'trucks', 'some'),
+    driver: '',
+  }
 });
 
 
@@ -101,6 +117,10 @@ watch(isOpen, (v) => {
 async function uploadOrder() {
 
   // docValue.documents = Array.from(inputRef.value?.files || []);
+
+  docValue.customerCompany.ref = doc(db, 'companiesWorkedWith', docValue.customerCompany.id);
+  docValue.truckInfo.ref = doc(db, 'trucks', docValue.truckInfo.licensePlate[0]);
+  console.log('docValue', docValue.customerCompany.ref)
   console.log('Uploading order', docValue);
   // isUploading.value = true;
   // await addDoc(docRef, docValue);
@@ -109,11 +129,6 @@ async function uploadOrder() {
   isOpen.value = false;
 }
 
-let colRef = collection(db, 'companiesWorkedWith');
-const { data: companies, promise: companyPromise } = useCollection(colRef, {
-});
-
-await companyPromise;
 
 async function clear() {
 
@@ -144,7 +159,7 @@ function openCompanyAddDialog() {
 
 <template>
   <div>
-    <Sheet :open="isOpen" @update:open="(e) => isOpen = e">
+    <Sheet :open="isOpen" @update:open="(e: boolean) => isOpen = e">
       <SheetTrigger>
         <UButton class="dark:text-black">Add Order</UButton>
       </SheetTrigger>
@@ -175,24 +190,50 @@ function openCompanyAddDialog() {
             <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country" />
           </UFormGroup>
 
-          <UFormGroup label="Company" required>
-            <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name', 'colors']"
-              v-model="docValue.customerCompany">
-              <template #option-empty="{ query }">
-                <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
-                  <p>Company Not Found</p>
-                  <UButton @click="openCompanyAddDialog" variant="soft" class="flex-1 flex justify-center self-center">
-                    Add
-                    Company
-                  </UButton>
-                </div>
-              </template>
-            </UInputMenu>
+          <UFormGroup label="Company Info" required>
+            <div class="flex flex-col gap-y-3">
 
+              <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name']"
+                v-model="docValue.customerCompany.id" value-attribute="id" placeholder="Select Company">
+                <template #option-empty="{ query }">
+                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                    <p>Company Not Found</p>
+                    <UButton @click="openCompanyAddDialog" variant="soft"
+                      class="flex-1 flex justify-center self-center">
+                      Add
+                      Company
+                    </UButton>
+                  </div>
+                </template>
+              </UInputMenu>
+
+
+              <UInput placeholder="Worker" v-model="docValue.customerCompany.worker" />
+            </div>
           </UFormGroup>
 
-          <UFormGroup label="Worker" required>
-            <UInput v-model="docValue.worker" />
+
+          <UFormGroup label="Truck Info" required>
+            <div class="flex flex-col gap-y-3">
+
+              <!-- <UInput v-model="docValue.truckInfo.licensePlate" placeholder="Select Truck" /> -->
+              <UInputMenu :options="trucks" by="id" option-attribute="licensePlate"
+                :search-attributes="['licensePlate']" v-model="docValue.truckInfo.licensePlate" value-attribute="id"
+                placeholder="Select Truck">
+                <template #option-empty="{ query }">
+                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                    <p>Company Not Found</p>
+                    <UButton @click="openCompanyAddDialog" variant="soft"
+                      class="flex-1 flex justify-center self-center">
+                      Add
+                      Company
+                    </UButton>
+                  </div>
+                </template>
+              </UInputMenu>
+              <UInput v-model="docValue.truckInfo.driver" />
+            </div>
+
           </UFormGroup>
 
           <UFormGroup label="Documents">
