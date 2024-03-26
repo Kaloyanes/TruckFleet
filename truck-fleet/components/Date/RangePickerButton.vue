@@ -28,7 +28,7 @@ const date = computed({
 
 <template>
   <UPopover :popper="{ placement: 'bottom-start' }">
-    <UButton icon="i-heroicons-calendar-days-20-solid">
+    <UButton icon="i-heroicons-calendar-days-20-solid" block>
       {{ format(date.start.toDate(), "dd.MM.yyyy HH:mm") }} - {{ format(date.end.toDate(), "dd.MM.yyyy HH:mm") }}
     </UButton>
 

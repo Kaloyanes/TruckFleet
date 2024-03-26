@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { Timestamp, collection, doc, query, where } from 'firebase/firestore';
+import { Timestamp, collection, doc, query, setDoc, where } from 'firebase/firestore';
+import { getDownloadURL, ref as stRef, uploadBytesResumable } from 'firebase/storage';
 
 let route = useRoute();
 const isOpen = useState('addOrder', () => route.query.add === 'true');
@@ -86,69 +87,73 @@ const docValue = reactive({
       new Date(Math.ceil(Date.now() / 1800000) * 1800000)
     ),
   },
-  documents: [] as File[],
+  documents: [] as String[],
   pickUpAddress: '',
   deliveryAddress: '',
   country: '',
-  customerCompany: {
-    id: '',
-    ref: doc(db, 'companiesWorkedWith', 'some'),
-    worker: '',
-  },
-  truckInfo: {
-    licensePlate: slug.value ?? '',
-    ref: doc(db, 'trucks', 'some'),
-    driver: '',
-  }
+  customerCompanyId: '',
+  customerCompanyRef: doc(db, 'companiesWorkedWith', 'some'),
+  worker: '',
+  orderId: '',
+  companyOrderId: '',
+  licensePlate: (slug.value ?? '') as string,
+  truckRef: doc(db, 'trucks', 'some'),
+  driver: '',
+  orderSum: 0,
+  orderSize: '',
+  note: '',
+  weight: 0,
+  companyId: companyId.value,
+
 });
 
-
+const ordersCount = useState('ordersCount', () => 0);
 
 const isUploading = ref(false);
-const inputRef = ref<HTMLInputElement | null>(null);
-
-watch(isOpen, (v) => {
-  if (v) {
-    inputRef.value = document.querySelector('#document-upload') as HTMLInputElement;
-    console.log('inputRef', inputRef.value);
-  }
-})
+const inputRef = ref<HTMLFormElement | null>(null);
 
 async function uploadOrder() {
 
-  // docValue.documents = Array.from(inputRef.value?.files || []);
+  console.log(ordersCount);
+  const licensePlate = docValue.licensePlate;
+  const numbers = licensePlate.match(/\d+/g)?.join('') ?? '';
 
-  docValue.customerCompany.ref = doc(db, 'companiesWorkedWith', docValue.customerCompany.id);
-  docValue.truckInfo.ref = doc(db, 'trucks', docValue.truckInfo.licensePlate[0]);
-  console.log('docValue', docValue.customerCompany.ref)
-  console.log('Uploading order', docValue);
-  // isUploading.value = true;
-  // await addDoc(docRef, docValue);
-  // isUploading.value = false;
+  console.log(licensePlate, numbers);
+  const trailingOrderNumber = `${numbers}-${ordersCount.value}`;
+  const documentRef = doc(db, 'orders', trailingOrderNumber);
+
+  console.log(trailingOrderNumber);
+
+  const files = inputRef.value?.input.files as FileList;
+
+  if (files.length > 0) {
+    isUploading.value = true;
+    const storage = useFirebaseStorage();
+    const storageRef = stRef(storage, `orders/${trailingOrderNumber}`);
+
+
+    const promises = Array.from(files).map(async (file) => {
+      const fileRef = stRef(storageRef, file.name);
+      await uploadBytesResumable(fileRef, file);
+      return await getDownloadURL(fileRef);
+    });
+
+    const urls = await Promise.all(promises);
+    docValue.documents = urls;
+  }
+
+  docValue.customerCompanyRef = doc(db, 'companiesWorkedWith', docValue.customerCompanyId);
+  docValue.truckRef = doc(db, 'trucks', docValue.licensePlate);
+
+  isUploading.value = true;
+  await setDoc(documentRef, docValue);
+  isUploading.value = false;
 
   isOpen.value = false;
 }
 
-
-async function clear() {
-
-
-  // docValue.ETA = Timestamp.fromDate(
-  //   new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-  // );
-  docValue.pickUpTime = {
-    start: Timestamp.fromDate(
-      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-    ),
-    end: Timestamp.fromDate(
-      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-    ),
-  }
-}
-
 const isModalOpen = useState('addCompanyModal', () => false)
 function openCompanyAddDialog() {
-
   isOpen.value = false
   setTimeout(() => {
     isModalOpen.value = true
@@ -163,7 +168,7 @@ function openCompanyAddDialog() {
       <SheetTrigger>
         <UButton class="dark:text-black">Add Order</UButton>
       </SheetTrigger>
-      <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg">
+      <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
         <SheetHeader>
           <SheetTitle>Add Order</SheetTitle>
         </SheetHeader>
@@ -175,7 +180,7 @@ function openCompanyAddDialog() {
           </UFormGroup>
 
           <UFormGroup label="Pick Up Address" required>
-            <UInput v-model="docValue.pickUpAddress" />
+            <UInput v-model="docValue.pickUpAddress" placeholder="00000, Paris, France" />
           </UFormGroup>
 
           <UFormGroup label="Delivery Time" required>
@@ -183,18 +188,19 @@ function openCompanyAddDialog() {
           </UFormGroup>
 
           <UFormGroup label="Delivery Address" required>
-            <UInput v-model="docValue.deliveryAddress" />
+            <UInput v-model="docValue.deliveryAddress" placeholder="00000, Paris, France" />
           </UFormGroup>
 
           <UFormGroup label="Country" required>
-            <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country" />
+            <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country"
+              placeholder="Select Country" />
           </UFormGroup>
 
           <UFormGroup label="Company Info" required>
             <div class="flex flex-col gap-y-3">
 
               <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name']"
-                v-model="docValue.customerCompany.id" value-attribute="id" placeholder="Select Company">
+                v-model="docValue.customerCompanyId" value-attribute="id" placeholder="Select Company">
                 <template #option-empty="{ query }">
                   <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                     <p>Company Not Found</p>
@@ -207,8 +213,9 @@ function openCompanyAddDialog() {
                 </template>
               </UInputMenu>
 
+              <UInput placeholder="Worker" v-model="docValue.worker" />
 
-              <UInput placeholder="Worker" v-model="docValue.customerCompany.worker" />
+              <UInput placeholder="Order Id" v-model="docValue.companyOrderId" />
             </div>
           </UFormGroup>
 
@@ -217,9 +224,8 @@ function openCompanyAddDialog() {
             <div class="flex flex-col gap-y-3">
 
               <!-- <UInput v-model="docValue.truckInfo.licensePlate" placeholder="Select Truck" /> -->
-              <UInputMenu :options="trucks" by="id" option-attribute="licensePlate"
-                :search-attributes="['licensePlate']" v-model="docValue.truckInfo.licensePlate" value-attribute="id"
-                placeholder="Select Truck">
+              <UInputMenu :options="trucks" by="id" option-attribute="licensePlate" v-model="docValue.licensePlate"
+                value-attribute="id" placeholder="Select Truck">
                 <template #option-empty="{ query }">
                   <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                     <p>Company Not Found</p>
@@ -231,13 +237,39 @@ function openCompanyAddDialog() {
                   </div>
                 </template>
               </UInputMenu>
-              <UInput v-model="docValue.truckInfo.driver" />
+              <UInput v-model="docValue.driver" placeholder="Driver" />
             </div>
 
           </UFormGroup>
 
+          <UFormGroup label="Order Info" required>
+            <div class="flex flex-col gap-3">
+
+              <UInput v-model="docValue.orderSum" placeholder="Sum" type="number">
+                <template #trailing>
+                  <span class="text-gray-500 dark:text-gray-400 text-xs">EUR</span>
+                </template>
+              </UInput>
+
+              <UInput v-model="docValue.orderSize" placeholder="Size" />
+
+              <UInput v-model="docValue.weight" placeholder="Weight" type="number">
+                <template #trailing>
+                  <span class="text-gray-500 dark:text-gray-400 text-xs">kg</span>
+                </template>
+              </UInput>
+            </div>
+          </UFormGroup>
+
+
+
+
           <UFormGroup label="Documents">
-            <UInput type="file" id="document-upload" multiple="multiple" />
+            <UInput type="file" id="document-upload" multiple="multiple" ref="inputRef" />
+          </UFormGroup>
+
+          <UFormGroup label="Note">
+            <UTextarea v-model="docValue.note" />
           </UFormGroup>
         </UForm>
 

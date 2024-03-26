@@ -4,6 +4,8 @@ import { collection, query, where } from 'firebase/firestore';
 
 const licensePlate = useRoute().params.slug;
 
+
+
 const db = useFirestore();
 
 const companyId = await useCompanyId();
@@ -24,12 +26,14 @@ const {
 } = useCollection(modifiedQuery(orderRef));
 
 promise.value.then((v) => {
-  console.log('promise resolved orders laoded')
-  console.log('v', v);
-  console.log('orders', orders.value);
+  ;
 })
 await promise.value;
 
+watch(orders, (newOrders) => {
+  console.log(newOrders);
+  useState('ordersCount').value = newOrders.length
+});
 </script>
 
 <template>

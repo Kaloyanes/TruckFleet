@@ -53,12 +53,18 @@ async function generateDates() {
     dates.value.push({
       date: new Date(currentDate),
       order: props.orders.find((order: any) => {
-        let orderDate = (order.realTime as Timestamp).toDate();
+        let orderDate = (order.pickUpTime.start as Timestamp).toDate();
         orderDate.setMinutes(0);
         orderDate.setSeconds(0);
 
         currentDate.setMinutes(0);
         currentDate.setSeconds(0);
+
+        if (orderDate.toLocaleString() === currentDate.toLocaleString()) {
+          return true;
+        }
+
+        orderDate = (order.deliveryTime.end as Timestamp).toDate();
 
         return orderDate.toLocaleString() === currentDate.toLocaleString();
       }),
@@ -68,12 +74,10 @@ async function generateDates() {
   }
 
   unfilteredDates = dates.value;
-  await nextTick();
 
   setTimeout(() => {
-    console.log(scrolledOnce)
-    if (!scrolledOnce)
-      scrollToCurrentDate();
+
+    scrollToCurrentDate();
   }, 1000)
 }
 
@@ -106,16 +110,20 @@ setInterval(() => {
 
 
   if (currentTime.toLocaleString() !== current.toLocaleString()) {
-    const currentDateElement = document.querySelector('.current-date');
+    const currentDateElement = document.querySelectorAll('.current-date');
     if (currentDateElement) {
-      currentDateElement.classList.remove('current-date');
+      currentDateElement.forEach((el) => {
+        el.classList.remove('current-date');
+      })
     }
 
     current = new Date(currentTime);
 
-    const nextDateElement = document.querySelector(`[data-date="${currentTime.toLocaleString()}"]`);
+    const nextDateElement = document.querySelectorAll(`[data-date="${currentTime.toLocaleString()}"]`);
     if (nextDateElement) {
-      nextDateElement.classList.add('current-date');
+      nextDateElement.forEach((el) => {
+        el.classList.add('current-date');
+      })
     }
   }
 }, 1000);
@@ -127,23 +135,16 @@ function change(e: any, order: any) {
 const driverFilterInput = ref("");
 
 watch(driverFilterInput, () => {
-  // console.log(driverFilterInput.value)
-  // if (driverFilterInput.value === "") {
-  //   dates.value = unfilteredDates;
-  // }
-
   dates.value = dates.value.filter((date) => {
     return date.order && date.order!.driver?.toLowerCase().trim().includes(driverFilterInput.value.toLowerCase());
   });
-
-  // console.log(dates.value)
 })
 
 const filteredDates = computed(() => {
   if (driverFilterInput.value === "") {
     setTimeout(() => {
       scrollToCurrentDate('smooth');
-    }, 500)
+    }, 200)
     return dates.value;
   }
 
@@ -169,32 +170,36 @@ const filteredDates = computed(() => {
             <TableHead class="w-[75px]">
               Time
             </TableHead>
-            <TableHead class='flex items-center gap-2'>
-              Item
-              <Popover>
-                <PopoverTrigger>
-                  <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div class="flex flex-col gap-2">
-                    <a href="https://google.com" target="_blank">Google</a>
-                    <a href="https://facebook.com" target="_blank">Facebook</a>
-                  </div>
-                </PopoverContent>
-              </Popover>
+            <TableHead class='gap-x-2 w-[170px]'>
+              <div class="flex items-center gap-x-2">
+                Country
+                <Popover>
+                  <PopoverTrigger>
+                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div class="flex flex-col gap-2">
+                      <a href="https://google.com" target="_blank">Google</a>
+                      <a href="https://facebook.com" target="_blank">Facebook</a>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </TableHead>
-            <TableHead class='gap-x-2 md:w-[150px]'>
-              Driver
-              <Popover>
-                <PopoverTrigger>
-                  <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div class="flex flex-col gap-2">
-                    <UInput placeholder="Search Drivers" v-model="driverFilterInput" />
-                  </div>
-                </PopoverContent>
-              </Popover>
+            <TableHead class='gap-x-2 md:w-[200px]'>
+              <div class="flex items-center gap-x-2">
+                Driver
+                <Popover>
+                  <PopoverTrigger>
+                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div class="flex flex-col gap-2">
+                      <UInput placeholder="Search Drivers" v-model="driverFilterInput" />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </TableHead>
             <TableHead>
               4
@@ -218,14 +223,14 @@ const filteredDates = computed(() => {
               {{ format(info.date, "HH:mm") }}
             </TableCell>
             <TableCell>
-              {{ info.order?.country ?? '' }}
+              {{ info.order?.country.value ?? '' }}
             </TableCell>
             <TableCell>
               {{ info.order?.driver ?? '' }}
             </TableCell>
             <TableCell>
             </TableCell>
-            <TableCell class="justify-self-center">
+            <TableCell class="flex justify-center">
               <UCheckbox @change="change($event, info.order)" />
             </TableCell>
             <TableCell>

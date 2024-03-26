@@ -2,11 +2,6 @@
 const isModalOpen = useState('addCompanyModal', () => false)
 const isAddOrderOpen = useState('addOrder');
 
-function open() {
-  isAddOrderOpen.value = false
-  isModalOpen.value = true
-
-}
 
 </script>
 
@@ -15,11 +10,11 @@ function open() {
     Company
   </UButton> -->
 
-  <Dialog :open="isModalOpen" @update:open="(e) => isModalOpen = e">
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Add Company</DialogTitle>
-      </DialogHeader>
+  <Sheet :open="isModalOpen" @update:open="(e) => isModalOpen = e">
+    <SheetContent>
+      <SheetHeader>
+        <SheetTitle>Add Company</SheetTitle>
+      </SheetHeader>
       <div class="flex flex-col gap-3">
         <UInput v-model="companyName" placeholder="Company Name" />
         <UInput v-model="companyAddress" placeholder="Company Address" />
@@ -28,15 +23,15 @@ function open() {
 
         <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5 ">
 
-          <DialogClose as-child>
+          <SheetClose as-child>
             <UButton variant="soft" class="flex-1 flex justify-center">Close</UButton>
-          </DialogClose>
-          <DialogClose as-child>
+          </SheetClose>
+          <SheetClose as-child>
             <UButton @click="addCompany" class="flex-1 flex justify-center">Add Company</UButton>
-          </DialogClose>
+          </SheetClose>
         </div>
 
       </div>
-    </DialogContent>
-  </Dialog>
+    </SheetContent>
+  </Sheet>
 </template>
