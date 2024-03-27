@@ -12,13 +12,18 @@ const db = useFirestore();
 const { data: companies, promise: companyPromise } = useCollection(collection(db, 'companiesWorkedWith'));
 const { data: trucks, promise: truckPromise } = useCollection(query(collection(db, 'trucks'), where('companyId', '==', companyId.value)));
 
+// drivers
+const { data: drivers, promise: driverPromise } = useCollection(query(collection(db, 'users'), where('companyId', '==', companyId.value), where('type', '==', 'driver')));
 
 
 await companyPromise;
 await truckPromise;
+await driverPromise;
+
+console.log(drivers.value);
 
 
-const docRef = collection(db, 'orders');
+
 
 const euCountries = [
   { label: "Albania", value: "AL" },
@@ -71,26 +76,31 @@ const euCountries = [
 const slug = computed(() => useRoute().params.slug);
 
 const docValue = reactive({
-  pickUpTime: {
-    start: Timestamp.fromDate(
-      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-    ),
-    end: Timestamp.fromDate(
-      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-    ),
-  },
-  deliveryTime: {
-    start: Timestamp.fromDate(
-      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-    ),
-    end: Timestamp.fromDate(
-      new Date(Math.ceil(Date.now() / 1800000) * 1800000)
-    ),
-  },
+  locations: [
+    {
+      pickUpTime: {
+        start: Timestamp.fromDate(
+          new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+        ),
+        end: Timestamp.fromDate(
+          new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+        ),
+      },
+      deliveryTime: {
+        start: Timestamp.fromDate(
+          new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+        ),
+        end: Timestamp.fromDate(
+          new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+        ),
+      },
+      pickUpAddress: '',
+      deliveryAddress: '',
+    }
+  ],
+
   documents: [] as String[],
-  pickUpAddress: '',
-  deliveryAddress: '',
-  country: '',
+
   customerCompanyId: '',
   customerCompanyRef: doc(db, 'companiesWorkedWith', 'some'),
   worker: '',
@@ -107,30 +117,58 @@ const docValue = reactive({
 
 });
 
-const ordersCount = useState('ordersCount', () => 0);
+function addLocation() {
+  docValue.locations.push({
+    pickUpTime: {
+      start: Timestamp.fromDate(
+        new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+      ),
+      end: Timestamp.fromDate(
+        new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+      ),
+    },
+    deliveryTime: {
+      start: Timestamp.fromDate(
+        new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+      ),
+      end: Timestamp.fromDate(
+        new Date(Math.ceil(Date.now() / 1800000) * 1800000)
+      ),
+    },
+    pickUpAddress: '',
+    deliveryAddress: '',
+  });
+}
+
+const reactToSlugChanges = computed(() => {
+  docValue.licensePlate = (slug.value ?? '') as string;
+})
+
+const ordersCount = useState('ordersCount');
 
 const isUploading = ref(false);
 const inputRef = ref<HTMLFormElement | null>(null);
 
 async function uploadOrder() {
-
   console.log(ordersCount);
   const licensePlate = docValue.licensePlate;
   const numbers = licensePlate.match(/\d+/g)?.join('') ?? '';
 
 
   console.log(licensePlate, numbers, ordersCount.value);
-  const trailingOrderNumber = `${numbers}-${ordersCount.value}`;
-  const documentRef = doc(db, 'orders', trailingOrderNumber);
 
-  console.log(trailingOrderNumber);
+  const dateNow = new Date();
+  const orderId = `${dateNow.getFullYear()}${dateNow.getMonth()}${dateNow.getDate()}${numbers}${ordersCount.value}`;
+  const documentRef = doc(db, 'orders', orderId);
+
+  console.log(orderId);
 
   const files = inputRef.value?.input.files as FileList;
 
   if (files.length > 0) {
     isUploading.value = true;
     const storage = useFirebaseStorage();
-    const storageRef = stRef(storage, `orders/${trailingOrderNumber}`);
+    const storageRef = stRef(storage, `orders/${orderId}`);
 
 
     const promises = Array.from(files).map(async (file) => {
@@ -153,7 +191,7 @@ async function uploadOrder() {
   isOpen.value = false;
 
   useToast().add({
-    title: 'Order Added',
+    title: `Order Added: ${orderId}`,
     icon: 'i-heroicons-check-circle',
     // actions: [
     //   {
@@ -177,6 +215,7 @@ function openCompanyAddDialog() {
 </script>
 
 <template>
+  {{ reactToSlugChanges }}
   <div>
     <Sheet :open="isOpen" @update:open="(e: boolean) => isOpen = e">
       <SheetTrigger>
@@ -186,35 +225,35 @@ function openCompanyAddDialog() {
         <SheetHeader>
           <SheetTitle>Add Order</SheetTitle>
         </SheetHeader>
-        <h1>{{ slug }}</h1>
-        <UForm :state="docValue" class="flex flex-col gap-3">
 
-          <UFormGroup label="Pick Up Time" required>
-            <DateRangePickerButton v-model="docValue.pickUpTime" :range="true" />
-          </UFormGroup>
+        <UForm :state="docValue" class="flex flex-col gap-3" v-auto-animate>
+          <UFormGroup v-auto-animate>
+            <div v-for="(location, index) in docValue.locations" :key="index" class="flex flex-col gap-3 mb-3"
+              v-auto-animate>
+              <div class="flex justify-between items-center transition-all duration-300"
+                v-if="docValue.locations.length > 1" v-auto-animate>
+                <h1>Location #{{ index + 1 }}</h1>
+                <UButton @click="docValue.locations.splice(index, 1)" variant="soft"
+                  icon="i-material-symbols-delete-forever-rounded" />
+              </div>
 
-          <UFormGroup label="Pick Up Address" required>
-            <UInput v-model="docValue.pickUpAddress" placeholder="00000, Paris, France" />
-          </UFormGroup>
+              <UFormGroup label="Pick Up Time" required>
+                <DateRangePickerButton v-model="location.pickUpTime" :range="true" />
+              </UFormGroup>
 
-          <UFormGroup label="Delivery Time" required>
-            <DateRangePickerButton v-model="docValue.deliveryTime" :range="true" />
-          </UFormGroup>
+              <UFormGroup label="Pick Up Address" required>
+                <UInput v-model="location.pickUpAddress" placeholder="00000, Paris, France" />
+              </UFormGroup>
 
-          <UFormGroup label="Delivery Address" required>
-            <UInput v-model="docValue.deliveryAddress" placeholder="00000, Paris, France" />
-          </UFormGroup>
+              <UFormGroup label="Delivery Time" required>
+                <DateRangePickerButton v-model="location.deliveryTime" :range="true" />
+              </UFormGroup>
 
-          <UFormGroup label="Country To Pick Up From" required>
-            <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country"
-              placeholder="Select Country" />
-          </UFormGroup>
-
-
-
-          <UFormGroup label="Country To Deliver" required>
-            <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country"
-              placeholder="Select Country" />
+              <UFormGroup label="Delivery Address" required>
+                <UInput v-model="location.deliveryAddress" placeholder="00000, Paris, France" />
+              </UFormGroup>
+            </div>
+            <UButton @click="addLocation">Add Location</UButton>
           </UFormGroup>
 
           <UFormGroup label="Company Info" required>
@@ -244,9 +283,8 @@ function openCompanyAddDialog() {
           <UFormGroup label="Truck Info" required>
             <div class="flex flex-col gap-y-3">
 
-              <!-- <UInput v-model="docValue.truckInfo.licensePlate" placeholder="Select Truck" /> -->
               <UInputMenu :options="trucks" by="id" option-attribute="licensePlate" v-model="docValue.licensePlate"
-                value-attribute="id" placeholder="Select Truck">
+                value-attribute="licensePlate" placeholder="Select Truck">
                 <template #option-empty="{ query }">
                   <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                     <p>Company Not Found</p>
@@ -258,7 +296,8 @@ function openCompanyAddDialog() {
                   </div>
                 </template>
               </UInputMenu>
-              <UInput v-model="docValue.driver" placeholder="Driver" />
+              <UInputMenu :options="drivers" by="id" option-attribute="name" v-model="docValue.driver"
+                value-attribute="name" placeholder="Select Driver" />
             </div>
 
           </UFormGroup>

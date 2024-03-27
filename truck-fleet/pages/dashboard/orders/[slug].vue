@@ -19,25 +19,12 @@ const modifiedQuery = (ref: any) => {
 };
 
 
-const {
-  data: orders,
-  pending,
-  promise,
-} = useCollection(modifiedQuery(orderRef));
 
-promise.value.then((v) => {
-  ;
-})
-await promise.value;
 
-watch(orders, (newOrders) => {
-  console.log(newOrders);
-  useState('ordersCount').value = newOrders.length
-});
 </script>
 
 <template>
   <div class="mx-5">
-    <OrderTable :orders="orders" />
+    <OrderTable :order-query="modifiedQuery(orderRef)" />
   </div>
 </template>

@@ -5,16 +5,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import type { Timestamp } from 'firebase-admin/firestore';
+import { CollectionReference } from 'firebase/firestore';
 import { TableCell } from './ui/table';
 
 const props = defineProps({
-  orders: {
-    type: Array,
+  orderQuery: {
+    type: Object as () => CollectionReference<{}>,
     required: true,
-  },
+  }
 })
-
 
 const startDate = new Date(Date.now());
 startDate.setMonth(startDate.getMonth() - 1);
@@ -27,6 +26,7 @@ endDate.setMonth(startDate.getMonth() + 2);
 endDate.setMinutes(0);
 endDate.setSeconds(0)
 
+let current = new Date();
 
 const dates = ref<{
   date: Date;
@@ -34,82 +34,117 @@ const dates = ref<{
   orderType: undefined | "pickUp" | "deliver";
 }[]>([]);
 
+let unfilteredDates = [] as any[];
 
-let unfilteredDates = dates.value;
 
+const {
+  data: orders,
+  pending,
+  promise,
+} = useCollection(props.orderQuery);
 
-let reactivityToDataChanges = computed(() => {
-  dates.value = [];
+promise.value.then(() => {
+  console.log('orders loaded');
   generateDates();
 });
+await promise.value;
 
 
-let scrolledOnce = false;
+const IdFilterInput = ref<string>('');
+const driverFilterInput = ref<string>('');
 
-async function generateDates() {
-  let hoursAdd = 1;
-  let currentDate = new Date(startDate);
 
-  while (currentDate < endDate) {
-    let type: undefined | "pickUp" | "deliver" = undefined;
+function checkDates(date: Date) {
+  const currentTime = new Date();
+  currentTime.setMinutes(0);
+  currentTime.setSeconds(0);
 
-    dates.value.push({
-      date: new Date(currentDate),
-      order: props.orders.find((order: any) => {
-        let orderDate = (order.pickUpTime.start as Timestamp).toDate();
-        orderDate.setMinutes(0);
-        orderDate.setSeconds(0);
-
-        currentDate.setMinutes(0);
-        currentDate.setSeconds(0);
-
-        if (orderDate.toLocaleString() === currentDate.toLocaleString()) {
-          type = "pickUp"
-          return true;
-        }
-
-        orderDate = (order.deliveryTime.end as Timestamp).toDate();
-        if (orderDate.toLocaleString() === currentDate.toLocaleString()) {
-          type = "deliver";
-          return true;
-        }
-      }),
-      orderType: type,
-    });
-
-    currentDate.setHours(currentDate.getHours() + hoursAdd);
-  }
-
-  unfilteredDates = dates.value;
-
-  setTimeout(() => {
-    if (!scrolledOnce)
-      scrollToCurrentDate();
-  }, 1000)
+  return currentTime.toLocaleString() === date.toLocaleString();
 }
 
 function scrollToCurrentDate(behavior: ScrollBehavior = 'instant') {
   const currentDateElement = document.querySelector('.current-date');
 
   if (currentDateElement) {
-    currentDateElement.scrollIntoView({ behavior, block: 'center', inline: 'center' });
-    scrolledOnce = true;
+    currentDateElement.scrollIntoView({
+      behavior,
+      block: 'center',
+      inline: 'center',
+    });
   }
 }
 
+const reactiveOrders = computed(() => {
+  console.log('orders', orders.value);
 
-onMounted(() => {
-  generateDates();
+  for (const info of dates.value) {
+    if (info.order) {
+      info.order = orders.value.find((order) => (order as any).id === info.order.id);
+    }
+  }
 });
 
+function generateDates() {
+  const datesArray = [];
+  const currentDate = new Date(startDate);
 
-let current = new Date(Date.now());
-current.setMinutes(0);
-current.setSeconds(0);
+  while (currentDate <= endDate) {
+    let type: "Pick Up" | "Deliver" | undefined = undefined;
+    let id: string | undefined = undefined;
+    datesArray.push({
+      date: new Date(currentDate),
+      order: orders.value.find((order) => {
+        const locations = (order as any).locations;
 
-function checkDates(otherDate: Date) {
-  return current.toLocaleString() === otherDate.toLocaleString();
+        let found = false;
+        for (const location of locations) {
+          // {
+          //   'pickUpTime': {
+          //     start: Timestamp;
+          //     end: Timestamp;
+          //   },
+          //   'deliverTime': {
+          //     start: Timestamp;
+          //     end: Timestamp;
+          //   },
+          // }
+
+          if (location.pickUpTime.start.toDate().toLocaleString() === currentDate.toLocaleString()) {
+            type = 'Pick Up';
+            console.log(order);
+            found = true;
+            id = (order as any).id;
+            break;
+          }
+
+          if (location.deliveryTime.start.toDate().toLocaleString() === currentDate.toLocaleString()) {
+            type = 'Deliver';
+            found = true;
+            id = (order as any).id;
+            break;
+          }
+        }
+
+        return found;
+      }
+      ),
+
+      id: id,
+      orderType: type,
+    });
+
+    currentDate.setHours(currentDate.getHours() + 1);
+
+  }
+
+  unfilteredDates = datesArray;
+  dates.value = datesArray;
+
 }
+
+onMounted(() => {
+  scrollToCurrentDate('instant');
+})
 
 setInterval(() => {
   const currentTime = new Date();
@@ -140,33 +175,45 @@ setInterval(() => {
   }
 }, 1000);
 
-function change(e: any, order: any) {
-  console.log(e, order)
+// function change(e: any, order: any) {
+//   console.log(e, order)
+// }
+
+function resetDates() {
+  // use set to remove duplicates by id
+  dates.value = Array.from(new Set(unfilteredDates));
+
+
+  setTimeout(() => {
+    scrollToCurrentDate('smooth');
+  }, 100)
 }
 
-const driverFilterInput = ref("");
+watch(IdFilterInput, (value) => {
+  if (value === '') return resetDates();
 
-watch(driverFilterInput, () => {
-  dates.value = dates.value.filter((date) => {
-    return date.order && date.order!.driver?.toLowerCase().trim().includes(driverFilterInput.value.toLowerCase());
-  });
+  filterDates('id', value);
 })
 
-const filteredDates = computed(() => {
-  if (driverFilterInput.value === "") {
-    setTimeout(() => {
-      scrollToCurrentDate('smooth');
-    }, 200)
-    return dates.value;
-  }
+watch(driverFilterInput, (value) => {
+  if (value === '') return resetDates();
 
-  return dates.value.filter((date) => {
-    return date.order && date.order!.driver?.toLowerCase().trim().includes(driverFilterInput.value.toLowerCase());
-  });
+  filterDates('driver', value);
 })
+
+function filterDates(field: string, value: string) {
+  const filteredDatesSet = new Set(
+    unfilteredDates.filter((date) => {
+      return date.order && date.order[field]?.toLowerCase().trim().includes(value.toLowerCase());
+    })
+  );
+  dates.value = Array.from(filteredDatesSet);
+  console.log(dates.value);
+}
 </script>
 
 <template>
+  {{ reactiveOrders }}
   <div class="grid auto-rows-max" v-if="orders.length !== 0">
     <div class="w-full flex-1 relative overflow-auto max-h-[75vh]  ">
       <Table>
@@ -180,15 +227,14 @@ const filteredDates = computed(() => {
             </TableHead>
             <TableHead class='gap-x-2 w-[170px]'>
               <div class="flex items-center gap-x-2">
-                Country
+                Id
                 <Popover>
                   <PopoverTrigger>
                     <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
                   </PopoverTrigger>
                   <PopoverContent>
                     <div class="flex flex-col gap-2">
-                      <a href="https://google.com" target="_blank">Google</a>
-                      <a href="https://facebook.com" target="_blank">Facebook</a>
+                      <UInput placeholder="Search Id" v-model="IdFilterInput" />
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -221,13 +267,14 @@ const filteredDates = computed(() => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="info in filteredDates" ref="currentDateRefElement" class="divide-x-2">
-            <TableCell class="font-medium transition-all duration-600 text-center"
-              :data-date="info.date.toLocaleString()" :class="checkDates(info.date) ? 'current-date ' : ''">
+          <TableRow v-for="(info, index) in dates" ref="currentDateRefElement" class="divide-x-2" v-memo="[dates]"
+            :key="info.date.getDate()">
+            <TableCell class="font-medium transition-all duration-700 text-center"
+              :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
               {{ format(info.date, "dd/MM/yyyy") }}
             </TableCell>
-            <TableCell class="font-medium transition-all duration-600 text-center"
-              :data-date="info.date.toLocaleString()" :class="checkDates(info.date) ? 'current-date' : ''">
+            <TableCell class="font-medium transition-all duration-700 text-center"
+              :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
               {{ format(info.date, "HH:mm") }}
             </TableCell>
             <TableCell>
@@ -244,7 +291,7 @@ const filteredDates = computed(() => {
             </TableCell>
             <TableCell class="flex justify-center">
 
-              <UCheckbox v-if="info.order" @change="change($event, info.order)" />
+              <UCheckbox v-if="info.order" />
             </TableCell>
             <TableCell>
 
@@ -263,7 +310,6 @@ const filteredDates = computed(() => {
       </p>
     </div>
   </div>
-  {{ reactivityToDataChanges }}
 
 </template>
 
