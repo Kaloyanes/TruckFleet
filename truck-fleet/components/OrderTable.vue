@@ -4,10 +4,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { format } from 'date-fns';
 import type { Timestamp } from 'firebase-admin/firestore';
 import { TableCell } from './ui/table';
-
-import { format } from 'date-fns';
 
 const props = defineProps({
   orders: {
@@ -17,23 +16,24 @@ const props = defineProps({
 })
 
 
-
-
-
 const startDate = new Date(Date.now());
 startDate.setMonth(startDate.getMonth() - 1);
 startDate.setMinutes(0);
 startDate.setSeconds(0);
+
 
 const endDate = new Date();
 endDate.setMonth(startDate.getMonth() + 2);
 endDate.setMinutes(0);
 endDate.setSeconds(0)
 
+
 const dates = ref<{
   date: Date;
   order: any | undefined;
+  orderType: undefined | "pickUp" | "deliver";
 }[]>([]);
+
 
 let unfilteredDates = dates.value;
 
@@ -43,6 +43,7 @@ let reactivityToDataChanges = computed(() => {
   generateDates();
 });
 
+
 let scrolledOnce = false;
 
 async function generateDates() {
@@ -50,6 +51,8 @@ async function generateDates() {
   let currentDate = new Date(startDate);
 
   while (currentDate < endDate) {
+    let type: undefined | "pickUp" | "deliver" = undefined;
+
     dates.value.push({
       date: new Date(currentDate),
       order: props.orders.find((order: any) => {
@@ -61,13 +64,17 @@ async function generateDates() {
         currentDate.setSeconds(0);
 
         if (orderDate.toLocaleString() === currentDate.toLocaleString()) {
+          type = "pickUp"
           return true;
         }
 
         orderDate = (order.deliveryTime.end as Timestamp).toDate();
-
-        return orderDate.toLocaleString() === currentDate.toLocaleString();
+        if (orderDate.toLocaleString() === currentDate.toLocaleString()) {
+          type = "deliver";
+          return true;
+        }
       }),
+      orderType: type,
     });
 
     currentDate.setHours(currentDate.getHours() + hoursAdd);
@@ -76,8 +83,8 @@ async function generateDates() {
   unfilteredDates = dates.value;
 
   setTimeout(() => {
-
-    scrollToCurrentDate();
+    if (!scrolledOnce)
+      scrollToCurrentDate();
   }, 1000)
 }
 
@@ -95,6 +102,7 @@ onMounted(() => {
   generateDates();
 });
 
+
 let current = new Date(Date.now());
 current.setMinutes(0);
 current.setSeconds(0);
@@ -111,15 +119,19 @@ setInterval(() => {
 
   if (currentTime.toLocaleString() !== current.toLocaleString()) {
     const currentDateElement = document.querySelectorAll('.current-date');
+
     if (currentDateElement) {
       currentDateElement.forEach((el) => {
         el.classList.remove('current-date');
       })
     }
 
+
     current = new Date(currentTime);
 
+
     const nextDateElement = document.querySelectorAll(`[data-date="${currentTime.toLocaleString()}"]`);
+
     if (nextDateElement) {
       nextDateElement.forEach((el) => {
         el.classList.add('current-date');
@@ -148,17 +160,13 @@ const filteredDates = computed(() => {
     return dates.value;
   }
 
-
   return dates.value.filter((date) => {
     return date.order && date.order!.driver?.toLowerCase().trim().includes(driverFilterInput.value.toLowerCase());
   });
-
 })
-
 </script>
 
 <template>
-  {{ reactivityToDataChanges }}
   <div class="grid auto-rows-max" v-if="orders.length !== 0">
     <div class="w-full flex-1 relative overflow-auto max-h-[75vh]  ">
       <Table>
@@ -223,15 +231,20 @@ const filteredDates = computed(() => {
               {{ format(info.date, "HH:mm") }}
             </TableCell>
             <TableCell>
-              {{ info.order?.country.value ?? '' }}
+              {{ info.order?.id }}
             </TableCell>
+            <!-- <TableCell>
+              {{ info.order?.country.value ?? '' }}
+            </TableCell> -->
             <TableCell>
               {{ info.order?.driver ?? '' }}
             </TableCell>
             <TableCell>
+              {{ info.orderType ?? '' }}
             </TableCell>
             <TableCell class="flex justify-center">
-              <UCheckbox @change="change($event, info.order)" />
+
+              <UCheckbox v-if="info.order" @change="change($event, info.order)" />
             </TableCell>
             <TableCell>
 
@@ -239,7 +252,6 @@ const filteredDates = computed(() => {
           </TableRow>
 
         </TableBody>
-
       </Table>
 
     </div>
@@ -251,6 +263,7 @@ const filteredDates = computed(() => {
       </p>
     </div>
   </div>
+  {{ reactivityToDataChanges }}
 
 </template>
 

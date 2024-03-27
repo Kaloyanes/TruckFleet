@@ -1,6 +1,6 @@
 export default defineAppConfig({
   ui: {
-    primary: 'violet',
+    primary: 'purple',
     gray: 'neutral',
     notifications: {
       // Show toasts at the top right of the screen
@@ -9,6 +9,5 @@ export default defineAppConfig({
     icons: {
       dynamic: true,
     },
-
   }
 })

@@ -118,7 +118,8 @@ async function uploadOrder() {
   const licensePlate = docValue.licensePlate;
   const numbers = licensePlate.match(/\d+/g)?.join('') ?? '';
 
-  console.log(licensePlate, numbers);
+
+  console.log(licensePlate, numbers, ordersCount.value);
   const trailingOrderNumber = `${numbers}-${ordersCount.value}`;
   const documentRef = doc(db, 'orders', trailingOrderNumber);
 
@@ -150,6 +151,19 @@ async function uploadOrder() {
   isUploading.value = false;
 
   isOpen.value = false;
+
+  useToast().add({
+    title: 'Order Added',
+    icon: 'i-heroicons-check-circle',
+    // actions: [
+    //   {
+    //     label: 'View Order',
+    //     click: () => {
+    //       router.push(`/dashboard/orders/${trailingOrderNumber}`);
+    //     }
+    //   }
+    // ]
+  })
 }
 
 const isModalOpen = useState('addCompanyModal', () => false)
@@ -166,7 +180,7 @@ function openCompanyAddDialog() {
   <div>
     <Sheet :open="isOpen" @update:open="(e: boolean) => isOpen = e">
       <SheetTrigger>
-        <UButton class="dark:text-black">Add Order</UButton>
+        <UButton>Add Order</UButton>
       </SheetTrigger>
       <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
         <SheetHeader>
@@ -191,7 +205,14 @@ function openCompanyAddDialog() {
             <UInput v-model="docValue.deliveryAddress" placeholder="00000, Paris, France" />
           </UFormGroup>
 
-          <UFormGroup label="Country" required>
+          <UFormGroup label="Country To Pick Up From" required>
+            <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country"
+              placeholder="Select Country" />
+          </UFormGroup>
+
+
+
+          <UFormGroup label="Country To Deliver" required>
             <UInputMenu :options="euCountries" :search-attributes="['label', 'value']" v-model="docValue.country"
               placeholder="Select Country" />
           </UFormGroup>
