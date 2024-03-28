@@ -32,11 +32,6 @@ let links = computed(() => [[{
 }
 ], [
   {
-    label: 'Alert',
-    icon: 'i-heroicons-exclamation-circle',
-    to: '/components/alert'
-  },
-  {
     label: 'Sign Out',
     icon: 'i-teenyicons-signin-outline',
     to: '/logout'

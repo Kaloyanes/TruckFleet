@@ -268,7 +268,7 @@ function filterDates(field: string, value: string) {
         </TableHeader>
         <TableBody>
           <TableRow v-for="(info, index) in dates" ref="currentDateRefElement" class="divide-x-2" v-memo="[dates]"
-            :key="info.date.getDate()">
+            :key="index">
             <TableCell class="font-medium transition-all duration-700 text-center"
               :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
               {{ format(info.date, "dd/MM/yyyy") }}
