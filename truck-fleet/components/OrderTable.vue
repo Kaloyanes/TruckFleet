@@ -87,6 +87,7 @@ const reactiveOrders = computed(() => {
 function generateDates() {
   const datesArray = [];
   const currentDate = new Date(startDate);
+  let hoursAdd = 1;
 
   while (currentDate <= endDate) {
     let type: "Pick Up" | "Deliver" | undefined = undefined;
@@ -133,7 +134,14 @@ function generateDates() {
       orderType: type,
     });
 
-    currentDate.setHours(currentDate.getHours() + 1);
+
+    if (currentDate.getHours() >= 19 || currentDate.getHours() < 7) {
+      hoursAdd = 2;
+    } else {
+      hoursAdd = 1;
+    }
+
+    currentDate.setHours(currentDate.getHours() + hoursAdd);
 
   }
 

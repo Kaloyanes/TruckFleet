@@ -4,8 +4,6 @@ import { collection, query, where } from 'firebase/firestore';
 
 const licensePlate = useRoute().params.slug;
 
-
-
 const db = useFirestore();
 
 const companyId = await useCompanyId();
@@ -15,7 +13,7 @@ const modifiedQuery = (ref: any) => {
   if (licensePlate === 'all') {
     return ref;
   }
-  return query(ref, where('truck', '==', licensePlate));
+  return query(ref, where('licensePlate', '==', licensePlate));
 };
 
 
