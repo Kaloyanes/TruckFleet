@@ -32,6 +32,8 @@ const dates = ref<{
   date: Date;
   order: any | undefined;
   orderType: undefined | "pickUp" | "deliver";
+  orderAddress: any;
+  customerCompany: any;
 }[]>([]);
 
 let unfilteredDates = [] as any[];
@@ -92,12 +94,17 @@ function generateDates() {
   while (currentDate <= endDate) {
     let type: "Pick Up" | "Deliver" | undefined = undefined;
     let id: string | undefined = undefined;
+    let orderAddress: any = undefined;
+    let orderDeliverInfo: any = undefined;
+    let customerCompany: any = undefined;
+
     datesArray.push({
       date: new Date(currentDate),
       order: orders.value.find((order) => {
         const locations = (order as any).locations;
 
         let found = false;
+        console.log(orders.value)
         for (const location of locations) {
           // {
           //   'pickUpTime': {
@@ -115,6 +122,8 @@ function generateDates() {
             console.log(order);
             found = true;
             id = (order as any).id;
+            orderAddress = location.pickUpAddress;
+            customerCompany = (order as any).customerCompanyRef;
             break;
           }
 
@@ -122,6 +131,8 @@ function generateDates() {
             type = 'Deliver';
             found = true;
             id = (order as any).id;
+            orderAddress = location.deliveryAddress;
+            customerCompany = (order as any).customerCompanyRef;
             break;
           }
         }
@@ -129,8 +140,9 @@ function generateDates() {
         return found;
       }
       ),
-
-      id: id,
+      orderAddress,
+      id,
+      customerCompany,
       orderType: type,
     });
 
@@ -248,6 +260,9 @@ function filterDates(field: string, value: string) {
                 </Popover>
               </div>
             </TableHead>
+            <TableHead class='w-[100px]'>
+              Truck
+            </TableHead>
             <TableHead class='gap-x-2 md:w-[200px]'>
               <div class="flex items-center gap-x-2">
                 Driver
@@ -263,19 +278,26 @@ function filterDates(field: string, value: string) {
                 </Popover>
               </div>
             </TableHead>
-            <TableHead>
-              4
-            </TableHead>
+
             <TableHead class="w-[25px] justify-center">
+              Type
+            </TableHead>
+            <TableHead>
+              Address
+            </TableHead>
+            <TableHead class="w-[15px] justify-center">
               Progress
             </TableHead>
             <TableHead>
-              6
+              Customer Company
+            </TableHead>
+            <TableHead>
+
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="(info, index) in dates" ref="currentDateRefElement" class="divide-x-2" v-memo="[dates]"
+          <TableRow v-for="(info, index) in dates" ref="currentDateRefElement" v-memo="[dates]" class="divide-x-2"
             :key="index">
             <TableCell class="font-medium transition-all duration-700 text-center"
               :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
@@ -288,18 +310,28 @@ function filterDates(field: string, value: string) {
             <TableCell>
               {{ info.order?.id }}
             </TableCell>
-            <!-- <TableCell>
-              {{ info.order?.country.value ?? '' }}
-            </TableCell> -->
+
+            <TableCell>
+              {{ info.order?.licensePlate }}
+            </TableCell>
             <TableCell>
               {{ info.order?.driver ?? '' }}
             </TableCell>
+
             <TableCell>
               {{ info.orderType ?? '' }}
             </TableCell>
-            <TableCell class="flex justify-center">
-
-              <UCheckbox v-if="info.order" />
+            <TableCell>
+              {{ info.orderAddress ?? '' }}
+            </TableCell>
+            <TableCell class="">
+              <div class="h-max text-transparent flex justify-center items-center">
+                <UCheckbox v-if="info.order" size='xs' class="m-0" />
+                <div v-else>.</div>
+              </div>
+            </TableCell>
+            <TableCell>
+              {{ info.customerCompany?.name ?? '' }}
             </TableCell>
             <TableCell>
 
