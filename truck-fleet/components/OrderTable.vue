@@ -237,7 +237,7 @@ function filterDates(field: string, value: string) {
   <div class="grid auto-rows-max" v-if="orders.length !== 0">
     <div class="w-full flex-1 relative overflow-auto max-h-[75vh]  ">
       <Table>
-        <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950/30 bg-opacity-40 backdrop-blur-md w-full z-50 ">
+        <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950/30 bg-opacity-40 backdrop-blur-md z-50 ">
           <TableRow>
             <TableHead class="w-[75px]">
               Date
@@ -304,7 +304,7 @@ function filterDates(field: string, value: string) {
               Company Order Id
             </TableHead>
 
-            <TableHead class="w-[100px]">
+            <TableHead class="w-[150px]">
               Weight
             </TableHead>
 
@@ -320,7 +320,7 @@ function filterDates(field: string, value: string) {
               Documents
             </TableHead>
 
-            <TableHead class="w-[15px] justify-center">
+            <TableHead class="max-w-[150px] justify-center">
               Notes
             </TableHead>
 
@@ -331,16 +331,19 @@ function filterDates(field: string, value: string) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="(info, index) in dates" ref="currentDateRefElement" v-memo="[dates, info.order]"
+          <TableRow v-for="(info, index) in  dates " ref="currentDateRefElement" v-memo="[dates, info.order]"
             class="divide-x-2" :class="(info.order?.isDone) ? 'bg-green-400 bg-opacity-20' : ''" :key="index">
+
             <TableCell class="font-medium transition-all duration-700 text-center"
               :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
               {{ format(info.date, "dd/MM/yyyy") }}
             </TableCell>
+
             <TableCell class="font-medium transition-all duration-700 text-center"
               :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
               {{ format(info.date, "HH:mm") }}
             </TableCell>
+
             <TableCell>
               {{ info.order?.id }}
             </TableCell>
@@ -385,17 +388,21 @@ function filterDates(field: string, value: string) {
             </TableCell>
 
             <TableCell>
-              <div v-for="document in (info.order?.documents ?? [])">
-                <a :href="document.link" target="_blank" size="xs" variant="outline" class="m-0">
-                  <UButton size="xs" variant="outline" class="m-0">
-                    {{ document.name }}
-                  </UButton>
-                </a>
+              <div class="flex flex-col justify-center items-center gap-2 h-full">
+                <div v-for="document in info.order?.documents">
+                  <a :href="document.link" target="_blank" size="xs" variant="outline" class="m-0">
+                    <UButton size="xs" variant="outline" class="m-0">
+                      {{ document.name }}
+                    </UButton>
+                  </a>
+                </div>
               </div>
             </TableCell>
 
-            <TableCell class="">
-              {{ info.order?.note }}
+            <TableCell class="h-full">
+              <div class="w-[150px] text-ellipsis">
+                {{ info.order?.note }}
+              </div>
             </TableCell>
 
             <TableCell class="">
