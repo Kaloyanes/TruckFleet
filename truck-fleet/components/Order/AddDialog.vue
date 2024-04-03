@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { Timestamp, collection, doc, query, setDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref as stRef, uploadBytesResumable } from 'firebase/storage';
+import * as yup from 'yup';
 
 let route = useRoute();
-const isOpen = useState('addOrder', () => route.query.add === 'true');
+const isOpen = computed(() => {
+  return useRoute().hash === "#addOrder"
+})
 
 const companyId = await useCompanyId();
 const db = useFirestore();
@@ -16,12 +19,9 @@ const { data: trucks, promise: truckPromise } = useCollection(query(collection(d
 const { data: drivers, promise: driverPromise } = useCollection(query(collection(db, 'users'), where('companyId', '==', companyId.value), where('type', '==', 'driver')));
 
 
-await companyPromise;
-await truckPromise;
-await driverPromise;
-
-console.log(drivers.value);
-
+await companyPromise.value;
+await truckPromise.value;
+await driverPromise.value;
 
 
 
@@ -79,6 +79,44 @@ type OrderFile = {
   name: string;
   link: string;
 }
+
+console.log("trucks", drivers.value);
+const schema = yup.object({
+  locations: yup.array().of(
+    yup.object({
+      pickUpTime: yup.object({
+        start: yup.date().required(),
+        end: yup.date().required(),
+      }).required(),
+      deliveryTime: yup.object({
+        start: yup.date().required(),
+        end: yup.date().required(),
+      }).required(),
+      pickUpAddress: yup.string().required(),
+      deliveryAddress: yup.string().required(),
+    })
+  ).required(),
+  documents: yup.array().of(
+    yup.object({
+      name: yup.string().required(),
+      link: yup.string().required(),
+    })
+  ),
+  customerCompanyId: yup.string().required("Select a Company").oneOf(companies.value.map(x => x.id), "Company not found"),
+  worker: yup.string().required("Worker is Required"),
+  orderId: yup.string().required(),
+  companyOrderId: yup.string().required("Company Order Id is Required"),
+  licensePlate: yup.string().required().oneOf(trucks.value.map(x => x.licensePlate), "Truck not found"),
+  driver: yup.string().required("Driver is Required").oneOf(drivers.value.map(driver => driver.name), "Driver not found"),
+  orderSum: yup.number().required("Sum of the order is Required").min(1, "Sum of the order must be greater than 0"),
+  orderSize: yup.string().required("Size of the order is Required"),
+  note: yup.string(),
+  weight: yup.number().required().min(1, "Weight must be greater than 0"),
+  companyId: yup.string().required(),
+  isDone: yup.boolean().required(),
+})
+
+type Schema = yup.InferType<typeof schema>;
 
 const docValue = reactive({
   locations: [
@@ -156,18 +194,19 @@ const isUploading = ref(false);
 const inputRef = ref<HTMLFormElement | null>(null);
 
 async function uploadOrder() {
-  console.log(ordersCount);
+  if (!(await schema.validate(docValue))) {
+    return;
+  }
+
   const licensePlate = docValue.licensePlate;
   const numbers = licensePlate.match(/\d+/g)?.join('') ?? '';
 
 
-  console.log(licensePlate, numbers, ordersCount.value);
 
   const dateNow = new Date();
   const orderId = `${dateNow.getFullYear()}${dateNow.getMonth()}${dateNow.getDate()}${numbers}${ordersCount.value}`;
   const documentRef = doc(db, 'orders', orderId);
 
-  console.log(orderId);
 
   const files = inputRef.value?.input.files as FileList;
 
@@ -201,7 +240,7 @@ async function uploadOrder() {
   await setDoc(documentRef, docValue);
   isUploading.value = false;
 
-  isOpen.value = false;
+  useRouter().back();
 
   useToast().add({
     title: `Order Added: ${orderId}`,
@@ -217,29 +256,36 @@ async function uploadOrder() {
   })
 }
 
-const isModalOpen = useState('addCompanyModal', () => false)
 function openCompanyAddDialog() {
-  isOpen.value = false
-  setTimeout(() => {
-    isModalOpen.value = true
-  }, 500);
+  navigateTo('#addCompany')
 }
 
+function openTruckAddDialog() {
+  navigateTo('#addTruck')
+}
+
+function openDriverAddDialog() {
+  navigateTo('#addDriver')
+}
 </script>
 
 <template>
   {{ reactToSlugChanges }}
   <div>
-    <Sheet :open="isOpen" @update:open="(e: boolean) => isOpen = e">
+    <Sheet :open="isOpen" @update:open="(e: boolean) => {
+    if (!e) {
+      useRouter().back();
+    }
+  }">
       <SheetTrigger>
-        <UButton>Add Order</UButton>
+        <UButton @click="() => navigateTo('#addOrder')">Add Order</UButton>
       </SheetTrigger>
       <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
         <SheetHeader>
           <SheetTitle>Add Order</SheetTitle>
         </SheetHeader>
 
-        <UForm :state="docValue" class="flex flex-col gap-3" v-auto-animate>
+        <UForm :schema="schema" :state="docValue" @submit.prevent="" class="flex flex-col gap-3" v-auto-animate>
           <UFormGroup v-auto-animate>
             <div v-for="(location, index) in docValue.locations" :key="index" class="flex flex-col gap-3 mb-3"
               v-auto-animate>
@@ -272,23 +318,30 @@ function openCompanyAddDialog() {
           <UFormGroup label="Company Info" required>
             <div class="flex flex-col gap-y-3">
 
-              <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name']"
-                v-model="docValue.customerCompanyId" value-attribute="id" placeholder="Select Company">
-                <template #option-empty="{ query }">
-                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
-                    <p>Company Not Found</p>
-                    <UButton @click="openCompanyAddDialog" variant="soft"
-                      class="flex-1 flex justify-center self-center">
-                      Add
-                      Company
-                    </UButton>
-                  </div>
-                </template>
-              </UInputMenu>
+              <UFormGroup name="customerCompanyId">
+                <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name']"
+                  v-model="docValue.customerCompanyId" value-attribute="id" placeholder="Select Company">
+                  <template #option-empty="{ query }">
+                    <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                      <p>Company Not Found</p>
+                      <UButton @click="openCompanyAddDialog" variant="soft"
+                        class="flex-1 flex justify-center self-center">
+                        Add
+                        Company
+                      </UButton>
+                    </div>
+                  </template>
+                </UInputMenu>
+              </UFormGroup>
 
-              <UInput placeholder="Worker" v-model="docValue.worker" />
+              <UFormGroup name="worker">
 
-              <UInput placeholder="Order Id" v-model="docValue.companyOrderId" />
+                <UInput placeholder="Worker" v-model="docValue.worker" />
+              </UFormGroup>
+
+              <UFormGroup name="orderId">
+                <UInput placeholder="Order Id" v-model="docValue.orderId" />
+              </UFormGroup>
             </div>
           </UFormGroup>
 
@@ -296,46 +349,68 @@ function openCompanyAddDialog() {
           <UFormGroup label="Truck Info" required>
             <div class="flex flex-col gap-y-3">
 
-              <UInputMenu :options="trucks" by="id" option-attribute="licensePlate" v-model="docValue.licensePlate"
-                value-attribute="licensePlate" placeholder="Select Truck">
-                <template #option-empty="{ query }">
-                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
-                    <p>Company Not Found</p>
-                    <UButton @click="openCompanyAddDialog" variant="soft"
-                      class="flex-1 flex justify-center self-center">
-                      Add
-                      Company
-                    </UButton>
-                  </div>
-                </template>
-              </UInputMenu>
-              <UInputMenu :options="drivers" by="id" option-attribute="name" v-model="docValue.driver"
-                value-attribute="name" placeholder="Select Driver" />
-            </div>
+              <UFormGroup name="licensePlate">
 
+                <UInputMenu :options="trucks" by="id" option-attribute="licensePlate" v-model="docValue.licensePlate"
+                  value-attribute="licensePlate" placeholder="Select Truck">
+                  <template #option-empty="{ query }">
+                    <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                      <p>Truck Not Found</p>
+                      <UButton @click="openTruckAddDialog" variant="soft"
+                        class="flex-1 flex justify-center self-center">
+                        Add
+                        Truck
+                      </UButton>
+                    </div>
+                  </template>
+                </UInputMenu>
+              </UFormGroup>
+
+              <UFormGroup name="driver">
+                <UInputMenu :options="drivers" by="id" option-attribute="name" v-model="docValue.driver"
+                  value-attribute="name" placeholder="Select Driver">
+                  <template #option-empty="{ query }">
+                    <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                      <p>Driver Not Found</p>
+                      <UButton @click="openDriverAddDialog" variant="soft"
+                        class="flex-1 flex justify-center self-center">
+                        Add
+                        Driver
+                      </UButton>
+                    </div>
+                  </template>
+                </UInputMenu>
+              </UFormGroup>
+
+            </div>
           </UFormGroup>
 
           <UFormGroup label="Order Info" required>
             <div class="flex flex-col gap-3">
 
-              <UInput v-model="docValue.orderSum" placeholder="Sum" type="number">
-                <template #trailing>
-                  <span class="text-gray-500 dark:text-gray-400 text-xs">EUR</span>
-                </template>
-              </UInput>
+              <UFormGroup name="orderSum">
+                <UInput v-model="docValue.orderSum" placeholder="Sum" type="number">
+                  <template #trailing>
+                    <span class="text-gray-500 dark:text-gray-400 text-xs">EUR</span>
+                  </template>
+                </UInput>
+              </UFormGroup>
 
-              <UInput v-model="docValue.orderSize" placeholder="Size" />
+              <UFormGroup name="orderSize">
 
-              <UInput v-model="docValue.weight" placeholder="Weight" type="number">
-                <template #trailing>
-                  <span class="text-gray-500 dark:text-gray-400 text-xs">kg</span>
-                </template>
-              </UInput>
+                <UInput v-model="docValue.orderSize" placeholder="Size" />
+              </UFormGroup>
+
+              <UFormGroup name="weight">
+
+                <UInput v-model="docValue.weight" placeholder="Weight" type="number">
+                  <template #trailing>
+                    <span class="text-gray-500 dark:text-gray-400 text-xs">kg</span>
+                  </template>
+                </UInput>
+              </UFormGroup>
             </div>
           </UFormGroup>
-
-
-
 
           <UFormGroup label="Documents">
             <UInput type="file" id="document-upload" multiple="multiple" ref="inputRef" />
@@ -350,10 +425,9 @@ function openCompanyAddDialog() {
           <SheetClose as-child>
             <UButton @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
           </SheetClose>
-          <SheetClose as-child>
-            <UButton @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add Order
-            </UButton>
-          </SheetClose>
+          <UButton type="submit" @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add
+            Order
+          </UButton>
         </div>
       </SheetContent>
     </Sheet>

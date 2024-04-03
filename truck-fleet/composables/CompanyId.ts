@@ -5,7 +5,6 @@ export const useCompanyId = async () => {
   } = useProfileDoc()
 
   await profilePromise.value;
-  console.log(profile.value);
 
   let id = profile.value?.type === 'company' ? profile.value?.id : profile.value?.companyId;
 

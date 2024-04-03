@@ -1,16 +1,14 @@
 <script setup>
-const isModalOpen = useState('addCompanyModal', () => false)
+const isModalOpen = computed(() => {
+  return useRoute().hash == "#addCompany";
+})
 const isAddOrderOpen = useState('addOrder');
 
 
 </script>
 
 <template>
-  <!-- <UButton @click="open" variant="soft" class="flex-1 flex justify-center self-center">Add
-    Company
-  </UButton> -->
-
-  <Sheet :open="isModalOpen" @update:open="(e) => isModalOpen = e">
+  <Sheet :open="isModalOpen" @update:open="(e) => useRouter().back()">
     <SheetContent>
       <SheetHeader>
         <SheetTitle>Add Company</SheetTitle>

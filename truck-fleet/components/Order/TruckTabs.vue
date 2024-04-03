@@ -13,7 +13,6 @@ const {
 } = await useProfileDoc();
 
 await promise.value;
-console.log(profile.value);
 let id = profile.value!.type === 'speditor' ? profile.value!.companyId : profile.value!.id;
 
 

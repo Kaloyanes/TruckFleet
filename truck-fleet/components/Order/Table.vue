@@ -4,9 +4,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Table, TableCell, TableHead, TableHeader, TableRow
+} from "@/components/ui/table";
 import { format } from 'date-fns';
 import { CollectionReference } from 'firebase/firestore';
-import { TableCell } from './ui/table';
 
 const props = defineProps({
   orderQuery: {
@@ -46,7 +48,6 @@ const {
 } = useCollection(props.orderQuery);
 
 promise.value.then(() => {
-  console.log('orders loaded');
   generateDates();
 });
 await promise.value;
@@ -77,7 +78,6 @@ function scrollToCurrentDate(behavior: ScrollBehavior = 'instant') {
 }
 
 const reactiveOrders = computed(() => {
-  console.log('orders', orders.value);
 
   for (const info of dates.value) {
     if (info.order) {
@@ -104,7 +104,6 @@ function generateDates() {
         const locations = (order as any).locations;
 
         let found = false;
-        console.log(orders.value)
         for (const location of locations) {
           // {
           //   'pickUpTime': {
@@ -119,7 +118,6 @@ function generateDates() {
 
           if (location.pickUpTime.start.toDate().toLocaleString() === currentDate.toLocaleString()) {
             type = 'Pick Up';
-            console.log(order);
             found = true;
             id = (order as any).id;
             orderAddress = location.pickUpAddress;
@@ -147,11 +145,11 @@ function generateDates() {
     });
 
 
-    if (currentDate.getHours() >= 19 || currentDate.getHours() < 7) {
-      hoursAdd = 2;
-    } else {
-      hoursAdd = 1;
-    }
+    // if (currentDate.getHours() >= 19 || currentDate.getHours() < 7) {
+    //   hoursAdd = 2;
+    // } else {
+    //   hoursAdd = 1;
+    // }
 
     currentDate.setHours(currentDate.getHours() + hoursAdd);
 
@@ -174,8 +172,9 @@ setInterval(() => {
 
   if (currentTime.toLocaleString() !== current.toLocaleString()) {
     const currentDateElement = document.querySelectorAll('.current-date');
+    const nextDateElement = document.querySelectorAll(`[data-date="${currentTime.toLocaleString()}"]`);
 
-    if (currentDateElement) {
+    if (currentDateElement && nextDateElement) {
       currentDateElement.forEach((el) => {
         el.classList.remove('current-date');
       })
@@ -185,7 +184,6 @@ setInterval(() => {
     current = new Date(currentTime);
 
 
-    const nextDateElement = document.querySelectorAll(`[data-date="${currentTime.toLocaleString()}"]`);
 
     if (nextDateElement) {
       nextDateElement.forEach((el) => {
@@ -195,9 +193,7 @@ setInterval(() => {
   }
 }, 1000);
 
-// function change(e: any, order: any) {
-//   console.log(e, order)
-// }
+
 
 function resetDates() {
   // use set to remove duplicates by id
@@ -228,7 +224,6 @@ function filterDates(field: string, value: string) {
     })
   );
   dates.value = Array.from(filteredDatesSet);
-  console.log(dates.value);
 }
 </script>
 
@@ -304,11 +299,11 @@ function filterDates(field: string, value: string) {
               Company Order Id
             </TableHead>
 
-            <TableHead class="w-[150px]">
+            <TableHead class="w-[170px]">
               Weight
             </TableHead>
 
-            <TableHead class="w-[250px]">
+            <TableHead class="w-[300px]">
               Size
             </TableHead>
 
@@ -375,7 +370,7 @@ function filterDates(field: string, value: string) {
               {{ info.order?.orderId ?? '' }}
             </TableCell>
 
-            <TableCell>
+            <TableCell class="w-[170px]">
               {{ info.order?.weight ? `${info.order?.weight} kg` : '' }}
             </TableCell>
 
@@ -399,7 +394,7 @@ function filterDates(field: string, value: string) {
               </div>
             </TableCell>
 
-            <TableCell class="h-full">
+            <TableCell class="max-h-52">
               <div class="w-[150px] text-ellipsis">
                 {{ info.order?.note }}
               </div>

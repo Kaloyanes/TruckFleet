@@ -65,13 +65,36 @@ const actions = [
 
       isOpen.value = false;
       let route = useRoute();
-      let router = useRouter();
 
-      if (!route.path.includes('/dashboard/orders/'))
-        router.replace('/dashboard/orders/all');
+      setTimeout(() => {
+        if (!route.path.includes('/dashboard/orders')) {
+          useRouter().replace('/dashboard/orders/all#addOrder');
+          return;
+        }
 
-      let state = useState('addOrder');
-      state.value = true;
+        navigateTo("#addOrder")
+      }, 100)
+
+    }
+  },
+  {
+    id: 'add-company',
+    label: 'Add Company',
+    icon: 'material-symbols:add-business',
+    click: () => {
+      (document.activeElement as HTMLElement).blur();
+
+      isOpen.value = false;
+      let route = useRoute();
+
+      setTimeout(() => {
+        if (!route.path.includes('/dashboard/orders')) {
+          useRouter().replace('/dashboard/orders/all#addCompany');
+          return;
+        }
+
+        navigateTo("#addCompany")
+      }, 100)
     }
   },
   {

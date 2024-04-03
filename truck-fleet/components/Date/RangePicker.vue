@@ -18,7 +18,6 @@ const emit = defineEmits(['update:model-value', 'close'])
 const date = computed({
   get: () => props.modelValue,
   set: (value) => {
-    console.log(value);
     emit('update:model-value', {
       start: Timestamp.fromDate((value.start as any)),
       end: Timestamp.fromDate((value.end as any))

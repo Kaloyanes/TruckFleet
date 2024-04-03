@@ -10,7 +10,6 @@ definePageMeta({
 
 const qs = computed(() => {
   let quer = useRoute().query;
-  console.log(quer)
   if (quer.addOrder) {
     let addOrder = useState('addOrder');
 
@@ -27,7 +26,7 @@ const qs = computed(() => {
       <h1 class="text-center text-3xl py-4">Orders</h1>
 
       <div class="flex p-2">
-        <AddOrder />
+        <OrderAddDialog />
         <CompanyAddDialog />
       </div>
 

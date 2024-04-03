@@ -20,7 +20,6 @@ const formattedDateStart = ref<Date>(new Date(Date.now.toString()))
 const date = computed({
   get: () => props.modelValue,
   set: (value) => {
-    console.log(value);
     emit('update:model-value', value)
   }
 })

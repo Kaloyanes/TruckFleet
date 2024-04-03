@@ -12,6 +12,4 @@ export default () => {
 
     ),
   });
-
-  console.log("Firestore initialized with local cache.", store.toJSON())
 }
