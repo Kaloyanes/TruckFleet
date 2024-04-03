@@ -75,6 +75,11 @@ const euCountries = [
 
 const slug = computed(() => useRoute().params.slug);
 
+type OrderFile = {
+  name: string;
+  link: string;
+}
+
 const docValue = reactive({
   locations: [
     {
@@ -99,7 +104,7 @@ const docValue = reactive({
     }
   ],
 
-  documents: [] as String[],
+  documents: [] as OrderFile[],
 
   customerCompanyId: '',
   customerCompanyRef: doc(db, 'companiesWorkedWith', 'some'),
@@ -114,6 +119,7 @@ const docValue = reactive({
   note: '',
   weight: 0,
   companyId: companyId.value,
+  isDone: false,
 
 });
 
@@ -178,7 +184,14 @@ async function uploadOrder() {
     });
 
     const urls = await Promise.all(promises);
-    docValue.documents = urls;
+    docValue.documents = [
+      ...docValue.documents,
+      ...urls.map((url, index) => ({
+        name: files[index].name,
+        link: url
+      }))
+
+    ];
   }
 
   docValue.customerCompanyRef = doc(db, 'companiesWorkedWith', docValue.customerCompanyId);

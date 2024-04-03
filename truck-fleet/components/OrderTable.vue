@@ -242,9 +242,11 @@ function filterDates(field: string, value: string) {
             <TableHead class="w-[75px]">
               Date
             </TableHead>
+
             <TableHead class="w-[75px]">
               Time
             </TableHead>
+
             <TableHead class='gap-x-2 w-[170px]'>
               <div class="flex items-center gap-x-2">
                 Id
@@ -260,9 +262,11 @@ function filterDates(field: string, value: string) {
                 </Popover>
               </div>
             </TableHead>
+
             <TableHead class='w-[100px]'>
               Truck
             </TableHead>
+
             <TableHead class='gap-x-2 md:w-[200px]'>
               <div class="flex items-center gap-x-2">
                 Driver
@@ -282,23 +286,53 @@ function filterDates(field: string, value: string) {
             <TableHead class="w-[25px] justify-center">
               Type
             </TableHead>
-            <TableHead>
+
+            <TableHead class="w-[300px]">
               Address
             </TableHead>
+
+
+            <TableHead class="w-[250px]">
+              Customer Company
+            </TableHead>
+
+            <TableHead class="w-[150px]">
+              Company Worker
+            </TableHead>
+
+            <TableHead class="w-[150px]">
+              Company Order Id
+            </TableHead>
+
+            <TableHead class="w-[100px]">
+              Weight
+            </TableHead>
+
+            <TableHead class="w-[250px]">
+              Size
+            </TableHead>
+
+            <TableHead class="w-[150px]">
+              Sum
+            </TableHead>
+
+            <TableHead class="w-[100px]">
+              Documents
+            </TableHead>
+
+            <TableHead class="w-[15px] justify-center">
+              Notes
+            </TableHead>
+
             <TableHead class="w-[15px] justify-center">
               Progress
             </TableHead>
-            <TableHead>
-              Customer Company
-            </TableHead>
-            <TableHead>
 
-            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="(info, index) in dates" ref="currentDateRefElement" v-memo="[dates]" class="divide-x-2"
-            :key="index">
+          <TableRow v-for="(info, index) in dates" ref="currentDateRefElement" v-memo="[dates, info.order]"
+            class="divide-x-2" :class="(info.order?.isDone) ? 'bg-green-400 bg-opacity-20' : ''" :key="index">
             <TableCell class="font-medium transition-all duration-700 text-center"
               :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
               {{ format(info.date, "dd/MM/yyyy") }}
@@ -321,21 +355,57 @@ function filterDates(field: string, value: string) {
             <TableCell>
               {{ info.orderType ?? '' }}
             </TableCell>
+
             <TableCell>
               {{ info.orderAddress ?? '' }}
             </TableCell>
-            <TableCell class="">
-              <div class="h-max text-transparent flex justify-center items-center">
-                <UCheckbox v-if="info.order" size='xs' class="m-0" />
-                <div v-else>.</div>
-              </div>
-            </TableCell>
+
             <TableCell>
               {{ info.customerCompany?.name ?? '' }}
             </TableCell>
-            <TableCell>
 
+            <TableCell>
+              {{ info.order?.worker ?? '' }}
             </TableCell>
+
+            <TableCell>
+              {{ info.order?.orderId ?? '' }}
+            </TableCell>
+
+            <TableCell>
+              {{ info.order?.weight ? `${info.order?.weight} kg` : '' }}
+            </TableCell>
+
+            <TableCell>
+              {{ info.order?.orderSize }}
+            </TableCell>
+
+            <TableCell>
+              {{ info.order?.orderSum ? `${info.order?.orderSum} €` : '' }}
+            </TableCell>
+
+            <TableCell>
+              <div v-for="document in (info.order?.documents ?? [])">
+                <a :href="document.link" target="_blank" size="xs" variant="outline" class="m-0">
+                  <UButton size="xs" variant="outline" class="m-0">
+                    {{ document.name }}
+                  </UButton>
+                </a>
+              </div>
+            </TableCell>
+
+            <TableCell class="">
+              {{ info.order?.note }}
+            </TableCell>
+
+            <TableCell class="">
+              <div class="h-max text-transparent flex justify-center items-center">
+                <UCheckbox v-if="info.order" v-model="info.order.isDone" size='xs' class="m-0" />
+                <div v-else>.</div>
+              </div>
+            </TableCell>
+
+
           </TableRow>
 
         </TableBody>
