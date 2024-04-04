@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import { format } from 'date-fns';
 import { CollectionReference } from 'firebase/firestore';
-
 const props = defineProps({
   orderQuery: {
     type: Object as () => CollectionReference<{}>,
@@ -194,9 +193,7 @@ setInterval(() => {
 }, 1000);
 
 
-
 function resetDates() {
-  // use set to remove duplicates by id
   dates.value = Array.from(new Set(unfilteredDates));
 
 
@@ -205,19 +202,39 @@ function resetDates() {
   }, 100)
 }
 
+let filterValues = ref([] as string[]);
+
+watch(filterValues, (value) => {
+  console.log("filters", value);
+
+  if (value.length === 0) {
+    return resetDates();
+  }
+})
+
+
 watch(IdFilterInput, (value) => {
-  if (value === '') return resetDates();
 
   filterDates('id', value);
 })
 
 watch(driverFilterInput, (value) => {
-  if (value === '') return resetDates();
+
 
   filterDates('driver', value);
 })
 
+
 function filterDates(field: string, value: string) {
+  if (value.trim() === "") {
+    filterValues.value = filterValues.value.filter((val) => val !== field);
+    return;
+  }
+
+  if (!filterValues.value.includes(field))
+    filterValues.value = [...filterValues.value, field];
+
+
   const filteredDatesSet = new Set(
     unfilteredDates.filter((date) => {
       return date.order && date.order[field]?.toLowerCase().trim().includes(value.toLowerCase());
