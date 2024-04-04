@@ -28,6 +28,7 @@ const qs = computed(() => {
       <div class="flex p-2">
         <OrderAddDialog />
         <CompanyAddDialog />
+        <TrucksAddDialog />
       </div>
 
       <!-- <UDivider class="py-5" /> -->

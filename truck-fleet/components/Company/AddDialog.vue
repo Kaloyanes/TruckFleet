@@ -1,8 +1,7 @@
 <script setup>
 const isModalOpen = computed(() => {
   return useRoute().hash == "#addCompany";
-})
-const isAddOrderOpen = useState('addOrder');
+});
 
 
 </script>

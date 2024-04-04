@@ -60,19 +60,7 @@ const actions = [
     label: 'Add Order',
     icon: 'i-heroicons-plus-circle',
     click: () => {
-      (document.activeElement as HTMLElement).blur();
-
-      isOpen.value = false;
-      let route = useRoute();
-
-      setTimeout(() => {
-        if (!route.path.includes('/dashboard/orders')) {
-          useRouter().replace('/dashboard/orders/all#addOrder');
-          return;
-        }
-
-        navigateTo("#addOrder")
-      }, 100)
+      openDialog(['/dashboard/orders'], '#addOrder');
 
     }
   },
@@ -80,20 +68,33 @@ const actions = [
     label: 'Add Company',
     icon: 'material-symbols:add-business',
     click: () => {
-      (document.activeElement as HTMLElement).blur();
+      openDialog(['/dashboard/orders'], '#addCompany');
 
-      isOpen.value = false;
-      let route = useRoute();
 
-      setTimeout(() => {
-        if (!route.path.includes('/dashboard/orders')) {
-          useRouter().replace('/dashboard/orders/all#addCompany');
-          return;
-        }
-
-        navigateTo("#addCompany")
-      }, 100)
     }
+  },
+  {
+    label: 'Add Truck',
+    icon: 'mdi:truck-plus',
+    click: () => {
+      openDialog(['/dashboard/trucks', '/dashboard/orders'], '#addTruck')
+    }
+    // click: () => {
+    //   (document.activeElement as HTMLElement).blur();
+
+    //   isOpen.value = false;
+    //   let route = useRoute();
+
+
+    //   setTimeout(() => {
+    //     if (!route.path.includes('/dashboard/trucks') && !route.path.includes('/dashboard/orders')) {
+    //       useRouter().replace('/dashboard/trucks#addTruck');
+    //       return;
+    //     }
+
+    //     navigateTo("#addTruck")
+    //   }, 100)
+    // }
   },
   {
     label: 'Logout',
@@ -110,6 +111,32 @@ let selectedValue = ref('')
 function goToRoute(route: string) {
   router.push(route);
   isOpen.value = false;
+}
+
+function openDialog(links: string[], hash: string) {
+  const routeCheck = () => {
+    // go through each link and check if the route is the same as the current route
+    for (let link of links) {
+      if (route.fullPath.includes(link)) {
+        return true;
+      }
+    }
+  }
+
+  (document.activeElement as HTMLElement).blur();
+
+  isOpen.value = false;
+  let route = useRoute();
+
+  console.log("route", `${links[0]}${hash}`);
+
+  setTimeout(async () => {
+    if (!routeCheck()) {
+      await navigateTo(`${links[0]}`);
+    }
+
+    await navigateTo(hash)
+  }, 100)
 }
 </script>
 
