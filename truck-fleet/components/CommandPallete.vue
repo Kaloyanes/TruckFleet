@@ -57,7 +57,6 @@ const pages = [
 
 const actions = [
   {
-    id: 'add-order',
     label: 'Add Order',
     icon: 'i-heroicons-plus-circle',
     click: () => {
@@ -78,7 +77,6 @@ const actions = [
     }
   },
   {
-    id: 'add-company',
     label: 'Add Company',
     icon: 'material-symbols:add-business',
     click: () => {
@@ -98,7 +96,6 @@ const actions = [
     }
   },
   {
-    id: 'logout',
     label: 'Logout',
     icon: 'material-symbols:logout',
     click: () => goToRoute('/logout')
@@ -131,7 +128,7 @@ function goToRoute(route: string) {
         </CommandGroup>
 
         <CommandGroup heading="Actions">
-          <CommandItem v-for="action in actions" :key="action.id" :value="action.id" @click="action.click">
+          <CommandItem v-for="action in actions" :key="action.label" :value="action.label" @click="action.click">
             <Icon :name="action.icon" class="mr-2" size="20" />
             {{ action.label }}
           </CommandItem>
