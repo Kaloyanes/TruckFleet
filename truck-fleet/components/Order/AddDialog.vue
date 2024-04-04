@@ -82,20 +82,8 @@ type OrderFile = {
 
 console.log("trucks", drivers.value);
 const schema = yup.object({
-  locations: yup.array().of(
-    yup.object({
-      pickUpTime: yup.object({
-        start: yup.date().required(),
-        end: yup.date().required(),
-      }).required(),
-      deliveryTime: yup.object({
-        start: yup.date().required(),
-        end: yup.date().required(),
-      }).required(),
-      pickUpAddress: yup.string().required(),
-      deliveryAddress: yup.string().required(),
-    })
-  ).required(),
+  pickUpAddress: yup.string().required("Pick Up Address is Required"),
+  deliveryAddress: yup.string().required("Delivery Address is Required"),
   documents: yup.array().of(
     yup.object({
       name: yup.string().required(),
@@ -296,19 +284,19 @@ function openDriverAddDialog() {
                   icon="i-material-symbols-delete-forever-rounded" />
               </div>
 
-              <UFormGroup label="Pick Up Time" required>
+              <UFormGroup label="Pick Up Time" name="pickUpTime" required>
                 <DateRangePickerButton v-model="location.pickUpTime" :range="true" />
               </UFormGroup>
 
-              <UFormGroup label="Pick Up Address" required>
+              <UFormGroup label="Pick Up Address" name="pickUpAddress" required>
                 <UInput v-model="location.pickUpAddress" placeholder="00000, Paris, France" />
               </UFormGroup>
 
-              <UFormGroup label="Delivery Time" required>
+              <UFormGroup label="Delivery Time" name="deliveryTime" required>
                 <DateRangePickerButton v-model="location.deliveryTime" :range="true" />
               </UFormGroup>
 
-              <UFormGroup label="Delivery Address" required>
+              <UFormGroup label="Delivery Address" name="deliveryAddress" required>
                 <UInput v-model="location.deliveryAddress" placeholder="00000, Paris, France" />
               </UFormGroup>
             </div>
