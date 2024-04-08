@@ -29,6 +29,7 @@ endDate.setSeconds(0)
 
 let current = new Date();
 
+
 const dates = ref<{
   date: Date;
   order: any | undefined;
@@ -50,11 +51,6 @@ promise.value.then(() => {
   generateDates();
 });
 await promise.value;
-
-
-const IdFilterInput = ref<string>('');
-const driverFilterInput = ref<string>('');
-
 
 function checkDates(date: Date) {
   const currentTime = new Date();
@@ -213,35 +209,134 @@ watch(filterValues, (value) => {
 })
 
 
+const IdFilterInput = ref<string>('');
+const driverFilterInput = ref<string>('');
+const typeFilterInput = ref<"all" | "pickUp" | "deliver">('all');
+const addressFilterInput = ref<string>('');
+const customerCompanyFilterInput = ref<string>('');
+const companyWorkerFilterInput = ref<string>('');
+const companyOrderIdFilterInput = ref<string>('');
+const weightFilterInput = ref<string>('');
+const sumFilterInput = ref<string>('');
+
+const filteredValues = ref<Map<string, {
+  value: string;
+  checkValue: ((val: any, date: any) => boolean) | undefined;
+  resetValueCheck: ((value: string) => boolean) | undefined;
+  order: number,
+}>>(new Map());
+
+let unfiltered = unfilteredDates;
+
+
+watch(filteredValues.value, (value) => {
+  console.log("unOrdered values", value)
+
+  value = new Map([...filteredValues.value.entries()].sort((a, b) => a[1].order - b[1].order));
+  console.log("filteredValues", value)
+
+
+  if (value.size === 0) {
+    return resetDates();
+  }
+
+  unfiltered = unfilteredDates;
+
+  for (const filter of value) {
+
+
+    filterDates(filter[0], filter[1].value, filter[1].checkValue, filter[1].resetValueCheck);
+  }
+
+  dates.value = unfiltered;
+})
+
+
 watch(IdFilterInput, (value) => {
-
-  filterDates('id', value);
-})
-
-watch(driverFilterInput, (value) => {
-
-
-  filterDates('driver', value);
-})
-
-
-function filterDates(field: string, value: string) {
-  if (value.trim() === "") {
-    filterValues.value = filterValues.value.filter((val) => val !== field);
+  if (value === "") {
+    filteredValues.value.delete('id');
     return;
   }
 
-  if (!filterValues.value.includes(field))
-    filterValues.value = [...filterValues.value, field];
+  filteredValues.value.set('id', {
+    value,
+    checkValue: undefined,
+    resetValueCheck: undefined,
+    order: 0,
+  });
+})
+
+watch(driverFilterInput, (value) => {
+  if (value === "") {
+    filteredValues.value.delete('driver');
+    return;
+  }
+
+  filteredValues.value.set('driver', {
+    value,
+    checkValue: (val, date) => date.order && date.order.driver?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 1,
+  });
+
+})
+
+const options = [{
+  value: 'all',
+  label: 'All'
+}, {
+  value: 'Pick Up',
+  label: 'Pick Up'
+}, {
+  value: 'Deliver',
+  label: 'Deliver'
+}];
+
+watch(typeFilterInput, (value) => {
+  if (value === 'all') {
+    filteredValues.value.delete('type');
+    return;
+  }
+
+  filteredValues.value.set('type', {
+    value,
+    checkValue: (val, date) => date.orderType === val,
+    resetValueCheck: undefined,
+    order: 9999,
+  })
+
+})
 
 
-  const filteredDatesSet = new Set(
-    unfilteredDates.filter((date) => {
-      return date.order && date.order[field]?.toLowerCase().trim().includes(value.toLowerCase());
-    })
-  );
-  dates.value = Array.from(filteredDatesSet);
+watch(addressFilterInput, (value) => {
+  filterDates('orderAddress', value);
+})
+
+watch(customerCompanyFilterInput, (value) => {
+  filterDates('customerCompany', value);
+})
+
+watch(companyWorkerFilterInput, (value) => {
+  filterDates('worker', value);
+})
+
+watch(companyOrderIdFilterInput, (value) => {
+  filterDates('orderId', value);
+})
+
+function filterDates(field: string, value: string, checkValue = (val: string, date: any) => {
+  return date.order && date.order[field]?.toLowerCase().trim().includes(val.toLowerCase());
+}, resetValueCheck = (value: string) => value.trim() === "") {
+  if (resetValueCheck(value)) {
+    filteredValues.value.delete(field);
+    return;
+  }
+
+  console.log("field", field, value, checkValue, resetValueCheck);
+  unfiltered = unfiltered.filter((date) => checkValue(value, date));
 }
+
+
 </script>
 
 <template>
@@ -295,8 +390,18 @@ function filterDates(field: string, value: string) {
               </div>
             </TableHead>
 
-            <TableHead class="w-[25px] justify-center">
+            <TableHead class="flex items-center gap-x-2 justify-center">
               Type
+              <Popover>
+                <PopoverTrigger>
+                  <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div class="flex flex-col gap-2">
+                    <URadioGroup v-model="typeFilterInput" legend="Choose type" :options="options" />
+                  </div>
+                </PopoverContent>
+              </Popover>
             </TableHead>
 
             <TableHead class="w-[300px]">
