@@ -2,8 +2,12 @@
 
 import { collection, query, where } from 'firebase/firestore';
 
-const licensePlate = useRoute().params.slug;
+const route = useRoute();
 
+
+const licensePlate = route.params.licensePlate;
+
+console.log(licensePlate);
 const db = useFirestore();
 
 const companyId = await useCompanyId();
@@ -15,14 +19,10 @@ const modifiedQuery = (ref: any) => {
   }
   return query(ref, where('licensePlate', '==', licensePlate));
 };
-
-
-
-
 </script>
 
 <template>
-  <div class="mx-5">
+  <div>
     <OrderTable :order-query="modifiedQuery(orderRef)" />
   </div>
 </template>

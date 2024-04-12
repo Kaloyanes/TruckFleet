@@ -1,10 +1,5 @@
 <script lang="ts" setup>
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
   Table, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table";
 import { format } from 'date-fns';
@@ -73,7 +68,6 @@ function scrollToCurrentDate(behavior: ScrollBehavior = 'instant') {
 }
 
 const reactiveOrders = computed(() => {
-
   for (const info of dates.value) {
     if (info.order) {
       info.order = orders.value.find((order) => (order as any).id === info.order.id);
@@ -208,7 +202,20 @@ watch(filterValues, (value) => {
   }
 })
 
+const typeFilterOptions = [{
+  value: 'all',
+  label: 'All'
+}, {
+  value: 'Pick Up',
+  label: 'Pick Up'
+}, {
+  value: 'Deliver',
+  label: 'Deliver'
+}];
 
+
+const dateFilterInput = ref<string>('');
+const timeFilterInput = ref<string>('');
 const IdFilterInput = ref<string>('');
 const driverFilterInput = ref<string>('');
 const typeFilterInput = ref<"all" | "pickUp" | "deliver">('all');
@@ -228,7 +235,6 @@ const filteredValues = ref<Map<string, {
 
 let unfiltered = unfilteredDates;
 
-
 watch(filteredValues.value, (value) => {
   console.log("unOrdered values", value)
 
@@ -243,86 +249,102 @@ watch(filteredValues.value, (value) => {
   unfiltered = unfilteredDates;
 
   for (const filter of value) {
-
-
     filterDates(filter[0], filter[1].value, filter[1].checkValue, filter[1].resetValueCheck);
   }
 
   dates.value = unfiltered;
 })
 
-
 watch(IdFilterInput, (value) => {
-  if (value === "") {
-    filteredValues.value.delete('id');
-    return;
-  }
-
   filteredValues.value.set('id', {
     value,
     checkValue: undefined,
-    resetValueCheck: undefined,
+    resetValueCheck: (val) => val.trim() === "",
     order: 0,
   });
 })
 
 watch(driverFilterInput, (value) => {
-  if (value === "") {
-    filteredValues.value.delete('driver');
-    return;
-  }
-
   filteredValues.value.set('driver', {
     value,
     checkValue: (val, date) => date.order && date.order.driver?.toLowerCase().trim().includes(val.toLowerCase()),
     resetValueCheck: (value) => value.trim() === "",
     order: 1,
   });
-
 })
 
-const options = [{
-  value: 'all',
-  label: 'All'
-}, {
-  value: 'Pick Up',
-  label: 'Pick Up'
-}, {
-  value: 'Deliver',
-  label: 'Deliver'
-}];
-
 watch(typeFilterInput, (value) => {
-  if (value === 'all') {
-    filteredValues.value.delete('type');
-    return;
-  }
+
 
   filteredValues.value.set('type', {
     value,
     checkValue: (val, date) => date.orderType === val,
-    resetValueCheck: undefined,
+    resetValueCheck: (val) => val === 'all',
     order: 9999,
   })
-
 })
 
-
 watch(addressFilterInput, (value) => {
-  filterDates('orderAddress', value);
+  filteredValues.value.set('address', {
+    value,
+    checkValue: (val, date) => date.orderAddress?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 2,
+  });
+
+  console.log(filteredValues)
 })
 
 watch(customerCompanyFilterInput, (value) => {
-  filterDates('customerCompany', value);
+  console.log(value);
+
+  filteredValues.value.set('customerCompany', {
+    value,
+    checkValue: (val, date) => date.order && date.customerCompany?.name?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 3,
+  });
 })
 
 watch(companyWorkerFilterInput, (value) => {
-  filterDates('worker', value);
+  filteredValues.value.set('worker', {
+    value,
+    checkValue: (val, date) => date.order && date.order.worker?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 4,
+  });
 })
 
 watch(companyOrderIdFilterInput, (value) => {
-  filterDates('orderId', value);
+  filteredValues.value.set('orderId', {
+    value,
+    checkValue: (val, date) => date.order && date.order.orderId?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 5,
+  });
 })
+
+// TODO: ADD TYPE OF FILTER AKA '>=', '<=', '=='
+watch(weightFilterInput, (value) => {
+  filteredValues.value.set('weight', {
+    value,
+    checkValue: (val, date) => date.order && date.order.weight?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 6,
+  });
+})
+
+// TODO: ADD TYPE OF FILTER AKA '>=', '<=', '=='
+watch(sumFilterInput, (value) => {
+  filteredValues.value.set('sum', {
+    value,
+    checkValue: (val, date) => date.order && date.order.orderSum?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 7,
+  });
+})
+
+
 
 function filterDates(field: string, value: string, checkValue = (val: string, date: any) => {
   return date.order && date.order[field]?.toLowerCase().trim().includes(val.toLowerCase());
@@ -335,14 +357,12 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
   console.log("field", field, value, checkValue, resetValueCheck);
   unfiltered = unfiltered.filter((date) => checkValue(value, date));
 }
-
-
 </script>
 
 <template>
   {{ reactiveOrders }}
   <div class="grid auto-rows-max" v-if="orders.length !== 0">
-    <div class="w-full flex-1 relative overflow-auto max-h-[75vh]  ">
+    <div class="w-full flex-1 relative overflow-auto max-h-[80vh]  ">
       <Table>
         <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950/30 bg-opacity-40 backdrop-blur-md z-50 ">
           <TableRow>
@@ -355,18 +375,11 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
             </TableHead>
 
             <TableHead class='gap-x-2 w-[170px]'>
-              <div class="flex items-center gap-x-2">
+              <div class="table-header">
                 Id
-                <Popover>
-                  <PopoverTrigger>
-                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <div class="flex flex-col gap-2">
-                      <UInput placeholder="Search Id" v-model="IdFilterInput" />
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                <OrderFilterPop>
+                  <UInput placeholder="Search Id" v-model="IdFilterInput" />
+                </OrderFilterPop>
               </div>
             </TableHead>
 
@@ -375,54 +388,67 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
             </TableHead>
 
             <TableHead class='gap-x-2 md:w-[200px]'>
-              <div class="flex items-center gap-x-2">
+              <div class="table-header">
                 Driver
-                <Popover>
-                  <PopoverTrigger>
-                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <div class="flex flex-col gap-2">
-                      <UInput placeholder="Search Drivers" v-model="driverFilterInput" />
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                <OrderFilterPop>
+                  <UInput placeholder="Search Drivers" v-model="driverFilterInput" size="sm" />
+                </OrderFilterPop>
               </div>
             </TableHead>
 
-            <TableHead class="flex items-center gap-x-2 justify-center">
-              Type
-              <Popover>
-                <PopoverTrigger>
-                  <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div class="flex flex-col gap-2">
-                    <URadioGroup v-model="typeFilterInput" legend="Choose type" :options="options" />
-                  </div>
-                </PopoverContent>
-              </Popover>
+            <TableHead class="justify-center">
+              <div class="table-header">
+                Type
+                <OrderFilterPop>
+                  <URadioGroup v-model="typeFilterInput" legend="Choose type" :options="typeFilterOptions" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[300px]">
-              Address
+              <div class="table-header">
+                Address
+                <OrderFilterPop>
+                  <UInput placeholder="Search Address" v-model="addressFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
 
-            <TableHead class="w-[250px]">
-              Customer Company
+            <TableHead class="w-[350px]">
+              <div class="table-header">
+                Customer Company
+                <OrderFilterPop>
+                  <UInput placeholder="Search Company" v-model="customerCompanyFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[150px]">
-              Company Worker
+              <div class="table-header">
+                Company Worker
+                <OrderFilterPop>
+                  <UInput placeholder="Search Worker" v-model="companyWorkerFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[150px]">
-              Company Order Id
+              <div class="table-header">
+                Company Order Id
+                <OrderFilterPop>
+                  <UInput placeholder="Search Order Id" v-model="companyOrderIdFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[170px]">
-              Weight
+              <div class="table-header">
+                Weight
+                <OrderFilterPop>
+                  <UInput placeholder="Search Weight" v-model="weightFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[300px]">
@@ -431,6 +457,9 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
 
             <TableHead class="w-[150px]">
               Sum
+              <OrderFilterPop>
+                <UInput placeholder="Search Sum" v-model="sumFilterInput" />
+              </OrderFilterPop>
             </TableHead>
 
             <TableHead class="w-[100px]">
@@ -524,7 +553,7 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
 
             <TableCell class="">
               <div class="h-max text-transparent flex justify-center items-center">
-                <UCheckbox v-if="info.order" v-model="info.order.isDone" size='xs' class="m-0" />
+                <UCheckbox v-if="info.order" v-model="info.order.isDone" class="m-0" />
                 <div v-else>.</div>
               </div>
             </TableCell>
@@ -547,8 +576,12 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .current-date {
   @apply bg-primary text-black selection:bg-neutral-300;
+}
+
+.table-header {
+  @apply flex items-center gap-x-2;
 }
 </style>

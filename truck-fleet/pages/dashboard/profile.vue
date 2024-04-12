@@ -34,7 +34,7 @@ const links = [{
 <template>
   <div>
     <h1>Profile</h1>
-    <UHorizontalNavigation :links="links" />
+    <LazyUHorizontalNavigation :links="links" />
     <NuxtPage />
   </div>
 </template>
