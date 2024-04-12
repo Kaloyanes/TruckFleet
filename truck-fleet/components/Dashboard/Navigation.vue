@@ -6,7 +6,10 @@ let db = useFirestore();
 
 const {
   data: profile,
+  promise: profilePromise
 } = useDocument(doc(db, `users/${user.value?.uid}`,));
+
+await profilePromise.value;
 
 const links = [
   {
@@ -28,17 +31,18 @@ const links = [
 
 const endLinks = [
   {
-    title: 'Settings',
-    href: '/dashboard/profile/general',
-    icon: 'i-heroicons-cog',
-  },
-  {
     title: 'Logout',
     href: '/logout',
     icon: 'i-material-symbols-logout-rounded',
   }
 ]
 
+console.log(profile.value!.profilePicture)
+const profileLink = {
+  title: 'Profile',
+  href: '/dashboard/profile/account',
+  icon: 'i-heroicons-user-circle',
+}
 </script>
 
 <template>
@@ -49,12 +53,15 @@ const endLinks = [
 
     <DashboardItem :link="{
       title: profile?.name,
-      href: '/dashboard/profile/account',
-    }" :exact-type="true">
+      href: '/dashboard/profile',
+    }" v-if="profile?.profilePicture">
       <template #icon>
-        <UAvatar :src="profile?.profilePicture" class="w-6 h-6" />
+        <Avatar class="w-6 h-6">
+          <AvatarImage :src="profile!.profilePicture!" alt="Profile Picture" />
+        </Avatar>
       </template>
     </DashboardItem>
+    <DashboardItem v-else :link="profileLink" />
     <DashboardItem v-for=" link  in  endLinks " :link="link" />
   </div>
 </template>
