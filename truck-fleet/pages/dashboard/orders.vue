@@ -8,6 +8,7 @@ definePageMeta({
   middleware: "order",
 })
 
+
 let currentDate = ref<Date>(new Date());
 
 setInterval(() => {
@@ -20,10 +21,9 @@ setInterval(() => {
   <div>
     <OrderAddDialog />
     <h1 class="font-bold text-3xl py-4 flex gap-x-2">
-      {{ format(currentDate, "dd, MMMM | hh:mm:ss ") }}
+      {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
       <div class="flex gap-x-3 items-end">
-        <span class="text-sm">{{ format(currentDate, "a") }}</span>
-        <span class="text-xs">{{ format(currentDate, "EEEE") }}</span>
+        <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
       </div>
     </h1>
 
