@@ -23,6 +23,6 @@ const modifiedQuery = (ref: any) => {
 
 <template>
   <div>
-    <OrderTable :order-query="modifiedQuery(orderRef)" />
+
   </div>
 </template>

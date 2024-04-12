@@ -28,7 +28,10 @@ export default defineNuxtConfig({
     "@formkit/auto-animate",
     "@nuxtjs/google-fonts",
     "@nuxtjs/sitemap",
-    '@nuxtjs/tailwindcss', 'shadcn-nuxt'
+    '@nuxtjs/tailwindcss',
+    'shadcn-nuxt',
+    '@vueuse/nuxt',
+    '@nuxt/image',
   ],
   shadcn: {
     prefix: '',

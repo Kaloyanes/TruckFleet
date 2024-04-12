@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { format } from 'date-fns';
 useSeoMeta({
   titleTemplate: "%s - Orders"
 })
@@ -10,20 +11,11 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="">
-    <div class="sticky top-0 z-20 rounded-b-xl dark:bg-cod-gray-950/30 bg-opacity-50 backdrop-blur-md">
+  <div>
+    <OrderAddDialog />
+    <h1 class="font-bold text-3xl py-4">{{ format(new Date(), "dd, MMMM") }}</h1>
 
-      <h1 class="text-center text-3xl py-4">Orders</h1>
-
-      <div class="flex p-2">
-        <OrderAddDialog />
-        <CompanyAddDialog />
-        <TrucksAddDialog />
-      </div>
-
-      <!-- <UDivider class="py-5" /> -->
-      <OrderTruckTabs />
-    </div>
+    <!-- <UDivider class="py-5" /> -->
 
     <NuxtPage />
   </div>
