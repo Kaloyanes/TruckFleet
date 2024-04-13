@@ -1,15 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-
   devtools: {
     enabled: true,
-
     timeline: {
       enabled: true,
     },
   },
   experimental: {
     viewTransition: true,
+    typedPages: false,
   },
   app: {
     pageTransition: {
@@ -31,17 +30,12 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
-    "@vueuse/motion"
+    "@vueuse/motion",
+    '@vueuse/nuxt',
+    '@nuxt/image',
   ],
   shadcn: {
-    /**
-     * Prefix for all the imported component
-     */
     prefix: '',
-    /**
-     * Directory that the component lives in.
-     * @default "./components/ui"
-     */
     componentDir: './components/ui'
   },
   colorMode: {
@@ -65,7 +59,6 @@ export default defineNuxtConfig({
       messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       appId: process.env.FIREBASE_APP_ID,
       measurementId: process.env.FIREBASE_MEASUREMENT_ID,
-
     },
     optionsApiPlugin: 'firestore',
   },
@@ -77,12 +70,14 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-
   googleFonts: {
     families: {
       Inter: true,
     }
   },
-
-
+  routeRules: {
+    "/dashboard/**": { ssr: false },
+    "/login/**": { ssr: false },
+    "/": { ssr: true, cache: { name: 'index-cache', swr: true, maxAge: 604800 }, }
+  }
 })

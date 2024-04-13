@@ -265,9 +265,6 @@ function openDriverAddDialog() {
       useRouter().back();
     }
   }">
-      <SheetTrigger>
-        <UButton @click="() => navigateTo('#addOrder')">Add Order</UButton>
-      </SheetTrigger>
       <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
         <SheetHeader>
           <SheetTitle>Add Order</SheetTitle>

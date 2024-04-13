@@ -1,13 +1,8 @@
 <script lang="ts" setup>
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  Table, TableCell, TableHead, TableHeader, TableRow
+  Table,
+  TableHead, TableHeader, TableRow
 } from "@/components/ui/table";
-import { format } from 'date-fns';
 import { CollectionReference } from 'firebase/firestore';
 const props = defineProps({
   orderQuery: {
@@ -73,7 +68,6 @@ function scrollToCurrentDate(behavior: ScrollBehavior = 'instant') {
 }
 
 const reactiveOrders = computed(() => {
-
   for (const info of dates.value) {
     if (info.order) {
       info.order = orders.value.find((order) => (order as any).id === info.order.id);
@@ -198,17 +192,32 @@ function resetDates() {
   }, 100)
 }
 
-let filterValues = ref([] as string[]);
+const typeFilterOptions = [{
+  value: 'all',
+  label: 'All'
+}, {
+  value: 'Pick Up',
+  label: 'Pick Up'
+}, {
+  value: 'Deliver',
+  label: 'Deliver'
+}];
 
-watch(filterValues, (value) => {
-  console.log("filters", value);
+const numFilterOptions = [
+  {
+    value: '>=',
+    label: '>='
+  }, {
+    value: '<=',
+    label: '<='
+  }, {
+    value: '==',
+    label: '=='
+  }];
 
-  if (value.length === 0) {
-    return resetDates();
-  }
-})
 
-
+const dateFilterInput = ref<string>('');
+const timeFilterInput = ref<string>('');
 const IdFilterInput = ref<string>('');
 const driverFilterInput = ref<string>('');
 const typeFilterInput = ref<"all" | "pickUp" | "deliver">('all');
@@ -216,7 +225,9 @@ const addressFilterInput = ref<string>('');
 const customerCompanyFilterInput = ref<string>('');
 const companyWorkerFilterInput = ref<string>('');
 const companyOrderIdFilterInput = ref<string>('');
+const weightTypeAction = ref<"==" | "<=" | ">=">('>=');
 const weightFilterInput = ref<string>('');
+const sumTypeAction = ref<"==" | "<=" | ">=">('>=');
 const sumFilterInput = ref<string>('');
 
 const filteredValues = ref<Map<string, {
@@ -227,7 +238,6 @@ const filteredValues = ref<Map<string, {
 }>>(new Map());
 
 let unfiltered = unfilteredDates;
-
 
 watch(filteredValues.value, (value) => {
   console.log("unOrdered values", value)
@@ -243,88 +253,117 @@ watch(filteredValues.value, (value) => {
   unfiltered = unfilteredDates;
 
   for (const filter of value) {
-
-
     filterDates(filter[0], filter[1].value, filter[1].checkValue, filter[1].resetValueCheck);
   }
 
   dates.value = unfiltered;
 })
 
-
 watch(IdFilterInput, (value) => {
-  if (value === "") {
-    filteredValues.value.delete('id');
-    return;
-  }
-
   filteredValues.value.set('id', {
     value,
     checkValue: undefined,
-    resetValueCheck: undefined,
+    resetValueCheck: (val) => val.trim() === "",
     order: 0,
   });
 })
 
 watch(driverFilterInput, (value) => {
-  if (value === "") {
-    filteredValues.value.delete('driver');
-    return;
-  }
-
   filteredValues.value.set('driver', {
     value,
     checkValue: (val, date) => date.order && date.order.driver?.toLowerCase().trim().includes(val.toLowerCase()),
     resetValueCheck: (value) => value.trim() === "",
     order: 1,
   });
-
 })
 
-const options = [{
-  value: 'all',
-  label: 'All'
-}, {
-  value: 'Pick Up',
-  label: 'Pick Up'
-}, {
-  value: 'Deliver',
-  label: 'Deliver'
-}];
-
 watch(typeFilterInput, (value) => {
-  if (value === 'all') {
-    filteredValues.value.delete('type');
-    return;
-  }
+
 
   filteredValues.value.set('type', {
     value,
     checkValue: (val, date) => date.orderType === val,
-    resetValueCheck: undefined,
+    resetValueCheck: (val) => val === 'all',
     order: 9999,
   })
-
 })
 
-
 watch(addressFilterInput, (value) => {
-  filterDates('orderAddress', value, (val, date) => {
-    console.log(date.orderAddress);
-    return date.orderAddress && date.orderAddress?.toLowerCase().trim().includes(val.toLowerCase())
+  filteredValues.value.set('address', {
+    value,
+    checkValue: (val, date) => date.orderAddress?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 2,
   });
+
+  console.log(filteredValues)
 })
 
 watch(customerCompanyFilterInput, (value) => {
-  filterDates('customerCompany', value);
+  console.log(value);
+
+  filteredValues.value.set('customerCompany', {
+    value,
+    checkValue: (val, date) => date.order && date.customerCompany?.name?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 3,
+  });
 })
 
 watch(companyWorkerFilterInput, (value) => {
-  filterDates('worker', value);
+  filteredValues.value.set('worker', {
+    value,
+    checkValue: (val, date) => date.order && date.order.worker?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 4,
+  });
 })
 
 watch(companyOrderIdFilterInput, (value) => {
-  filterDates('orderId', value);
+  filteredValues.value.set('orderId', {
+    value,
+    checkValue: (val, date) => date.order && date.order.orderId?.toLowerCase().trim().includes(val.toLowerCase()),
+    resetValueCheck: (value) => value.trim() === "",
+    order: 5,
+  });
+})
+
+// TODO: ADD TYPE OF FILTER AKA '>=', '<=', '=='
+watch([weightFilterInput, weightTypeAction], (value) => {
+  if (value[0] !== "")
+    filteredValues.value.set("weight", {
+      value: value[0],
+      checkValue: (val, date) => {
+        if (value[1] === '>=') {
+          return date.order && date.order.weight >= parseInt(val);
+        } else if (value[1] === '<=') {
+          return date.order && date.order.weight <= parseInt(val);
+        } else {
+          return date.order && date.order.weight === parseInt(val);
+        }
+      },
+      resetValueCheck: (value) => value.toString().trim() === "",
+      order: 6,
+    })
+})
+
+// TODO: ADD TYPE OF FILTER AKA '>=', '<=', '=='
+watch([sumFilterInput, sumTypeAction], (value) => {
+  if (value[0] !== "")
+    filteredValues.value.set("sum", {
+      value: value[0],
+      checkValue: (val, date) => {
+        if (value[1] === '>=') {
+          return date.order && date.order.orderSum >= parseInt(val);
+        } else if (value[1] === '<=') {
+          return date.order && date.order.orderSum <= parseInt(val);
+        } else {
+          return date.order && date.order.orderSum === parseInt(val);
+        }
+      },
+      resetValueCheck: (value) => value.toString().trim() === "",
+      order: 7,
+    })
 })
 
 function filterDates(field: string, value: string, checkValue = (val: string, date: any) => {
@@ -339,13 +378,16 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
   unfiltered = unfiltered.filter((date) => checkValue(value, date));
 }
 
-
+const { list, containerProps, scrollTo, wrapperProps } = useVirtualList(dates, {
+  itemHeight: 50,
+  overscan: 35,
+});
 </script>
 
 <template>
   {{ reactiveOrders }}
   <div class="grid auto-rows-max" v-if="orders.length !== 0">
-    <div class="w-full flex-1 relative overflow-auto max-h-[75vh]  ">
+    <div class="w-full flex-1 relative overflow-auto max-h-[80vh]  ">
       <Table>
         <TableHeader class="sticky top-0 bg-white dark:bg-cod-gray-950/30 bg-opacity-40 backdrop-blur-md z-50 ">
           <TableRow>
@@ -357,19 +399,12 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
               Time
             </TableHead>
 
-            <TableHead class='w-[170px]'>
-              <div class="tablehead-spacing">
+            <TableHead class='gap-x-2 w-[170px]'>
+              <div class="table-header">
                 Id
-                <Popover>
-                  <PopoverTrigger>
-                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <div class="flex flex-col gap-2">
-                      <UInput placeholder="Search Id" v-model="IdFilterInput" />
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                <OrderFilterPop>
+                  <UInput placeholder="Search Id" v-model="IdFilterInput" />
+                </OrderFilterPop>
               </div>
             </TableHead>
 
@@ -377,70 +412,69 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
               Truck
             </TableHead>
 
-            <TableHead class='md:w-[200px]'>
-              <div class="tablehead-spacing">
+            <TableHead class='gap-x-2 md:w-[200px]'>
+              <div class="table-header">
                 Driver
-                <Popover>
-                  <PopoverTrigger>
-                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <div class="flex flex-col gap-2">
-                      <UInput placeholder="Search Drivers" v-model="driverFilterInput" />
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                <OrderFilterPop>
+                  <UInput placeholder="Search Drivers" v-model="driverFilterInput" size="sm" />
+                </OrderFilterPop>
               </div>
             </TableHead>
 
-            <TableHead>
-              <div class="tablehead-spacing">
+            <TableHead class="justify-center">
+              <div class="table-header">
                 Type
-                <Popover>
-                  <PopoverTrigger>
-                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <div class="flex flex-col gap-2">
-                      <URadioGroup v-model="typeFilterInput" legend="Choose type" :options="options" class="gap-y-5" />
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                <OrderFilterPop>
+                  <URadioGroup v-model="typeFilterInput" legend="Choose type" :options="typeFilterOptions" />
+                </OrderFilterPop>
               </div>
             </TableHead>
 
             <TableHead class="w-[300px]">
-              <div class="tablehead-spacing">
+              <div class="table-header">
                 Address
-
-                <Popover>
-                  <PopoverTrigger>
-                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <div class="flex flex-col gap-2">
-                      <UInput placeholder="Search Address" v-model="addressFilterInput" />
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                <OrderFilterPop>
+                  <UInput placeholder="Search Address" v-model="addressFilterInput" />
+                </OrderFilterPop>
               </div>
             </TableHead>
 
 
-            <TableHead class="w-[250px]">
-              Customer Company
+            <TableHead class="w-[350px]">
+              <div class="table-header">
+                Customer Company
+                <OrderFilterPop>
+                  <UInput placeholder="Search Company" v-model="customerCompanyFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[150px]">
-              Company Worker
+              <div class="table-header">
+                Company Worker
+                <OrderFilterPop>
+                  <UInput placeholder="Search Worker" v-model="companyWorkerFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[150px]">
-              Company Order Id
+              <div class="table-header">
+                Company Order Id
+                <OrderFilterPop>
+                  <UInput placeholder="Search Order Id" v-model="companyOrderIdFilterInput" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[170px]">
-              Weight
+              <div class="table-header">
+                Weight
+                <OrderFilterPop>
+                  <URadioGroup v-model="weightTypeAction" legend="Choose action" :options="numFilterOptions" />
+                  <UInput placeholder="Search weight" v-model="weightFilterInput" type="number" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[300px]">
@@ -448,7 +482,13 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
             </TableHead>
 
             <TableHead class="w-[150px]">
-              Sum
+              <div class="table-header">
+                Sum
+                <OrderFilterPop>
+                  <URadioGroup v-model="sumTypeAction" legend="Choose action" :options="numFilterOptions" />
+                  <UInput placeholder="Search Sum" v-model="sumFilterInput" type="number" />
+                </OrderFilterPop>
+              </div>
             </TableHead>
 
             <TableHead class="w-[100px]">
@@ -465,92 +505,8 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
 
           </TableRow>
         </TableHeader>
-        <TableBody>
-          <TableRow v-for="(info, index) in  dates " ref="currentDateRefElement" v-memo="[dates, info.order]"
-            class="divide-x-2" :class="(info.order?.isDone) ? 'bg-green-400 bg-opacity-20' : ''" :key="index">
 
-            <TableCell class="font-medium transition-all duration-700 text-center"
-              :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
-              {{ format(info.date, "dd/MM/yyyy") }}
-            </TableCell>
-
-            <TableCell class="font-medium transition-all duration-700 text-center"
-              :data-date="info.date.toLocaleString()" :class="{ 'current-date': checkDates(info.date) }">
-              {{ format(info.date, "HH:mm") }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.order?.id }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.order?.licensePlate }}
-            </TableCell>
-            <TableCell>
-              {{ info.order?.driver ?? '' }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.orderType ?? '' }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.orderAddress ?? '' }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.customerCompany?.name ?? '' }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.order?.worker ?? '' }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.order?.orderId ?? '' }}
-            </TableCell>
-
-            <TableCell class="w-[170px]">
-              {{ info.order?.weight ? `${info.order?.weight} kg` : '' }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.order?.orderSize }}
-            </TableCell>
-
-            <TableCell>
-              {{ info.order?.orderSum ? `${info.order?.orderSum} €` : '' }}
-            </TableCell>
-
-            <TableCell>
-              <div class="flex flex-col justify-center items-center gap-2 h-full">
-                <div v-for="document in info.order?.documents">
-                  <a :href="document.link" target="_blank" size="xs" variant="outline" class="m-0">
-                    <UButton size="xs" variant="outline" class="m-0">
-                      {{ document.name }}
-                    </UButton>
-                  </a>
-                </div>
-              </div>
-            </TableCell>
-
-            <TableCell class="max-h-52">
-              <div class="w-[150px] text-ellipsis">
-                {{ info.order?.note }}
-              </div>
-            </TableCell>
-
-            <TableCell class="">
-              <div class="h-max text-transparent flex justify-center items-center">
-                <UCheckbox v-if="info.order" v-model="info.order.isDone" size='xs' class="m-0" />
-                <div v-else>.</div>
-              </div>
-            </TableCell>
-
-
-          </TableRow>
-
-        </TableBody>
+        <OrderTableDataBody :dates="dates" />
       </Table>
     </div>
   </div>
@@ -564,12 +520,12 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .current-date {
   @apply bg-primary text-black selection:bg-neutral-300;
 }
 
-.tablehead-spacing {
-  @apply flex items-center gap-x-2 justify-center;
+.table-header {
+  @apply flex items-center gap-x-2;
 }
 </style>

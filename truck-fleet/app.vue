@@ -12,7 +12,7 @@ useHead({
   ]
 })
 
-initFirestoreWithLocalCache();
+await initFirestoreWithLocalCache();
 // Change settings of vuefire
 
 

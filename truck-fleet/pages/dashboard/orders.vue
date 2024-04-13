@@ -1,41 +1,53 @@
 <script lang="ts" setup>
+import { format } from 'date-fns';
 useSeoMeta({
   titleTemplate: "%s - Orders"
-
 })
 
 definePageMeta({
   middleware: "order",
 })
 
-const qs = computed(() => {
-  let quer = useRoute().query;
-  if (quer.addOrder) {
-    let addOrder = useState('addOrder');
 
-  }
-})
+let currentDate = ref<Date>(new Date());
+
+setInterval(() => {
+  currentDate.value = new Date();
+}, 1000);
 
 </script>
 
 <template>
-  <div>
-    {{ qs }}
-    <div class="sticky top-0 z-20 rounded-b-xl dark:bg-cod-gray-950/30 bg-opacity-50 backdrop-blur-md">
-
-      <h1 class="text-center text-3xl py-4">Orders</h1>
-
-      <div class="flex p-2">
-        <OrderAddDialog />
-        <CompanyAddDialog />
-        <TrucksAddDialog />
-      </div>
+  <div class="flex w-full my-2 ml-5 mr-2 gap-4">
+    <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] p-6">
+      <OrderAddDialog />
+      <h1 class="font-bold text-3xl py-4 flex gap-x-2">
+        {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
+        <div class="flex gap-x-3 items-end">
+          <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
+        </div>
+      </h1>
 
       <!-- <UDivider class="py-5" /> -->
-      <OrderTruckTabs />
+
+      <NuxtPage />
+    </div>
+    <div class="flex flex-col flex-[0.3] gap-4">
+      <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl">
+
+      </div>
+      <div class="flex-[0.5] bg-[rgb(17,17,17)] rounded-xl">
+
+      </div>
+      <div class="flex-[0.4] flex gap-4">
+        <div class="bg-[rgb(17,17,17)] rounded-xl flex-[0.7]">
+
+        </div>
+        <div class="bg-[rgb(17,17,17)] rounded-xl flex-[0.3]">
+
+        </div>
+      </div>
     </div>
 
-
-    <NuxtPage />
   </div>
 </template>

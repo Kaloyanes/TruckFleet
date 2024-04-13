@@ -10,7 +10,12 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <NuxtPage />
+  <div class="flex pl-8 ">
+
+    <DashboardNavigation />
+
+    <div class="flex h-screen w-full">
+      <NuxtPage />
+    </div>
   </div>
 </template>
