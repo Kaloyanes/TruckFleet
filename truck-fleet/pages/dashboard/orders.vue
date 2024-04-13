@@ -18,17 +18,36 @@ setInterval(() => {
 </script>
 
 <template>
-  <div>
-    <OrderAddDialog />
-    <h1 class="font-bold text-3xl py-4 flex gap-x-2">
-      {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
-      <div class="flex gap-x-3 items-end">
-        <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
+  <div class="flex w-full my-2 ml-5 mr-2 gap-4">
+    <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] p-6">
+      <OrderAddDialog />
+      <h1 class="font-bold text-3xl py-4 flex gap-x-2">
+        {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
+        <div class="flex gap-x-3 items-end">
+          <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
+        </div>
+      </h1>
+
+      <!-- <UDivider class="py-5" /> -->
+
+      <NuxtPage />
+    </div>
+    <div class="flex flex-col flex-[0.3] gap-4">
+      <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl">
+
       </div>
-    </h1>
+      <div class="flex-[0.5] bg-[rgb(17,17,17)] rounded-xl">
 
-    <!-- <UDivider class="py-5" /> -->
+      </div>
+      <div class="flex-[0.4] flex gap-4">
+        <div class="bg-[rgb(17,17,17)] rounded-xl flex-[0.7]">
 
-    <NuxtPage />
+        </div>
+        <div class="bg-[rgb(17,17,17)] rounded-xl flex-[0.3]">
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
