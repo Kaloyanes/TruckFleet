@@ -309,7 +309,10 @@ watch(typeFilterInput, (value) => {
 
 
 watch(addressFilterInput, (value) => {
-  filterDates('orderAddress', value);
+  filterDates('orderAddress', value, (val, date) => {
+    console.log(date.orderAddress);
+    return date.orderAddress && date.orderAddress?.toLowerCase().trim().includes(val.toLowerCase())
+  });
 })
 
 watch(customerCompanyFilterInput, (value) => {
@@ -354,8 +357,8 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
               Time
             </TableHead>
 
-            <TableHead class='gap-x-2 w-[170px]'>
-              <div class="flex items-center gap-x-2">
+            <TableHead class='w-[170px]'>
+              <div class="tablehead-spacing">
                 Id
                 <Popover>
                   <PopoverTrigger>
@@ -374,8 +377,8 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
               Truck
             </TableHead>
 
-            <TableHead class='gap-x-2 md:w-[200px]'>
-              <div class="flex items-center gap-x-2">
+            <TableHead class='md:w-[200px]'>
+              <div class="tablehead-spacing">
                 Driver
                 <Popover>
                   <PopoverTrigger>
@@ -390,22 +393,37 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
               </div>
             </TableHead>
 
-            <TableHead class="flex items-center gap-x-2 justify-center">
-              Type
-              <Popover>
-                <PopoverTrigger>
-                  <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div class="flex flex-col gap-2">
-                    <URadioGroup v-model="typeFilterInput" legend="Choose type" :options="options" />
-                  </div>
-                </PopoverContent>
-              </Popover>
+            <TableHead>
+              <div class="tablehead-spacing">
+                Type
+                <Popover>
+                  <PopoverTrigger>
+                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div class="flex flex-col gap-2">
+                      <URadioGroup v-model="typeFilterInput" legend="Choose type" :options="options" class="gap-y-5" />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </TableHead>
 
             <TableHead class="w-[300px]">
-              Address
+              <div class="tablehead-spacing">
+                Address
+
+                <Popover>
+                  <PopoverTrigger>
+                    <UButton icon="i-material-symbols-filter-alt" size="2xs" variant="outline" />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div class="flex flex-col gap-2">
+                      <UInput placeholder="Search Address" v-model="addressFilterInput" />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </TableHead>
 
 
@@ -534,7 +552,6 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
 
         </TableBody>
       </Table>
-
     </div>
   </div>
   <div v-else>
@@ -550,5 +567,9 @@ function filterDates(field: string, value: string, checkValue = (val: string, da
 <style scoped>
 .current-date {
   @apply bg-primary text-black selection:bg-neutral-300;
+}
+
+.tablehead-spacing {
+  @apply flex items-center gap-x-2 justify-center;
 }
 </style>

@@ -21,7 +21,6 @@ export default defineNuxtConfig({
       ]
     }
   },
-  ssr: false,
   modules: [
     "nuxt-vuefire",
     "@nuxt/ui",
@@ -30,7 +29,9 @@ export default defineNuxtConfig({
     "@formkit/auto-animate",
     "@nuxtjs/google-fonts",
     "@nuxtjs/sitemap",
-    '@nuxtjs/tailwindcss', 'shadcn-nuxt'
+    '@nuxtjs/tailwindcss',
+    'shadcn-nuxt',
+    "@vueuse/motion"
   ],
   shadcn: {
     /**
@@ -54,6 +55,7 @@ export default defineNuxtConfig({
   vuefire: {
     auth: {
       enabled: true,
+      persistence: ["indexedDBLocal"],
     },
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
