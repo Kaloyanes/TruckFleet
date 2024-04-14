@@ -23,6 +23,6 @@ const modifiedQuery = (ref: any) => {
 
 <template>
   <div>
-
+    <OrderList :license-plate="licensePlate as string" />
   </div>
 </template>

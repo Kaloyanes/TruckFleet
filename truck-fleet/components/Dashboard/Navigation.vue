@@ -46,10 +46,11 @@ const profileLink = {
 </script>
 
 <template>
-  <div class="h-screen py-5 flex flex-col gap-5 items-center" v-motion :initial="{ opacity: 0.5, x: -70, scale: 0.5 }"
+  <div class="h-screen py-5 flex flex-col gap-5 items-center" v-motion :initial="{ opacity: 0, scale: 0.5, x: -100 }"
     :enter="{
-    opacity: 1, x: 0, scale: 1, transition: {
-      delay: 200
+    opacity: 1, scale: 1, x: 0, transition: {
+      duration: 500,
+      delay: 150,
     }
   }">
     <DashboardLogo />
@@ -68,7 +69,7 @@ const profileLink = {
       </template>
     </DashboardItem>
     <DashboardItem v-else :link="profileLink" />
-    <DashboardItem v-for=" link  in  endLinks " :link="link" />
+    <DashboardItem v-for="  link   in   endLinks  " :link="link" />
   </div>
 </template>
 
