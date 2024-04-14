@@ -30,6 +30,7 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
+    "@vueuse/motion",
     '@vueuse/nuxt',
     '@nuxt/image',
   ],
@@ -48,6 +49,7 @@ export default defineNuxtConfig({
   vuefire: {
     auth: {
       enabled: true,
+      persistence: ["indexedDBLocal"],
     },
     config: {
       apiKey: process.env.FIREBASE_API_KEY,

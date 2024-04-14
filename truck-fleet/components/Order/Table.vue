@@ -508,7 +508,6 @@ const { list, containerProps, scrollTo, wrapperProps } = useVirtualList(dates, {
 
         <OrderTableDataBody :dates="dates" />
       </Table>
-
     </div>
   </div>
   <div v-else>
