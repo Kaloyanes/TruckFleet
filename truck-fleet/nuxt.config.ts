@@ -30,9 +30,9 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
-    "@vueuse/motion",
     '@vueuse/nuxt',
     '@nuxt/image',
+    '@vueuse/motion/nuxt',
   ],
   shadcn: {
     prefix: '',

@@ -46,15 +46,21 @@ const profileLink = {
 </script>
 
 <template>
-  <div class="h-screen py-5 flex flex-col gap-5 items-center">
+  <div class="h-screen py-5 flex flex-col gap-5 items-center" v-motion :initial="{ opacity: 0.5, x: -70, scale: 0.5 }"
+    :enter="{
+    opacity: 1, x: 0, scale: 1, transition: {
+      delay: 200
+    }
+  }">
     <DashboardLogo />
+
     <DashboardItem v-for="link in links" :link="link" :exact-type="false" />
     <div class="flex-1" />
 
     <DashboardItem :link="{
-      title: profile?.name,
-      href: '/dashboard/profile',
-    }" v-if="profile?.profilePicture">
+    title: profile?.name,
+    href: '/dashboard/profile',
+  }" v-if="profile?.profilePicture">
       <template #icon>
         <Avatar class="w-6 h-6">
           <AvatarImage :src="profile!.profilePicture!" alt="Profile Picture" />
