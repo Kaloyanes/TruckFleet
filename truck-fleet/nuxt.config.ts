@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     storageKey: 'color-mode',
   },
   css: [
-    "@/assets/css/tailwind.css",
+    "@/assets/css/tailwind.scss",
   ],
   vuefire: {
     auth: {
