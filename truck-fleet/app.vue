@@ -12,10 +12,6 @@ useHead({
   ]
 })
 
-await initFirestoreWithLocalCache();
-// Change settings of vuefire
-
-
 </script>
 
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { Primitive, type PrimitiveProps } from 'radix-vue'
-import { type ButtonVariants, buttonVariants } from '.'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
+import { Primitive, type PrimitiveProps } from 'radix-vue';
+import type { HTMLAttributes } from 'vue';
+import { type ButtonVariants, buttonVariants } from '.';
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
@@ -13,14 +13,17 @@ interface Props extends PrimitiveProps {
 const props = withDefaults(defineProps<Props>(), {
   as: 'button',
 })
+
+const textColor = computed(() => {
+  if (props.variant === 'default' || props.variant === undefined) return 'text-black'
+
+  return 'text-white';
+})
+
 </script>
 
 <template>
-  <Primitive
-    :as="as"
-    :as-child="asChild"
-    :class="cn(buttonVariants({ variant, size }), props.class)"
-  >
+  <Primitive :as="as" :as-child="asChild" :class="cn(buttonVariants({ variant, size }), textColor, props.class)">
     <slot />
   </Primitive>
 </template>

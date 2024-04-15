@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { doc } from 'firebase/firestore';
 
 let user = useCurrentUser();
 let db = useFirestore();
@@ -7,9 +6,9 @@ let db = useFirestore();
 const {
   data: profile,
   promise: profilePromise
-} = useDocument(doc(db, `users/${user.value?.uid}`,));
+} = useProfileDoc();
 
-await profilePromise.value;
+let profilePicture = computed(() => profile?.value?.profilePicture || undefined)
 
 const links = [
   {
@@ -37,7 +36,6 @@ const endLinks = [
   }
 ]
 
-console.log(profile.value!.profilePicture)
 const profileLink = {
   title: 'Profile',
   href: '/dashboard/profile/account',
@@ -54,21 +52,22 @@ const profileLink = {
     }
   }">
     <DashboardLogo />
-
     <DashboardItem v-for="link in links" :link="link" :exact-type="false" />
     <div class="flex-1" />
 
-    <DashboardItem :link="{
+    <div>
+      <DashboardItem :link="{
     title: profile?.name,
     href: '/dashboard/profile',
-  }" v-if="profile?.profilePicture">
-      <template #icon>
-        <Avatar class="w-6 h-6">
-          <AvatarImage :src="profile!.profilePicture!" alt="Profile Picture" />
-        </Avatar>
-      </template>
-    </DashboardItem>
-    <DashboardItem v-else :link="profileLink" />
+  }" v-if="profilePicture">
+        <template #icon>
+          <Avatar class="w-6 h-6">
+            <AvatarImage :src="profilePicture" alt="Profile Picture" />
+          </Avatar>
+        </template>
+      </DashboardItem>
+      <DashboardItem v-else :link="profileLink" />
+    </div>
     <DashboardItem v-for="  link   in   endLinks  " :link="link" />
   </div>
 </template>
