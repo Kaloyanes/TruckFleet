@@ -7,14 +7,49 @@ const props = defineProps({
   }
 })
 
-const orders = await useOrders(props.licensePlate);
+const { orders, ordersPromise } = await useOrders(props.licensePlate);
 
-console.log(orders.value);
+await ordersPromise.value;
+const ordersReactivity = computed(() => {
+  // TODO: REMOVE THIS
+  orders.value;
+})
 </script>
 
 <template>
   <div>
-    {{ props.licensePlate }}
+    {{ ordersReactivity }}
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableCell>
+            <Checkbox disabled class="rounded-[5px]" />
+          </TableCell>
+          <TableCell>
+            Order Id
+          </TableCell>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow v-for="order in orders" class="rounded-lg">
+          <TableCell>
+            <Checkbox class="rounded-[5px]" />
+          </TableCell>
+          <TableCell>
+            {{ order.id }}
+          </TableCell>
+          <TableCell>
+            {{ order.customerCompanyRef.name }}
+          </TableCell>
+          <TableCell>
+            {{ order.note }}
+          </TableCell>
+          <TableCell>
+            {{ order.orderSum }}
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   </div>
 </template>
 

@@ -8,6 +8,7 @@ export default defineAppConfig({
     },
     icons: {
       dynamic: true,
+
     },
   }
 })

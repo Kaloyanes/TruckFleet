@@ -15,8 +15,8 @@ function goBack() {
     <h1 class="text-9xl">{{ error?.statusCode }}</h1>
     <h1>{{ error?.message }}</h1>
 
-    <UButton class="text-xl" @click="goBack">
+    <Button class="text-xl" @click="goBack">
       Go back home
-    </UButton>
+    </Button>
   </div>
 </template>

@@ -8,9 +8,9 @@ let user = useCurrentUser();
     <!-- Position it to top right -->
     <div class="fixed right-4 top-4">
       <NuxtLink :to="user ? '/dashboard' : '/login'">
-        <UButton :key="user">
+        <Button variant="outline">
           {{ user ? 'Dashboard' : 'Login' }}
-        </UButton>
+        </Button>
       </NuxtLink>
     </div>
 

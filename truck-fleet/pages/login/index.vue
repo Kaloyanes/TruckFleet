@@ -89,15 +89,15 @@ async function login() {
           </UFormGroup>
 
           <UFormGroup label="Password" name="password" required class="w-full">
-            <UButtonGroup size="xl" class="w-full">
+            <ButtonGroup size="xl" class="w-full">
               <UInput placeholder="Password" v-model="state.password" :type="maskPassword ? 'password' : 'text'"
                 icon="i-ic-baseline-password" class="rounded-r-none caret-primary w-full"
                 :ui="{ rounded: 'rounded-r-none' }" :color="state.errors.password !== undefined ? 'red' : 'primary'" />
 
-              <UButton variant='soft' class="rounded-l-none" @click.prevent="maskPassword = !maskPassword">
+              <Button variant='ghost' class="rounded-l-none" @click.prevent="maskPassword = !maskPassword">
                 <Icon :name="!maskPassword ? 'fluent:eye-16-filled' : 'fluent:eye-off-16-filled'" size="23" />
-              </UButton>
-            </UButtonGroup>
+              </Button>
+            </ButtonGroup>
 
             <template #error="{ error }">
               <span :class="[error ? 'text-red-500 dark:text-red-400' : 'text-primary-500 dark:text-primary-400']"
@@ -113,7 +113,7 @@ async function login() {
       <UDivider class="py-3" />
 
       <div class="flex flex-col justify-center gap-3">
-        <UButton color="primary" variant="solid" size="lg" block @click.prevent="login">Login</UButton>
+        <Button color="primary" variant="default" size="lg" block @click.prevent="login">Login</Button>
       </div>
     </UCard>
   </div>

@@ -21,8 +21,7 @@ export const useOrders = async (licensePlate: string) => {
   };
 
   const { data: orders, promise: ordersPromise } = useCollection(filteredQuery(orderRef));
-  await ordersPromise.value;
 
-  return orders;
+  return { orders, ordersPromise };
 
 }

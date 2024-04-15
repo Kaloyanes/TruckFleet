@@ -75,15 +75,15 @@ let auth = useFirebaseAuth();
           </UFormGroup>
 
           <UFormGroup label="Password" name="password" required class="w-full">
-            <UButtonGroup size="xl" class="w-full">
+            <ButtonGroup size="xl" class="w-full">
               <UInput placeholder="Password" v-model="state.password" :type="maskPassword ? 'password' : 'text'"
                 icon="i-ic-baseline-password" class="rounded-r-none caret-primary w-full"
                 :ui="{ rounded: 'rounded-r-none' }" :color="state.errors.password !== undefined ? 'red' : 'primary'" />
 
-              <UButton variant='soft' class="rounded-l-none" @click.prevent="maskPassword = !maskPassword">
+              <Button variant='outline' class="rounded-l-none" @click.prevent="maskPassword = !maskPassword">
                 <Icon :name="!maskPassword ? 'fluent:eye-16-filled' : 'fluent:eye-off-16-filled'" size="23" />
-              </UButton>
-            </UButtonGroup>
+              </Button>
+            </ButtonGroup>
 
             <template #error="{ error }">
               <span :class="[error ? 'text-red-500 dark:text-red-400' : 'text-primary-500 dark:text-primary-400']"
@@ -94,16 +94,16 @@ let auth = useFirebaseAuth();
           </UFormGroup>
 
           <UFormGroup label="Confirm Password" name="confirmPassword" required class="w-full">
-            <UButtonGroup size="xl" class="w-full">
+            <ButtonGroup size="xl" class="w-full">
               <UInput placeholder="Confirm Password" v-model="state.confirmPassword" icon="i-ic-baseline-password"
                 :type="maskPassword ? 'password' : 'text'" class="rounded-r-none caret-primary w-full"
                 :ui="{ rounded: 'rounded-r-none' }"
                 :color="state.errors.confirmPassword !== undefined ? 'red' : 'primary'" />
 
-              <UButton variant='soft' class="rounded-l-none" @click.prevent="maskPassword = !maskPassword">
+              <Button variant='ghost' class="rounded-l-none" @click.prevent="maskPassword = !maskPassword">
                 <Icon :name="!maskPassword ? 'fluent:eye-16-filled' : 'fluent:eye-off-16-filled'" size="23" />
-              </UButton>
-            </UButtonGroup>
+              </Button>
+            </ButtonGroup>
 
             <template #error="{ error }">
               <span :class="[error ? 'text-red-500 dark:text-red-400' : 'text-primary-500 dark:text-primary-400']"
@@ -120,7 +120,7 @@ let auth = useFirebaseAuth();
       <UDivider class="py-3" />
 
       <div class="flex flex-col justify-center gap-3">
-        <UButton color="primary" variant="solid" size="lg" block @click.prevent="">Register</UButton>
+        <Button color="primary" variant="default" size="lg" block @click.prevent="">Register</Button>
 
 
       </div>

@@ -277,7 +277,7 @@ function openDriverAddDialog() {
               <div class="flex justify-between items-center transition-all duration-300"
                 v-if="docValue.locations.length > 1" v-auto-animate>
                 <h1>Location #{{ index + 1 }}</h1>
-                <UButton @click="docValue.locations.splice(index, 1)" variant="soft"
+                <Button @click="docValue.locations.splice(index, 1)" variant="soft"
                   icon="i-material-symbols-delete-forever-rounded" />
               </div>
 
@@ -297,7 +297,7 @@ function openDriverAddDialog() {
                 <UInput v-model="location.deliveryAddress" placeholder="00000, Paris, France" />
               </UFormGroup>
             </div>
-            <UButton @click="addLocation">Add Location</UButton>
+            <Button @click="addLocation">Add Location</Button>
           </UFormGroup>
 
           <UFormGroup label="Company Info" required>
@@ -309,11 +309,11 @@ function openDriverAddDialog() {
                   <template #option-empty="{ query }">
                     <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                       <p>Company Not Found</p>
-                      <UButton @click="openCompanyAddDialog" variant="soft"
+                      <Button @click="openCompanyAddDialog" variant="soft"
                         class="flex-1 flex justify-center self-center">
                         Add
                         Company
-                      </UButton>
+                      </Button>
                     </div>
                   </template>
                 </UInputMenu>
@@ -341,11 +341,10 @@ function openDriverAddDialog() {
                   <template #option-empty="{ query }">
                     <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                       <p>Truck Not Found</p>
-                      <UButton @click="openTruckAddDialog" variant="soft"
-                        class="flex-1 flex justify-center self-center">
+                      <Button @click="openTruckAddDialog" variant="soft" class="flex-1 flex justify-center self-center">
                         Add
                         Truck
-                      </UButton>
+                      </Button>
                     </div>
                   </template>
                 </UInputMenu>
@@ -357,11 +356,11 @@ function openDriverAddDialog() {
                   <template #option-empty="{ query }">
                     <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                       <p>Driver Not Found</p>
-                      <UButton @click="openDriverAddDialog" variant="soft"
+                      <Button @click="openDriverAddDialog" variant="soft"
                         class="flex-1 flex justify-center self-center">
                         Add
                         Driver
-                      </UButton>
+                      </Button>
                     </div>
                   </template>
                 </UInputMenu>
@@ -408,11 +407,11 @@ function openDriverAddDialog() {
 
         <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
           <SheetClose as-child>
-            <UButton @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</UButton>
+            <Button @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</Button>
           </SheetClose>
-          <UButton type="submit" @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add
+          <Button type="submit" @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add
             Order
-          </UButton>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

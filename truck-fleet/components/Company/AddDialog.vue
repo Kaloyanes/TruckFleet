@@ -21,10 +21,10 @@ const isModalOpen = computed(() => {
         <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5 ">
 
           <SheetClose as-child>
-            <UButton variant="soft" class="flex-1 flex justify-center">Close</UButton>
+            <Button variant="soft" class="flex-1 flex justify-center">Close</Button>
           </SheetClose>
           <SheetClose as-child>
-            <UButton @click="addCompany" class="flex-1 flex justify-center">Add Company</UButton>
+            <Button @click="addCompany" class="flex-1 flex justify-center">Add Company</Button>
           </SheetClose>
         </div>
 

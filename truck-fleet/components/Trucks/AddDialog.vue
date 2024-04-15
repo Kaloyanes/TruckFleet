@@ -43,9 +43,9 @@ async function addTruck() {
         <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5 ">
 
           <SheetClose as-child>
-            <UButton variant="soft" class="flex-1 flex justify-center">Close</UButton>
+            <Button variant="soft" class="flex-1 flex justify-center">Close</Button>
           </SheetClose>
-          <UButton @click="addTruck" class="flex-1 flex justify-center">Add Truck</UButton>
+          <Button @click="addTruck" class="flex-1 flex justify-center">Add Truck</Button>
         </div>
       </UForm>
 
