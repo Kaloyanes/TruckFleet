@@ -33,7 +33,8 @@ const links = computed(() =>
     ...trucks.value?.map((truck: any) => ({
       label: truck.licensePlate,
       to: `/dashboard/orders/${truck.licensePlate}`
-    }))
+    })),
+
   ]
 );
 </script>
@@ -46,8 +47,8 @@ const links = computed(() =>
 
     <div v-if="!pending && !trucks.length">No trucks found</div>
 
-    <UHorizontalNavigation :links />
 
+    <UHorizontalNavigation :links />
 
   </div>
 </template>

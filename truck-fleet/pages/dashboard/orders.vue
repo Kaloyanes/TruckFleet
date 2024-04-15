@@ -22,9 +22,9 @@ async function openOrderAddDialog() {
 </script>
 
 <template>
-  <div class="flex w-full my-2 ml-5 mr-2 gap-4">
+  <div class="flex w-full max-w-full my-2 ml-5 mr-2 gap-4">
     <OrderAddDialog />
-    <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] p-6">
+    <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] flex-grow-0 p-6">
       <div class="flex justify-between items-center">
 
         <h1 class="font-bold text-3xl py-4 flex gap-x-2">
@@ -37,13 +37,19 @@ async function openOrderAddDialog() {
         <Button @click="openOrderAddDialog">Add Order</Button>
       </div>
 
+
+      <ScrollArea class="w-[60vw]">
+
+        <OrderTruckTabs />
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
       <UDivider class="py-5" />
 
       <NuxtPage />
     </div>
-    <div class="flex flex-col flex-[0.3] gap-4">
+    <div class="flex flex-col flex-[0.3] flex-grow gap-4">
       <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl">
-
+        <OrderSelected />
       </div>
       <div class="flex-[0.5] bg-[rgb(17,17,17)] rounded-xl">
 

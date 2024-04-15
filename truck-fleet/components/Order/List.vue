@@ -35,48 +35,81 @@ const { data: orders, promise: ordersPromise } = useCollection(filteredQuery(ord
 await ordersPromise.value;
 
 const ordersReactivity = computed(() => {
-  return orders.value;
+  orders.value;
 });
+
+function selectOrder(select: boolean, order: any) {
+
+  useState('selectedOrder').value = select ? order : null;
+
+}
 
 </script>
 
 <template>
   <div>
     {{ ordersReactivity }}
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableCell>
-            <Checkbox disabled class="rounded-[5px]" />
-          </TableCell>
-          <TableCell>
-            Order Id
-          </TableCell>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow v-for="order in orders" class="rounded-lg">
-          <TableCell>
-            <Checkbox class="rounded-[5px]" />
-          </TableCell>
-          <TableCell>
-            {{ order.id }}
-          </TableCell>
-          <TableCell>
-            {{ order.customerCompanyRef.name }}
-          </TableCell>
-          <TableCell>
-            {{ order.note }}
-          </TableCell>
-          <TableCell>
-            {{ order.orderSum }}
-          </TableCell>
-          <TableCell>
-            {{ (order.locations as Array<Object>).join(', ') }}
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+    <ScrollArea class="w-[60vw]">
+
+      <Table class="rounded-lg">
+        <TableHeader>
+          <TableRow>
+            <TableCell>
+              <Checkbox disabled class="rounded-[5px]" />
+            </TableCell>
+            <TableCell>
+              Order Id
+            </TableCell>
+            <TableCell class="min-w-[250px]">
+              Customer Company
+            </TableCell>
+          </TableRow>
+        </TableHeader>
+        <TableBody class="rounded-lg">
+          <TableRow v-for="order in orders" class="rounded-lg">
+            <TableCell>
+              <Checkbox class="rounded-[5px]" @update:checked="(val) => selectOrder(val, order)" />
+            </TableCell>
+            <TableCell>
+              {{ order.id }}
+            </TableCell>
+            <TableCell>
+              {{ order.customerCompanyRef.name }}
+            </TableCell>
+            <TableCell class="w-full">
+              {{ order.note }}
+            </TableCell>
+            <TableCell>
+              {{ order.orderSum }} EUR
+            </TableCell>
+            <TableCell class="min-w-[500px]">
+              <div v-for="location in (order.locations as Array<any>)" class="flex flex-col gap-2">
+                <ol class="relative border-s border-gray-200 dark:border-gray-700 flex flex-col gap-3">
+                  <OrderShowLocationInfo :address="location.pickUpAddress" :time="location.pickUpTime" />
+                  <OrderShowLocationInfo :address="location.deliveryAddress" :time="location.deliveryTime" />
+                </ol>
+              </div>
+            </TableCell>
+            <TableCell>
+              <Popover>
+                <PopoverTrigger>
+                  <Button size="icon" variant="ghost">
+                    <UIcon name="material-symbols:more-vert" size="20" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div class="flex flex-col gap-2">
+                    <h1>KGOAKFSO</h1>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   </div>
 </template>
 
