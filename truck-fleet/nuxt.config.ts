@@ -8,7 +8,6 @@ export default defineNuxtConfig({
   },
   experimental: {
     viewTransition: true,
-    typedPages: false,
   },
   app: {
     pageTransition: {
@@ -34,6 +33,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@vueuse/motion/nuxt',
   ],
+  builder: 'vite',
   shadcn: {
     prefix: '',
     componentDir: './components/ui'
@@ -44,7 +44,7 @@ export default defineNuxtConfig({
     storageKey: 'color-mode',
   },
   css: [
-    "@/assets/css/tailwind.scss",
+    "@/assets/css/tailwind.css",
   ],
   vuefire: {
     auth: {
@@ -76,11 +76,11 @@ export default defineNuxtConfig({
     }
   },
   // TODO: MAKE SSR TRUE WHEN PRODUCTION
-  ssr: false,
-  /*
+  ssr: true,
+
   routeRules: {
     "/dashboard/**": { ssr: false },
     "/login/**": { ssr: false },
     "/": { ssr: true, cache: { name: 'index-cache', swr: true, maxAge: 604800 }, }
-  }, */
+  },
 })

@@ -277,8 +277,9 @@ function openDriverAddDialog() {
               <div class="flex justify-between items-center transition-all duration-300"
                 v-if="docValue.locations.length > 1" v-auto-animate>
                 <h1>Location #{{ index + 1 }}</h1>
-                <Button @click="docValue.locations.splice(index, 1)" variant="soft"
-                  icon="i-material-symbols-delete-forever-rounded" />
+                <Button @click="docValue.locations.splice(index, 1)" size="icon" variant="destructive">
+                  <IconCSS name="i-material-symbols-delete-forever-rounded" size="24" />
+                </Button>
               </div>
 
               <UFormGroup label="Pick Up Time" name="pickUpTime" required>
@@ -309,8 +310,7 @@ function openDriverAddDialog() {
                   <template #option-empty="{ query }">
                     <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                       <p>Company Not Found</p>
-                      <Button @click="openCompanyAddDialog" variant="soft"
-                        class="flex-1 flex justify-center self-center">
+                      <Button @click="openCompanyAddDialog" class="flex-1 flex justify-center self-center">
                         Add
                         Company
                       </Button>
@@ -341,7 +341,8 @@ function openDriverAddDialog() {
                   <template #option-empty="{ query }">
                     <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                       <p>Truck Not Found</p>
-                      <Button @click="openTruckAddDialog" variant="soft" class="flex-1 flex justify-center self-center">
+                      <Button @click="openTruckAddDialog" variant="default"
+                        class="flex-1 flex justify-center self-center">
                         Add
                         Truck
                       </Button>
@@ -356,7 +357,7 @@ function openDriverAddDialog() {
                   <template #option-empty="{ query }">
                     <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
                       <p>Driver Not Found</p>
-                      <Button @click="openDriverAddDialog" variant="soft"
+                      <Button @click="openDriverAddDialog" variant="outline"
                         class="flex-1 flex justify-center self-center">
                         Add
                         Driver
@@ -407,7 +408,7 @@ function openDriverAddDialog() {
 
         <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
           <SheetClose as-child>
-            <Button @click="isOpen = false" variant="soft" class="flex-1 flex justify-center">Close</Button>
+            <Button @click="isOpen = false" variant="outline" class="flex-1 flex justify-center">Close</Button>
           </SheetClose>
           <Button type="submit" @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add
             Order

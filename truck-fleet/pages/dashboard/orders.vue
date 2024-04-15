@@ -15,20 +15,29 @@ setInterval(() => {
   currentDate.value = new Date();
 }, 1000);
 
+async function openOrderAddDialog() {
+  await navigateTo({ hash: "#addOrder" });
+}
+
 </script>
 
 <template>
   <div class="flex w-full my-2 ml-5 mr-2 gap-4">
+    <OrderAddDialog />
     <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] p-6">
-      <OrderAddDialog />
-      <h1 class="font-bold text-3xl py-4 flex gap-x-2">
-        {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
-        <div class="flex gap-x-3 items-end">
-          <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
-        </div>
-      </h1>
+      <div class="flex justify-between items-center">
 
-      <!-- <UDivider class="py-5" /> -->
+        <h1 class="font-bold text-3xl py-4 flex gap-x-2">
+          {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
+          <div class="flex gap-x-3 items-end">
+            <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
+          </div>
+        </h1>
+
+        <Button @click="openOrderAddDialog">Add Order</Button>
+      </div>
+
+      <UDivider class="py-5" />
 
       <NuxtPage />
     </div>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { Query } from 'firebase/firestore';
+import { collection, query, where } from 'firebase/firestore';
 
 const props = defineProps({
   licensePlate: {
@@ -7,13 +9,35 @@ const props = defineProps({
   }
 })
 
-const { orders, ordersPromise } = await useOrders(props.licensePlate);
+const db = useFirestore();
+
+
+const {
+  data: profile,
+  promise: profilePromise,
+} = useProfileDoc()
+
+await profilePromise.value;
+
+let id = profile.value?.type === 'company' ? profile.value?.id : profile.value?.companyId;
+
+
+
+const orderRef = query(collection(db, 'orders'), where('companyId', '==', id));
+const filteredQuery = (ordersQuery: Query) => {
+  return props.licensePlate === 'all'
+    ? ordersQuery
+    : query(ordersQuery, where('licensePlate', '==', props.licensePlate));
+};
+
+const { data: orders, promise: ordersPromise } = useCollection(filteredQuery(orderRef));
 
 await ordersPromise.value;
+
 const ordersReactivity = computed(() => {
-  // TODO: REMOVE THIS
-  orders.value;
-})
+  return orders.value;
+});
+
 </script>
 
 <template>

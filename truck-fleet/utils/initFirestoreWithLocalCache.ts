@@ -13,4 +13,6 @@ export default async () => {
     ),
   });
 
+  console.log(store);
+
 }

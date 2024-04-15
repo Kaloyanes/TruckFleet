@@ -80,7 +80,7 @@ function checkDates(date: Date) {
         <div class="flex flex-col justify-center items-center gap-2 h-full">
           <div v-for="document in info.order?.documents">
             <a :href="document.link" target="_blank" size="xs" variant="outline" class="m-0">
-              <Button size="xs" variant="outline" class="m-0">
+              <Button size="sm" variant="outline" class="m-0">
                 {{ document.name }}
               </Button>
             </a>
