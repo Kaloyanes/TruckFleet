@@ -47,6 +47,9 @@ const ordersReactivity = computed(() => {
           <TableCell>
             {{ order.orderSum }}
           </TableCell>
+          <TableCell>
+            {{ (order.locations as Array<Object>).join(', ') }}
+          </TableCell>
         </TableRow>
       </TableBody>
     </Table>
