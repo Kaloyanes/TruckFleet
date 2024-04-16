@@ -24,10 +24,10 @@ const linkTitle = computed(() => {
 
 <template>
   <HoverCard>
-
     <HoverCardTrigger>
       <div
-        class="p-3 bg-neutral-900 rounded-md flex items-center justify-center duration-300 hover:bg-primary/50 hover:cursor-pointer hover:scale-105 active:scale-95 "
+        class="p-3 bg-neutral
+        -900 rounded-md flex items-center justify-center duration-300 hover:bg-primary/50 hover:cursor-pointer hover:scale-105 active:scale-95 "
         @click="$router.push(link.href)" :class="{ 'bg-primary': linkTitle }">
         <slot name="icon">
           <UIcon :name="props.link.icon" class="w-6 h-6" :color="linkTitle ? 'black' : 'white'" />
@@ -35,7 +35,7 @@ const linkTitle = computed(() => {
       </div>
     </HoverCardTrigger>
 
-    <HoverCardContent class="text-center w-min py-2">
+    <HoverCardContent class="text-center w-min py-2" :class="{ 'hidden': linkTitle }">
       {{ props.link.title }}
     </HoverCardContent>
   </HoverCard>

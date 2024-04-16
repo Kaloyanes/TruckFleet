@@ -22,9 +22,9 @@ const address = props.address;
 <template>
   <li class="ms-4 flex flex-col gap-2">
     <circle
-      class="absolute w-3 h-3 bg-gray-200 rounded-full -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
+      class="absolute w-3 h-3 bg-gray-200 rounded-full -start-[0.43rem] border border-white dark:border-gray-900 dark:bg-gray-700">
     </circle>
-    <time class="text-sm font-normal leading-none text-gray-400 dark:text-gray-500 flex gap-1 flex-nowrap">
+    <time class=" text-sm font-normal leading-none text-gray-400 dark:text-gray-500 flex gap-1 flex-nowrap">
       <div>{{ format((time.start as Timestamp).toDate(), "dd MMM | HH:00") }} </div>
       <div v-if="(time.end as Timestamp).seconds !== (time.start as
         Timestamp).seconds">-

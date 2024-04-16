@@ -12,6 +12,11 @@ let profilePicture = computed(() => profile?.value?.profilePicture || undefined)
 
 const links = [
   {
+    title: 'Chats',
+    href: '/dashboard/chats',
+    icon: 'i-material-symbols-chat',
+  },
+  {
     title: 'Home',
     href: '/dashboard/home',
     icon: 'i-material-symbols-home-outline-rounded',
