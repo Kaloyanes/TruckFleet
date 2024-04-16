@@ -39,11 +39,8 @@ const ordersReactivity = computed(() => {
 });
 
 function selectOrder(select: boolean, order: any) {
-
   useState('selectedOrder').value = select ? order : null;
-
 }
-
 </script>
 
 <template>
@@ -57,6 +54,9 @@ function selectOrder(select: boolean, order: any) {
             <TableCell>
               <Checkbox disabled class="rounded-[5px]" />
             </TableCell>
+            <TableCell class="min-w-[300px]">
+              Locations
+            </TableCell>
             <TableCell>
               Order Id
             </TableCell>
@@ -66,10 +66,18 @@ function selectOrder(select: boolean, order: any) {
           </TableRow>
         </TableHeader>
         <TableBody class="rounded-lg">
-          <TableRow v-for="order in [...orders, ...orders]" class="rounded-lg">
+          <TableRow v-for="order in orders" class="rounded-lg">
             <TableCell>
               <Checkbox class="rounded-[5px]" :checked="useState('selectedOrder').value === order"
                 @update:checked="(val) => selectOrder(val, order)" />
+            </TableCell>
+            <TableCell>
+              <div v-for="location in (order.locations as Array<any>) " class="flex flex-col gap-2">
+                <ol class="relative border-s border-gray-200 dark:border-gray-700 flex flex-col gap-3">
+                  <OrderShowLocationInfo :address="location.pickUpAddress" :time="location.pickUpTime" />
+                  <OrderShowLocationInfo :address="location.deliveryAddress" :time="location.deliveryTime" />
+                </ol>
+              </div>
             </TableCell>
             <TableCell>
               {{ order.id }}
@@ -77,20 +85,11 @@ function selectOrder(select: boolean, order: any) {
             <TableCell>
               {{ order.customerCompanyRef.name }}
             </TableCell>
-            <TableCell class="min-w-[250px]">
-              {{ order.note }}
-            </TableCell>
             <TableCell class="min-w-[100px]">
               {{ order.orderSum }} EUR
             </TableCell>
-            <TableCell class="min-w-[300px]">
-              <div v-for="location in (order.locations as Array<any>)" class="flex flex-col gap-2">
-                <ol class="relative border-s border-gray-200 dark:border-gray-700 flex flex-col gap-3">
-                  <OrderShowLocationInfo :address="location.pickUpAddress" :time="location.pickUpTime" />
-                  <OrderShowLocationInfo :address="location.deliveryAddress" :time="location.deliveryTime" />
-                </ol>
-              </div>
-            </TableCell>
+
+
             <TableCell>
               <Popover>
                 <PopoverTrigger>

@@ -18,6 +18,7 @@ setInterval(() => {
 async function openOrderAddDialog() {
   await navigateTo({ hash: "#addOrder" });
 }
+const circumference = 0.6;
 
 </script>
 
@@ -47,14 +48,16 @@ async function openOrderAddDialog() {
 
       <NuxtPage />
     </div>
-    <div class="flex flex-col flex-[0.3] flex-grow gap-4">
-      <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl">
+    <div class="flex flex-col flex-[0.3] flex-grow gap-4 ">
+      <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl p-6 relative overflow-hidden">
         <OrderSelected />
+        <circle class="absolute w-[400px] h-[400px] blur-[125px] top-[40%] left-[30%] z-0 rounded-full bg-primary/35">
+        </circle>
       </div>
       <div class="flex-[0.5] bg-[rgb(17,17,17)] rounded-xl">
 
       </div>
-      <div class="flex-[0.4] flex gap-4">
+      <div class="flex-[0.4] flex gap-4 ">
         <div class="bg-[rgb(17,17,17)] rounded-xl flex-[0.7]">
 
         </div>

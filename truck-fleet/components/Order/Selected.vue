@@ -1,10 +1,13 @@
 <script lang="ts" setup>
-const selectedOrder = useState('selectedOrder', () => null)
+const selectedOrder = useState<any | null>('selectedOrder', () => null)
 </script>
 
 <template>
   <div>
-    {{ selectedOrder }}
+    <h1 class="text-xl font-light">Selected Route</h1>
+    <div v-if="selectedOrder">
+      {{ selectedOrder.id }}
+    </div>
   </div>
 </template>
 
