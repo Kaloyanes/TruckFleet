@@ -24,7 +24,9 @@ const circumference = 0.6;
 
 <template>
   <div class="flex w-full max-w-full my-2 ml-5 mr-2 gap-4">
-    <OrderAddDialog />
+    <LazyOrderAddDialog />
+    <LazyCompanyAddDialog />
+    <LazyTrucksAddDialog />
     <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] flex-grow-0 p-6">
       <div class="flex justify-between items-center">
 
