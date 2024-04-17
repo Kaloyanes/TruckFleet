@@ -15,8 +15,8 @@ function goBack() {
     <h1 class="text-9xl">{{ error?.statusCode }}</h1>
     <h1>{{ error?.message }}</h1>
 
-    <Buttogin variant="outline" click="goBack">
+    <Button variant="outline" click="goBack">
       Go back home
-    </Buttogin>
+    </Button>
   </div>
 </template>

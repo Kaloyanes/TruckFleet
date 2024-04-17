@@ -108,7 +108,7 @@ function selectOrder(select: boolean, order: any) {
           <TableRow v-for="order in orders" class="rounded-lg">
             <TableCell>
               <Checkbox class="rounded-[5px]" :checked="useState('selectedOrder').value === order"
-                @update:checked="(val) => selectOrder(val, order)" />
+                @update:checked="(val: boolean) => selectOrder(val, order)" />
             </TableCell>
 
 
