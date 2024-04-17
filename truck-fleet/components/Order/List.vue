@@ -72,17 +72,7 @@ function selectOrder(select: boolean, order: any) {
               Locations
             </TableCell>
 
-            <TableCell class="min-w-[250px]">
-              Customer Company
-            </TableCell>
 
-            <TableCell class="min-w-[150px]">
-              Customer Company Worker
-            </TableCell>
-
-            <TableCell>
-              Customer Order Id
-            </TableCell>
 
             <TableCell>
               Weight
@@ -96,12 +86,20 @@ function selectOrder(select: boolean, order: any) {
               Salary
             </TableCell>
 
+            <TableCell class="min-w-[250px]">
+              Customer Company
+            </TableCell>
+
             <TableCell>
               Documents
             </TableCell>
 
             <TableCell class="min-w[250px]">
               Note
+            </TableCell>
+
+            <TableCell>
+              Status
             </TableCell>
 
           </TableRow>
@@ -136,17 +134,7 @@ function selectOrder(select: boolean, order: any) {
               </div>
             </TableCell>
 
-            <TableCell>
-              {{ order.customerCompanyRef?.name ?? '' }}
-            </TableCell>
 
-            <TableCell>
-              {{ order?.worker ?? '' }}
-            </TableCell>
-
-            <TableCell>
-              {{ order?.orderId ?? '' }}
-            </TableCell>
 
             <TableCell class="w-[170px]">
               {{ order?.weight ? `${order?.weight} kg` : '' }}
@@ -158,6 +146,27 @@ function selectOrder(select: boolean, order: any) {
 
             <TableCell>
               {{ order?.orderSum ? `${order?.orderSum} €` : '' }}
+            </TableCell>
+
+            <TableCell class="h-max align-middle">
+              <HoverCard>
+                <HoverCardTrigger>
+                  <div class="h-full">
+                    {{ order.customerCompanyRef?.name ?? '' }}
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div class="flex flex-col gap-2">
+                    <div class="text-center">
+                      Company Info
+                    </div>
+                    <UDivider class="py-2" />
+
+                    <h1><strong>Order ID: </strong> {{ order?.orderId }}</h1>
+                    <h1><strong>Worker: </strong> {{ order?.worker }}</h1>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             </TableCell>
 
             <TableCell>

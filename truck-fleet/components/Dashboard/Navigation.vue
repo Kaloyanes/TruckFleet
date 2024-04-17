@@ -23,7 +23,7 @@ const links = [
   },
   {
     title: 'Orders',
-    href: '/dashboard/orders/all',
+    href: '/dashboard/orders',
     icon: 'i-material-symbols-receipt',
   },
   {
