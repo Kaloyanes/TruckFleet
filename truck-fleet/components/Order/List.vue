@@ -54,15 +54,56 @@ function selectOrder(select: boolean, order: any) {
             <TableCell>
               <Checkbox disabled class="rounded-[5px]" />
             </TableCell>
-            <TableCell class="min-w-[300px]">
-              Locations
-            </TableCell>
+
+
             <TableCell>
               Order Id
             </TableCell>
+
+            <TableCell class="min-w-[120px]">
+              Truck
+            </TableCell>
+
+            <TableCell class="min-w-[150px]">
+              Driver
+            </TableCell>
+
+            <TableCell class="min-w-[300px]">
+              Locations
+            </TableCell>
+
             <TableCell class="min-w-[250px]">
               Customer Company
             </TableCell>
+
+            <TableCell class="min-w-[150px]">
+              Customer Company Worker
+            </TableCell>
+
+            <TableCell>
+              Customer Order Id
+            </TableCell>
+
+            <TableCell>
+              Weight
+            </TableCell>
+
+            <TableCell>
+              Size
+            </TableCell>
+
+            <TableCell>
+              Salary
+            </TableCell>
+
+            <TableCell>
+              Documents
+            </TableCell>
+
+            <TableCell class="min-w[250px]">
+              Note
+            </TableCell>
+
           </TableRow>
         </TableHeader>
         <TableBody class="rounded-lg">
@@ -71,24 +112,78 @@ function selectOrder(select: boolean, order: any) {
               <Checkbox class="rounded-[5px]" :checked="useState('selectedOrder').value === order"
                 @update:checked="(val) => selectOrder(val, order)" />
             </TableCell>
+
+
             <TableCell>
-              <div v-for="location in (order.locations as Array<any>) " class="flex flex-col gap-2">
+              {{ order?.id }}
+            </TableCell>
+
+            <TableCell class="align-middle">
+              <Icon name="bx:bxs-truck" size="25" />
+              {{ order?.licensePlate }}
+            </TableCell>
+
+            <TableCell>
+              {{ order?.driver ?? '' }}
+            </TableCell>
+
+            <TableCell>
+              <div v-for="location in (order.locations as Array<any>)  " class="flex flex-col gap-2">
                 <ol class="relative border-s border-gray-200 dark:border-gray-700 flex flex-col gap-3">
                   <OrderShowLocationInfo :address="location.pickUpAddress" :time="location.pickUpTime" />
                   <OrderShowLocationInfo :address="location.deliveryAddress" :time="location.deliveryTime" />
                 </ol>
               </div>
             </TableCell>
+
             <TableCell>
-              {{ order.id }}
-            </TableCell>
-            <TableCell>
-              {{ order.customerCompanyRef.name }}
-            </TableCell>
-            <TableCell class="min-w-[100px]">
-              {{ order.orderSum }} EUR
+              {{ order.customerCompanyRef?.name ?? '' }}
             </TableCell>
 
+            <TableCell>
+              {{ order?.worker ?? '' }}
+            </TableCell>
+
+            <TableCell>
+              {{ order?.orderId ?? '' }}
+            </TableCell>
+
+            <TableCell class="w-[170px]">
+              {{ order?.weight ? `${order?.weight} kg` : '' }}
+            </TableCell>
+
+            <TableCell>
+              {{ order?.orderSize }}
+            </TableCell>
+
+            <TableCell>
+              {{ order?.orderSum ? `${order?.orderSum} €` : '' }}
+            </TableCell>
+
+            <TableCell>
+              <div class="flex flex-col justify-center items-center gap-2 h-full">
+                <div v-for="document in order?.documents">
+                  <a :href="document.link" target="_blank" size="xs" variant="outline" class="m-0">
+                    <Button size="sm" variant="outline" class="m-0">
+                      {{ document.name }}
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </TableCell>
+
+            <TableCell class="max-h-52">
+              <div class="w-[150px] text-ellipsis">
+                {{ order?.note }}
+              </div>
+            </TableCell>
+
+            <TableCell class="">
+              <div class="h-max text-transparent flex justify-center items-center">
+                <UCheckbox v-if="order" v-model="order.isDone" class="m-0" />
+                <div v-else>.</div>
+              </div>
+            </TableCell>
 
             <TableCell>
               <Popover>
