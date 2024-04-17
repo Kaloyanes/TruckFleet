@@ -41,6 +41,8 @@ const ordersReactivity = computed(() => {
 function selectOrder(select: boolean, order: any) {
   useState('selectedOrder').value = select ? order : null;
 }
+
+
 </script>
 
 <template>
@@ -72,8 +74,6 @@ function selectOrder(select: boolean, order: any) {
               Locations
             </TableCell>
 
-
-
             <TableCell>
               Weight
             </TableCell>
@@ -100,6 +100,10 @@ function selectOrder(select: boolean, order: any) {
 
             <TableCell>
               Status
+            </TableCell>
+
+            <TableCell>
+              Actions
             </TableCell>
 
           </TableRow>
@@ -193,6 +197,7 @@ function selectOrder(select: boolean, order: any) {
                 <div v-else>.</div>
               </div>
             </TableCell>
+
 
             <TableCell>
               <Popover>

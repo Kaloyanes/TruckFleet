@@ -14,6 +14,15 @@ const items = [{
 }]
 
 
+let num = 5;
+
+function addNumbers(num1: number, num2: number) {
+  return num1 + num2;
+}
+
+addNumbers(1, 5);
+
+
 const route = useRoute()
 const router = useRouter()
 
