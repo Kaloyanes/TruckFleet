@@ -6,6 +6,7 @@ let user2 = useCurrentUser();
   <div>
     <h1>Welcome</h1>
     <h2>{{ user2?.email }}</h2>
+    <h1>HELLO WORLD</h1>
   </div>
 </template>
 

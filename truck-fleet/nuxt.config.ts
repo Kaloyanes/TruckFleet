@@ -76,11 +76,5 @@ export default defineNuxtConfig({
     }
   },
   // TODO: MAKE SSR TRUE WHEN PRODUCTION
-  ssr: true,
-
-  routeRules: {
-    "/dashboard/**": { ssr: false },
-    "/login/**": { ssr: false },
-    "/": { ssr: true, cache: { name: 'index-cache', swr: true, maxAge: 604800 }, }
-  },
+  ssr: false,
 })

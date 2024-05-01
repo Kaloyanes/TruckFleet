@@ -18,21 +18,20 @@ setInterval(() => {
 async function openOrderAddDialog() {
   await navigateTo({ hash: "#addOrder" });
 }
-const circumference = 0.6;
 
 </script>
 
 <template>
-  <div class="flex w-full max-w-full my-2 ml-5 mr-2 gap-4">
-    <LazyOrderAddDialog />
-    <LazyCompanyAddDialog />
-    <LazyTrucksAddDialog />
-    <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] flex-grow-0 p-6">
+  <div class="flex w-full max-w-full my-2 mr-2 gap-6">
+
+
+    <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] p-6">
+
       <div class="flex justify-between items-center">
 
-        <h1 class="font-bold text-3xl py-4 flex gap-x-2">
+        <h1 class="font-bold text-3xl py-4 flex">
           {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
-          <div class="flex gap-x-3 items-end">
+          <div class="flex gap-3 items-end">
             <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
           </div>
         </h1>
@@ -49,8 +48,12 @@ const circumference = 0.6;
       <UDivider class="py-5" />
 
       <NuxtPage />
+      <LazyOrderAddDialog />
+      <LazyCompanyAddDialog />
+      <LazyTrucksAddDialog />
     </div>
-    <div class="flex flex-col flex-[0.3] flex-grow gap-4 ">
+
+    <div class="flex flex-col flex-[0.3] gap-6">
       <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl p-6 relative overflow-hidden">
         <OrderSelected />
         <circle class="absolute w-[400px] h-[400px] blur-[125px] top-[40%] left-[30%] z-0 rounded-full bg-primary/35">

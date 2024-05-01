@@ -43,7 +43,7 @@ async function addTruck() {
         <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5 ">
 
           <SheetClose as-child>
-            <Button variant="soft" class="flex-1 flex justify-center">Close</Button>
+            <Button variant="outline" class="flex-1 flex justify-center">Close</Button>
           </SheetClose>
           <Button @click="addTruck" class="flex-1 flex justify-center">Add Truck</Button>
         </div>
