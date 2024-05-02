@@ -12,18 +12,23 @@ useSeoMeta({
   <div class="flex w-full max-w-full my-2 mr-2 gap-6">
     <div class="flex flex-col flex-[0.2] gap-6 ">
 
-      <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl p-6 w-full relative overflow-hidden">
-        <Button class="mb-2" @click="openTruckAddDialog">Add Truck</Button>
+      <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl  w-full relative overflow-scroll  flex flex-col h-full">
 
-        <TrucksFilterChips />
+        <div class="self-end p-3 mb-2 mx-2 sticky top-0 z-[50]">
+          <Button @click="openTruckAddDialog">Add Truck</Button>
+        </div>
+
+        <div class="p-3 sticky top-12 z-[50] mx-2">
+          <TrucksFilterChips />
+        </div>
+
+
         <TrucksList />
 
-        <circle
-          class="absolute w-[600px] h-[600px] blur-[125px] top-[70%] right-[30%] z-0 rounded-full bg-primary/35 transition-all">
-        </circle>
+
       </div>
 
-      <div class="flex-[0.5] bg-primary rounded-xl">
+      <div class="flex-[0.5] bg-primary/50 rounded-xl">
         <TrucksSelected />
       </div>
     </div>
@@ -32,6 +37,7 @@ useSeoMeta({
       <LazyOrderAddDialog />
       <LazyCompanyAddDialog />
       <LazyTrucksAddDialog />
+
       <NuxtPage />
     </div>
 

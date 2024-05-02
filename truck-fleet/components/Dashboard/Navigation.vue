@@ -30,6 +30,11 @@ const links = [
     title: 'Trucks',
     href: '/dashboard/trucks',
     icon: 'i-heroicons-truck',
+  },
+  {
+    title: 'Companies',
+    href: '/dashboard/companies',
+    icon: 'i-material-symbols-home-work-outline-rounded',
   }
 ]
 

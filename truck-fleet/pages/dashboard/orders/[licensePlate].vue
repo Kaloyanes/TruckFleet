@@ -10,7 +10,5 @@ const licensePlate = computed(() => route.params.licensePlate);
 </script>
 
 <template>
-  <div>
-    <OrderList :license-plate="(licensePlate as string)" />
-  </div>
+  <OrderList :license-plate="(licensePlate as string)" />
 </template>

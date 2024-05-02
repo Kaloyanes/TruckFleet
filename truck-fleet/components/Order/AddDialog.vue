@@ -255,167 +255,168 @@ function openTruckAddDialog() {
 function openDriverAddDialog() {
   navigateTo('#addDriver')
 }
+
+// TODO: Add validation
+// TODO: ?edit=orderId
 </script>
 
 <template>
   {{ reactToSlugChanges }}
-  <div>
-    <Sheet :open="isOpen" @update:open="(e: boolean) => {
+  <Sheet :open="isOpen" @update:open="(e: boolean) => {
     if (!e) {
       useRouter().back();
     }
   }">
-      <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
-        <SheetHeader>
-          <SheetTitle>Add Order</SheetTitle>
-        </SheetHeader>
+    <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
+      <SheetHeader>
+        <SheetTitle>Add Order</SheetTitle>
+      </SheetHeader>
 
-        <UForm :schema="schema" :state="docValue" @submit.prevent="" class="flex flex-col gap-3" v-auto-animate>
-          <UFormGroup v-auto-animate>
-            <div v-for="(location, index) in docValue.locations" :key="index" class="flex flex-col gap-3 mb-3"
-              v-auto-animate>
-              <div class="flex justify-between items-center transition-all duration-300"
-                v-if="docValue.locations.length > 1" v-auto-animate>
-                <h1>Location #{{ index + 1 }}</h1>
-                <Button @click="docValue.locations.splice(index, 1)" size="icon" variant="destructive">
-                  <IconCSS name="i-material-symbols-delete-forever-rounded" size="24" />
-                </Button>
-              </div>
-
-              <UFormGroup label="Pick Up Time" name="pickUpTime" required>
-                <DateRangePickerButton v-model="location.pickUpTime" :range="true" />
-              </UFormGroup>
-
-              <UFormGroup label="Pick Up Address" name="pickUpAddress" required>
-                <UInput v-model="location.pickUpAddress" placeholder="00000, Paris, France" />
-              </UFormGroup>
-
-              <UFormGroup label="Delivery Time" name="deliveryTime" required>
-                <DateRangePickerButton v-model="location.deliveryTime" :range="true" />
-              </UFormGroup>
-
-              <UFormGroup label="Delivery Address" name="deliveryAddress" required>
-                <UInput v-model="location.deliveryAddress" placeholder="00000, Paris, France" />
-              </UFormGroup>
+      <UForm :schema="schema" :state="docValue" @submit.prevent="" class="flex flex-col gap-3" v-auto-animate>
+        <UFormGroup v-auto-animate>
+          <div v-for="(location, index) in docValue.locations" :key="index" class="flex flex-col gap-3 mb-3"
+            v-auto-animate>
+            <div class="flex justify-between items-center transition-all duration-300"
+              v-if="docValue.locations.length > 1" v-auto-animate>
+              <h1>Location #{{ index + 1 }}</h1>
+              <Button @click="docValue.locations.splice(index, 1)" size="icon" variant="destructive">
+                <IconCSS name="i-material-symbols-delete-forever-rounded" size="24" />
+              </Button>
             </div>
-            <Button @click="addLocation">Add Location</Button>
-          </UFormGroup>
 
-          <UFormGroup label="Company Info" required>
-            <div class="flex flex-col gap-y-3">
+            <UFormGroup label="Pick Up Time" name="pickUpTime" required>
+              <DateRangePickerButton v-model="location.pickUpTime" :range="true" />
+            </UFormGroup>
 
-              <UFormGroup name="customerCompanyId">
-                <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name']"
-                  v-model="docValue.customerCompanyId" value-attribute="id" placeholder="Select Company">
-                  <template #option-empty="{ query }">
-                    <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
-                      <p>Company Not Found</p>
-                      <Button @click="openCompanyAddDialog" class="flex-1 flex justify-center self-center">
-                        Add
-                        Company
-                      </Button>
-                    </div>
-                  </template>
-                </UInputMenu>
-              </UFormGroup>
+            <UFormGroup label="Pick Up Address" name="pickUpAddress" required>
+              <UInput v-model="location.pickUpAddress" placeholder="00000, Paris, France" />
+            </UFormGroup>
 
-              <UFormGroup name="worker">
+            <UFormGroup label="Delivery Time" name="deliveryTime" required>
+              <DateRangePickerButton v-model="location.deliveryTime" :range="true" />
+            </UFormGroup>
 
-                <UInput placeholder="Worker" v-model="docValue.worker" />
-              </UFormGroup>
+            <UFormGroup label="Delivery Address" name="deliveryAddress" required>
+              <UInput v-model="location.deliveryAddress" placeholder="00000, Paris, France" />
+            </UFormGroup>
+          </div>
+          <Button @click="addLocation">Add Location</Button>
+        </UFormGroup>
 
-              <UFormGroup name="orderId">
-                <UInput placeholder="Order Id" v-model="docValue.orderId" />
-              </UFormGroup>
-            </div>
-          </UFormGroup>
+        <UFormGroup label="Company Info" required>
+          <div class="flex flex-col gap-y-3">
+
+            <UFormGroup name="customerCompanyId">
+              <UInputMenu :options="companies" by="id" option-attribute="name" :search-attributes="['name']"
+                v-model="docValue.customerCompanyId" value-attribute="id" placeholder="Select Company">
+                <template #option-empty="{ query }">
+                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                    <p>Company Not Found</p>
+                    <Button @click="openCompanyAddDialog" class="flex-1 flex justify-center self-center">
+                      Add
+                      Company
+                    </Button>
+                  </div>
+                </template>
+              </UInputMenu>
+            </UFormGroup>
+
+            <UFormGroup name="worker">
+
+              <UInput placeholder="Worker" v-model="docValue.worker" />
+            </UFormGroup>
+
+            <UFormGroup name="orderId">
+              <UInput placeholder="Order Id" v-model="docValue.orderId" />
+            </UFormGroup>
+          </div>
+        </UFormGroup>
 
 
-          <UFormGroup label="Truck Info" required>
-            <div class="flex flex-col gap-y-3">
+        <UFormGroup label="Truck Info" required>
+          <div class="flex flex-col gap-y-3">
 
-              <UFormGroup name="licensePlate">
+            <UFormGroup name="licensePlate">
 
-                <UInputMenu :options="trucks" by="id" option-attribute="licensePlate" v-model="docValue.licensePlate"
-                  value-attribute="licensePlate" placeholder="Select Truck">
-                  <template #option-empty="{ query }">
-                    <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
-                      <p>Truck Not Found</p>
-                      <Button @click="openTruckAddDialog" variant="default"
-                        class="flex-1 flex justify-center self-center">
-                        Add
-                        Truck
-                      </Button>
-                    </div>
-                  </template>
-                </UInputMenu>
-              </UFormGroup>
+              <UInputMenu :options="trucks" by="id" option-attribute="licensePlate" v-model="docValue.licensePlate"
+                value-attribute="licensePlate" placeholder="Select Truck">
+                <template #option-empty="{ query }">
+                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                    <p>Truck Not Found</p>
+                    <Button @click="openTruckAddDialog" variant="default"
+                      class="flex-1 flex justify-center self-center">
+                      Add
+                      Truck
+                    </Button>
+                  </div>
+                </template>
+              </UInputMenu>
+            </UFormGroup>
 
-              <UFormGroup name="driver">
-                <UInputMenu :options="drivers" by="id" option-attribute="name" v-model="docValue.driver"
-                  value-attribute="name" placeholder="Select Driver">
-                  <template #option-empty="{ query }">
-                    <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
-                      <p>Driver Not Found</p>
-                      <Button @click="openDriverAddDialog" variant="outline"
-                        class="flex-1 flex justify-center self-center">
-                        Add
-                        Driver
-                      </Button>
-                    </div>
-                  </template>
-                </UInputMenu>
-              </UFormGroup>
+            <UFormGroup name="driver">
+              <UInputMenu :options="drivers" by="id" option-attribute="name" v-model="docValue.driver"
+                value-attribute="name" placeholder="Select Driver">
+                <template #option-empty="{ query }">
+                  <div class="p-3 text-center flex flex-col justify-center items-center gap-2">
+                    <p>Driver Not Found</p>
+                    <Button @click="openDriverAddDialog" variant="outline"
+                      class="flex-1 flex justify-center self-center">
+                      Add
+                      Driver
+                    </Button>
+                  </div>
+                </template>
+              </UInputMenu>
+            </UFormGroup>
 
-            </div>
-          </UFormGroup>
+          </div>
+        </UFormGroup>
 
-          <UFormGroup label="Order Info" required>
-            <div class="flex flex-col gap-3">
+        <UFormGroup label="Order Info" required>
+          <div class="flex flex-col gap-3">
 
-              <UFormGroup name="orderSum">
-                <UInput v-model="docValue.orderSum" placeholder="Sum" type="number">
-                  <template #trailing>
-                    <span class="text-gray-500 dark:text-gray-400 text-xs">EUR</span>
-                  </template>
-                </UInput>
-              </UFormGroup>
+            <UFormGroup name="orderSum">
+              <UInput v-model="docValue.orderSum" placeholder="Sum" type="number">
+                <template #trailing>
+                  <span class="text-gray-500 dark:text-gray-400 text-xs">EUR</span>
+                </template>
+              </UInput>
+            </UFormGroup>
 
-              <UFormGroup name="orderSize">
+            <UFormGroup name="orderSize">
 
-                <UInput v-model="docValue.orderSize" placeholder="Size" />
-              </UFormGroup>
+              <UInput v-model="docValue.orderSize" placeholder="Size" />
+            </UFormGroup>
 
-              <UFormGroup name="weight">
+            <UFormGroup name="weight">
 
-                <UInput v-model="docValue.weight" placeholder="Weight" type="number">
-                  <template #trailing>
-                    <span class="text-gray-500 dark:text-gray-400 text-xs">kg</span>
-                  </template>
-                </UInput>
-              </UFormGroup>
-            </div>
-          </UFormGroup>
+              <UInput v-model="docValue.weight" placeholder="Weight" type="number">
+                <template #trailing>
+                  <span class="text-gray-500 dark:text-gray-400 text-xs">kg</span>
+                </template>
+              </UInput>
+            </UFormGroup>
+          </div>
+        </UFormGroup>
 
-          <UFormGroup label="Documents">
-            <UInput type="file" id="document-upload" multiple="multiple" ref="inputRef" />
-          </UFormGroup>
+        <UFormGroup label="Documents">
+          <UInput type="file" id="document-upload" multiple="multiple" ref="inputRef" />
+        </UFormGroup>
 
-          <UFormGroup label="Note">
-            <UTextarea v-model="docValue.note" />
-          </UFormGroup>
-        </UForm>
+        <UFormGroup label="Note">
+          <UTextarea v-model="docValue.note" />
+        </UFormGroup>
+      </UForm>
 
-        <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
-          <SheetClose as-child>
-            <Button @click="isOpen = false" variant="outline" class="flex-1 flex justify-center">Close</Button>
-          </SheetClose>
-          <Button type="submit" @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add
-            Order
-          </Button>
-        </div>
-      </SheetContent>
-    </Sheet>
+      <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
+        <SheetClose as-child>
+          <Button @click="isOpen = false" variant="outline" class="flex-1 flex justify-center">Close</Button>
+        </SheetClose>
+        <Button type="submit" @click="uploadOrder" :loading="isUploading" class="flex-1 flex justify-center">Add
+          Order
+        </Button>
+      </div>
+    </SheetContent>
+  </Sheet>
 
-  </div>
 </template>
