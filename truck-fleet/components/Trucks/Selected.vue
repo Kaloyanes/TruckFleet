@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-const truck = useState<any | null>("selectedTruck");
+const truck = computed(() => useRoute().path.split('/')[3]);
+
+console.log();
 </script>
 
 <template>
   <div>
-    <h1>{{ truck?.licensePlate ?? "gkoakfg" }}</h1>
+    <h1>{{ truck ?? "gkoakfg" }}</h1>
   </div>
 </template>
 

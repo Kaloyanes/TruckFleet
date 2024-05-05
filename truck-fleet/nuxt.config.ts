@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image',
     '@vueuse/motion/nuxt',
+    '@pinia/nuxt',
   ],
   builder: 'vite',
   shadcn: {

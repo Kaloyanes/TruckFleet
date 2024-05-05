@@ -13,7 +13,6 @@ const props = defineProps({
 
 const route = useRoute();
 const linkTitle = computed(() => {
-  console.log(route.path, props.link.href)
   if (props.exactType) {
     return route.path === props.link.href
   }
