@@ -9,7 +9,7 @@ const colorMode = useColorMode()
 useHead({
   link: [
     { rel: 'icon', type: 'image/x-icon', href: colorMode.value === 'dark' ? '/lightFavicon.svg' : '/favicon.svg' }
-  ]
+  ],
 })
 
 </script>

@@ -2,8 +2,8 @@
 </script>
 
 <template>
-  <div>
-    <h1>Select a truck</h1>
+  <div class="flex justify-center items-center h-full">
+    <h1 class="font-serif text-4xl capitalize">Select a truck</h1>
   </div>
 </template>
 

@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      google_maps: process.env.GOOGLE_MAPS_PUBLIC
+    }
+  },
   devtools: {
     enabled: true,
     timeline: {

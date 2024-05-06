@@ -6,6 +6,10 @@ async function openTruckAddDialog() {
 useSeoMeta({
   titleTemplate: "%s - Trucks"
 })
+
+
+
+
 </script>
 
 <template>
@@ -33,13 +37,14 @@ useSeoMeta({
       </div>
     </div>
 
-    <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] p-6 ">
-      <LazyOrderAddDialog />
-      <LazyCompanyAddDialog />
-      <LazyTrucksAddDialog />
+    <NuxtPage>
+      <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] overflow-hidden ">
+        <LazyOrderAddDialog />
+        <LazyCompanyAddDialog />
+        <LazyTrucksAddDialog />
 
-      <NuxtPage />
-    </div>
+      </div>
+    </NuxtPage>
 
   </div>
 </template>
