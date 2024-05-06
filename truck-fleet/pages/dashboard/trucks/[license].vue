@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-const licensePlate = "";
+const licensePlate = computed(() => useRoute().params.license);
 </script>
 
 <template>

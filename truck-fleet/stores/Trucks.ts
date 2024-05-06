@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 export const useTrucksStore = defineStore({
   id: 'myTrucksStore',
   state: () => {
-    return { trucks: <DocumentData[]>[], unfilteredTrucks: <DocumentData[]>[] }
+    return { trucks: <DocumentData[]>[], unfilteredTrucks: <DocumentData[]>[], currentFilter: ("All" as String), }
   },
 
   actions: {
@@ -16,6 +16,9 @@ export const useTrucksStore = defineStore({
     },
     filter(status: String) {
       console.log("truck", status)
+
+      this.currentFilter = status;
+
       if (status === "All") {
         console.log("all");
         this.trucks = this.unfilteredTrucks;
