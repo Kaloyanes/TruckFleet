@@ -36,15 +36,12 @@ useSeoMeta({
         <TrucksSelected />
       </div>
     </div>
+    <LazyOrderAddDialog />
+    <LazyCompanyAddDialog />
+    <LazyTrucksAddDialog />
 
-    <NuxtPage>
-      <div class="bg-[rgb(17,17,17)] rounded-xl flex-[1] overflow-hidden ">
-        <LazyOrderAddDialog />
-        <LazyCompanyAddDialog />
-        <LazyTrucksAddDialog />
+    <NuxtPage />
 
-      </div>
-    </NuxtPage>
 
   </div>
 </template>

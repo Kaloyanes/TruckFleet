@@ -9,6 +9,8 @@ export const useTrucksStore = defineStore({
 
   actions: {
     init() {
+      if (this.unfilteredTrucks.length) return;
+
       useTrucks().then(x => {
         this.trucks = x.trucks.value;
         this.unfilteredTrucks = x.trucks.value;
