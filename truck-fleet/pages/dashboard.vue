@@ -7,6 +7,7 @@ definePageMeta({
     'dashboard'
   ],
 })
+
 </script>
 
 <template>
@@ -16,7 +17,19 @@ definePageMeta({
       <DashboardNavigation />
     </div>
 
-    <div class="flex flex-[1] h-screen w-full">
+    <div class="flex flex-[1] h-screen w-full" v-motion :initial="{
+      y: 0,
+      opacity: 0,
+      x: -100,
+    }" :enter="{
+      y: 0,
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 500,
+        delay: 150,
+      },
+    }">
       <NuxtPage />
     </div>
   </div>
