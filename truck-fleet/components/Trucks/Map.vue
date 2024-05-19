@@ -56,7 +56,7 @@ const { data: routes, pending: routesPending } = useFetch('https://routes.google
 })
 
 const center = ref<{ lat: number, lng: number } | null>(null);
-
+const pickUpAddressCoordinates = ref<{ lat: number, lng: number } | null>(null);
 
 const routePolyline = computed(() => {
   if (routes.value === null) return {};
@@ -67,6 +67,11 @@ const routePolyline = computed(() => {
   center.value = {
     lat: geometry.encoding.decodePath(steps[steps.length - 1].polyline.encodedPolyline)[0].lat(),
     lng: geometry.encoding.decodePath(steps[steps.length - 1].polyline.encodedPolyline)[0].lng(),
+  }
+
+  pickUpAddressCoordinates.value = {
+    lat: geometry.encoding.decodePath(steps[0].polyline.encodedPolyline)[0].lat(),
+    lng: geometry.encoding.decodePath(steps[0].polyline.encodedPolyline)[0].lng(),
   }
 
   return {
@@ -91,6 +96,14 @@ const routePolyline = computed(() => {
 
     <template #default="{ map, api, ready, mapTilesLoaded }">
       <CustomMarker :options="{ position: center, anchorPoint: 'BOTTOM_CENTER' }">
+        <div style="text-align: center"
+          class="bg-primary h-full w-full flex flex-col justify-center items-center rounded-full p-1    relative">
+          <UIcon size="15" name="ic:baseline-location-on" color="#000" />
+          <div class="p-4 -z-10 bg-primary/50 absolute rounded-full"></div>
+        </div>
+      </CustomMarker>
+
+      <CustomMarker :options="{ position: pickUpAddressCoordinates, anchorPoint: 'BOTTOM_CENTER' }">
         <div style="text-align: center"
           class="bg-primary h-full w-full flex flex-col justify-center items-center rounded-full p-1    relative">
           <UIcon size="15" name="ic:baseline-location-on" color="#000" />
