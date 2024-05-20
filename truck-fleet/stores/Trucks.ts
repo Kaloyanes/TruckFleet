@@ -16,7 +16,7 @@ export const useTrucksStore = defineStore({
         this.unfilteredTrucks = x.trucks.value;
       });
     },
-    filter(status: String) {
+    filterByStatus(status: String) {
       console.log("truck", status)
 
       this.currentFilter = status;
@@ -28,7 +28,14 @@ export const useTrucksStore = defineStore({
       }
 
       this.trucks = this.unfilteredTrucks.filter(x => x.status == status);
+    },
+    filterByLicensePlate(licensePlate: string) {
+      if (licensePlate === '') {
+        this.trucks = this.unfilteredTrucks;
+        return;
+      }
 
+      this.trucks = this.unfilteredTrucks.filter((truck) => (truck.licensePlate as string).toLowerCase().includes(licensePlate.toLowerCase()));
     }
   }
 })

@@ -2,6 +2,7 @@
 
 const filters = [
   "All",
+  "Available",
   "In Loading",
   "On Route",
   "Delivered",
@@ -12,7 +13,7 @@ let trucksStore = useTrucksStore();
 // trucksStore.init();
 
 function onFilter(filter: string) {
-  trucksStore.filter(filter);
+  trucksStore.filterByStatus(filter);
 }
 
 </script>
