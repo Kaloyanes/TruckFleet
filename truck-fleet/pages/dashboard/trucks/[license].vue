@@ -22,17 +22,27 @@ const lastOrder = ref<DocumentData | null>(null);
 if (orders.companyOrders.length) {
   lastOrder.value = orders.companyOrders.sort((a, b) => b.createdAt - a.createdAt)[0];
 }
+
+function addOrder() {
+  navigateTo(`/dashboard/orders/${licensePlate.value}#addOrder`)
+}
 </script>
 
 <template>
   <div class="overflow-hidden min-w-0 w-full rounded-xl relative">
+    <LazyTrucksMap v-if="lastOrder" :api-key="apiKey" :last-order="lastOrder" />
 
-    <LazyTrucksMap :api-key="apiKey" :last-order="lastOrder" />
-
-    <div
-      class="backdrop-blur-lg z-10 h-24 w-[95%] mx-5 border border-primary/25 rounded-xl absolute bottom-5 shadow-[0_0_15px_rgba(0,0,0,0.3)] shadow-primary/50">
-      <h1>{{ lastOrder?.licensePlate }}</h1>
+    <div v-else class="w-full h-full flex flex-col gap-2 justify-center items-center bg-[rgb(17,17,17)]">
+      <h1>No orders found</h1>
+      <Button variant="outline" @click="addOrder">Add Order</Button>
     </div>
+
+    <div v-if="lastOrder" class="flex flex-row-reverse gap-2 w-full absolute bottom-0 p-2">
+      <LazyTrucksDetails :order="lastOrder" class="flex-[1]" />
+
+      <LazyTrucksDriverDetails class="flex-[0.3]" />
+    </div>
+
   </div>
 </template>
 
