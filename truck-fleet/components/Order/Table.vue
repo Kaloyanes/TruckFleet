@@ -328,7 +328,6 @@ watch(companyOrderIdFilterInput, (value) => {
   });
 })
 
-// TODO: ADD TYPE OF FILTER AKA '>=', '<=', '=='
 watch([weightFilterInput, weightTypeAction], (value) => {
   if (value[0] !== "")
     filteredValues.value.set("weight", {
@@ -347,7 +346,6 @@ watch([weightFilterInput, weightTypeAction], (value) => {
     })
 })
 
-// TODO: ADD TYPE OF FILTER AKA '>=', '<=', '=='
 watch([sumFilterInput, sumTypeAction], (value) => {
   if (value[0] !== "")
     filteredValues.value.set("sum", {

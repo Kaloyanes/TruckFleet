@@ -19,9 +19,10 @@ useSeoMeta({
       <div class="flex-[1] bg-[rgb(17,17,17)] rounded-xl  w-full relative overflow-scroll  flex flex-col h-full px-4">
 
         <!-- TODO: Search field -->
-        <textarea></textarea>
 
-        <div class="self-end p-3 mb-1 mx-2 sticky top-1 z-[50]">
+        <div class="self-end p-3 mb-1 mx-2 sticky top-1 z-[50] flex items-center w-full gap-2">
+          <Input placeholder="Search" class="flex-1 ml-4" />
+
           <Button @click="openTruckAddDialog">Add Truck</Button>
         </div>
 

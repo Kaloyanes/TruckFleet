@@ -107,6 +107,9 @@ const schema = yup.object({
 type Schema = yup.InferType<typeof schema>;
 
 const docValue = reactive({
+  createdAt: Timestamp.fromDate(
+    new Date()
+  ),
   locations: [
     {
       pickUpTime: {
@@ -223,6 +226,7 @@ async function uploadOrder() {
 
   docValue.customerCompanyRef = doc(db, 'companiesWorkedWith', docValue.customerCompanyId);
   docValue.truckRef = doc(db, 'trucks', docValue.licensePlate);
+  docValue.createdAt = Timestamp.fromDate(new Date());
 
   isUploading.value = true;
   await setDoc(documentRef, docValue);
