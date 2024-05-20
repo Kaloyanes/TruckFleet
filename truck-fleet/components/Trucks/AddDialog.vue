@@ -13,6 +13,7 @@ const truckInfo = reactive({
   companyId: companyId.value as string,
   model: "Ford",
   year: 2021,
+  status: "available",
   createdAt: Timestamp.fromDate(new Date()),
 });
 
