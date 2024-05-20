@@ -84,36 +84,64 @@ const routePolyline = computed(() => {
 })
 
 
+const currentZoom = ref(13);
 
+watch(currentZoom, (value) => {
+  console.log("currentZoom", value)
+
+  if (value >= 14) {
+    currentZoom.value = 14;
+  }
+})
 
 
 </script>
 
 <template>
-  <GoogleMap v-if="!routesPending" :api="apiKey" style="height: 105vh;  border: 0px;" background-color="transparent"
-    :center="center" :zoom-control="false" :map-type-control="false" :street-view-control="false"
-    :fullscreen-control="false" :zoom="13" :min-zoom="3" :max-zoom="13.9" map-id="b514deccd04f2a38">
+  <div class="relative" v-if="!routesPending">
 
-    <template #default="{ map, api, ready, mapTilesLoaded }">
-      <CustomMarker :options="{ position: center, anchorPoint: 'BOTTOM_CENTER' }">
-        <div style="text-align: center"
-          class="bg-primary h-full w-full flex flex-col justify-center items-center rounded-full p-1    relative">
-          <UIcon size="15" name="ic:baseline-location-on" color="#000" />
-          <div class="p-4 -z-10 bg-primary/50 absolute rounded-full"></div>
-        </div>
-      </CustomMarker>
+    <div class="right-5 top-5 absolute z-50 flex flex-col">
+      <Button @click="currentZoom++" :size="'icon'" variant="outline" class="rounded-b-none ">
+        <UIcon name="i-material-symbols-light-zoom-in-rounded" size="30" color="#fff" />
+      </Button>
+      <Button @click="currentZoom--" :size="'icon'" variant="outline" class="rounded-t-none ">
+        <UIcon name="i-material-symbols-light-zoom-out-rounded" size="30" color="#fff" />
+      </Button>
+    </div>
 
-      <CustomMarker :options="{ position: pickUpAddressCoordinates, anchorPoint: 'BOTTOM_CENTER' }">
-        <div style="text-align: center"
-          class="bg-primary h-full w-full flex flex-col justify-center items-center rounded-full p-1    relative">
-          <UIcon size="15" name="ic:baseline-location-on" color="#000" />
-          <div class="p-4 -z-10 bg-primary/50 absolute rounded-full"></div>
-        </div>
-      </CustomMarker>
+    <GoogleMap :api="apiKey" style="height: 101vh;  border: 0px;" :center="center" :zoom-control="false"
+      :map-type-control="false" :street-view-control="false" :fullscreen-control="false" :disable-default-ui="true"
+      :zoom="currentZoom" :min-zoom="3" :max-zoom="13.9" map-id="b514deccd04f2a38" background-color="transparent"
+      :zoom-control-position="'TOP_RIGHT'">
 
-      <Polyline :options="routePolyline" />
-    </template>
-  </GoogleMap>
+      <template #default="{ map, api, ready, mapTilesLoaded }">
+        <CustomControl position="TOP_LEFT" :z-index="100">
+          <Button>
+            kofkaofsaof
+          </Button>
+        </CustomControl>
+
+        <CustomMarker :options="{ position: center, anchorPoint: 'BOTTOM_CENTER' }">
+          <div style="text-align: center"
+            class="bg-primary h-full w-full flex flex-col justify-center items-center rounded-full p-1    relative">
+            <UIcon size="15" name="ic:baseline-location-on" color="#000" />
+            <div class="p-4 -z-10 bg-primary/50 absolute rounded-full"></div>
+          </div>
+        </CustomMarker>
+
+        <CustomMarker :options="{ position: pickUpAddressCoordinates, anchorPoint: 'BOTTOM_CENTER' }">
+          <div style="text-align: center"
+            class="bg-primary h-full w-full flex flex-col justify-center items-center rounded-full p-1    relative">
+            <UIcon size="15" name="ic:baseline-location-on" color="#000" />
+            <div class="p-4 -z-10 bg-primary/50 absolute rounded-full"></div>
+          </div>
+        </CustomMarker>
+
+        <Polyline :options="routePolyline" />
+      </template>
+    </GoogleMap>
+
+  </div>
 
   <div v-else class="h-full w-full bg-[17,17,17] rounded-xl flex justify-center align-center">
     <h1 class="text-center text-3xl font-sans">Loading maps</h1>
