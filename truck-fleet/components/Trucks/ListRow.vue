@@ -10,15 +10,40 @@ const isTruckSelected = computed(() => {
 
 <template>
   <div
-    class="p-2 border border-neutral-500 bg-neutral-800 flex items-center transition-all duration-500 hover:bg-neutral-700 shadow-neutral-800/50 hover:shadow-neutral-700/50 active:scale-100 active:translate-y-0.5 shadow-[0_0_25px_rgba(0,0,0,0.10)] hover:shadow-[0_0_25px_rgba(0,0,0,0.10)] active:shadow-[0_0_15px_rgba(0,0,0,0.10)] justify-between rounded-[28px] px-4 "
-    :class="{ 'bg-primary/25 border-primary shadow-primary/40 hover:bg-primary/50': isTruckSelected }">
-
+    class="p-2 border flex items-center transition-all duration-500  active:scale-100 active:translate-y-0.5 shadow-[0_0_25px_rgba(0,0,0,0.10)] hover:shadow-[0_0_25px_rgba(0,0,0,0.10)] active:shadow-[0_0_15px_rgba(0,0,0,0.10)] justify-between rounded-[28px] px-4 "
+    :class="`${isTruckSelected ? 'bg-primary/25 border-primary shadow-primary/40 hover:bg-primary/50' : 'border-neutral-700 bg-neutral-800 hover:bg-neutral-700 shadow-neutral-800/50 hover:shadow-neutral-700/50'}`">
     <div class="flex flex-col items-start">
       <h1>{{ truck.licensePlate }}</h1>
       <h1 class="text-sm text-gray-400">{{ truck.model }}</h1>
     </div>
-    <h1 class="text-sm text-gray-400">{{ truck.year }}</h1>
+
+    <div class="flex flex-col items-end">
+      <h1 class="text-sm text-gray-400">{{ truck.year }}</h1>
+      <h1 class="text-sm text-gray-400" :class="`text-${(truck.status as string).split(' ').join('-')}`">{{ truck.status
+        }}
+      </h1>
+    </div>
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.text-Available {
+  @apply text-green-500;
+}
+
+.text-In-Loading {
+  @apply text-primary;
+}
+
+.text-Damaged {
+  @apply text-red-500;
+}
+
+.text-On-Route {
+  @apply text-yellow-500;
+}
+
+.text-Delivered {
+  @apply text-blue-500;
+}
+</style>
