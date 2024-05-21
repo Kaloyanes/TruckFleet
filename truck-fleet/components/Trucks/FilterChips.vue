@@ -10,7 +10,6 @@ const filters = [
 ]
 
 let trucksStore = useTrucksStore();
-// trucksStore.init();
 
 function onFilter(filter: string) {
   trucksStore.filterByStatus(filter);

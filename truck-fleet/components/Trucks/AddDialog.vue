@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 const isModalOpen = computed(() => {
   return useRoute().hash == "#addTruck";
@@ -13,17 +13,35 @@ const truckInfo = reactive({
   companyId: companyId.value as string,
   model: "Ford",
   year: 2021,
-  status: "available",
+  status: "Available",
   createdAt: Timestamp.fromDate(new Date()),
 });
 
 async function addTruck() {
   console.log(truckInfo);
-  // useTruckStore().addTruck(truckInfo);
 
   // upload doc using truckInfo
-  await addDoc(collection(db, "trucks"), truckInfo);
 
+  const trucksStore = await useTrucksStore();
+  try {
+    await trucksStore.createTruck(truckInfo);
+
+    const toast = useToast();
+
+    toast.add({
+      title: `Successfully added truck ${truckInfo.licensePlate}`,
+      icon: 'i-ion-md-checkmark-circle-outline',
+      color: 'green',
+    });
+  } catch (e: any) {
+    const toast = useToast();
+
+    toast.add({
+      title: `Failed to add truck ${truckInfo.licensePlate}: ${e.message}`,
+      icon: 'i-ion-md-close-circle-outline',
+      color: 'red',
+    });
+  }
   useRouter().back();
 }
 
