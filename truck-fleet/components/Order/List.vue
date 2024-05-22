@@ -9,7 +9,6 @@ const props = defineProps({
 
 
 const orders = useOrdersStore();
-await orders.init();
 
 orders.filterByLicensePlate(props.licensePlate);
 

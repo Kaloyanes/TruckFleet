@@ -14,7 +14,6 @@ const apiKey = config.public.google_maps;
 
 const orders = useOrdersStore();
 
-await orders.init();
 orders.filterByLicensePlate(licensePlate.value as string);
 
 const lastOrder = ref<DocumentData | null>(null);

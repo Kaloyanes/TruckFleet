@@ -22,7 +22,6 @@ let id = profile.value!.type === 'speditor' ? profile.value!.companyId : profile
 // } = useCollection(query(collection(db, 'trucks'), where('companyId', '==', id)));
 
 const trucksStore = useTrucksStore();
-trucksStore.init();
 
 
 // Create the links for every truck
