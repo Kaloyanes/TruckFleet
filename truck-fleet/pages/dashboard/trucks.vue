@@ -42,13 +42,16 @@ watch(searchInput, (value) => {
       </div>
 
       <div class="flex-[0.5] bg-primary/50 rounded-xl">
-        <TrucksSelected />
+        <LazyTrucksSelected />
       </div>
     </div>
 
     <LazyOrderAddDialog />
     <LazyCompanyAddDialog />
     <LazyTrucksAddDialog />
+
+    <LazyTrucksDeleteDialog />
+    <LazyTrucksEditSheet />
 
     <NuxtPage />
 

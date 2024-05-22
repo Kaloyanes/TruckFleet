@@ -45,6 +45,10 @@ async function DeleteTruck() {
       path: '/dashboard/trucks',
       hash: ''
     });
+
+  useRouter().replace({
+    hash: ''
+  });
 }
 </script>
 

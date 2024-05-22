@@ -12,6 +12,25 @@ const config = useRuntimeConfig();
 // TODO: CHANGE API KEY TO TRUCK FLEET PROJECT INSTEAD OF FLEET
 const apiKey = config.public.google_maps;
 
+const trucksStore = useTrucksStore();
+const invalidLicensePlate = computed(() => {
+  const res = !trucksStore.trucks.some(truck => truck.licensePlate === useRoute().params.license);
+
+  return res;
+});
+
+onMounted(() => {
+  if (invalidLicensePlate.value) {
+    useRouter().replace('/dashboard/trucks')
+  }
+})
+
+// watch(invalidLicensePlate, async (value) => {
+//   if (value) {
+//     await useRouter().replace('/dashboard/trucks')
+//   }
+// })
+
 const orders = useOrdersStore();
 
 orders.filterByLicensePlate(licensePlate.value as string);
@@ -25,9 +44,14 @@ if (orders.companyOrders.length) {
 function addOrder() {
   navigateTo(`/dashboard/orders/${licensePlate.value}#addOrder`)
 }
+
+async function goBackToTrucks() {
+  await useRouter().replace('/dashboard/trucks')
+}
 </script>
 
 <template>
+
   <div class="overflow-hidden min-w-0 w-full rounded-xl relative">
     <LazyTrucksMap v-if="lastOrder" :api-key="apiKey" :last-order="lastOrder" />
 

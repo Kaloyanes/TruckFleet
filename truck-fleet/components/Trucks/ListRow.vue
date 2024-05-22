@@ -7,8 +7,7 @@ const isTruckSelected = computed(() => {
   return useRoute().path.includes(props.truck.licensePlate)
 })
 
-const deleteSd = () => {
-
+function deleteTruck() {
   if (isTruckSelected.value) {
 
     useRouter().push({
@@ -25,13 +24,33 @@ const deleteSd = () => {
       license: truckClicked.licensePlate
     }
   })
+}
 
-};
+function editTruck() {
+  if (isTruckSelected.value) {
+
+    useRouter().push({
+      hash: '#editTruck'
+    })
+    return;
+  }
+
+  const truckClicked = props.truck;
+
+  useRouter().push({
+    hash: '#editTruck',
+    query: {
+      license: truckClicked.licensePlate
+    }
+  })
+
+}
+
 </script>
 
 <template>
   <ContextMenu>
-    <TrucksDeleteDialog />
+
     <ContextMenuTrigger>
 
       <div
@@ -52,13 +71,13 @@ const deleteSd = () => {
     </ContextMenuTrigger>
     <ContextMenuContent class="shadow-lg shadow-neutral-800/50 min-w-0 w-min backdrop-blur-lg bg-opacity-30 p-2">
 
-      <ContextMenuItem>
+      <ContextMenuItem @click="editTruck">
         <UIcon name="i-material-symbols-edit-outline-rounded" />
         Edit
       </ContextMenuItem>
 
       <ContextMenuSeparator />
-      <ContextMenuItem @click="deleteSd"
+      <ContextMenuItem @click="deleteTruck"
         class="text-red-500 bg-red-500/10  active:bg-red-500/15 active:text-red-500 hover:bg-red-500/20 hover:text-red-500">
         <UIcon name="i-material-symbols-delete-forever-rounded" />
         Delete

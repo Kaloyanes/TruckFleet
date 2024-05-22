@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue';
 // import { useTrucks } from './useTrucks'; // Assuming useTrucks is imported from another file
 // import { useFirestore } from './useFirestore'; // Assuming useFirestore is imported from another file
-import type { DocumentData } from 'firebase/firestore';
+import type { DocumentData, Timestamp } from 'firebase/firestore';
 import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
 import { defineStore } from 'pinia';
 
@@ -13,8 +13,8 @@ export const useTrucksStore = defineStore('myTrucksStore', () => {
 
   if (unfilteredTrucks.value.length < 1) {
     useTrucks().then(({ trucks: data }) => {
-      trucks.value = data.value;
-      unfilteredTrucks.value = data.value;
+      trucks.value = data.value.sort((a, b) => (b.createdAt as Timestamp).toMillis() - (a.createdAt as Timestamp).toMillis());
+      unfilteredTrucks.value = trucks.value;
 
       watch(data, (value) => {
         unfilteredTrucks.value = value;
@@ -56,8 +56,12 @@ export const useTrucksStore = defineStore('myTrucksStore', () => {
   const createTruck = async (truckInfo: any) => {
     if (!truckInfo) return;
     const db = useFirestore();
-    let data = await addDoc(collection(db, "trucks"), truckInfo);
 
+    let doc = await addDoc(collection(db, "trucks"), truckInfo);
+
+    truckInfo.id = doc.id;
+
+    trucks.value.push(truckInfo);
   };
 
   return { trucks, unfilteredTrucks, currentFilter, filterByStatus, filterByLicensePlate, deleteTruck, createTruck };
