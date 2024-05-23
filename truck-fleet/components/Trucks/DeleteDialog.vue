@@ -53,7 +53,9 @@ async function DeleteTruck() {
 </script>
 
 <template>
-  <Dialog :open="isOpen" @update:open="(e: any) => useRouter().back()">
+  <Dialog :open="isOpen" @update:open="(e: any) => {
+    if (isOpen) useRouter().back()
+  }">
 
     <DialogContent>
       <DialogTitle>

@@ -48,7 +48,7 @@ watch(searchInput, (value) => {
 
     <LazyOrderAddDialog />
     <LazyCompanyAddDialog />
-    <LazyTrucksAddDialog />
+    <LazyTrucksAddSheet />
 
     <LazyTrucksDeleteDialog />
     <LazyTrucksEditSheet />

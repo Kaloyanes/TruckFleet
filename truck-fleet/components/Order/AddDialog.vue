@@ -267,9 +267,7 @@ function openDriverAddDialog() {
 <template>
   {{ reactToSlugChanges }}
   <Sheet :open="isOpen" @update:open="(e: boolean) => {
-    if (!e) {
-      useRouter().back();
-    }
+    if (isOpen) useRouter().back()
   }">
     <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
       <SheetHeader>
