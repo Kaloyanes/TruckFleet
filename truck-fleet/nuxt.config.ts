@@ -84,4 +84,11 @@ export default defineNuxtConfig({
   },
   // TODO: MAKE SSR TRUE WHEN PRODUCTION
   ssr: false,
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        baseUrl: '.',
+      }
+    }
+  }
 })
