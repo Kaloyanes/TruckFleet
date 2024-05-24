@@ -21,8 +21,6 @@ export const useTrucksStore = defineStore('myTrucksStore', () => {
   })
 
   useTrucks().then(({ trucks: data }) => {
-
-
     rawTrucks.value = data.value;
   });
 
@@ -68,7 +66,7 @@ export const useTrucksStore = defineStore('myTrucksStore', () => {
   };
 
   const editTruck = async (truckInfo: any, id: string) => {
-    if (!truckInfo) return;
+    if (!truckInfo || !id) return;
     const db = useFirestore();
     const truckRef = doc(db, 'trucks', id);
     await updateDoc(truckRef, truckInfo);

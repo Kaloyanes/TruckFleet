@@ -11,7 +11,7 @@ useSeoMeta({
 
 const searchInput = ref("");
 
-const trucks = await useTrucksStore();
+const trucks = useTrucksStore();
 
 watch(searchInput, (value) => {
   console.log(value);

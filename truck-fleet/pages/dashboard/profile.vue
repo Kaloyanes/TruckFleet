@@ -16,14 +16,6 @@ const links = [{
   label: 'Settings',
   icon: 'i-heroicons-cog',
   to: '/dashboard/profile/general'
-}, {
-  label: 'Horizontal Navigation',
-  icon: 'i-heroicons-chart-bar',
-  to: `${route.path.startsWith('/dev') ? '/dev' : ''}/components/horizontal-navigation`
-}, {
-  label: 'Command Palette',
-  icon: 'i-heroicons-command-line',
-  to: '/components/command-palette'
 }]
 
 
