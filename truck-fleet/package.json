@@ -21,6 +21,8 @@
     "@tanstack/vue-virtual": "^3.2.0",
     "@vee-validate/nuxt": "^4.12.6",
     "@vee-validate/yup": "^4.12.6",
+    "@vee-validate/zod": "^4.12.8",
+    "@vueuse/core": "^10.9.0",
     "@vueuse/motion": "^2.1.0",
     "@vueuse/nuxt": "^10.9.0",
     "class-variance-authority": "^0.7.0",
@@ -35,11 +37,13 @@
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "v-calendar": "^3.1.2",
+    "vee-validate": "^4.12.8",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vue3-google-map": "^0.20.0",
     "vuefire": "^3.1.23",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nuxt/image": "^1.5.0",

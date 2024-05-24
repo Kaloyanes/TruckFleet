@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 
 const props = defineProps({
@@ -10,12 +11,11 @@ const props = defineProps({
 
 const truck = reactive({
   licensePlate: props.modelValue?.licensePlate || '',
-  make: props.modelValue?.make || '',
   model: props.modelValue?.model || '',
   year: props.modelValue?.year || '',
-  capacity: props.modelValue?.capacity || '',
+  // capacity: props.modelValue?.capacity || '',
   status: props.modelValue?.status || '',
-  location: props.modelValue?.location || '',
+  // location: props.modelValue?.location || '',
 })
 
 watch(truck, (newTruck, oldTruck) => {
@@ -24,19 +24,46 @@ watch(truck, (newTruck, oldTruck) => {
   emit('update:truck', newTruck)
 })
 
-const emit = defineEmits(['update:truck'])
+const emit = defineEmits(['update:truck', 'submit:edit'])
+
+const maxYear = new Date().getFullYear() + 1;
 
 const formSchema = z.object({
-  username: z.string().describe('Your username'),
-  someValue: z.string(), // Will be "Some Value"
+  year: z.number().min(1900, 'Year must be greater than 1900').max(maxYear, `Year must be less than ${maxYear}`),
+  status: z.enum(['Available', 'In Loading', 'On Route', 'Delivered', 'Damaged']),
+  licensePlate: z.string().min(4, 'Invalid License Plate'),
+  model: z.string(),
+
 })
+
+const form = useForm({
+  validationSchema: toTypedSchema(formSchema),
+  initialValues: truck,
+})
+
+function submit(data: any) {
+  console.log("submitted")
+  data.id = props.modelValue?.id;
+  emit('submit:edit', data)
+}
 </script>
 
 <template>
-  <div>
+  <div class="relative h-full">
     <!-- <Label :for="">FASFLP</Label>
     <Input placeholder="License Plate" v-model="truck.licensePlate" /> -->
-    <!-- <AutoForm :schema="formSchema" /> -->
+    <AutoForm :schema="formSchema" :form="form" @submit="(e) => submit(e)">
+      <div class="sticky bottom-3 flex justify-evenly px-8 gap-3 pt-5">
+
+        <SheetClose as-child>
+          <Button variant="outline" class="">Cancel</Button>
+        </SheetClose>
+
+        <SheetClose as-child>
+          <Button type="submit" class="">Confirm Changes</Button>
+        </SheetClose>
+      </div>
+    </AutoForm>
   </div>
 </template>
 

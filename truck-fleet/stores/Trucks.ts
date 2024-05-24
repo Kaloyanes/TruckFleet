@@ -2,26 +2,29 @@ import { ref, watch } from 'vue';
 // import { useTrucks } from './useTrucks'; // Assuming useTrucks is imported from another file
 // import { useFirestore } from './useFirestore'; // Assuming useFirestore is imported from another file
 import type { DocumentData, Timestamp } from 'firebase/firestore';
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { defineStore } from 'pinia';
 
 export const useTrucksStore = defineStore('myTrucksStore', () => {
+  const rawTrucks = ref<DocumentData[]>([]);
   const trucks = ref<DocumentData[]>([]);
   const unfilteredTrucks = ref<DocumentData[]>([]);
   const currentFilter = ref('All');
 
+  watch(rawTrucks, (value) => {
+    const sorted = [...new Map(value.map(item => [JSON.stringify(item), item])).values()].sort((a, b) => (b.createdAt as Timestamp).toMillis() - (a.createdAt as Timestamp).toMillis());
 
-  if (unfilteredTrucks.value.length < 1) {
-    useTrucks().then(({ trucks: data }) => {
-      trucks.value = data.value.sort((a, b) => (b.createdAt as Timestamp).toMillis() - (a.createdAt as Timestamp).toMillis());
-      unfilteredTrucks.value = trucks.value;
+    console.log('sorted', sorted)
 
-      watch(data, (value) => {
-        unfilteredTrucks.value = value;
-        trucks.value = value;
-      });
-    });
-  }
+    trucks.value = sorted;
+    unfilteredTrucks.value = sorted;
+  })
+
+  useTrucks().then(({ trucks: data }) => {
+
+
+    rawTrucks.value = data.value;
+  });
 
 
   const filterByStatus = (status: string) => {
@@ -64,5 +67,20 @@ export const useTrucksStore = defineStore('myTrucksStore', () => {
     trucks.value.push(truckInfo);
   };
 
-  return { trucks, unfilteredTrucks, currentFilter, filterByStatus, filterByLicensePlate, deleteTruck, createTruck };
+  const editTruck = async (truckInfo: any, id: string) => {
+    if (!truckInfo) return;
+    const db = useFirestore();
+    const truckRef = doc(db, 'trucks', id);
+    await updateDoc(truckRef, truckInfo);
+
+    trucks.value = trucks.value.map((truck) => {
+      if (truck.id === id) {
+        return truckInfo;
+      }
+      return truck;
+    });
+  };
+
+
+  return { trucks, unfilteredTrucks, currentFilter, filterByStatus, filterByLicensePlate, deleteTruck, createTruck, editTruck, rawTrucks };
 });

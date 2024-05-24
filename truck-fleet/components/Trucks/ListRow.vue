@@ -30,7 +30,8 @@ function editTruck() {
   if (isTruckSelected.value) {
 
     useRouter().push({
-      hash: '#editTruck'
+      hash: '#editTruck',
+
     })
     return;
   }
@@ -40,7 +41,7 @@ function editTruck() {
   useRouter().push({
     hash: '#editTruck',
     query: {
-      license: truckClicked.licensePlate
+      license: truckClicked.licensePlate,
     }
   })
 

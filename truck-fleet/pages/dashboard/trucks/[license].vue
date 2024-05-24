@@ -12,7 +12,7 @@ const config = useRuntimeConfig();
 // TODO: CHANGE API KEY TO TRUCK FLEET PROJECT INSTEAD OF FLEET
 const apiKey = config.public.google_maps;
 
-const trucksStore = useTrucksStore();
+const trucksStore = await useTrucksStore();
 const invalidLicensePlate = computed(() => {
   const res = !trucksStore.trucks.some(truck => truck.licensePlate === useRoute().params.license);
 
