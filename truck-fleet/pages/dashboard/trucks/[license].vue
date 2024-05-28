@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { DocumentData } from 'firebase/firestore';
 
 const licensePlate = computed(() => useRoute().params.license);
 
@@ -35,11 +34,11 @@ const orders = useOrdersStore();
 
 orders.filterByLicensePlate(licensePlate.value as string);
 
-const lastOrder = ref<DocumentData | null>(null);
+const lastOrder = computed(() => {
+  const sortedOrders = orders.companyOrders.sort((a, b) => b.createdAt - a.createdAt);
+  return sortedOrders.length ? sortedOrders[0] : null;
+});
 
-if (orders.companyOrders.length) {
-  lastOrder.value = orders.companyOrders.sort((a, b) => b.createdAt - a.createdAt)[0];
-}
 
 function addOrder() {
   navigateTo(`/dashboard/orders/${licensePlate.value}#addOrder`)
@@ -51,7 +50,6 @@ async function goBackToTrucks() {
 </script>
 
 <template>
-
   <div class="overflow-hidden min-w-0 w-full rounded-xl relative">
     <LazyTrucksMap v-if="lastOrder" :api-key="apiKey" :last-order="lastOrder" />
 
@@ -65,7 +63,6 @@ async function goBackToTrucks() {
 
       <LazyTrucksDriverDetails class="flex-[0.3]" />
     </div>
-
   </div>
 </template>
 

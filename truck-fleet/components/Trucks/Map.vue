@@ -143,8 +143,12 @@ watch(currentZoom, (value) => {
 
   </div>
 
-  <div v-else class="h-full w-full bg-[17,17,17] rounded-xl flex justify-center align-center">
-    <h1 class="text-center text-3xl font-sans">Loading maps</h1>
+  <div v-else class="z-[999999] flex justify-center align-center">
+    <div class="p-4 absolute h-full w-full bg-[rgb(17,17,17)] rounded-xl flex flex-col justify-center items-center">
+      <!-- <h1 class="text-center text-3xl font-sans">Loading maps</h1> -->
+      <CircularProgressIndicator />
+
+    </div>
   </div>
 
 </template>
