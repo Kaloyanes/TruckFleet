@@ -63,9 +63,7 @@ function submit(data: any) {
           <Button variant="outline" class="flex-[1] w-full">Cancel</Button>
         </SheetClose>
 
-        <SheetClose as-child>
-          <Button type="submit" class="flex-[1] w-full">Confirm Changes</Button>
-        </SheetClose>
+        <Button type="submit" class="flex-[1] w-full">Confirm Changes</Button>
       </div>
     </AutoForm>
   </div>

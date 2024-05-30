@@ -27,7 +27,7 @@ useSeoMeta({
 
 .page-enter-from,
 .page-leave-to {
-  opacity: 0;
+  opacity: 0.1;
   transform: scale(0.8);
   filter: blur(0.5rem);
 }

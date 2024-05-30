@@ -34,6 +34,8 @@ async function edit(newData: any) {
       description: e.message,
     })
   }
+
+  useRouter().back();
 }
 </script>
 
@@ -51,7 +53,6 @@ async function edit(newData: any) {
       <TrucksForm :model-value="truckInfoCopy" @update:truck="(e: any) => truckInfoCopy = e"
         v-on:submit:edit="(e) => edit(e)" />
 
-      {{ truckInfoCopy?.id ?? '' }}
     </SheetContent>
   </Sheet>
 </template>

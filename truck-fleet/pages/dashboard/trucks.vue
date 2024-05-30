@@ -53,8 +53,8 @@ watch(searchInput, (value) => {
     <LazyTrucksDeleteDialog />
     <LazyTrucksEditSheet />
 
-    <NuxtPage />
-
-
+    <NuxtPage :key="$route.path" />
   </div>
 </template>
+
+<style lang="scss"></style>
