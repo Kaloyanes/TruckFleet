@@ -46,11 +46,11 @@ function selectOrder(select: boolean, order: any) {
           Locations
         </TableCell>
 
-        <TableCell>
+        <TableCell class="min-w-[100px]">
           Weight
         </TableCell>
 
-        <TableCell>
+        <TableCell class="min-w-[250px]">
           Size
         </TableCell>
 

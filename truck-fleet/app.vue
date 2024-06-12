@@ -27,8 +27,15 @@ useSeoMeta({
 
 .page-enter-from,
 .page-leave-to {
-  opacity: 0.1;
-  transform: scale(0.8);
-  filter: blur(0.5rem);
+  opacity: 0;
+  filter: blur(2rem);
+}
+
+.page-enter-from {
+  transform: scale(0.75) translateY(100px);
+}
+
+.page-leave-to {
+  transform: scale(0.75) translateY(-100px);
 }
 </style>
