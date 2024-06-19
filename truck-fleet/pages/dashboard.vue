@@ -6,7 +6,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex pl-8 gap-5">
+  <div class="flex pl-8 gap-5 overflow-hidden">
     <div class="flex-[0.01]">
       <DashboardNavigation />
     </div>
@@ -15,17 +15,16 @@ definePageMeta({
       class="flex flex-[1] h-screen w-full"
       v-motion
       :initial="{
-        y: 0,
         opacity: 0,
-        x: -100,
+        scale: 0.8,
       }"
       :enter="{
-        y: 0,
-        x: 0,
+        scale: 1,
         opacity: 1,
         transition: {
-          duration: 500,
           delay: 150,
+          type: 'spring',
+          duration: 600,
         },
       }"
     >
