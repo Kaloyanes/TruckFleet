@@ -54,6 +54,8 @@ const profileLink = {
 <template>
   <div class="h-screen py-5 flex flex-col gap-5 items-center">
     <DashboardLogo />
+    <div class="flex-1" />
+
     <DashboardItem
       v-for="(link, index) in links"
       :link="link"
@@ -79,11 +81,7 @@ const profileLink = {
       </DashboardItem>
       <DashboardItem v-else :link="profileLink" />
     </div>
-    <DashboardItem
-      v-for="(link, index) in endLinks"
-      :link="link"
-      :delayMs="(links.length + 2) * 100 + index * 100"
-    />
+    <DashboardItem v-for="(link, index) in endLinks" :link="link" />
   </div>
 </template>
 

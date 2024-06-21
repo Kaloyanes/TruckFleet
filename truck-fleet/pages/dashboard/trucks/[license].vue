@@ -10,7 +10,7 @@ const config = useRuntimeConfig();
 // TODO: CHANGE API KEY TO TRUCK FLEET PROJECT INSTEAD OF FLEET
 const apiKey = config.public.google_maps;
 
-const trucksStore = await useTrucksStore();
+const trucksStore = useTrucksStore();
 const invalidLicensePlate = computed(() => {
   const res = !trucksStore.trucks.some(
     (truck) => truck.licensePlate === useRoute().params.license,
@@ -19,22 +19,21 @@ const invalidLicensePlate = computed(() => {
   return res;
 });
 
+const driverStore = useMyDriversStore();
+const currentDriver = computed(() => {
+  return driverStore.companyDrivers.find(
+    (driver) => driver.drivingTruck === licensePlate.value,
+  );
+});
+
 onMounted(() => {
   if (invalidLicensePlate.value) {
     useRouter().replace("/dashboard/trucks");
   }
 });
 
-// watch(invalidLicensePlate, async (value) => {
-//   if (value) {
-//     await useRouter().replace('/dashboard/trucks')
-//   }
-// })
-
 const orders = useOrdersStore();
-
 orders.filterByLicensePlate(licensePlate.value as string);
-
 const lastOrder = computed(() => {
   const sortedOrders = orders.companyOrders.sort(
     (a, b) => b.createdAt - a.createdAt,
@@ -44,10 +43,6 @@ const lastOrder = computed(() => {
 
 function addOrder() {
   navigateTo(`/dashboard/orders/${licensePlate.value}#addOrder`);
-}
-
-async function goBackToTrucks() {
-  await useRouter().replace("/dashboard/trucks");
 }
 </script>
 
@@ -63,13 +58,10 @@ async function goBackToTrucks() {
       <Button variant="outline" @click="addOrder">Add Order</Button>
     </div>
 
-    <div
-      v-if="lastOrder"
-      class="flex flex-row-reverse gap-2 w-full absolute bottom-0 p-2"
-    >
+    <div v-if="lastOrder" class="flex gap-3 w-full absolute bottom-0 p-2">
       <LazyTrucksDetails :order="lastOrder" class="flex-[1]" />
 
-      <LazyTrucksDriverDetails class="flex-[0.3]" />
+      <LazyTrucksDriverDetails :driver="currentDriver!" class="flex-[0.3]" />
     </div>
   </div>
 </template>

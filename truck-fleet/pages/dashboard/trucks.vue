@@ -38,9 +38,9 @@ watch(searchInput, (value) => {
         <LazyTrucksList />
       </div>
 
-      <div class="flex-[0.5] bg-primary/50 rounded-xl">
+      <!-- <div class="flex-[0.5] bg-primary/50 rounded-xl">
         <LazyTrucksSelected />
-      </div>
+      </div> -->
     </div>
 
     <LazyOrderAddDialog />
