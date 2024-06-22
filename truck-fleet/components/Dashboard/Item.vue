@@ -25,8 +25,8 @@ const linkTitle = computed(() => {
 </script>
 
 <template>
-  <HoverCard>
-    <HoverCardTrigger>
+  <HoverCard :open-delay="0" :close-delay="0">
+    <HoverCardTrigger as-child>
       <div
         class="p-3 bg-neutral -900 rounded-md flex items-center justify-center duration-300 hover:bg-primary/50 hover:cursor-pointer hover:scale-105 active:scale-95"
         @click="$router.push(link.href)"
