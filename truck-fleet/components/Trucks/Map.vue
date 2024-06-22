@@ -45,12 +45,12 @@ const { data: routes, status: routesPending } = useFetch(
   {
     method: "POST",
     body: info,
+
     headers: {
       "Content-Type": "application/json",
       "X-Goog-Api-Key": props.apiKey,
       "X-Goog-FieldMask":
         "routes.duration,routes.distanceMeters,routes.polyline,routes.legs.polyline,routes.legs.steps.polyline",
-      "Access-Control-Allow-Origin": "*",
     },
   },
 );
@@ -110,7 +110,7 @@ watch(currentZoom, (value) => {
 </script>
 
 <template>
-  <div class="relative" v-if="!routesPending">
+  <div class="relative" v-if="routesPending !== 'pending'">
     <div class="right-5 top-5 absolute z-50 flex flex-col">
       <Button
         @click="currentZoom++"
