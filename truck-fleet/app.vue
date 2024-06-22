@@ -1,40 +1,37 @@
 <script lang="ts" setup>
-
 useSeoMeta({
-  title: 'Truck Fleet',
-})
-
-const colorMode = useColorMode()
-
-useHead({
-  link: [
-    { rel: 'icon', type: 'image/x-icon', href: colorMode.value === 'dark' ? '/lightFavicon.svg' : '/favicon.svg' }
-  ]
-})
-
+  title: "Truck Fleet",
+  description: "Truck Fleet",
+});
 </script>
 
-
 <template>
+  <UNotifications />
+
   <NuxtLoadingIndicator color="primary" />
+
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-
-  <UNotifications />
-
 </template>
+
 <style>
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;
-
 }
 
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
-  transform: scale(0.8);
-  filter: blur(0.5rem);
+  filter: blur(2rem);
+}
+
+.page-enter-from {
+  transform: scale(0.75) translateY(100px);
+}
+
+.page-leave-to {
+  transform: scale(0.75) translateY(-100px);
 }
 </style>

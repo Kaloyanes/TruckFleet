@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { Query } from 'firebase/firestore';
-import { collection, query, where } from 'firebase/firestore';
 
 const props = defineProps({
   licensePlate: {
@@ -9,34 +7,12 @@ const props = defineProps({
   }
 })
 
-const db = useFirestore();
+
+const orders = useOrdersStore();
+
+orders.filterByLicensePlate(props.licensePlate);
 
 
-const {
-  data: profile,
-  promise: profilePromise,
-} = useProfileDoc()
-
-await profilePromise.value;
-
-let id = profile.value?.type === 'company' ? profile.value?.id : profile.value?.companyId;
-
-
-
-const orderRef = query(collection(db, 'orders'), where('companyId', '==', id));
-const filteredQuery = (ordersQuery: Query) => {
-  return props.licensePlate === 'all'
-    ? ordersQuery
-    : query(ordersQuery, where('licensePlate', '==', props.licensePlate));
-};
-
-const { data: orders, promise: ordersPromise } = useCollection(filteredQuery(orderRef));
-
-await ordersPromise.value;
-
-const ordersReactivity = computed(() => {
-  orders.value;
-});
 
 function selectOrder(select: boolean, order: any) {
   useState('selectedOrder').value = select ? order : null;
@@ -46,7 +22,6 @@ function selectOrder(select: boolean, order: any) {
 </script>
 
 <template>
-  {{ ordersReactivity }}
   <Table class="rounded-lg w-full">
     <TableHeader>
       <TableRow>
@@ -71,11 +46,11 @@ function selectOrder(select: boolean, order: any) {
           Locations
         </TableCell>
 
-        <TableCell>
+        <TableCell class="min-w-[100px]">
           Weight
         </TableCell>
 
-        <TableCell>
+        <TableCell class="min-w-[250px]">
           Size
         </TableCell>
 
@@ -106,7 +81,7 @@ function selectOrder(select: boolean, order: any) {
       </TableRow>
     </TableHeader>
     <TableBody class="rounded-lg">
-      <TableRow v-for="order in orders" class="rounded-lg">
+      <TableRow v-for="order in orders.companyOrders" class="rounded-lg">
         <TableCell>
           <Checkbox class="rounded-[5px]" :checked="useState('selectedOrder').value === order"
             @update:checked="(val: boolean) => selectOrder(val, order)" />

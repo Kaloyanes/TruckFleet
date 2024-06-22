@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from 'vue'
+import { cn } from '@/lib/utils';
 import {
   ContextMenuItem,
   type ContextMenuItemEmits,
   type ContextMenuItemProps,
   useForwardPropsEmits,
-} from 'radix-vue'
-import { cn } from '@/lib/utils'
+} from 'radix-vue';
+import { type HTMLAttributes, computed } from 'vue';
 
 const props = defineProps<ContextMenuItemProps & { class?: HTMLAttributes['class']; inset?: boolean }>()
 const emits = defineEmits<ContextMenuItemEmits>()
@@ -21,14 +21,11 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
-  <ContextMenuItem
-    v-bind="forwarded"
-    :class="cn(
-      'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      inset && 'pl-8',
-      props.class,
-    )"
-  >
+  <ContextMenuItem v-bind="forwarded" :class="cn(
+    'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 gap-1 transition-all duration-300 ease-in-out hover:scale-105 active:scale-95',
+    inset && 'pl-8',
+    props.class,
+  )">
     <slot />
   </ContextMenuItem>
 </template>

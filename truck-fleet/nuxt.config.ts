@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      google_maps: process.env.GOOGLE_MAPS_PUBLIC,
+    },
+  },
   devtools: {
     enabled: true,
     timeline: {
@@ -11,13 +16,10 @@ export default defineNuxtConfig({
   },
   app: {
     pageTransition: {
-      name: 'page', mode: 'out-in', type: 'transition',
+      name: "page",
+      mode: "out-in",
+      type: "transition",
     },
-    head: {
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }
-      ]
-    }
   },
   modules: [
     "nuxt-vuefire",
@@ -27,25 +29,27 @@ export default defineNuxtConfig({
     "@formkit/auto-animate",
     "@nuxtjs/google-fonts",
     "@nuxtjs/sitemap",
-    '@nuxtjs/tailwindcss',
-    'shadcn-nuxt',
-    '@vueuse/nuxt',
-    '@nuxt/image',
-    '@vueuse/motion/nuxt',
+    "@nuxtjs/tailwindcss",
+    "shadcn-nuxt",
+    "@vueuse/nuxt",
+    "@nuxt/image",
+    "@vueuse/motion/nuxt",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/i18n",
   ],
-  builder: 'vite',
+
+  builder: "vite",
   shadcn: {
-    prefix: '',
-    componentDir: './components/ui'
+    prefix: "",
+    componentDir: "./components/ui",
   },
   colorMode: {
     classSuffix: "",
-    fallback: 'dark',
-    storageKey: 'color-mode',
+    fallback: "dark",
+    storageKey: "color-mode",
   },
-  css: [
-    "@/assets/css/tailwind.css",
-  ],
+  css: ["@/assets/css/tailwind.css"],
   vuefire: {
     auth: {
       enabled: true,
@@ -60,7 +64,7 @@ export default defineNuxtConfig({
       appId: process.env.FIREBASE_APP_ID,
       measurementId: process.env.FIREBASE_MEASUREMENT_ID,
     },
-    optionsApiPlugin: 'firestore',
+    optionsApiPlugin: "firestore",
   },
   postcss: {
     plugins: {
@@ -73,8 +77,31 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Inter: true,
-    }
+    },
   },
   // TODO: MAKE SSR TRUE WHEN PRODUCTION
-  ssr: false,
-})
+  routeRules: {
+    "/": {
+      prerender: true,
+    },
+    "/dashboard": {
+      redirect: "/dashboard/home",
+    },
+    "/dashboard/**": {},
+  },
+  sitemap: {
+    exclude: ["/dashboard/**"],
+  },
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        baseUrl: ".",
+      },
+    },
+  },
+  i18n: {
+    locales: ["bg", "en"],
+    defaultLocale: "bg",
+    detectBrowserLanguage: { fallbackLocale: "bg", alwaysRedirect: true },
+  },
+});

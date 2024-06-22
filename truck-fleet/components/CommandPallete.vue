@@ -77,7 +77,7 @@ const actions = [
     label: 'Add Truck',
     icon: 'mdi:truck-plus',
     click: () => {
-      openDialog(['/dashboard/trucks', '/dashboard/orders'], '#addTruck')
+      openDialog(['/dashboard/trucks'], '#addTruck')
     }
     // click: () => {
     //   (document.activeElement as HTMLElement).blur();

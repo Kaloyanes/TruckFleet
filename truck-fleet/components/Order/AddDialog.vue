@@ -107,6 +107,9 @@ const schema = yup.object({
 type Schema = yup.InferType<typeof schema>;
 
 const docValue = reactive({
+  createdAt: Timestamp.fromDate(
+    new Date()
+  ),
   locations: [
     {
       pickUpTime: {
@@ -223,6 +226,7 @@ async function uploadOrder() {
 
   docValue.customerCompanyRef = doc(db, 'companiesWorkedWith', docValue.customerCompanyId);
   docValue.truckRef = doc(db, 'trucks', docValue.licensePlate);
+  docValue.createdAt = Timestamp.fromDate(new Date());
 
   isUploading.value = true;
   await setDoc(documentRef, docValue);
@@ -263,9 +267,7 @@ function openDriverAddDialog() {
 <template>
   {{ reactToSlugChanges }}
   <Sheet :open="isOpen" @update:open="(e: boolean) => {
-    if (!e) {
-      useRouter().back();
-    }
+    if (isOpen) useRouter().back()
   }">
     <SheetContent class="dark:bg-cod-gray-950 rounded-l-lg overflow-y-scroll">
       <SheetHeader>
