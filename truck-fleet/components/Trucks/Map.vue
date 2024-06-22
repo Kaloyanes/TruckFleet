@@ -51,6 +51,7 @@ const { data: routes, status: routesPending } = useFetch(
       "X-Goog-Api-Key": props.apiKey,
       "X-Goog-FieldMask":
         "routes.duration,routes.distanceMeters,routes.polyline,routes.legs.polyline,routes.legs.steps.polyline",
+      mode: "no-cors",
     },
   },
 );
