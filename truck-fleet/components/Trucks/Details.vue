@@ -23,7 +23,7 @@ function viewFile() {
 
 <template>
   <div
-    class="backdrop-blur-lg z-10 bg-neutral-900/15 border border-primary/25 rounded-3xl shadow-[0_0_5px_rgba(0,0,0,0.3)] shadow-primary/50 flex flex-col items-center justify-center gap-2 p-6 w-full"
+    class="backdrop-blur-lg z-10 bg-neutral-900/15 border border-primary/25 rounded-3xl shadow-[0_0_5px_rgba(0,0,0,0.3)] shadow-primary/20 flex flex-col items-center justify-center gap-2 p-6 w-full"
   >
     <div class="w-full flex justify-between">
       <div class="text-left">

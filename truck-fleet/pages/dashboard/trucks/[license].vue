@@ -59,9 +59,9 @@ function addOrder() {
     </div>
 
     <div v-if="lastOrder" class="flex gap-3 w-full absolute bottom-0 p-2">
-      <LazyTrucksDetails :order="lastOrder" class="flex-[1]" />
+      <LazyTrucksDetails :order="lastOrder" class="flex-[0.6]" />
 
-      <LazyTrucksDriverDetails :driver="currentDriver!" class="flex-[0.3]" />
+      <LazyTrucksDriverDetails :driver="currentDriver!" class="flex-[0.4]" />
     </div>
   </div>
 </template>

@@ -1,28 +1,24 @@
 <script lang="ts" setup>
-
 useSeoMeta({
-  title: 'Truck Fleet',
-  description: 'Truck Fleet',
-})
-
-
+  title: "Truck Fleet",
+  description: "Truck Fleet",
+});
 </script>
 
-
 <template>
+  <UNotifications />
+
   <NuxtLoadingIndicator color="primary" />
+
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-
-  <UNotifications />
-
 </template>
+
 <style>
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;
-
 }
 
 .page-enter-from,
