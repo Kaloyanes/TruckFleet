@@ -28,9 +28,7 @@ function viewFile() {
     <div class="w-full flex justify-between">
       <div class="text-left">
         <h1>
-          {{
-            (order.locations[0].pickUpAddress as string).split(",").reverse()[1]
-          }}
+          {{ order.locations[0].pickUpAddress as string }}
         </h1>
         <h1 class="text-gray-500">
           {{ format((pickUpStart as Timestamp).toDate(), "dd MMM | HH:00") }}
@@ -41,11 +39,7 @@ function viewFile() {
 
       <div class="text-right">
         <h1>
-          {{
-            (order.locations[0].deliveryAddress as string)
-              .split(",")
-              .reverse()[1]
-          }}
+          {{ order.locations[0].deliveryAddress as string }}
         </h1>
         <h1 class="text-gray-500">
           {{ format((deliveryStart as Timestamp).toDate(), "dd MMM | HH:00") }}
@@ -57,7 +51,7 @@ function viewFile() {
 
     <Separator />
 
-    <div class="w-full flex items-center">
+    <div class="w-full flex items-center h-10">
       <div>
         <h1 class="text-gray-500">Order ID</h1>
         <h1>{{ order.id }}</h1>

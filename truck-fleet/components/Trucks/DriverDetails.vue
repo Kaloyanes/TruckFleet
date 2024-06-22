@@ -46,7 +46,7 @@ function copyToClipboard(textCopy: string) {
       </div>
     </div>
     <Separator />
-    <div class="flex gap-3">
+    <div class="flex justify-between">
       <div
         class="flex flex-col cursor-pointer"
         @click="() => copyToClipboard(props.driver.phoneNumber)"

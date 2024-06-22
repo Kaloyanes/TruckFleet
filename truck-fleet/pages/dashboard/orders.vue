@@ -26,8 +26,8 @@ async function openOrderAddDialog() {
     <div class="bg-[rgb(17,17,17)] flex-[1] flex flex-col rounded-xl">
       <div class="p-6">
         <div class="flex justify-between items-center">
-          <h1 class="font-bold text-3xl py-4 flex">
-            {{ format(currentDate, "dd, MMMM | HH:mm:ss ") }}
+          <h1 class="font-bold text-3xl py-4 flex gap-2">
+            {{ format(currentDate, "PP | pp ") }}
             <div class="flex gap-3 items-end">
               <span class="text-sm">{{ format(currentDate, "EEEE") }}</span>
             </div>
@@ -46,7 +46,7 @@ async function openOrderAddDialog() {
 
       <div class="flex-[1] flex flex-grow-0 max-w-[66.5vw]">
         <div class="flex-[1] overflow-x-scroll">
-          <NuxtPage />
+          <NuxtPage :key="$route.path" />
         </div>
       </div>
     </div>

@@ -46,6 +46,14 @@ const linkTitle = computed(() => {
             duration: 200,
           },
         }"
+        :hovered="{
+          scale: 1.05,
+          transition: {
+            type: 'tween',
+            duration: 100,
+            ease: 'easeOut',
+          },
+        }"
       >
         <slot name="icon">
           <UIcon
