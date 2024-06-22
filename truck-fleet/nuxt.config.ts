@@ -87,7 +87,9 @@ export default defineNuxtConfig({
     "/dashboard": {
       redirect: "/dashboard/home",
     },
-    "/dashboard/**": {},
+    "/dashboard/**": {
+      ssr: false,
+    },
   },
   sitemap: {
     exclude: ["/dashboard/**"],
