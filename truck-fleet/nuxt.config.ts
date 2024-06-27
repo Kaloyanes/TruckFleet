@@ -33,10 +33,10 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@vueuse/nuxt",
     "@nuxt/image",
-    "@vueuse/motion/nuxt",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/i18n",
+    "@oku-ui/motion-nuxt",
   ],
 
   builder: "vite",

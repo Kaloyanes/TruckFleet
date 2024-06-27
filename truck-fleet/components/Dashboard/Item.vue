@@ -27,46 +27,48 @@ const linkTitle = computed(() => {
 <template>
   <HoverCard :open-delay="0" :close-delay="0">
     <HoverCardTrigger as-child>
-      <div
-        class="p-3 bg-neutral -900 rounded-md flex items-center justify-center duration-300 hover:bg-primary/50 hover:cursor-pointer hover:scale-105 active:scale-95"
-        @click="$router.push(link.href)"
-        :class="{ 'bg-primary': linkTitle, 'bg-[rgb(17,17,17)]': !linkTitle }"
-        v-motion
+      <!-- <Motion
         :initial="{
           scale: 0,
           opacity: 0.5,
-          'transform-origin': 'center center',
+          transformOrigin: 'center center',
         }"
-        :enter="{
+        :animate="{
           scale: 1,
           opacity: 1,
+
           transition: {
+            // delay: props.delayMs + 250,
+
+            // easing: spring({
+            //   damping: 10,
+            //   stiffness: 100,
+            //   mass: 1,
+            // }),
+
             delay: props.delayMs + 250,
-            type: 'spring',
             duration: 200,
           },
         }"
-        :hovered="{
-          scale: 1.05,
-          transition: {
-            type: 'tween',
-            duration: 100,
-            ease: 'easeOut',
-          },
-        }"
+      > -->
+      <div
+        class="navigation-item flex items-center justify-center rounded-md bg-neutral-900 p-3 duration-300 hover:scale-105 hover:cursor-pointer hover:bg-primary/50 active:scale-95"
+        @click="$router.push(link.href)"
+        :class="{ 'bg-primary': linkTitle, 'bg-[rgb(17,17,17)]': !linkTitle }"
       >
         <slot name="icon">
           <UIcon
             :name="props.link.icon"
-            class="w-6 h-6"
+            class="h-6 w-6"
             :color="linkTitle ? 'black' : 'white'"
           />
         </slot>
       </div>
+      <!-- </Motion> -->
     </HoverCardTrigger>
 
     <HoverCardContent
-      class="text-center w-min py-2"
+      class="w-min py-2 text-center"
       :class="{ hidden: linkTitle }"
     >
       {{ props.link.title }}

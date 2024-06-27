@@ -49,10 +49,34 @@ const profileLink = {
   href: "/dashboard/profile/account",
   icon: "i-heroicons-user-circle",
 };
+
+onMounted(() => {
+  animate(
+    ".navigation-item",
+    {
+      scale: [0.6, 1.1, 1],
+      opacity: [0, 1],
+      rotate: [45, 0],
+      filter: ["blur(15px)", "blur(0px)"],
+    },
+    {
+      duration: 0.7,
+      easing: spring({
+        damping: 10,
+        stiffness: 100,
+        mass: 0.7,
+      }),
+      delay: stagger(0.07, {
+        from: "first",
+        start: 0.4,
+      }),
+    },
+  );
+});
 </script>
 
 <template>
-  <div class="h-screen py-5 flex flex-col gap-5 items-center">
+  <div class="flex h-screen flex-col items-center gap-5 py-5">
     <DashboardLogo />
     <div class="flex-1" />
 
@@ -74,7 +98,7 @@ const profileLink = {
         :delayMs="links.length * 100"
       >
         <template #icon>
-          <Avatar class="w-6 h-6">
+          <Avatar class="h-6 w-6">
             <AvatarImage :src="profilePicture" alt="Profile Picture" />
           </Avatar>
         </template>

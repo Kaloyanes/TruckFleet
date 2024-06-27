@@ -1,35 +1,39 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div
-    class="pb-5"
-    @click="$router.push('/dashboard')"
-    v-motion
+  <Motion
     :initial="{
       rotate: 90,
       scale: 0,
       opacity: 0.5,
-      'transform-origin': 'center center',
+      filter: 'blur(15px)',
+      transformOrigin: 'center',
     }"
-    :enter="{
+    :animate="{
       opacity: 1,
       rotate: 0,
       scale: 1,
+      filter: 'blur(0px)',
       transition: {
-        type: 'spring',
-        duration: 500,
+        easing: spring({
+          damping: 10,
+          stiffness: 100,
+          mass: 1,
+        }),
       },
     }"
   >
-    <NuxtImg
-      src="/favicon.svg"
-      class="w-12 h-12 rounded-full p-2 bg-gradient-to-br from-blue-300 to-primary duration-300 ease infinite cursor-pointer"
-      :class="{
-        'bg-gradient-to-tl cursor-auto':
-          $route.fullPath.includes('/dashboard/home'),
-      }"
-    />
-  </div>
+    <div class="pb-5" @click="$router.push('/dashboard')" v-motion>
+      <NuxtImg
+        src="/favicon.svg"
+        class="ease infinite h-12 w-12 cursor-pointer rounded-full bg-gradient-to-br from-blue-300 to-primary p-2 duration-300"
+        :class="{
+          'cursor-auto bg-gradient-to-tl':
+            $route.fullPath.includes('/dashboard/home'),
+        }"
+      />
+    </div>
+  </Motion>
 </template>
 
 <style lang="scss"></style>
