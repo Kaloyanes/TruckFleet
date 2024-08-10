@@ -1,4 +1,3 @@
-import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { browserLocalPersistence, initializeAuth } from "firebase/auth";
 import {
@@ -28,4 +27,4 @@ export const db = initializeFirestore(app, {
 export const auth = initializeAuth(app, {
   persistence: browserLocalPersistence,
 });
-export const analytics = getAnalytics(app);
+// export const analytics = getAnalytics(app);

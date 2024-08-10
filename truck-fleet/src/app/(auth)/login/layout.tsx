@@ -1,14 +1,22 @@
+import LoginRedirect from "@/components/redirects/LoginRedirect";
 import type { Metadata } from "next/types";
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Login page for the app.",
+	title: "Login",
+	description: "Login page for the app.",
 };
 
 export default function LoginLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return <section>{children}</section>;
+	return (
+		<>
+			<div className="z-100">
+				<LoginRedirect />
+			</div>
+			<section>{children}</section>
+		</>
+	);
 }
