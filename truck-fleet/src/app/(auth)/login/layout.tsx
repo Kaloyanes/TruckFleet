@@ -1,4 +1,4 @@
-import LoginRedirect from "@/components/redirects/LoginRedirect";
+import LoginRedirect from "@/components/redirects/login-redirect";
 import type { Metadata } from "next/types";
 
 export const metadata: Metadata = {

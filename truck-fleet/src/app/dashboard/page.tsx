@@ -1,4 +1,5 @@
-import SignOutButton from "@/components/dashboard/SignOutButton";
+import SignOutButton from "@/components/dashboard/sign-out-button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function DashboardPage() {
 	return (

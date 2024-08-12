@@ -1,0 +1,20 @@
+"use client";
+import { auth } from "@/firebase/firebase";
+import { signOut } from "firebase/auth";
+import { Button } from "../ui/button";
+import { useToast } from "../ui/use-toast";
+
+export default function SignOutButton() {
+	const { toast } = useToast();
+
+	async function signOutFromAccount() {
+		await signOut(auth);
+		toast({
+			title: "Signed out",
+			description: "You have successfully signed out.",
+			variant: "destructive",
+		});
+	}
+
+	return <Button onClick={() => signOutFromAccount()}>Sign out</Button>;
+}

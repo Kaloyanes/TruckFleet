@@ -1,5 +1,5 @@
-import LoginForm from "@/components/login/LoginForm";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import LoginForm from "@/components/login/login-form";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { TruckIcon } from "lucide-react";
 
 export default function Login() {

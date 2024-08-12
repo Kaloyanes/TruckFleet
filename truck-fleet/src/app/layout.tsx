@@ -1,10 +1,15 @@
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+	preload: true,
+	weight: ["400", "500", "600", "700", "800"],
+	subsets: ["latin", "latin-ext"],
+});
 
 export const metadata: Metadata = {
 	title: {
@@ -26,7 +31,7 @@ export default function RootLayout({
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
-			<body className={inter.className}>
+			<body className={poppins.className}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"

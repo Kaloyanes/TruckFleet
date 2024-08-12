@@ -1,11 +1,14 @@
 "use client";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { db } from "@/firebase/firebase";
 import { collection } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
+import {
+	useCollection,
+	useCollectionOnce,
+} from "react-firebase-hooks/firestore";
 
 export default function Home() {
-	const [snapshot, loading] = useCollection(collection(db, "companies"));
+	const [snapshot, loading] = useCollectionOnce(collection(db, "companies"));
 
 	return (
 		<main>
