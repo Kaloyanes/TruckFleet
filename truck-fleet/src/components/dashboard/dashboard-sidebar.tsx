@@ -12,7 +12,7 @@ import {
 	IconTruck,
 	IconUsersGroup,
 } from "@tabler/icons-react";
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { TruckIcon } from "lucide-react";
@@ -63,6 +63,7 @@ export default function DashboardSidebar() {
 					<SidebarLink
 						className="cursor-default hover:scale-100 "
 						link={{
+							customLabel: true,
 							label: "Truck Fleet",
 							href: "#",
 							icon: <TruckIcon className="h-6 w-6 flex-shrink-0" />,
@@ -89,6 +90,7 @@ export default function DashboardSidebar() {
 						link={{
 							label: "Kaloyan Stoyanov",
 							href: "/dashboard/profile",
+							customLabel: true,
 							icon: (
 								<Image
 									src="/kala.jpg"

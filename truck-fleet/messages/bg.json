@@ -1,0 +1,60 @@
+{
+  "Home": {
+    "loading": "Зареждане...",
+    "welcome": "Добре дошли в Truck Fleet"
+  },
+  "AddOrderSheet": {
+    "title": "Добави поръчка"
+  },
+  "TimeTitle": {
+    "monday": "понеделник",
+    "tuesday": "вторник",
+    "wednesday": "сряда",
+    "thursday": "четвъртък",
+    "friday": "петък",
+    "saturday": "събота",
+    "sunday": "неделя",
+    "jan": "януари",
+    "feb": "февруари",
+    "mar": "март",
+    "apr": "април",
+    "may": "май",
+    "jun": "юни",
+    "jul": "юли",
+    "aug": "август",
+    "sep": "септември",
+    "oct": "октомври",
+    "nov": "ноември",
+    "dec": "декември"
+  },
+  "SidebarLink": {
+    "chat": "Чат",
+    "dashboard": "Табло",
+    "map": "Карта",
+    "orders": "Поръчки",
+    "drivers": "Шофьори",
+    "trucks": "Камиони",
+    "settings": "Настройки",
+    "sign out": "Изход"
+  },
+  "LocaleSwitcher": {
+    "bg": "Български",
+    "en": "English"
+  },
+  "LoginPage": {
+    "welcome_back": "Добре дошли обратно в Truck Fleet",
+    "welcome_description": "Въведете вашия имейл и парола, за да продължите",
+    "email": "Имейл",
+    "password": "Парола",
+    "forgot_password_q": "Забравена парола?",
+    "forgot_password": "Забравена парола",
+    "forgot_password_desc": "Въведете вашия имейл адрес и ще ви изпратим връзка за нулиране на паролата",
+    "submit": "Вход",
+    "cancel": "Отказ",
+    "send_email": "Изпрати имейл",
+    "success": "Успех",
+    "signed_in": "Влязохте успешно в акаунта ви.",
+    "sent_email": "Изпратен имейл",
+    "check_email": " Проверете имейла си за връзка, за да нулирате паролата си"
+  }
+}

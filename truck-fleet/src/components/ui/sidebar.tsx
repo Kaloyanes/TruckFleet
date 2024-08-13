@@ -1,17 +1,20 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Link, { type LinkProps } from "next/link";
+import { Link } from "@/lib/navigation";
 import type React from "react";
 import { useState, createContext, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { Button } from "./button";
+import type { LinkProps } from "next/link";
+import { useTranslations } from "next-intl";
 
 interface Links {
 	label: string;
 	href: string;
 	icon: React.JSX.Element | React.ReactNode;
+	customLabel?: boolean;
 }
 
 interface SidebarContextProps {
@@ -175,6 +178,7 @@ export const SidebarLink = ({
 	const isActive =
 		(pathName.includes(link.href) && link.href !== "/dashboard") ||
 		pathName === link.href;
+	const t = useTranslations("SidebarLink");
 	return (
 		<Link
 			href={isActive ? "#" : link.href}
@@ -196,7 +200,7 @@ export const SidebarLink = ({
 				transition={{ duration: 0.3, type: "spring", bounce: 0.2 }}
 				className=" text-sm group-hover/sidebar:translate-x-1 transition ease-out duration-300 whitespace-pre inline-block !p-0 !m-0  "
 			>
-				{link.label}
+				{link.customLabel ? link.label : t(link.label.toLowerCase() as any)}
 			</motion.span>
 		</Link>
 	);

@@ -1,0 +1,60 @@
+{
+  "Home": {
+    "loading": "Loading...",
+    "welcome": "Welcome to Truck Fleet"
+  },
+  "AddOrderSheet": {
+    "title": "Add Order"
+  },
+  "TimeTitle": {
+    "monday": "monday",
+    "tuesday": "tuesday",
+    "wednesday": "wednesday",
+    "thursday": "thursday",
+    "friday": "friday",
+    "saturday": "saturday",
+    "sunday": "sunday",
+    "jan": "jan",
+    "feb": "feb",
+    "mar": "mar",
+    "apr": "apr",
+    "may": "may",
+    "jun": "jun",
+    "jul": "jul",
+    "aug": "aug",
+    "sep": "sep",
+    "oct": "oct",
+    "nov": "nov",
+    "dec": "dec"
+  },
+  "SidebarLink": {
+    "chat": "Chat",
+    "dashboard": "Dashboard",
+    "map": "Map",
+    "orders": "Orders",
+    "drivers": "Drivers",
+    "trucks": "Trucks",
+    "settings": "Settings",
+    "sign out": "Sign Out"
+  },
+  "LocaleSwitcher": {
+    "bg": "Български",
+    "en": "English"
+  },
+  "LoginPage": {
+    "welcome_back": "Welcome Back To Truck Fleet",
+    "welcome_description": "Enter your email and password to continue",
+    "email": "Email",
+    "password": "Password",
+    "forgot_password_q": "Forgot Password?",
+    "forgot_password": "Forgot Password",
+    "forgot_password_desc": "Enter your email address and we'll send you a link to reset your password",
+    "submit": "Sign In",
+    "cancel": "Cancel",
+    "send_email": "Send Email",
+    "success": "Success",
+    "signed_in": "You have successfully signed in.",
+    "sent_email": "Sent email",
+    "check_email": " Check your email for a link to reset your password"
+  }
+}

@@ -1,6 +1,6 @@
 "use client";
 import { auth } from "@/firebase/firebase";
-import { redirect } from "next/navigation";
+import { redirect } from "@/lib/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function AuthRedirect() {

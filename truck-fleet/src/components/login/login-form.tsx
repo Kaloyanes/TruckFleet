@@ -10,34 +10,39 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
 import { useToast } from "../ui/use-toast";
 import type { FirebaseError } from "firebase/app";
-import { redirect } from "next/navigation";
+import { redirect } from "@/lib/navigation";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Define your form schema using zod
-const formSchema = z.object({
-	email: z
-		.string({
-			required_error: "Email is required.",
-		})
-		.email({
-			message: "Invalid email address.",
-		})
-		.min(2, {
-			message: "Email must be at least 2 characters.",
-		}),
-
-	password: z
-		.string({
-			required_error: "Password is required.",
-		})
-
-		.describe("Your secure password")
-		.min(8, {
-			message: "Password must be at least 8 characters.",
-		}),
-});
 
 export default function LoginForm() {
+	const t = useTranslations("LoginPage");
+
+	const formSchema = z.object({
+		email: z
+			.string({
+				required_error: "Email is required.",
+			})
+			.describe(t("email"))
+			.email({
+				message: "Invalid email address.",
+			})
+			.min(2, {
+				message: "Email must be at least 2 characters.",
+			}),
+
+		password: z
+			.string({
+				required_error: "Password is required.",
+			})
+
+			.describe(t("password"))
+			.min(8, {
+				message: "Password must be at least 8 characters.",
+			}),
+	});
+
 	const [showPassword, setShowPassword] = useState(false);
 	const { toast } = useToast();
 	const router = useRouter();
@@ -56,8 +61,8 @@ export default function LoginForm() {
 		}
 
 		toast({
-			title: "Success",
-			description: "You have successfully signed in.",
+			title: t("success"),
+			description: t("signed_in"),
 			variant: "success",
 		});
 
@@ -94,7 +99,7 @@ export default function LoginForm() {
 		>
 			<ForgotPasswordDialog />
 			<Button type="submit" className="w-full">
-				Submit
+				{t("submit")}
 			</Button>
 		</AutoForm>
 	);
