@@ -1,6 +1,6 @@
-import { ControllerRenderProps, FieldValues } from "react-hook-form";
-import * as z from "zod";
-import { INPUT_COMPONENTS } from "./config";
+import type { ControllerRenderProps, FieldValues } from "react-hook-form";
+import type * as z from "zod";
+import type { INPUT_COMPONENTS } from "./config";
 
 export type FieldConfigItem = {
   description?: React.ReactNode;
@@ -25,10 +25,10 @@ export type FieldConfig<SchemaType extends z.infer<z.ZodObject<any, any>>> = {
 };
 
 export enum DependencyType {
-  DISABLES,
-  REQUIRES,
-  HIDES,
-  SETS_OPTIONS,
+  DISABLES = 0,
+  REQUIRES = 1,
+  HIDES = 2,
+  SETS_OPTIONS = 3,
 }
 
 type BaseDependency<SchemaType extends z.infer<z.ZodObject<any, any>>> = {

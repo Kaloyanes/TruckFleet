@@ -1,6 +1,7 @@
 import DashboardSidebar from "@/components/dashboard/dashboard-sidebar";
 import AuthRedirect from "@/components/redirects/auth-redirect";
 import { ThemeToggle } from "@/components/theme-toggle";
+import OrderSelectedContextProvider from "@/context/order-selected-context";
 
 export default function DashboardLayout({
 	children,
@@ -15,7 +16,9 @@ export default function DashboardLayout({
 
 				<section className="w-full flex flex-1">
 					{/* <Animated>{children}</Animated> */}
-					{children}
+					<OrderSelectedContextProvider>
+						{children}
+					</OrderSelectedContextProvider>
 				</section>
 			</div>
 			<div className="absolute top-5 right-5">

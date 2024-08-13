@@ -6,6 +6,7 @@ import { useState, createContext, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
+import { Button } from "./button";
 
 interface Links {
 	label: string;
@@ -91,11 +92,11 @@ export const DesktopSidebar = ({
 		<>
 			<motion.div
 				className={cn(
-					"h-full px-2 py-4 hidden  md:flex md:flex-col bg-background border-r border-border w-[350px] flex-shrink-0",
+					"h-full px-2 py-4 hidden  md:flex md:flex-col bg-background border-r border-border w-[200px] flex-shrink-0",
 					className,
 				)}
 				animate={{
-					width: animate ? (open ? "350px" : "70px") : "350px",
+					width: animate ? (open ? "200px" : "70px") : "200px",
 				}}
 				onMouseEnter={() => setOpen(true)}
 				onMouseLeave={() => setOpen(false)}
@@ -117,38 +118,40 @@ export const MobileSidebar = ({
 		<>
 			<div
 				className={cn(
-					"h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-950 border border-neutral-900 w-full",
+					"h-20 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-background border-b border-border w-full",
 				)}
 				{...props}
 			>
 				<div className="flex justify-end z-20 w-full">
-					<IconMenu2
-						className="text-neutral-800 dark:text-neutral-200"
-						onClick={() => setOpen(!open)}
-					/>
+					<Button onClick={() => setOpen(!open)} variant={"ghost"}>
+						<IconMenu2 className="" />
+					</Button>
 				</div>
 				<AnimatePresence>
 					{open && (
 						<motion.div
-							initial={{ x: "-100%", opacity: 0 }}
+							initial={{ x: "-100%", opacity: 0.8 }}
 							animate={{ x: 0, opacity: 1 }}
-							exit={{ x: "-100%", opacity: 0 }}
+							exit={{ x: "-100%", opacity: 0.8 }}
 							transition={{
-								duration: 0.3,
-								ease: "easeInOut",
+								duration: 0.6,
+								type: "spring",
+								bounce: 0.1,
 							}}
 							className={cn(
-								"fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
+								"fixed h-full w-full inset-0 bg-background p-10 z-[100] flex flex-col justify-between",
 								className,
 							)}
 						>
-							<div
-								className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
+							<Button
+								size="icon"
+								variant={"ghost"}
+								className="absolute right-10 top-10 z-50 "
 								onKeyUp={() => setOpen(!open)}
 								onClick={() => setOpen(!open)}
 							>
 								<IconX />
-							</div>
+							</Button>
 							{children}
 						</motion.div>
 					)}
@@ -169,17 +172,16 @@ export const SidebarLink = ({
 }) => {
 	const { open, animate } = useSidebar();
 	const pathName = usePathname();
-
+	const isActive =
+		(pathName.includes(link.href) && link.href !== "/dashboard") ||
+		pathName === link.href;
 	return (
 		<Link
-			href={link.href}
+			href={isActive ? "#" : link.href}
 			className={cn(
 				"flex items-center justify-start gap-2 group/sidebar py-2 hover:text-neutral-700 dark:hover:text-neutral-300 hover:scale-[1.02] bg-transparent  rounded-lg px-2.5 mx-1 transition-all duration-300 ease-out",
 				className,
-				(pathName.includes(link.href) && link.href !== "/dashboard") ||
-					pathName === link.href
-					? "bg-accent"
-					: "",
+				isActive ? "bg-accent" : "",
 			)}
 			{...props}
 		>
@@ -189,8 +191,9 @@ export const SidebarLink = ({
 					display: animate ? (open ? "inline-block" : "none") : "inline-block",
 					opacity: animate ? (open ? 1 : 0) : 1,
 					scale: animate ? (open ? 1 : 0.3) : 1,
-					x: animate ? (open ? 0 : -45) : 0,
+					x: animate ? (open ? 0 : -40) : 0,
 				}}
+				transition={{ duration: 0.3, type: "spring", bounce: 0.2 }}
 				className=" text-sm group-hover/sidebar:translate-x-1 transition ease-out duration-300 whitespace-pre inline-block !p-0 !m-0  "
 			>
 				{link.label}

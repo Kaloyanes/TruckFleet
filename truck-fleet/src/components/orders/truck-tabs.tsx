@@ -3,16 +3,36 @@ import React, { useEffect, useState } from "react";
 import AnimatedBackground from "../ui/animated-background";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+	useCollection,
+	useCollectionData,
+} from "react-firebase-hooks/firestore";
+import { collection, query, where } from "firebase/firestore";
+import { db } from "@/firebase/firebase";
+import useCompanyId from "@/hooks/useCompanyId";
 
 export default function TruckTabs() {
 	const router = useRouter();
 	const pathName = usePathname();
-	const Tabs = ["All", "A9015H", "A9015B", "Services", "Contact"];
+	const [Tabs, setTabs] = useState([""]);
+
+	const companyId = useCompanyId();
+
+	const [values, loading, error, snapshot] = useCollectionData<any>(
+		query(collection(db, "trucks"), where("companyId", "==", companyId)),
+		{},
+	);
+
+	useEffect(() => {
+		setTabs(values?.map((truck) => truck.licensePlate) || []);
+		router.replace(`/dashboard/orders/${values?.[0]?.licensePlate}`);
+	}, [values]);
+
 	const [currentSelectedTab, setCurrentTab] = useState(Tabs[0]);
 
 	useEffect(() => {
 		setCurrentTab(Tabs.find((tab) => pathName.includes(tab)) || Tabs[0]);
-	}, [pathName]);
+	}, [pathName, Tabs]);
 
 	return (
 		<div className="flex flex-row gap-2 h-10">

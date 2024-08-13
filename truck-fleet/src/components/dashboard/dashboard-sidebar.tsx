@@ -2,34 +2,49 @@
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 import {
-	IconArrowLeft,
-	IconBrandTabler,
+	IconChartPie,
 	IconLogout,
+	IconMap,
+	IconMap2,
+	IconMessage,
+	IconReceiptDollar,
 	IconSettings,
-	IconSignLeft,
 	IconTruck,
-	IconUserBolt,
+	IconUsersGroup,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { ThemeToggle } from "../theme-toggle";
 import { TruckIcon } from "lucide-react";
 import AnimatedBackground from "../ui/animated-background";
 
 export default function DashboardSidebar() {
 	const links = [
 		{
+			label: "Chat",
+			href: "/dashboard/chat",
+			icon: <IconMessage className="h-6 w-6 flex-shrink-0" />,
+		},
+		{
 			label: "Dashboard",
 			href: "/dashboard",
-			icon: <IconBrandTabler className=" h-6 w-6 flex-shrink-0" />,
+			icon: <IconChartPie className=" h-6 w-6 flex-shrink-0" />,
+		},
+		{
+			label: "Map",
+			href: "/dashboard/map",
+			icon: <IconMap2 className=" h-6 w-6 flex-shrink-0" />,
 		},
 
 		{
 			label: "Orders",
 			href: "/dashboard/orders",
-			icon: <IconUserBolt className=" h-6 w-6 flex-shrink-0" />,
+			icon: <IconReceiptDollar className=" h-6 w-6 flex-shrink-0" />,
+		},
+		{
+			label: "Drivers",
+			href: "/dashboard/drivers",
+			icon: <IconUsersGroup className=" h-6 w-6 flex-shrink-0" />,
 		},
 		{
 			label: "Trucks",

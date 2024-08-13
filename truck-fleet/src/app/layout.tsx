@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import OrderSelectedContextProvider from "@/context/order-selected-context";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
