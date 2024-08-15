@@ -10,9 +10,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTranslations } from "next-intl";
 
 export function ThemeToggle() {
 	const { setTheme } = useTheme();
+	const themes = ["light", "dark", "system"];
+
+	const t = useTranslations("ThemeToggle");
 
 	return (
 		<DropdownMenu>
@@ -24,15 +28,11 @@ export function ThemeToggle() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuItem onClick={() => setTheme("light")}>
-					Light
-				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme("dark")}>
-					Dark
-				</DropdownMenuItem>
-				<DropdownMenuItem onClick={() => setTheme("system")}>
-					System
-				</DropdownMenuItem>
+				{themes.map((theme) => (
+					<DropdownMenuItem key={theme} onClick={() => setTheme(theme)}>
+						{t(theme as any)}
+					</DropdownMenuItem>
+				))}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

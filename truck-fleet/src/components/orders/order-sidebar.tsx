@@ -16,7 +16,7 @@ export default function OrderSidebar() {
 					initial={{ width: 0 }}
 					animate={{ width: "500px" }}
 					exit={{ width: 0 }}
-					className={`min-w-0 border-border overflow-hidden w-[500px] rounded-l-none    rounded-lg bg-transparent  backdrop-saturate-150  ${show ? "rounded-full border" : "rounded-none border-0"} `}
+					className={`min-w-0 border-border overflow-hidden w-[500px] rounded-l-none    rounded-lg bg-background/50  backdrop-saturate-150  ${show ? "rounded-full border" : "rounded-none border-0"} `}
 				>
 					<CardHeader>
 						<h1>{show}</h1>

@@ -26,7 +26,9 @@ export default function TruckTabs() {
 
 	useEffect(() => {
 		setTabs(values?.map((truck) => truck.licensePlate) || []);
-		router.replace(`/dashboard/orders/${values?.[0]?.licensePlate}`);
+
+		if (pathName === "/dashboard/orders")
+			router.replace(`/dashboard/orders/${values?.[0]?.licensePlate}`);
 	}, [values]);
 
 	const [currentSelectedTab, setCurrentTab] = useState(Tabs[0]);
@@ -38,7 +40,6 @@ export default function TruckTabs() {
 	return (
 		<div className="flex flex-row gap-2 h-10">
 			<AnimatedBackground
-				defaultValue={Tabs[0]}
 				className="rounded-lg bg-neutral-200 dark:bg-neutral-800"
 				transition={{
 					type: "spring",

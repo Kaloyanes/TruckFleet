@@ -1,5 +1,4 @@
 import SignOutButton from "@/components/dashboard/sign-out-button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default function DashboardPage({

@@ -1,6 +1,6 @@
 import DashboardSidebar from "@/components/dashboard/dashboard-sidebar";
 import AuthRedirect from "@/components/redirects/auth-redirect";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import OrderSelectedContextProvider from "@/context/order-selected-context";
 import { unstable_setRequestLocale } from "next-intl/server";
 
@@ -16,15 +16,13 @@ export default function DashboardLayout({
 	return (
 		<>
 			<AuthRedirect />
-			<div className="flex flex-col md:flex-row w-full flex-1 mx-auto overflow-hidden h-screen">
+			<div className="flex relative h-screen max-h-screen max-w-[100vw] ">
 				<DashboardSidebar />
 
-				<section className="w-full flex flex-1">
+				<OrderSelectedContextProvider>
 					{/* <Animated>{children}</Animated> */}
-					<OrderSelectedContextProvider>
-						{children}
-					</OrderSelectedContextProvider>
-				</section>
+					{children}
+				</OrderSelectedContextProvider>
 			</div>
 		</>
 	);

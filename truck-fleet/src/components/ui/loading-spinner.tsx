@@ -1,8 +1,6 @@
 import React from "react";
 
-export default function OrdersPage() {
-	// router.replace(`/dashboard/orders/${values?.[0]?.licensePlate}`);
-
+export default function LoadingSpinner() {
 	return (
 		<div className="flex flex-col items-center justify-center h-screen w-screen z-[10000] ">
 			<div className="w-20 h-20 mt-4">

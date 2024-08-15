@@ -1,5 +1,5 @@
 import LocaleSwitcher from "@/components/settings/locale-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/settings/theme-toggle";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default function SettingsPage({

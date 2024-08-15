@@ -1,5 +1,5 @@
 import LoginForm from "@/components/login/login-form";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/settings/theme-toggle";
 import { TruckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
@@ -17,15 +17,15 @@ export default function Login({
 				<ThemeToggle />
 			</div>
 			<div className="flex max-h-screen h-screen   z-10  ">
-				<div className="flex-1 bg-accent max-w-[50vw] lg:block hidden relative">
+				<div className="flex-1 bg-dot-white/10 max-w-[50vw] lg:block hidden relative">
 					<div className="absolute top-10 left-10 gap-2 items-center flex text-white ">
 						<TruckIcon />
 						<h1 className="text-xl font-bold">Truck Fleet</h1>
 					</div>
 				</div>
-				<div className="flex-1 relative p-20 xl:p-52 flex flex-col items-center lg:max-w-[50vw] justify-center gap-10 bg-dot-white/20">
+
+				<div className="flex-1 relative p-20 xl:p-52 flex flex-col items-center lg:max-w-[50vw] bg-background justify-center gap-10">
 					{/* Mask fade */}
-					<div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
 					<div className="space-y-2 text-center">
 						<h1 className="text-3xl font-sans capitalize">
 							{t("welcome_back")}

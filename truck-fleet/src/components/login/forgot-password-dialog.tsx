@@ -27,12 +27,11 @@ export default function ForgotPasswordDialog() {
 	const { toast } = useToast();
 
 	async function sendResetEmail(values: { email: string }) {
-		console.log(values);
-		// try {
-		// await sendPasswordResetEmail(auth, values.email);
-		// } catch (e) {
-		// 	console.error(e);
-		// }
+		try {
+			await sendPasswordResetEmail(auth, values.email);
+		} catch (e) {
+			console.error(e);
+		}
 
 		toast({
 			title: t("sent_email"),

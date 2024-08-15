@@ -1,4 +1,3 @@
-import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Inter, Noto_Sans, Poppins } from "next/font/google";
 import "./globals.css";
@@ -7,6 +6,7 @@ import OrderSelectedContextProvider from "@/context/order-selected-context";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { locales } from "@/lib/i18n";
+import { ThemeProvider } from "@/context/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({

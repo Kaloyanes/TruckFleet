@@ -8,8 +8,8 @@ export default function OrdersSlug({
 	unstable_setRequestLocale(params.locale);
 
 	return (
-		<>
+		<div className="w-full">
 			<OrderList truckId={params.id} />
-		</>
+		</div>
 	);
 }

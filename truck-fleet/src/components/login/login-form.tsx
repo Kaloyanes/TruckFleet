@@ -48,7 +48,6 @@ export default function LoginForm() {
 	const router = useRouter();
 
 	async function signIn(values: { email: string; password: string }) {
-		console.log(values);
 		try {
 			await signInWithEmailAndPassword(auth, values.email, values.password);
 		} catch (e: unknown) {
@@ -66,7 +65,7 @@ export default function LoginForm() {
 			variant: "success",
 		});
 
-		// router.replace("/dashboard");
+		router.replace("/dashboard");
 	}
 
 	return (

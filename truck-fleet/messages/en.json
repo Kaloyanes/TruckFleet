@@ -56,5 +56,30 @@
     "signed_in": "You have successfully signed in.",
     "sent_email": "Sent email",
     "check_email": " Check your email for a link to reset your password"
+  },
+  "ThemeToggle": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "SignOutPage": {
+    "sign_out": "Signed Out",
+    "sign_out_description": "You have successfully signed out."
+  },
+  "OrderList": {
+    "id": "Identifier",
+    "truck": "Truck Number",
+    "driver": "Driver Name",
+    "locations": "Locations",
+    "orderSum": "Order Sum",
+    "status": "Status",
+    "createdAt": "Creation Date",
+    "isDone": "Order is Completed",
+    "noOrdersFound": "No orders found.",
+    "weight": "Weight",
+    "documents": "Documents",
+    "companyOrderId": "Company Order ID",
+    "companyName": "Company Name",
+    "customerCompanyRef": "Customer Company"
   }
 }

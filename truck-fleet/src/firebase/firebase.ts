@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
 import { browserLocalPersistence, initializeAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 import {
   CACHE_SIZE_UNLIMITED,
   initializeFirestore,
@@ -8,15 +8,16 @@ import {
 } from "firebase/firestore";
 
 const credentials = {
-  apiKey: "AIzaSyBRU9KykZOPi_q7A9N2eD5EWQ9DZUwO-cE",
-  authDomain: "truck-fleet.firebaseapp.com",
-  projectId: "truck-fleet",
-  storageBucket: "truck-fleet.appspot.com",
-  messagingSenderId: "692358107394",
-  appId: "1:692358107394:web:4350e781db354f2432321b",
-  measurementId: "G-XFW2R9VHYY",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+// export const analytics = getAnalytics(app);
 export const app = initializeApp(credentials);
 export const db = initializeFirestore(app, {
   localCache: persistentLocalCache({

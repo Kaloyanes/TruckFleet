@@ -46,7 +46,6 @@ export default function AnimatedBackground({
 		}
 	}, [defaultValue]);
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	return Children.map(children, (child: any, index) => {
 		const id = child.props["data-id"];
 
@@ -62,7 +61,6 @@ export default function AnimatedBackground({
 		return cloneElement(
 			child,
 			{
-				// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 				key: index,
 				className: cn("relative inline-flex", child.props.className),
 				"aria-selected": activeId === id,
