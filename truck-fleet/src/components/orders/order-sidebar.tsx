@@ -7,7 +7,7 @@ import { OrderSelectedContext } from "@/context/order-selected-context";
 export default function OrderSidebar() {
 	const orderSelectedContext = useContext(OrderSelectedContext);
 
-	const show = orderSelectedContext?.id;
+	const show = orderSelectedContext?.order !== null;
 
 	return (
 		<AnimatePresence>
@@ -20,6 +20,7 @@ export default function OrderSidebar() {
 				>
 					<CardHeader>
 						<h1>{show}</h1>
+						<h1> {orderSelectedContext?.order?.licensePlate ?? ""}</h1>
 					</CardHeader>
 				</motion.div>
 			)}

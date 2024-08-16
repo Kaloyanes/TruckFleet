@@ -17,6 +17,11 @@ export default function ErrorPage({
 	return (
 		<div>
 			<h2>Something went wrong!</h2>
+			<p>
+				We're sorry, an unexpected error occurred. Please try again in a few
+				minutes.
+				{error.stack as string}
+			</p>
 			<button
 				type="button"
 				onClick={

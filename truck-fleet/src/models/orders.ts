@@ -1,20 +1,21 @@
-import type { DocumentReference } from "firebase/firestore";
+import type { DocumentReference, Timestamp } from "firebase/firestore";
 
 export type Order = {
+  id: string;
   status: "Picking Up" | "In Delivery" | "Delivered";
   driver: DocumentReference | undefined;
   truck: DocumentReference | undefined;
   companyId: string;
   company: {
-    ref: DocumentReference;
     name: string;
+    ref: DocumentReference;
     worker: string;
   };
   palletes: {
-    width: number;
-    length: number;
     height: number;
+    length: number;
     weight: number;
+    width: number;
   }[];
   pickUps: {
     address: string;
@@ -28,4 +29,6 @@ export type Order = {
   }[];
   documents: File | { name: string; url: string };
   note: string;
+  licensePlate: string;
+  createdAt: Date;
 };

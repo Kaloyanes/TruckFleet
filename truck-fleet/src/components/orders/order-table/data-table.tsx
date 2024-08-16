@@ -17,6 +17,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { useOrderIdContext } from "@/context/order-selected-context";
+import type { Order } from "@/models/orders";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import {
 	type ColumnDef,
@@ -37,7 +38,7 @@ export default function OrderDataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
-	const { id, setId } = useOrderIdContext();
+	const { order: id, setOrder: setId } = useOrderIdContext();
 	const t = useTranslations("OrderList");
 
 	const table = useReactTable({
@@ -55,9 +56,9 @@ export default function OrderDataTable<TData, TValue>({
 		enableMultiRowSelection: false,
 		enableRowSelection(row) {
 			if (!row.getIsSelected()) {
-				setId((row.original as any).id);
+				setId(row.original as Order);
 			} else {
-				setId("");
+				setId(null);
 			}
 			// setId((row.original as any).id);
 			return true;

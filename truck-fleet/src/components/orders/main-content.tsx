@@ -11,7 +11,7 @@ import AddOrdersSheet from "./add-order/add-orders-sheet";
 export default function OrdersMainContent({
 	children,
 }: { children: React.ReactNode }) {
-	const { id } = useOrderIdContext();
+	const { order: id } = useOrderIdContext();
 
 	return (
 		<Card

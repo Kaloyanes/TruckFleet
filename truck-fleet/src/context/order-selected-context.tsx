@@ -1,10 +1,11 @@
 "use client";
+import type { Order } from "@/models/orders";
 import React from "react";
 import { createContext, useState } from "react";
 
 type OrderSelectedContextType = {
-	id: string;
-	setId: React.Dispatch<React.SetStateAction<string>>;
+	order: Order | null;
+	setOrder: React.Dispatch<React.SetStateAction<Order | null>>;
 };
 
 export const OrderSelectedContext =
@@ -13,10 +14,10 @@ export const OrderSelectedContext =
 export default function OrderSelectedContextProvider({
 	children,
 }: { children: React.ReactNode }) {
-	const [id, setId] = useState("");
+	const [order, setOrder] = useState<Order | null>(null);
 
 	return (
-		<OrderSelectedContext.Provider value={{ id, setId }}>
+		<OrderSelectedContext.Provider value={{ order, setOrder }}>
 			{children}
 		</OrderSelectedContext.Provider>
 	);
