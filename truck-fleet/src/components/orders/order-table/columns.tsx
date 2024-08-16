@@ -28,34 +28,7 @@ import {
 	OrderSelectedContext,
 	useOrderIdContext,
 } from "@/context/order-selected-context";
-
-export type Order = {
-	id: string;
-	size: string;
-	sum: number;
-	weight: number;
-	status: string;
-	customerInfo: {
-		customerRef: DocumentData;
-		orderId: string;
-		worker: string;
-	};
-	documents: { link: string; name: string }[];
-	driver: DocumentData;
-	truck: DocumentData;
-	pickUps: {
-		address: string;
-		start: Timestamp;
-		end: Timestamp;
-	}[];
-	deliveries: {
-		address: string;
-		start: Timestamp;
-		end: Timestamp;
-	}[];
-	note: string;
-	createdAt: Timestamp;
-};
+import type { Order } from "@/models/orders";
 
 export const columns: ColumnDef<Order>[] = [
 	{

@@ -8,15 +8,15 @@ import {
 	Month,
 	Quarter,
 } from "date-fns";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TextEffect } from "../ui/text-effect";
 import { useTranslations } from "next-intl";
 
 export default function TimeTitle() {
-	const [time, setTime] = React.useState(new Date());
+	const [time, setTime] = useState(new Date());
 	const t = useTranslations("TimeTitle");
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (typeof window !== "undefined") {
 			const interval = setInterval(() => {
 				setTime(new Date());

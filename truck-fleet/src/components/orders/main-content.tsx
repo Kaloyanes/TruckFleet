@@ -6,7 +6,7 @@ import TimeTitle from "./time-title";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { useOrderIdContext } from "@/context/order-selected-context";
 import { Button } from "../ui/button";
-import AddOrdersSheet from "./add-orders-sheet";
+import AddOrdersSheet from "./add-order/add-orders-sheet";
 
 export default function OrdersMainContent({
 	children,

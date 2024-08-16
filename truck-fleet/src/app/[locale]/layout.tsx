@@ -7,6 +7,8 @@ import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { locales } from "@/lib/i18n";
 import { ThemeProvider } from "@/context/theme-provider";
+import { MotionConfig } from "framer-motion";
+import MotionConfigProvider from "@/context/motion-config-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -51,17 +53,23 @@ export default async function RootLayout({
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body className={noto.className}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
+				<MotionConfigProvider
+					props={{
+						reducedMotion: "user",
+					}}
 				>
-					<NextIntlClientProvider messages={messages}>
-						<main>{children}</main>
-						<Toaster />
-					</NextIntlClientProvider>
-				</ThemeProvider>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<NextIntlClientProvider messages={messages}>
+							<main>{children}</main>
+							<Toaster />
+						</NextIntlClientProvider>
+					</ThemeProvider>
+				</MotionConfigProvider>
 			</body>
 		</html>
 	);

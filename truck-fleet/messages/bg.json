@@ -4,7 +4,9 @@
     "welcome": "Добре дошли в Truck Fleet"
   },
   "AddOrderSheet": {
-    "title": "Добави поръчка"
+    "title": "Добави поръчка",
+    "submit": "Добави",
+    "cancel": "Отказ"
   },
   "TimeTitle": {
     "monday": "понеделник",

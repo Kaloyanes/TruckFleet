@@ -4,7 +4,9 @@
     "welcome": "Welcome to Truck Fleet"
   },
   "AddOrderSheet": {
-    "title": "Add Order"
+    "title": "Add Order",
+    "submit": "Add",
+    "cancel": "Cancel"
   },
   "TimeTitle": {
     "monday": "monday",

@@ -4,6 +4,7 @@ import { useOrderIdContext } from "@/context/order-selected-context";
 import useCompanyId from "@/hooks/useCompanyId";
 import {
 	collection,
+	doc,
 	type DocumentData,
 	type FirestoreDataConverter,
 	orderBy,
@@ -12,56 +13,71 @@ import {
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "@/firebase/firebase";
-import { columns, type Order } from "./order-table/columns";
+import { columns } from "./order-table/columns";
 import OrderDataTable from "./order-table/data-table";
+import type { Order } from "@/models/orders";
 
 const orderConverter: FirestoreDataConverter<Order> = {
 	toFirestore(order: Order): DocumentData {
+		const {
+			status,
+			driver,
+			truck,
+			company,
+			palletes,
+			pickUps,
+			deliveries,
+			documents,
+			note,
+			companyId,
+		} = order;
 		return {
-			companyId: order.companyId,
-			companyOrderId: order.companyOrderId,
-			createdAt: order.createdAt,
-			customerCompanyId: order.customerCompanyId,
-			customerCompanyRef: order.customerCompanyRef,
-			documents: order.documents,
-			driver: order.driver,
-			driverId: order.driverId,
-			isDone: order.isDone,
-			licensePlate: order.licensePlate,
-			locations: order.locations,
-			note: order.note,
-			orderId: order.orderId,
-			orderSize: order.orderSize,
-			orderSum: order.orderSum,
-			status: order.status,
-			truckRef: order.truckRef,
-			weight: order.weight,
-			worker: order.worker,
+			companyId,
+			status,
+			driver: driver ? driver.path : null,
+			truck: truck ? truck.path : null,
+			company: {
+				ref: company.ref.path,
+				name: company.name,
+				worker: company.worker,
+			},
+			palletes,
+			pickUps,
+			deliveries,
+			documents,
+			note,
 		};
 	},
-	fromFirestore(snapshot: DocumentData): Order {
-		const data = snapshot.data();
+
+	fromFirestore(snapshot, options): Order {
+		const data = snapshot.data(options);
+		const {
+			status,
+			driver,
+			truck,
+			company,
+			palletes,
+			pickUps,
+			deliveries,
+			documents,
+			note,
+			companyId,
+		} = data;
 		return {
-			id: snapshot.id,
-			companyId: data.companyId,
-			companyOrderId: data.companyOrderId,
-			createdAt: data.createdAt,
-			customerCompanyId: data.customerCompanyId,
-			customerCompanyRef: data.customerCompanyRef,
-			documents: data.documents,
-			driver: data.driver,
-			driverId: data.driverId,
-			isDone: data.isDone,
-			licensePlate: data.licensePlate,
-			locations: data.locations,
-			note: data.note,
-			orderId: data.orderId,
-			orderSize: data.orderSize,
-			orderSum: data.orderSum,
-			status: data.status,
-			truckRef: data.truckRef,
-			weight: data.weight,
-			worker: data.worker,
+			companyId,
+			status,
+			driver: driver ? doc(db, driver) : undefined,
+			truck: truck ? doc(db, truck) : undefined,
+			company: {
+				ref: doc(db, company.ref),
+				name: company.name,
+				worker: company.worker,
+			},
+			palletes,
+			pickUps,
+			deliveries,
+			documents: documents as { name: string; url: string },
+			note,
 		};
 	},
 };
