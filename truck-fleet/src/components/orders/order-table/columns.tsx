@@ -280,7 +280,16 @@ export const columns: ColumnDef<Order>[] = [
 				return <span>No notes</span>;
 			}
 
-			return <span>{note}</span>;
+			return (
+				<HoverCard openDelay={150} closeDelay={0}>
+					<HoverCardTrigger>
+						<span>{note.length > 50 ? `${note.slice(0, 50)}...` : note}</span>
+					</HoverCardTrigger>
+					<HoverCardContent className="h-full whitespace-normal">
+						{note}
+					</HoverCardContent>
+				</HoverCard>
+			);
 		},
 	},
 	{

@@ -80,10 +80,10 @@
     "customerCompanyRef": "Клиентска компания"
   },
   "AddOrderSheet": {
-    "title": "Add Order",
-    "add": "Add",
-    "cancel": "Cancel",
-    "editTitle": "Edit Order",
-    "edit": "Edit"
+    "title": "Добавяне на поръчка",
+    "add": "Добави",
+    "cancel": "Отказ",
+    "editTitle": "Редактиране на поръчка",
+    "edit": "Редактирай"
   }
 }
