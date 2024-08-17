@@ -3,11 +3,6 @@
     "loading": "Loading...",
     "welcome": "Welcome to Truck Fleet"
   },
-  "AddOrderSheet": {
-    "title": "Add Order",
-    "submit": "Add",
-    "cancel": "Cancel"
-  },
   "TimeTitle": {
     "monday": "monday",
     "tuesday": "tuesday",
@@ -83,5 +78,12 @@
     "companyOrderId": "Company Order ID",
     "companyName": "Company Name",
     "customerCompanyRef": "Customer Company"
+  },
+  "AddOrderSheet": {
+    "title": "Add Order",
+    "add": "Add",
+    "cancel": "Cancel",
+    "editTitle": "Edit Order",
+    "edit": "Edit"
   }
 }

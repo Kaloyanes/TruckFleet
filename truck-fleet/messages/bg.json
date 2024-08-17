@@ -3,11 +3,6 @@
     "loading": "Зареждане...",
     "welcome": "Добре дошли в Truck Fleet"
   },
-  "AddOrderSheet": {
-    "title": "Добави поръчка",
-    "submit": "Добави",
-    "cancel": "Отказ"
-  },
   "TimeTitle": {
     "monday": "понеделник",
     "tuesday": "вторник",
@@ -83,5 +78,12 @@
     "companyOrderId": "Идентификатор на компанията",
     "companyName": "Име на компанията",
     "customerCompanyRef": "Клиентска компания"
+  },
+  "AddOrderSheet": {
+    "title": "Add Order",
+    "add": "Add",
+    "cancel": "Cancel",
+    "editTitle": "Edit Order",
+    "edit": "Edit"
   }
 }

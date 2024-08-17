@@ -27,7 +27,7 @@ export type Order = {
     start: Date;
     end: Date;
   }[];
-  documents: File | { name: string; url: string };
+  documents: File | { name: string; url: string } | undefined;
   note: string;
   licensePlate: string;
   createdAt: Date;

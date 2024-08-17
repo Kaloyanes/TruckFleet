@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext } from "react";
 import { CardHeader } from "../ui/card";
-import { OrderSelectedContext } from "@/context/order-selected-context";
+import { OrderSelectedContext } from "@/context/orders/order-selected-context";
 
 export default function OrderSidebar() {
 	const orderSelectedContext = useContext(OrderSelectedContext);

@@ -4,14 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import TruckTabs from "./truck-tabs";
 import TimeTitle from "./time-title";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { useOrderIdContext } from "@/context/order-selected-context";
 import { Button } from "../ui/button";
 import AddOrdersSheet from "./add-order/add-orders-sheet";
+import { useEditOrderContext } from "@/context/orders/order-edit-context";
+import { useOrderIdContext } from "@/context/orders/order-selected-context";
 
 export default function OrdersMainContent({
 	children,
 }: { children: React.ReactNode }) {
 	const { order: id } = useOrderIdContext();
+	const { order, open } = useEditOrderContext();
 
 	return (
 		<Card

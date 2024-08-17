@@ -15,9 +15,11 @@ import {
 	addDoc,
 	collection,
 	doc,
+	getDoc,
 	query,
 	serverTimestamp,
 	setDoc,
+	updateDoc,
 	where,
 	type DocumentReference,
 } from "firebase/firestore";
@@ -33,11 +35,20 @@ import { useToast } from "@/components/ui/use-toast";
 import { getDownloadURL, ref } from "firebase/storage";
 import type { FirebaseError } from "firebase/app";
 import type { Order } from "@/models/orders";
+import { Input } from "@/components/ui/input";
+import { useEditOrderContext } from "@/context/orders/order-edit-context";
+
+interface AddOrdersSheetProps {
+	edit: boolean | null;
+	order: Order | null;
+}
 
 export default function AddOrdersSheet() {
 	const t = useTranslations("AddOrderSheet");
 	const companyId = useCompanyId();
 	const { toast } = useToast();
+
+	const { open, setOpen, order, setOrder } = useEditOrderContext();
 
 	const [drivers, driverLoading, driverError] = useCollectionOnce(
 		query(
@@ -71,8 +82,7 @@ export default function AddOrdersSheet() {
 	const [companyName, setCompanyName] = useState("");
 	const [companyRef, setCompanyRef] = useState<DocumentReference | null>(null);
 
-	const [values, setValues] = useState<Order | null>(null);
-	const [open, setOpen] = useState(false);
+	const [values, setValues] = useState<Order | null>(order ?? null);
 
 	const sheetFormSchema = z.object({
 		status: z
@@ -112,7 +122,11 @@ export default function AddOrdersSheet() {
 			)
 			.nonempty("Pickups must have at least one item")
 			.default([
-				{
+				(order?.pickUps as {
+					address: string;
+					start: Date;
+					end: Date;
+				}[] as any) ?? {
 					address: "",
 					start: new Date(),
 					end: new Date(),
@@ -127,33 +141,46 @@ export default function AddOrdersSheet() {
 				}),
 			)
 			.nonempty("Deliveries must have at least one item")
-			.default([
-				{
+			.default(
+				(order?.deliveries as {
+					address: string;
+					start: Date;
+					end: Date;
+				}[] as any) ?? {
 					address: "",
 					start: new Date(),
 					end: new Date(),
 				},
-			]),
+			),
 		documents: z.instanceof(File).optional(),
 		note: z.string().optional(),
 	});
 
 	const addOrder = async (values: Order | null) => {
+		if (JSON.stringify(values) === JSON.stringify(order)) {
+			setOpen(false);
+			return;
+		}
+
 		if (!values || !companyId || !companyRef || !driverRef || !truckRef) {
 			toast({
 				title: "Error",
 				description: "Some required fields are missing.",
 				variant: "destructive",
 			});
+			console.error(values, companyId, companyRef, driverRef, truckRef);
 			return;
 		}
 
 		const currentDate = new Date();
 		const numbers = licensePlate.match(/\d+/g)?.join("") ?? "";
-		const id = `${currentDate.getFullYear()}${currentDate.getMonth()}${currentDate.getDate()}${numbers}${orders?.docs.length}`;
+		const id = `${currentDate.getFullYear()}${currentDate.getMonth()}${currentDate.getDate()}${numbers}${orders?.docs.length ?? 0}`;
 
 		try {
-			if (values.documents) {
+			if (
+				values.documents !== undefined &&
+				(values.documents instanceof File || values.documents instanceof Blob)
+			) {
 				const document = values.documents as File;
 				const fileRef = ref(
 					storage,
@@ -169,15 +196,25 @@ export default function AddOrdersSheet() {
 					name: document.name,
 					url: downloadUrl,
 				};
+			} else {
+				values.documents = order?.documents;
 			}
 
 			values.createdAt = new Date();
-
-			await setDoc(doc(db, `/orders/${id}`), { ...values });
+			console.log(order?.id);
+			if (order) {
+				await updateDoc(doc(db, `/orders/${order.id}`), { ...values });
+			} else {
+				await setDoc(doc(db, `/orders/${id}`), {
+					...values,
+				});
+			}
 
 			toast({
 				title: "Success",
-				description: "Order added successfully",
+				description: order
+					? "Order edited successfully"
+					: "Order added successfully",
 				variant: "success",
 			});
 
@@ -192,24 +229,155 @@ export default function AddOrdersSheet() {
 		}
 	};
 
+	const [initialValues, setInitialValues] = useState<{
+		status: "Picking Up" | "In Delivery" | "Delivered";
+		driver: DocumentReference | undefined;
+		truck: DocumentReference | undefined;
+		companyId: string;
+		company: {
+			name: string;
+			worker: string;
+		};
+		palletes: {
+			height: number;
+			length: number;
+			weight: number;
+			width: number;
+		}[];
+		pickUps: {
+			address: string;
+			start: Date;
+			end: Date;
+		}[];
+		deliveries: {
+			address: string;
+			start: Date;
+			end: Date;
+		}[];
+		documents: File | { name: string; url: string } | undefined;
+		note: string;
+	} | null>(null);
+
+	useEffect(() => {
+		console.log("useEffect REINITIALIZED");
+
+		async function populateData() {
+			if (!order) {
+				setDriverRef(null);
+				setDriverName("");
+
+				setTruckRef(null);
+				setTruckPlate("");
+
+				setCompanyRef(null);
+				setCompanyName("");
+
+				setValues(null);
+				setInitialValues(null);
+				return;
+			}
+
+			if (order) {
+				setValues(order);
+			}
+
+			if (order?.driver) {
+				const driverData = await getDoc(order.driver);
+				setDriverRef(order.driver);
+				setDriverName(driverData.data()?.name);
+			}
+
+			if (order?.truck) {
+				const truckData = await getDoc(order.truck);
+				setTruckRef(order.truck);
+				setTruckPlate(truckData.data()?.licensePlate);
+			}
+
+			if (order?.company?.ref) {
+				setCompanyRef(order.company.ref);
+				setCompanyName(order.company.name);
+			}
+
+			setInitialValues({
+				status: order?.status ?? "Picking Up",
+				company: order?.company,
+				// driver: order?.driver,
+				palletes: order?.palletes.map((pallete) => ({
+					width: pallete.width,
+					length: pallete.length,
+					height: pallete.height,
+					weight: pallete.weight,
+				})),
+				pickUps: order?.pickUps.map((pickup) => ({
+					address: pickup.address,
+					start: pickup.start,
+					end: pickup.end,
+				})) ?? [
+					{
+						address: "",
+						start: new Date(),
+						end: new Date(),
+					},
+				],
+				deliveries: order?.deliveries.map((delivery) => ({
+					address: delivery.address,
+					start: delivery.start,
+					end: delivery.end,
+				})) ?? [
+					{
+						address: "",
+						start: new Date(),
+						end: new Date(),
+					},
+				],
+				note: order?.note ?? "",
+			} as any);
+		}
+
+		populateData();
+	}, [order]);
+
+	function getDocumentDescription() {
+		// return order
+		// 	? `Uploading a new document will replace the current one. Current document is ${order.documents.name}`
+		// 	: "";
+		if (!order?.documents) {
+			return "";
+		}
+
+		return (
+			<div className="flex flex-col gap-2 text-md ">
+				<h1>
+					{order ? "Uploading a new document will replace the current one" : ""}
+				</h1>
+				<h1>{order ? `Current document is ${order.documents.name}` : ""}</h1>
+			</div>
+		);
+	}
+
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger>
-				<Button>{t("title")}</Button>
+				<Button
+					onClick={() => {
+						setOrder(null);
+					}}
+				>
+					{t("title")}
+				</Button>
 			</SheetTrigger>
 			<SheetContent className="overflow-y-scroll">
-				{!driverLoading && !companiesLoading && (
+				{!driverLoading && !companiesLoading && !truckLoading && (
 					<>
-						<SheetTitle className="w-full py-6">{t("title")}</SheetTitle>
+						<SheetTitle className="w-full py-6">
+							{order ? `${t("editTitle")} #${order.id}` : t("title")}
+						</SheetTitle>
 						<AutoForm
+							values={initialValues as any}
 							formSchema={sheetFormSchema}
 							onValuesChange={(formValues) => {
-								if (
-									driverRef &&
-									truckRef &&
-									companyRef &&
-									formValues.documents
-								) {
+								console.log(formValues);
+								if (driverRef && truckRef && companyRef) {
 									setValues({
 										id: "",
 										status: formValues.status ?? "Picking Up",
@@ -224,10 +392,10 @@ export default function AddOrdersSheet() {
 										palletes: formValues.palletes ?? [],
 										pickUps: formValues.pickUps ?? [],
 										deliveries: formValues.deliveries ?? [],
-										documents: formValues.documents,
 										note: formValues.note ?? "",
 										createdAt: new Date(),
 										licensePlate: licensePlate,
+										documents: formValues.documents,
 									});
 								}
 							}}
@@ -235,6 +403,7 @@ export default function AddOrdersSheet() {
 							fieldConfig={{
 								documents: {
 									fieldType: "file",
+									description: getDocumentDescription(),
 								},
 								driver: {
 									renderParent: ({ children }) => (
@@ -280,78 +449,20 @@ export default function AddOrdersSheet() {
 										),
 									},
 								},
-								palletes: {
-									width: {
-										renderParent: ({ children }: any) => (
-											<div className="flex flex-col gap-2">
-												<Label>Width</Label>
-												<InputWithIcon
-													inputMode="numeric"
-													inputProps={{
-														type: "number",
-													}}
-													position="trailing"
-													icon={<h1>cm</h1>}
-												/>
-											</div>
-										),
-									},
-									length: {
-										renderParent: ({ children }: any) => (
-											<div className="flex flex-col gap-2">
-												<Label>Length</Label>
-												<InputWithIcon
-													inputMode="numeric"
-													inputProps={{
-														type: "number",
-													}}
-													position="trailing"
-													icon={<h1>cm</h1>}
-												/>
-											</div>
-										),
-									},
-									height: {
-										renderParent: ({ children }: any) => (
-											<div className="flex flex-col gap-2">
-												<Label>Height</Label>
-												<InputWithIcon
-													inputMode="numeric"
-													inputProps={{
-														type: "number",
-													}}
-													position="trailing"
-													icon={<h1>cm</h1>}
-												/>
-											</div>
-										),
-									},
-									weight: {
-										renderParent: ({ children }: any) => (
-											<div className="flex flex-col gap-2">
-												<Label>Weight</Label>
-												<InputWithIcon
-													inputMode="numeric"
-													inputProps={{
-														type: "number",
-													}}
-													position="trailing"
-													icon={<h1>kg</h1>}
-												/>
-											</div>
-										),
-									},
-								},
 							}}
 						>
 							<div className="flex sticky bottom-0 justify-center items-center gap-4">
 								<SheetClose>
-									<Button type="button" variant="outline">
+									<Button type="button" className="min-w-32" variant="outline">
 										{t("cancel")}
 									</Button>
 								</SheetClose>
-								<Button onClick={() => addOrder(values)} type="submit">
-									{t("submit")}
+								<Button
+									onClick={() => addOrder(values)}
+									className="min-w-32"
+									type="submit"
+								>
+									{order ? t("edit") : t("add")}
 								</Button>
 							</div>
 						</AutoForm>

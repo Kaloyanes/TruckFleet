@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
@@ -25,11 +26,8 @@ import {
 	IconListDetails,
 	IconMenu,
 	IconMenu2,
+	IconTrash,
 } from "@tabler/icons-react";
-import {
-	OrderSelectedContext,
-	useOrderIdContext,
-} from "@/context/order-selected-context";
 import type { Order } from "@/models/orders";
 import {
 	Popover,
@@ -47,6 +45,8 @@ import { driverConverter } from "@/firebase/converters/driverConverter";
 import { companyConverter } from "@/firebase/converters/companyConverter";
 import Link from "next/link";
 import ShowLocations from "./locations";
+import { useEditOrderContext } from "@/context/orders/order-edit-context";
+import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
 
 export const columns: ColumnDef<Order>[] = [
 	{
@@ -81,7 +81,7 @@ export const columns: ColumnDef<Order>[] = [
 				driverRef.withConverter(driverConverter),
 			);
 			return (
-				<HoverCard openDelay={150}>
+				<HoverCard openDelay={150} closeDelay={0}>
 					<HoverCardTrigger>{driver?.name}</HoverCardTrigger>
 					<HoverCardContent className="w-full">
 						<motion.ol
@@ -113,7 +113,7 @@ export const columns: ColumnDef<Order>[] = [
 			const truckRef = getValue() as DocumentReference;
 			const [truck] = useDocumentData(truckRef.withConverter(truckConverter));
 			return (
-				<HoverCard openDelay={150}>
+				<HoverCard openDelay={150} closeDelay={0}>
 					<HoverCardTrigger>{truck?.licensePlate}</HoverCardTrigger>
 					<HoverCardContent>
 						<motion.div
@@ -153,7 +153,7 @@ export const columns: ColumnDef<Order>[] = [
 				companyInfo.ref.withConverter(companyConverter),
 			);
 			return (
-				<HoverCard openDelay={150}>
+				<HoverCard openDelay={150} closeDelay={0}>
 					<HoverCardTrigger>{company?.name}</HoverCardTrigger>
 					<HoverCardContent>
 						<motion.div
@@ -287,6 +287,9 @@ export const columns: ColumnDef<Order>[] = [
 		accessorKey: "actions",
 		header: "",
 		cell: ({ row }) => {
+			const { setOpen, setOrder } = useEditOrderContext();
+			const { setConfirm, setOrder: setOrderConfirm } = useDeleteOrderContext();
+
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger>
@@ -297,10 +300,6 @@ export const columns: ColumnDef<Order>[] = [
 					<DropdownMenuContent className="w-[150px]" align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem className="flex justify-between">
-							Edit
-							<IconEdit />
-						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={() => {
 								row.toggleSelected(!row.getIsSelected());
@@ -309,6 +308,28 @@ export const columns: ColumnDef<Order>[] = [
 						>
 							View Details
 							<IconListDetails />
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => {
+								setOrder(row.original);
+								setOpen(true);
+							}}
+							className="flex justify-between"
+						>
+							Edit
+							<IconEdit />
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							color="red"
+							className="flex justify-between bg-red-500/15 border-red-500/50 text-red-800 dark:text-red-300"
+							onClick={() => {
+								setConfirm(true);
+								setOrderConfirm(row.original);
+							}}
+						>
+							Delete
+							<IconTrash />
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
