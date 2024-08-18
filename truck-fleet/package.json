@@ -44,6 +44,7 @@
     "react": "^18",
     "react-day-picker": "8.10.1",
     "react-dom": "^18",
+    "react-drop-zone": "^4.3.3",
     "react-firebase-hooks": "^5.1.1",
     "react-hook-form": "^7.52.1",
     "react-lottie": "^1.2.4",
