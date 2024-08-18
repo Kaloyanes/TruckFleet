@@ -10,6 +10,7 @@ import { useFieldArray, type useForm } from "react-hook-form";
 import * as z from "zod";
 import { beautifyObjectName } from "../utils";
 import AutoFormObject from "./object";
+import { useTranslations } from "next-intl";
 
 function isZodArray(
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -54,6 +55,8 @@ export default function AutoFormArray({
 			? item._def.innerType._def.type
 			: null;
 
+	const t = useTranslations("AutoForm");
+
 	return (
 		<AccordionItem value={name} className="border-none">
 			<AccordionTrigger>{title}</AccordionTrigger>
@@ -92,7 +95,7 @@ export default function AutoFormArray({
 					className="mt-4 flex items-center"
 				>
 					<Plus className="mr-2" size={16} />
-					Add
+					{t("add")}
 				</Button>
 			</AccordionContent>
 		</AccordionItem>

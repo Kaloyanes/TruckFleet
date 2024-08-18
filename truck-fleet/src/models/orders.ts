@@ -2,7 +2,7 @@ import type { DocumentReference, Timestamp } from "firebase/firestore";
 
 export type Order = {
   id: string;
-  status: "Picking Up" | "In Delivery" | "Delivered";
+  status: "Pick Up" | "In Delivery" | "Delivered";
   driver: DocumentReference | undefined;
   truck: DocumentReference | undefined;
   companyId: string;

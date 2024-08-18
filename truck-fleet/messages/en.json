@@ -76,13 +76,64 @@
     "actions": "Actions",
     "details": "View Details",
     "edit": "Edit",
-    "delete": "Delete Order"
+    "delete": "Delete Order",
+    "noOrdersFound": "No orders found"
   },
   "AddOrderSheet": {
     "title": "Add Order",
     "add": "Add",
     "cancel": "Cancel",
     "editTitle": "Edit Order",
-    "edit": "Edit"
+    "edit": "Edit",
+    "order": "Order",
+    "status": "Status",
+    "Pick Up": "Pick Up",
+    "In Delivery": "In Delivery",
+    "Delivered": "Delivered",
+    "selectDriver": "Select Driver",
+    "filterDrivers": "Filter Drivers",
+    "addDriver": "Add Driver",
+    "noResultsFound": "No results found",
+    "selectTruck": "Select Truck",
+    "filterTrucks": "Filter Trucks",
+    "addTruck": "Add Truck",
+    "company": "Company",
+    "selectCompany": "Select Company",
+    "filterCompanies": "Filter Companies",
+    "addCompany": "Add Company",
+    "worker": "Worker Name",
+    "palletes": "Pallets",
+    "width": "Width",
+    "height": "Height",
+    "length": "Length",
+    "weight": "Weight",
+    "pickUps": "Pick Ups",
+    "deliveries": "Deliveries",
+    "locations": "Locations",
+    "address": "Address",
+    "start": "Start",
+    "end": "End",
+    "note": "Note",
+    "documents": "Documents",
+    "selectOption": "Select Option",
+    "success": "Success",
+    "orderAddedSuccessfully": "Order added successfully",
+    "orderEditedSuccessfully": "Order edited successfully"
+  },
+  "AutoForm": {
+    "add": "Add",
+    "pickDate": "Pick Date"
+  },
+  "FileUpload": {
+    "uploadFile": "Upload Documents",
+    "uploadFileDescription": "Drag or drop your PDF file here or click to upload"
+  },
+  "DeleteConfirmationDialog": {
+    "title": "Delete Order",
+    "description": "Are you sure you want to delete this order?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deletedSuccessfully": "Order deleted",
+    "deletedDescription": "Order #{id} has been deleted"
   }
 }

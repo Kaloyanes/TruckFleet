@@ -13,9 +13,11 @@ import { Button } from "../ui/button";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import { useToast } from "../ui/use-toast";
+import { useTranslations } from "next-intl";
 
 export default function DeleteOrderConfirmationDialog() {
 	const { confirm, setConfirm, order } = useDeleteOrderContext();
+	const t = useTranslations("DeleteConfirmationDialog");
 	const { toast } = useToast();
 	if (!order) return <></>;
 
@@ -26,8 +28,8 @@ export default function DeleteOrderConfirmationDialog() {
 
 		setConfirm(false);
 		toast({
-			title: "Order deleted",
-			description: `Order #${order.id} has been deleted`,
+			title: t("deletedSuccessfully"),
+			description: t("deletedDescription", { id: order.id }),
 			variant: "success",
 		});
 	}
@@ -37,15 +39,17 @@ export default function DeleteOrderConfirmationDialog() {
 			<DialogTrigger />
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Delete Order #{order?.id}</DialogTitle>
+					<DialogTitle>
+						{t("title")} #{order?.id}
+					</DialogTitle>
 				</DialogHeader>
-				<p>Are you sure you want to delete this order?</p>
+				<p>{t("description")}</p>
 				<DialogFooter>
 					<Button variant={"outline"} onClick={() => setConfirm(false)}>
-						Cancel
+						{t("cancel")}
 					</Button>
 					<Button variant={"destructive"} onClick={DeleteOrder}>
-						Delete
+						{t("delete")}
 					</Button>
 					{/* <button className="btn btn-primary">Delete</button>
 				<button className="btn btn-secondary">Cancel</button> */}

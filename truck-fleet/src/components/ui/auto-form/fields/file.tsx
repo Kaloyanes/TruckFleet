@@ -7,6 +7,8 @@ import AutoFormTooltip from "../common/tooltip";
 import type { AutoFormInputComponentProps } from "../types";
 import { IconTrash } from "@tabler/icons-react";
 import { Button } from "../../button";
+import { FileUpload } from "../../file-upload";
+import { AnimatePresence, motion } from "framer-motion";
 export default function AutoFormFile({
 	label,
 	isRequired,
@@ -19,8 +21,9 @@ export default function AutoFormFile({
 	const [file, setFile] = useState<File | null>(null);
 	const [fileName, setFileName] = useState<string | null>(null);
 
-	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
+	const handleFileChange = (file: File | null) => {
+		// const file = e.target.files?.[0];
+		if (!file) return;
 
 		if (file) {
 			setFile(file);
@@ -38,7 +41,7 @@ export default function AutoFormFile({
 
 	return (
 		<FormItem>
-			{showLabel && (
+			{/* {showLabel && (
 				<AutoFormLabel
 					label={fieldConfigItem?.label || label}
 					isRequired={isRequired}
@@ -67,7 +70,31 @@ export default function AutoFormFile({
 						<IconTrash size={14} />
 					</Button>
 				</div>
-			)}
+			)} */}
+			<div className="relative">
+				<FileUpload file={file} onChange={handleFileChange} />
+
+				<AnimatePresence>
+					{file && (
+						<motion.div
+							initial={{ opacity: 0, scale: 0.5, y: 20, filter: "blur(4px)" }}
+							animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+							exit={{ opacity: 0, scale: 0.5, y: 20, filter: "blur(4px)" }}
+							transition={{ duration: 0.6, type: "spring", bounce: 0.25 }}
+							className="absolute -bottom-2 right-0"
+						>
+							<Button
+								variant="destructive"
+								size={"icon"}
+								onClick={handleRemoveClick}
+							>
+								<IconTrash size={16} />
+							</Button>
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</div>
+
 			<AutoFormTooltip fieldConfigItem={fieldConfigItem} />
 			<FormMessage />
 		</FormItem>

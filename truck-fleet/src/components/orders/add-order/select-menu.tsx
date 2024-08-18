@@ -25,6 +25,7 @@ import {
 	CommandList,
 } from "@/components/ui/command";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 interface SelectDriverMenuProps {
 	selectedValue: string;
@@ -116,6 +117,8 @@ function DriverList({
 	field: string;
 	addText: string;
 }) {
+	const t = useTranslations("AddOrderSheet");
+
 	return (
 		<Command>
 			<CommandInput placeholder={filterText} />
@@ -127,7 +130,7 @@ function DriverList({
 						transition={{ duration: 0.6, type: "spring", bounce: 0.5 }}
 						className="gap-4 flex flex-col px-6"
 					>
-						<h1>No results found.</h1>
+						<h1>{t("noResultsFound")}</h1>
 						<Button>{addText}</Button>
 					</motion.div>
 				</CommandEmpty>

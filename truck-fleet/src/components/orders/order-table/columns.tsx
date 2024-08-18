@@ -76,7 +76,12 @@ export const columns: ColumnDef<Order>[] = [
 			const t = useTranslations("OrderList");
 			return <span>{t("status")}</span>;
 		},
-		cell: ({ getValue }) => <span>{getValue() as string}</span>,
+		cell: ({ getValue }) => {
+			const status = getValue() as string;
+			const t = useTranslations("AddOrderSheet");
+
+			return <span>{t(status as any)}</span>;
+		},
 	},
 	{
 		accessorKey: "driver",
@@ -275,16 +280,9 @@ export const columns: ColumnDef<Order>[] = [
 			return <span>{t("documents")}</span>;
 		},
 		cell: ({ getValue }) => {
-			const documents = getValue() as
-				| File
-				| { name: string; url: string }
-				| null;
+			const documents = getValue() as { name: string; url: string } | null;
 			if (!documents) {
 				return <span>No documents</span>;
-			}
-
-			if (documents instanceof File) {
-				return <span>Uploading...</span>;
 			}
 
 			return (

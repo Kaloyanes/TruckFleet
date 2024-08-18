@@ -76,13 +76,64 @@
     "actions": "Действия",
     "details": "Преглед",
     "edit": "Редактиране",
-    "delete": "Изтриване"
+    "delete": "Изтриване",
+    "noOrdersFound": "Няма намерени поръчки"
   },
   "AddOrderSheet": {
     "title": "Добавяне на поръчка",
     "add": "Добави",
     "cancel": "Отказ",
     "editTitle": "Редактиране на поръчка",
-    "edit": "Редактирай"
+    "edit": "Редактирай",
+    "order": "Поръчка",
+    "status": "Статус",
+    "Pick Up": "За Вземане",
+    "In Delivery": "В Доставка",
+    "Delivered": "Доставена",
+    "selectDriver": "Изберете шофьор",
+    "filterDrivers": "Филтриране на шофьори",
+    "addDriver": "Добавяне на шофьор",
+    "noResultsFound": "Няма намерени резултати",
+    "selectTruck": "Изберете камион",
+    "filterTrucks": "Филтриране на камиони",
+    "addTruck": "Добавяне на камион",
+    "company": "Компания",
+    "selectCompany": "Изберете компания",
+    "filterCompanies": "Филтриране на компании",
+    "addCompany": "Добавяне на компания",
+    "worker": "Име на работник",
+    "palletes": "Палети",
+    "width": "Ширина",
+    "height": "Височина",
+    "length": "Дължина",
+    "weight": "Тегло",
+    "pickUps": "За вземане",
+    "deliveries": "Доставки",
+    "locations": "Места",
+    "address": "Адрес",
+    "start": "От кога може да се вземе",
+    "end": "До кога може да се вземе",
+    "note": "Бележка",
+    "documents": "Документи",
+    "selectOption": "Изберете опция",
+    "success": "Успех",
+    "orderAddedSuccessfully": "Поръчката е добавена успешно",
+    "orderEditedSuccessfully": "Поръчката е редактирана успешно"
+  },
+  "AutoForm": {
+    "add": "Добави",
+    "pickDate": "Изберете дата"
+  },
+  "FileUpload": {
+    "uploadFile": "Качване на документи",
+    "uploadFileDescription": "Плъзнете или пуснете вашия PDF файл тук или кликнете за качване"
+  },
+  "DeleteConfirmationDialog": {
+    "title": "Изтриване на поръчка",
+    "description": "Сигурни ли сте, че искате да изтриете тази поръчка?",
+    "cancel": "Отказ",
+    "delete": "Изтрий",
+    "deletedSuccessfully": "Поръчката е изтрита",
+    "deletedDescription": "Поръчка #{id} е изтрита"
   }
 }

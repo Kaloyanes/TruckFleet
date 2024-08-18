@@ -12,12 +12,10 @@ import { useTranslations } from "next-intl";
 import { z } from "zod";
 import AutoForm from "../../ui/auto-form";
 import {
-	addDoc,
 	collection,
 	doc,
 	getDoc,
 	query,
-	serverTimestamp,
 	setDoc,
 	updateDoc,
 	where,
@@ -29,19 +27,10 @@ import { db, storage } from "@/firebase/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 
 import SelectMenu from "./select-menu";
-import { InputWithIcon } from "@/components/ui/input-with-icon";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { getDownloadURL, ref } from "firebase/storage";
-import type { FirebaseError } from "firebase/app";
 import type { Order } from "@/models/orders";
-import { Input } from "@/components/ui/input";
 import { useEditOrderContext } from "@/context/orders/order-edit-context";
-
-interface AddOrdersSheetProps {
-	edit: boolean | null;
-	order: Order | null;
-}
 
 export default function AddOrdersSheet() {
 	const t = useTranslations("AddOrderSheet");
@@ -86,23 +75,27 @@ export default function AddOrdersSheet() {
 
 	const sheetFormSchema = z.object({
 		status: z
-			.enum(["Picking Up", "In Delivery", "Delivered"])
-			.default("Picking Up"),
+			.enum(["Pick Up", "In Delivery", "Delivered"])
+			.default("Pick Up")
+			.describe(t("status")),
 		driver: z.any().refine((data) => data != null, "Driver is required"),
 		truck: z.any().refine((data) => data != null, "Truck is required"),
-		company: z.object({
-			name: z.string().min(1),
-			worker: z.string().min(1),
-		}),
+		company: z
+			.object({
+				name: z.string().min(1),
+				worker: z.string().min(1).describe(t("worker")),
+			})
+			.describe(t("company")),
 		palletes: z
 			.array(
 				z.object({
-					width: z.coerce.number().default(1),
-					length: z.coerce.number().default(1),
-					height: z.coerce.number().default(1),
-					weight: z.coerce.number().default(1),
+					width: z.coerce.number().default(1).describe(t("width")),
+					length: z.coerce.number().default(1).describe(t("length")),
+					height: z.coerce.number().default(1).describe(t("height")),
+					weight: z.coerce.number().default(1).describe(t("weight")),
 				}),
 			)
+			.describe(t("palletes"))
 			.nonempty("Palletes must have at least one item")
 			.default([
 				{
@@ -115,11 +108,12 @@ export default function AddOrdersSheet() {
 		pickUps: z
 			.array(
 				z.object({
-					address: z.string(),
-					start: z.coerce.date(),
-					end: z.coerce.date(),
+					address: z.string().describe(t("address")),
+					start: z.coerce.date().describe(t("start")),
+					end: z.coerce.date().describe(t("end")),
 				}),
 			)
+			.describe(t("pickUps"))
 			.nonempty("Pickups must have at least one item")
 			.default([
 				(order?.pickUps as {
@@ -135,11 +129,12 @@ export default function AddOrdersSheet() {
 		deliveries: z
 			.array(
 				z.object({
-					address: z.string(),
-					start: z.coerce.date(),
-					end: z.coerce.date(),
+					address: z.string().describe(t("address")),
+					start: z.coerce.date().describe(t("start")),
+					end: z.coerce.date().describe(t("end")),
 				}),
 			)
+			.describe(t("deliveries"))
 			.nonempty("Deliveries must have at least one item")
 			.default(
 				(order?.deliveries as {
@@ -152,8 +147,14 @@ export default function AddOrdersSheet() {
 					end: new Date(),
 				},
 			),
-		documents: z.instanceof(File).optional(),
-		note: z.string().optional(),
+		documents: z
+			.custom((data) => {
+				if (data instanceof File) return data as File;
+
+				return data;
+			})
+			.describe(t("documents")),
+		note: z.string().optional().describe(t("note")),
 	});
 
 	const addOrder = async (values: Order | null) => {
@@ -210,11 +211,13 @@ export default function AddOrdersSheet() {
 				});
 			}
 
+			// TODO: ADD translations
+
 			toast({
-				title: "Success",
+				title: t("success"),
 				description: order
-					? "Order edited successfully"
-					: "Order added successfully",
+					? t("orderEditedSuccessfully")
+					: t("orderAddedSuccessfully"),
 				variant: "success",
 			});
 
@@ -299,7 +302,7 @@ export default function AddOrdersSheet() {
 			}
 
 			setInitialValues({
-				status: order?.status ?? "Picking Up",
+				status: order?.status ?? "Pick Up",
 				company: order?.company,
 				// driver: order?.driver,
 				palletes: order?.palletes.map((pallete) => ({
@@ -377,10 +380,15 @@ export default function AddOrdersSheet() {
 							formSchema={sheetFormSchema}
 							onValuesChange={(formValues) => {
 								console.log(formValues);
-								if (driverRef && truckRef && companyRef) {
+								if (
+									driverRef &&
+									truckRef &&
+									companyRef &&
+									formValues.documents
+								) {
 									setValues({
 										id: "",
-										status: formValues.status ?? "Picking Up",
+										status: formValues.status ?? "Pick Up",
 										driver: driverRef,
 										truck: truckRef,
 										companyId: companyId ?? "",
@@ -395,7 +403,7 @@ export default function AddOrdersSheet() {
 										note: formValues.note ?? "",
 										createdAt: new Date(),
 										licensePlate: licensePlate,
-										documents: formValues.documents,
+										documents: formValues.documents as any,
 									});
 								}
 							}}
@@ -412,9 +420,9 @@ export default function AddOrdersSheet() {
 											setValue={setDriverName}
 											values={drivers}
 											setRef={setDriverRef}
-											selectText="Select Driver"
-											filterText="Filter Drivers"
-											addText="Add Driver"
+											selectText={t("selectDriver")}
+											filterText={t("filterDrivers")}
+											addText={t("addDriver")}
 											field="name"
 										/>
 									),
@@ -426,9 +434,9 @@ export default function AddOrdersSheet() {
 											setValue={setTruckPlate}
 											values={trucks}
 											setRef={setTruckRef}
-											selectText="Select Truck"
-											filterText="Filter Trucks"
-											addText="Add Truck"
+											selectText={t("selectTruck")}
+											filterText={t("filterTrucks")}
+											addText={t("addTruck")}
 											field="licensePlate"
 										/>
 									),
@@ -441,9 +449,9 @@ export default function AddOrdersSheet() {
 												setValue={setCompanyName}
 												values={companies}
 												setRef={setCompanyRef}
-												selectText="Select Company"
-												filterText="Filter Companies"
-												addText="Add Company"
+												selectText={t("selectCompany")}
+												filterText={t("filterCompanies")}
+												addText={t("addCompany")}
 												field="name"
 											/>
 										),
@@ -451,7 +459,7 @@ export default function AddOrdersSheet() {
 								},
 							}}
 						>
-							<div className="flex sticky bottom-0 justify-center items-center gap-4">
+							<div className="flex sticky bottom-0 justify-center items-center gap-4 z-[99999999]">
 								<SheetClose>
 									<Button type="button" className="min-w-32" variant="outline">
 										{t("cancel")}

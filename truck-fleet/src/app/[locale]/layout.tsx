@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Noto_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import OrderSelectedContextProvider from "@/context/order-selected-context";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { locales } from "@/lib/i18n";

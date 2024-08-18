@@ -1,13 +1,8 @@
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import { unstable_setRequestLocale } from "next-intl/server";
 import React from "react";
 
-export default function OrdersPage() {
-	// router.replace(`/dashboard/orders/${values?.[0]?.licensePlate}`);
-
-	return (
-		<div className="flex flex-col items-center justify-center h-screen w-screen z-[10000] ">
-			<div className="w-20 h-20 mt-4">
-				<div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900 dark:border-gray-100" />
-			</div>
-		</div>
-	);
+export default function OrdersPage({ params }: { params: { locale: string } }) {
+	unstable_setRequestLocale(params.locale);
+	return <></>;
 }

@@ -38,21 +38,6 @@ export const orderConverter: FirestoreDataConverter<Order> = {
       }),
     );
 
-    // Ensure documents is in the correct format
-    let formattedDocuments: any;
-    if (documents instanceof File) {
-      // Skip, since files should be uploaded and transformed to URLs before storing in Firestore
-      throw new Error(
-        "Documents should not be an instance of File at this stage.",
-      );
-    }
-
-    if (typeof documents === "object" && documents.url) {
-      formattedDocuments = documents;
-    } else {
-      formattedDocuments = null;
-    }
-
     return {
       companyId,
       status,
@@ -66,7 +51,7 @@ export const orderConverter: FirestoreDataConverter<Order> = {
       palletes,
       pickUps: formattedPickUps,
       deliveries: formattedDeliveries,
-      documents: formattedDocuments,
+      documents,
       note,
       createdAt: Timestamp.fromDate(createdAt),
       licensePlate,
