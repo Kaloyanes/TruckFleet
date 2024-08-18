@@ -64,17 +64,26 @@ export const columns: ColumnDef<Order>[] = [
 	},
 	{
 		accessorKey: "id",
-		header: "Order ID",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("orderId")}</span>;
+		},
 		cell: ({ getValue }) => <span>{getValue() as string}</span>,
 	},
 	{
 		accessorKey: "status",
-		header: "Status",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("status")}</span>;
+		},
 		cell: ({ getValue }) => <span>{getValue() as string}</span>,
 	},
 	{
 		accessorKey: "driver",
-		header: "Driver",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("driver")}</span>;
+		},
 		cell: ({ getValue }) => {
 			const driverRef = getValue() as DocumentReference;
 			const [driver] = useDocumentData(
@@ -108,7 +117,10 @@ export const columns: ColumnDef<Order>[] = [
 	},
 	{
 		accessorKey: "truck",
-		header: "Truck",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("truck")}</span>;
+		},
 		cell: ({ getValue }) => {
 			const truckRef = getValue() as DocumentReference;
 			const [truck] = useDocumentData(truckRef.withConverter(truckConverter));
@@ -142,7 +154,10 @@ export const columns: ColumnDef<Order>[] = [
 	// Company
 	{
 		accessorKey: "company",
-		header: "Company",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("company")}</span>;
+		},
 		cell: ({ getValue }) => {
 			const companyInfo = getValue() as {
 				name: string;
@@ -184,7 +199,10 @@ export const columns: ColumnDef<Order>[] = [
 	// Palletes
 	{
 		accessorKey: "palletes",
-		header: "Palletes",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("palletes")}</span>;
+		},
 		cell: ({ getValue }) => {
 			const palletes = getValue() as {
 				height: number;
@@ -228,10 +246,14 @@ export const columns: ColumnDef<Order>[] = [
 
 	// Locations
 	{
+		id: "locations",
 		accessorFn: (value) => {
 			return [...value.pickUps, ...value.deliveries];
 		},
-		header: "Locations",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("locations")}</span>;
+		},
 		cell({ getValue }) {
 			const values = getValue() as {
 				address: string;
@@ -248,7 +270,10 @@ export const columns: ColumnDef<Order>[] = [
 	// documents
 	{
 		accessorKey: "documents",
-		header: "Documents",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("documents")}</span>;
+		},
 		cell: ({ getValue }) => {
 			const documents = getValue() as
 				| File
@@ -272,7 +297,10 @@ export const columns: ColumnDef<Order>[] = [
 	// note
 	{
 		accessorKey: "note",
-		header: "Note",
+		header(props) {
+			const t = useTranslations("OrderList");
+			return <span>{t("note")}</span>;
+		},
 		cell: ({ getValue }) => {
 			const note = getValue() as string;
 
@@ -299,6 +327,8 @@ export const columns: ColumnDef<Order>[] = [
 			const { setOpen, setOrder } = useEditOrderContext();
 			const { setConfirm, setOrder: setOrderConfirm } = useDeleteOrderContext();
 
+			const t = useTranslations("OrderList");
+
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger>
@@ -307,7 +337,7 @@ export const columns: ColumnDef<Order>[] = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent className="w-[150px]" align="end">
-						<DropdownMenuLabel>Actions</DropdownMenuLabel>
+						<DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={() => {
@@ -315,7 +345,7 @@ export const columns: ColumnDef<Order>[] = [
 							}}
 							className="flex justify-between"
 						>
-							View Details
+							{t("details")}
 							<IconListDetails />
 						</DropdownMenuItem>
 						<DropdownMenuItem
@@ -325,7 +355,7 @@ export const columns: ColumnDef<Order>[] = [
 							}}
 							className="flex justify-between"
 						>
-							Edit
+							{t("edit")}
 							<IconEdit />
 						</DropdownMenuItem>
 						<DropdownMenuSeparator />
@@ -337,7 +367,7 @@ export const columns: ColumnDef<Order>[] = [
 								setOrderConfirm(row.original);
 							}}
 						>
-							Delete
+							{t("delete")}
 							<IconTrash />
 						</DropdownMenuItem>
 					</DropdownMenuContent>

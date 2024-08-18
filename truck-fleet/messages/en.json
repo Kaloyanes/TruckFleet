@@ -64,20 +64,19 @@
     "sign_out_description": "You have successfully signed out."
   },
   "OrderList": {
-    "id": "Identifier",
-    "truck": "Truck Number",
-    "driver": "Driver Name",
-    "locations": "Locations",
-    "orderSum": "Order Sum",
+    "orderId": "Order ID",
     "status": "Status",
-    "createdAt": "Creation Date",
-    "isDone": "Order is Completed",
-    "noOrdersFound": "No orders found.",
-    "weight": "Weight",
+    "driver": "Driver",
+    "truck": "Truck",
+    "company": "Company",
+    "palletes": "Palletes",
+    "locations": "Locations",
     "documents": "Documents",
-    "companyOrderId": "Company Order ID",
-    "companyName": "Company Name",
-    "customerCompanyRef": "Customer Company"
+    "note": "Note",
+    "actions": "Actions",
+    "details": "View Details",
+    "edit": "Edit",
+    "delete": "Delete Order"
   },
   "AddOrderSheet": {
     "title": "Add Order",

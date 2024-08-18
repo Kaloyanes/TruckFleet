@@ -64,20 +64,19 @@
     "sign_out_description": "Успешно сте излезли от профила си."
   },
   "OrderList": {
-    "id": "Идентификатор",
-    "truck": "Номер на автомобила",
-    "driver": "Име на шофьора",
-    "locations": "Локации",
-    "orderSum": "Сума на поръчката",
+    "orderId": "Номер на поръчката",
     "status": "Статус",
-    "createdAt": "Дата на създаване",
-    "isDone": "Поръчката е завършена",
-    "noOrdersFound": "Няма поръчки.",
-    "weight": "Тегло",
+    "driver": "Шофьор",
+    "truck": "Камион",
+    "company": "Компания",
+    "palletes": "Палети",
+    "locations": "Места",
     "documents": "Документи",
-    "companyOrderId": "Идентификатор на компанията",
-    "companyName": "Име на компанията",
-    "customerCompanyRef": "Клиентска компания"
+    "note": "Бележка",
+    "actions": "Действия",
+    "details": "Преглед",
+    "edit": "Редактиране",
+    "delete": "Изтриване"
   },
   "AddOrderSheet": {
     "title": "Добавяне на поръчка",
