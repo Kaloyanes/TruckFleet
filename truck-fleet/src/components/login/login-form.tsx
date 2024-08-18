@@ -64,8 +64,6 @@ export default function LoginForm() {
 			description: t("signed_in"),
 			variant: "success",
 		});
-
-		router.replace("/dashboard");
 	}
 
 	return (
