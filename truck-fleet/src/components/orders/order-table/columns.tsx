@@ -72,6 +72,7 @@ export const columns: ColumnDef<Order>[] = [
 	},
 	{
 		accessorKey: "status",
+		id: "status",
 		header(props) {
 			const t = useTranslations("OrderList");
 			return <span>{t("status")}</span>;

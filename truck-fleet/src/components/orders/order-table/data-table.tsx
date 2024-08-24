@@ -52,6 +52,14 @@ export default function OrderDataTable<TData, TValue>({
 				pageSize: 25, //custom default page size
 			},
 		},
+		state: {
+			columnFilters: [
+				{
+					id: "id",
+					value: "50",
+				},
+			],
+		},
 		enableColumnPinning: true,
 		enableMultiRowSelection: false,
 		enableRowSelection(row) {

@@ -31,6 +31,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { getDownloadURL, ref } from "firebase/storage";
 import type { Order } from "@/models/orders";
 import { useEditOrderContext } from "@/context/orders/order-edit-context";
+import {
+	Drawer,
+	DrawerContent,
+	DrawerTitle,
+	DrawerTrigger,
+} from "@/components/ui/drawer";
 
 export default function AddOrdersSheet() {
 	const t = useTranslations("AddOrderSheet");
@@ -211,8 +217,6 @@ export default function AddOrdersSheet() {
 				});
 			}
 
-			// TODO: ADD translations
-
 			toast({
 				title: t("success"),
 				description: order
@@ -369,7 +373,7 @@ export default function AddOrdersSheet() {
 					{t("title")}
 				</Button>
 			</SheetTrigger>
-			<SheetContent className="overflow-y-scroll">
+			<SheetContent className="overflow-y-scroll overflow-x-hidden ">
 				{!driverLoading && !companiesLoading && !truckLoading && (
 					<>
 						<SheetTitle className="w-full py-6">
@@ -379,13 +383,8 @@ export default function AddOrdersSheet() {
 							values={initialValues as any}
 							formSchema={sheetFormSchema}
 							onValuesChange={(formValues) => {
-								console.log(formValues);
-								if (
-									driverRef &&
-									truckRef &&
-									companyRef &&
-									formValues.documents
-								) {
+								console.log(formValues, driverRef, truckRef, companyRef);
+								if (driverRef && truckRef && companyRef) {
 									setValues({
 										id: "",
 										status: formValues.status ?? "Pick Up",
