@@ -8,6 +8,7 @@ import {
 } from "react-firebase-hooks/firestore";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
+import Link from "next/link";
 
 export default function Home({
 	params: { locale },
@@ -22,6 +23,7 @@ export default function Home({
 				<ThemeToggle />
 			</div>
 			<h1>Truck Fleet</h1>
+			<Link href="/dashboard">Go To Dashboard</Link>
 			{loading ? (
 				<p>{t("loading")}</p>
 			) : (

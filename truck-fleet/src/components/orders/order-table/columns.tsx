@@ -5,7 +5,7 @@ import type {
 } from "firebase/firestore";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useTranslations } from "next-intl";
 import {
@@ -23,9 +23,11 @@ import {
 	IconArrowsRightDown,
 	IconDetails,
 	IconEdit,
+	IconFilter,
 	IconListDetails,
 	IconMenu,
 	IconMenu2,
+	IconSearch,
 	IconTrash,
 } from "@tabler/icons-react";
 import type { Order } from "@/models/orders";
@@ -47,6 +49,9 @@ import Link from "next/link";
 import ShowLocations from "./locations";
 import { useEditOrderContext } from "@/context/orders/order-edit-context";
 import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { useCopyToClipboard } from "react-use";
 
 export const columns: ColumnDef<Order>[] = [
 	{
@@ -66,9 +71,56 @@ export const columns: ColumnDef<Order>[] = [
 		accessorKey: "id",
 		header(props) {
 			const t = useTranslations("OrderList");
-			return <span>{t("orderId")}</span>;
+			const { toast } = useToast();
+
+			return (
+				<div className="flex gap-2 items-center">
+					<span>{t("orderId")}</span>
+					<Popover>
+						<PopoverTrigger>
+							<Button size={"icon"} className="w-8 h-8" variant={"outline"}>
+								<IconFilter size={18} />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="p-0">
+							<div className="flex flex-col gap-2">
+								<Input
+									placeholder="Search Order ID"
+									value={
+										(props.table.getColumn("id")?.getFilterValue() as string) ??
+										""
+									}
+									onChange={(e) =>
+										props.table.getColumn("id")?.setFilterValue(e.target.value)
+									}
+									type="number"
+								/>
+							</div>
+						</PopoverContent>
+					</Popover>
+				</div>
+			);
 		},
-		cell: ({ getValue }) => <span>{getValue() as string}</span>,
+
+		cell: ({ getValue }) => {
+			const { toast } = useToast();
+			const [state, copyToClipboard] = useCopyToClipboard();
+
+			function handleCopy() {
+				copyToClipboard((getValue() as string).trim());
+				toast({
+					title: "Copied to clipboard",
+					variant: "success",
+					duration: 2000,
+				});
+			}
+
+			return (
+				<span onClick={handleCopy} onKeyDown={handleCopy}>
+					{getValue() as string}
+				</span>
+			);
+		},
 	},
 	{
 		accessorKey: "status",

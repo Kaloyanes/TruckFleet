@@ -21,8 +21,10 @@ import type { Order } from "@/models/orders";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import {
 	type ColumnDef,
+	type ColumnFiltersState,
 	flexRender,
 	getCoreRowModel,
+	getFilteredRowModel,
 	getPaginationRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
@@ -41,24 +43,24 @@ export default function OrderDataTable<TData, TValue>({
 	const { order: id, setOrder: setId } = useOrderIdContext();
 	const t = useTranslations("OrderList");
 
+	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+		[],
+	);
+
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
-
+		onColumnFiltersChange: setColumnFilters,
 		initialState: {
 			pagination: {
 				pageSize: 25, //custom default page size
 			},
 		},
 		state: {
-			columnFilters: [
-				{
-					id: "id",
-					value: "50",
-				},
-			],
+			columnFilters: columnFilters,
 		},
 		enableColumnPinning: true,
 		enableMultiRowSelection: false,
@@ -111,7 +113,6 @@ export default function OrderDataTable<TData, TValue>({
 								<TableRow
 									key={row.id}
 									className="w-full"
-									draggable
 									data-state={row.getIsSelected() && "selected"}
 								>
 									{row.getVisibleCells().map((cell) => (
