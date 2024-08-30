@@ -8,6 +8,7 @@ import { locales } from "@/lib/i18n";
 import { ThemeProvider } from "@/context/theme-provider";
 import { MotionConfig } from "framer-motion";
 import MotionConfigProvider from "@/context/motion-config-provider";
+import Favicon from "@/components/ui/favicon";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -50,8 +51,10 @@ export default async function RootLayout({
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link rel="icon" href="/packages_light.png" />
 			</head>
 			<body className={noto.className}>
+				<Favicon />
 				<MotionConfigProvider
 					props={{
 						reducedMotion: "user",
