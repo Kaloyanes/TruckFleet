@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans, Poppins } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
@@ -8,13 +8,7 @@ import { locales } from "@/lib/i18n";
 import { ThemeProvider } from "@/context/theme-provider";
 import { MotionConfig } from "framer-motion";
 import MotionConfigProvider from "@/context/motion-config-provider";
-
-const inter = Inter({ subsets: ["latin"] });
-const poppins = Poppins({
-	preload: true,
-	weight: ["400", "500", "600", "700", "800"],
-	subsets: ["latin", "latin-ext"],
-});
+import Favicon from "@/components/ui/favicon";
 
 const noto = Noto_Sans({
 	preload: true,
@@ -50,8 +44,10 @@ export default async function RootLayout({
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link rel="icon" href="/packages_light.png" />
 			</head>
 			<body className={noto.className}>
+				<Favicon />
 				<MotionConfigProvider
 					props={{
 						reducedMotion: "user",
