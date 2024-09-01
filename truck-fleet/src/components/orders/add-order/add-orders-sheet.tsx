@@ -79,6 +79,22 @@ export default function AddOrdersSheet() {
 
 	const [values, setValues] = useState<Order | null>(order ?? null);
 
+	useEffect(() => {
+		if (driverRef && truckRef && companyRef) {
+			setValues({
+				...values,
+				driver: driverRef,
+				truck: truckRef,
+				licensePlate: licensePlate,
+				company: {
+					ref: companyRef,
+					name: companyName,
+					worker: values?.company?.worker ?? "",
+				},
+			} as any);
+		}
+	}, [driverRef, truckRef, companyRef]);
+
 	const sheetFormSchema = z.object({
 		status: z
 			.enum(["Pick Up", "In Delivery", "Delivered"])
@@ -169,7 +185,8 @@ export default function AddOrdersSheet() {
 			return;
 		}
 
-		if (!values || !companyId || !companyRef || !driverRef || !truckRef) {
+		if (!values || !companyRef || !driverRef || !truckRef) {
+			// TODO: Add translations
 			toast({
 				title: "Error",
 				description: "Some required fields are missing.",
@@ -209,12 +226,25 @@ export default function AddOrdersSheet() {
 
 			values.createdAt = new Date();
 			console.log(order?.id);
-			if (order) {
-				await updateDoc(doc(db, `/orders/${order.id}`), { ...values });
-			} else {
-				await setDoc(doc(db, `/orders/${id}`), {
-					...values,
+
+			try {
+				console.log(values);
+
+				if (order) {
+					await updateDoc(doc(db, `/orders/${order.id}`), { ...values });
+				} else {
+					await setDoc(doc(db, `/orders/${id}`), {
+						...values,
+					});
+				}
+			} catch (error) {
+				console.error("Error adding order:", error);
+				toast({
+					title: "Error",
+					description: "An error occurred while adding the order.",
+					variant: "destructive",
 				});
+				return;
 			}
 
 			toast({
@@ -235,6 +265,10 @@ export default function AddOrdersSheet() {
 			});
 		}
 	};
+
+	useEffect(() => {
+		console.log(truckRef);
+	}, [truckRef]);
 
 	const [initialValues, setInitialValues] = useState<{
 		status: "Picking Up" | "In Delivery" | "Delivered";
@@ -266,8 +300,6 @@ export default function AddOrdersSheet() {
 	} | null>(null);
 
 	useEffect(() => {
-		console.log("useEffect REINITIALIZED");
-
 		async function populateData() {
 			if (!order) {
 				setDriverRef(null);
@@ -305,7 +337,7 @@ export default function AddOrdersSheet() {
 				setCompanyName(order.company.name);
 			}
 
-			setInitialValues({
+			setValues({
 				status: order?.status ?? "Pick Up",
 				company: order?.company,
 				// driver: order?.driver,
@@ -338,6 +370,9 @@ export default function AddOrdersSheet() {
 					},
 				],
 				note: order?.note ?? "",
+				licensePlate: order?.licensePlate ?? "",
+				truck: order?.truck ?? null,
+				driver: order?.driver ?? null,
 			} as any);
 		}
 
