@@ -17,7 +17,7 @@ export default function OrdersMainContent({
 
 	return (
 		<Card
-			className={`border-border flex-1 border overflow-hidden rounded-lg bg-transparent transition-all  duration-300 w-full  relative backdrop-saturate-150   ${id ? "rounded-r-none border-r-0" : "rounded-r-lg "} `}
+			className={`border-border border-0 border-l  flex-1 overflow-hidden rounded-none bg-transparent transition-all  duration-300 w-full  relative backdrop-saturate-150   ${id ? "rounded-r-none border-r-0" : "rounded-r-lg "} `}
 		>
 			<CardHeader className="sticky top-0  bg-transparent border-b flex flex-row justify-between items-center ">
 				<div>

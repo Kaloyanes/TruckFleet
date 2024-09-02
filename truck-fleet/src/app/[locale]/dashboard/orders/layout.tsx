@@ -19,7 +19,7 @@ export default function OrdersLayout({
 			<EditOrderContextProvider>
 				<DeleteOrderContextProvider>
 					<DeleteOrderConfirmationDialog />
-					<div className={"relative py-2 pr-2 flex overflow-hidden flex-1"}>
+					<div className={"relative  flex overflow-hidden flex-1"}>
 						<OrdersMainContent>{children}</OrdersMainContent>
 
 						<OrderSidebar />
