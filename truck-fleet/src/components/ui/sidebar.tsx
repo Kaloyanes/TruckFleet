@@ -9,6 +9,12 @@ import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import type { LinkProps } from "next/link";
 import { useTranslations } from "next-intl";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "./accordion";
 
 interface Links {
 	label: string;
@@ -196,14 +202,64 @@ export const SidebarLink = ({
 				animate={{
 					display: animate ? (open ? "inline-block" : "none") : "inline-block",
 					opacity: animate ? (open ? 1 : 0) : 1,
-					scale: animate ? (open ? 1 : 0.3) : 1,
-					x: animate ? (open ? 0 : -40) : 0,
+					scale: animate ? (open ? 1 : 0.2) : 1,
+					x: animate ? (open ? 0 : -50) : 0,
 				}}
-				transition={{ duration: 0.3, type: "spring", bounce: 0.2 }}
+				transition={{ duration: 0.3, type: "spring", bounce: 0.3 }}
 				className=" text-sm group-hover/sidebar:translate-x-1 transition ease-out duration-300 whitespace-pre inline-block !p-0 !m-0  "
 			>
 				{link.customLabel ? link.label : t(link.label.toLowerCase() as any)}
 			</motion.span>
 		</Link>
+	);
+};
+
+export const SidebarCategory = ({
+	category,
+	children,
+	icon,
+	className,
+	...props
+}: {
+	category: string;
+	icon: React.ReactNode;
+	children: React.ReactNode;
+	className?: string;
+} & React.ComponentProps<"div">) => {
+	const { open, animate } = useSidebar();
+	const pathName = usePathname();
+
+	const t = useTranslations("SidebarLink");
+
+	return (
+		<Accordion type="single" collapsible className="w-full">
+			<AccordionItem
+				value="item-1"
+				className="border-b-0 flex flex-col items-center justify-start gap-2 group/sidebar py-2 hover:text-neutral-700 dark:hover:text-neutral-300 hover:scale-[1.02] bg-transparent  rounded-lg px-2.5 mx-1 transition-all duration-600 ease-out"
+			>
+				<AccordionTrigger>
+					{icon}
+
+					<motion.span
+						initial={{ display: "none", opacity: 0, scale: 0.3, x: -40 }}
+						animate={{
+							display: animate
+								? open
+									? "inline-block"
+									: "none"
+								: "inline-block",
+							opacity: animate ? (open ? 1 : 0) : 1,
+							scale: animate ? (open ? 1 : 0.2) : 1,
+							x: animate ? (open ? 0 : -50) : 0,
+						}}
+						transition={{ duration: 0.3, type: "spring", bounce: 0.3 }}
+						className=" text-sm group-hover/sidebar:translate-x-1 transition ease-out duration-300 whitespace-pre inline-block !p-0 !m-0  "
+					>
+						{category}
+					</motion.span>
+				</AccordionTrigger>
+				<AccordionContent>{children}</AccordionContent>
+			</AccordionItem>
+		</Accordion>
 	);
 };

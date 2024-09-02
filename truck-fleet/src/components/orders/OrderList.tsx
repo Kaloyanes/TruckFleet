@@ -13,10 +13,10 @@ import {
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "@/firebase/firebase";
-import { columns } from "./order-table/columns";
-import OrderDataTable from "./order-table/data-table";
 import type { Order } from "@/models/orders";
 import { orderConverter } from "@/firebase/converters/orderConverter";
+import { OrderColumns } from "./order-table/OrderColumns";
+import OrderDataTable from "./order-table/OrderDataTable";
 
 export default function OrderList({ truckId }: { truckId: string }) {
 	const companyId = useCompanyId();
@@ -36,5 +36,5 @@ export default function OrderList({ truckId }: { truckId: string }) {
 	}
 	if (orders === undefined) return <div>No orders found</div>;
 
-	return <OrderDataTable columns={columns} data={orders} />;
+	return <OrderDataTable columns={OrderColumns} data={orders} />;
 }

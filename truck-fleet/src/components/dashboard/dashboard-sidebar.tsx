@@ -1,6 +1,12 @@
 "use client";
-import React, { useState } from "react";
-import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
+import type React from "react";
+import { useState } from "react";
+import {
+	Sidebar,
+	SidebarBody,
+	SidebarCategory,
+	SidebarLink,
+} from "../ui/sidebar";
 import {
 	IconChartPie,
 	IconLogout,
@@ -9,6 +15,7 @@ import {
 	IconMessage,
 	IconReceiptDollar,
 	IconSettings,
+	IconSubtask,
 	IconTruck,
 	IconUsersGroup,
 } from "@tabler/icons-react";
@@ -96,17 +103,25 @@ export default function DashboardSidebar() {
 			<SidebarBody className="justify-between gap-10">
 				<div className="flex flex-col flex-1  overflow-x-hidden">
 					<div className="flex flex-col gap-2 ">
-						{links.map((link, idx) => (
-							<SidebarLink
-								key={link.href}
-								link={link}
-								className={
-									link.href === "#"
-										? "cursor-default hover:bg-transparent "
-										: ""
-								}
-							/>
-						))}
+						{links.map((link, idx) => {
+							return (
+								<SidebarLink
+									key={link.href}
+									link={
+										link as {
+											label: string;
+											href: string;
+											icon: React.ReactNode;
+										}
+									}
+									className={
+										link.href === "#"
+											? "cursor-default hover:bg-transparent "
+											: ""
+									}
+								/>
+							);
+						})}
 					</div>
 				</div>
 				<div className="flex flex-col gap-2">

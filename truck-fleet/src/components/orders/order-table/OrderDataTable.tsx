@@ -71,8 +71,10 @@ export default function OrderDataTable<TData, TValue>({
 				setId(null);
 			}
 			// setId((row.original as any).id);
+
 			return true;
 		},
+
 		columnResizeMode: "onChange",
 	});
 

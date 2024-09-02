@@ -1,16 +1,8 @@
-import { Button } from "@/components/ui/button";
+import AddDriverSheet from "@/components/drivers/AddDriverSheet";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ToggleGroup } from "@radix-ui/react-toggle-group";
-import {
-	IconGrid4x4,
-	IconGridDots,
-	IconLayout2,
-	IconLayoutList,
-	IconList,
-} from "@tabler/icons-react";
-import { Grid } from "lucide-react";
+import DriverToggleViewContextProvider from "@/context/drivers/driver-toggle-view-context";
+import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default function DriversLayout({
@@ -21,21 +13,29 @@ export default function DriversLayout({
 	params: { locale: string };
 }) {
 	unstable_setRequestLocale(locale);
+	const t = useTranslations("SidebarLink");
+	const t2 = useTranslations("AddOrderSheet");
 
 	return (
-		<>
-			<Card className="w-full border-0 border-l rounded-none">
-				<CardHeader className="border-b flex flex-row justify-between items-center">
+		<DriverToggleViewContextProvider>
+      <div className={"relative  flex overflow-hidden flex-1"}>
+			<Card className="w-full border-0 border-l rounded-none border-border   flex-1    transition-all  duration-300 relative backdrop-saturate-150">
+				<CardHeader className="border-b flex flex-row justify-between items-center sticky top-0">
 					<div className="flex flex-col gap-4">
-						<h1 className="text-2xl font-bold">Drivers</h1>
-						<Input placeholder="Search Drivers" />
+						<h1 className="text-2xl font-bold">{t("drivers")}</h1>
+						<Input placeholder={t2("filterDrivers")} />
 					</div>
-					<Button>Add Driver</Button>
+					<AddDriverSheet />
 				</CardHeader>
-				<CardContent className="py-4">
-					<section>{children}</section>
-				</CardContent>
+				{/* <CardContent className="p-0 relative overflow-hidden flex-1"> */}
+					
+          <div className="w-full relative">
+
+          {children}
+          </div>
+				{/* </CardContent> */}
 			</Card>
-		</>
+      </div>
+		</DriverToggleViewContextProvider>
 	);
 }

@@ -46,14 +46,14 @@ import { motion } from "framer-motion";
 import { driverConverter } from "@/firebase/converters/driverConverter";
 import { companyConverter } from "@/firebase/converters/companyConverter";
 import Link from "next/link";
-import ShowLocations from "./locations";
 import { useEditOrderContext } from "@/context/orders/order-edit-context";
 import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useCopyToClipboard } from "react-use";
+import ShowLocations from "./Locations";
 
-export const columns: ColumnDef<Order>[] = [
+export const OrderColumns: ColumnDef<Order>[] = [
 	{
 		accessorKey: "select",
 		header: "",
@@ -85,7 +85,7 @@ export const columns: ColumnDef<Order>[] = [
 						<PopoverContent className="p-0">
 							<div className="flex flex-col gap-2">
 								<Input
-									placeholder="Search Order ID"
+									placeholder={t("searchOrderId")}
 									value={
 										(props.table.getColumn("id")?.getFilterValue() as string) ??
 										""

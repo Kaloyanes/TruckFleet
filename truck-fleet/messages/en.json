@@ -77,7 +77,8 @@
     "details": "View Details",
     "edit": "Edit",
     "delete": "Delete Order",
-    "noOrdersFound": "No orders found"
+    "noOrdersFound": "No orders found",
+    "searchOrderId": "Search Order ID"
   },
   "AddOrderSheet": {
     "title": "Add Order",

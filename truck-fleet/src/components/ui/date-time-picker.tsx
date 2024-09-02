@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { add, format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -35,7 +35,7 @@ export function DateTimePicker() {
 		}
 		const diff = newDay.getTime() - date.getTime();
 		const diffInDays = diff / (1000 * 60 * 60 * 24);
-		const newDateFull = add(date, { days: Math.ceil(diffInDays) });
+		const newDateFull = addDays(date, Math.ceil(diffInDays));
 		setDate(newDateFull);
 	};
 

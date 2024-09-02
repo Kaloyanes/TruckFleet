@@ -25,6 +25,8 @@ export default function TruckTabs() {
 	);
 
 	useEffect(() => {
+		if (values === undefined || values.length === 0 || loading) return;
+
 		setTabs(values?.map((truck) => truck.licensePlate) || []);
 
 		if (pathName === "/dashboard/orders")

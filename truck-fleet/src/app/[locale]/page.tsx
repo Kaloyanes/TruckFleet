@@ -13,8 +13,6 @@ import Link from "next/link";
 export default function Home({
 	params: { locale },
 }: { params: { locale: string } }) {
-	const [snapshot, loading] = useCollectionOnce(collection(db, "companies"));
-
 	const t = useTranslations("Home");
 
 	return (
@@ -24,19 +22,6 @@ export default function Home({
 			</div>
 			<h1>Truck Fleet</h1>
 			<Link href="/dashboard">Go To Dashboard</Link>
-			{loading ? (
-				<p>{t("loading")}</p>
-			) : (
-				snapshot?.docs.map((doc) => {
-					const data = doc.data();
-					return (
-						<article key={doc.id}>
-							<h2>{data.name}</h2>
-							<h2>{data.rating}</h2>
-						</article>
-					);
-				})
-			)}
 		</main>
 	);
 }
