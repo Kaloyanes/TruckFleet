@@ -17,7 +17,7 @@ export default function TruckTabs() {
 	const pathName = usePathname();
 	const [Tabs, setTabs] = useState([""]);
 
-	const companyId = useCompanyId();
+	const { companyId } = useCompanyId();
 
 	const [values, loading, error, snapshot] = useCollectionData<any>(
 		query(collection(db, "trucks"), where("companyId", "==", companyId)),

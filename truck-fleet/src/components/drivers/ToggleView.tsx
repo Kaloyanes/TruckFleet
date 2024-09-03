@@ -14,11 +14,11 @@ export default function ToggleView() {
 	return (
 		<>
 			<ToggleGroup
-				className="absolute top-4 right-4 "
+				className="absolute top-1 right-4 "
 				type="single"
 				variant={"outline"}
-				defaultValue={view ?? "list"}
-				value={view ?? "list"}
+				defaultValue={value ?? "list"}
+				value={value ?? "list"}
 				onValueChange={(value) => {
 					setView(value);
 					setValue(value);

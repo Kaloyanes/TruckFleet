@@ -68,9 +68,9 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 			const [name, photoUrl] = getValue() as [string, string];
 
 			return (
-				<div className={`flex items-center gap-2 ${view === "grid" ? "flex-col" : ""}`}>
+				<div className={`flex items-center gap-2  ${view === "grid" ? "flex-col" : ""}`}>
 					<Avatar  className={`${view === "grid" ? "w-10 h-10" : ""}`}>
-						<AvatarImage  width={250} height={250} src={photoUrl} alt={name} />
+						<AvatarImage src={photoUrl} alt={name} />
 						<AvatarFallback>
 							{(name as string)
 								?.split(" ")

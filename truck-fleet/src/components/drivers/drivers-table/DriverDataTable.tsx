@@ -73,9 +73,12 @@ export default function DriverDataTable<TData, TValue>({
 
 	if (view === "grid") {
 		return (
-			<div className="grid grid-cols-5 grid-rows-5 p-4 grid-flow-row  gap-4 overflow-auto w-full min-h-screen  h-full pb-[70px]">
+			<div className="grid grid-cols-6 grid-rows-4 p-4 grid-flow-row  gap-4 overflow-auto w-full min-h-screen  h-full pb-[70px]">
 				{table.getRowModel().rows.map((row) => (
-					<div key={row.id} className="col-span-1 bg-black/20 rounded-lg p-5 flex flex-col items-center gap-2">
+					<div
+						key={row.id}
+						className="col-span-1 bg-black/20 rounded-lg p-5 flex flex-col items-center gap-2"
+					>
 						{row.getVisibleCells().map((cell) => (
 							<div key={cell.id}>
 								{flexRender(cell.column.columnDef.cell, cell.getContext())}

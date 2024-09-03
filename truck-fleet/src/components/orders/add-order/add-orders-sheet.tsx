@@ -40,7 +40,7 @@ import {
 
 export default function AddOrdersSheet() {
 	const t = useTranslations("AddOrderSheet");
-	const companyId = useCompanyId();
+	const { companyId } = useCompanyId();
 	const { toast } = useToast();
 
 	const { open, setOpen, order, setOrder } = useEditOrderContext();

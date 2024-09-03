@@ -19,7 +19,7 @@ import { OrderColumns } from "./order-table/OrderColumns";
 import OrderDataTable from "./order-table/OrderDataTable";
 
 export default function OrderList({ truckId }: { truckId: string }) {
-	const companyId = useCompanyId();
+	const { companyId } = useCompanyId();
 	const [orders, loading, error] = useCollectionData(
 		query(
 			collection(db, "orders"),

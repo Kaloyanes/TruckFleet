@@ -29,7 +29,7 @@ import { driverConverter } from "@/firebase/converters/driverConverter";
 import DriverDataTable from "./drivers-table/DriverDataTable";
 
 export default function DriverList() {
-	const companyId = useCompanyId();
+	const { companyId } = useCompanyId();
 
 	const [drivers, loading, error] = useCollectionData(
 		query(
