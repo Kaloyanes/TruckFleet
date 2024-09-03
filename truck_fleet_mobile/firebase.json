@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"truck-fleet","appId":"1:692358107394:android:fcdc1baea3171f6b32321b","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"truck-fleet","configurations":{"android":"1:692358107394:android:fcdc1baea3171f6b32321b","ios":"1:692358107394:ios:add1ed61fa80579a32321b"}}}}}}
