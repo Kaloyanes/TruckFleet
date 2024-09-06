@@ -21,23 +21,26 @@ const ColorScheme lightColorScheme = ColorScheme(
 
 const ColorScheme darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color.fromARGB(255, 250, 250, 250), // --primary
-  onPrimary: Color.fromARGB(255, 23, 23, 23), // --primary-foreground
-  secondary: Color.fromARGB(255, 50, 50, 50), // --secondary
-  onSecondary: Color.fromARGB(255, 250, 250, 250), // --secondary-foreground
-  surface: Color.fromARGB(255, 0, 0, 0), // --card or --background
-  surfaceBright: Color.fromARGB(255, 23, 23, 23), // --card or --background
-  onSurface: Color.fromARGB(255, 250, 250, 250), // --foreground
-  error: Color.fromARGB(255, 131, 31, 31), // --destructive
-  onError: Color.fromARGB(255, 250, 250, 250), // --destructive-foreground
-  outline: Color.fromARGB(255, 38, 38, 38), // --border
-  shadow: Color.fromARGB(255, 212, 212, 212), // --ring
-  primaryContainer: Color.fromARGB(255, 61, 99, 198), // --chart-1
-  secondaryContainer: Color.fromARGB(255, 44, 153, 153), // --chart-2
-  tertiaryContainer: Color.fromARGB(255, 242, 151, 72), // --
+  primary: Color(0xFFE0E0E0), // Light grey
+  onPrimary: Color(0xFF121212), // Very dark grey (almost black)
+  secondary: Color(0xFF303030), // Dark grey
+  onSecondary: Color(0xFFE0E0E0), // Light grey
+  surface: Color(0xFF121212), // Very dark grey (almost black)
+  onSurface: Color(0xFFE0E0E0), // Light grey
+  outline: Color(0xFF505050), // Medium grey
+  shadow: Color(0x66000000), // Semi-transparent black for shadows
+  surfaceTint: Color(0xFFE0E0E0), // Light grey
+  inverseSurface: Color(0xFFE0E0E0), // Light grey
+  onInverseSurface: Color(0xFF121212), // Very dark grey (almost black)
+  primaryContainer: Color(0xFF424242), // Darker grey
+  onPrimaryContainer: Color(0xFFE0E0E0), // Light grey
+  secondaryContainer: Color(0xFF424242), // Darker grey
+  onSecondaryContainer: Color(0xFFE0E0E0), // Light grey
+  error: Color.fromRGBO(122, 30, 30, 1),
+  onError: Color.fromRGBO(255, 255, 255, 1),
 );
 
-const radius = 6.0;
+const radius = 10.0;
 
 ThemeData lightTheme() {
   final theme = ThemeData(
@@ -62,6 +65,19 @@ ThemeData lightTheme() {
           },
         ),
         enableFeedback: true,
+      ),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(lightColorScheme.primary),
+        foregroundColor: WidgetStateProperty.all(lightColorScheme.surface),
+        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
+          (Set<WidgetState> states) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
+            );
+          },
+        ),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -89,10 +105,10 @@ ThemeData lightTheme() {
         ),
       ),
     ),
-    pageTransitionsTheme: const PageTransitionsTheme(
+    pageTransitionsTheme: PageTransitionsTheme(
       builders: {
-        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: MyTransition(),
+        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
       },
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -104,9 +120,38 @@ ThemeData lightTheme() {
       elevation: 4,
       highlightElevation: 8,
     ),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(lightColorScheme.primary),
+        backgroundColor: WidgetStateProperty.all(lightColorScheme.surface),
+        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
+          (Set<WidgetState> states) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
+            );
+          },
+        ),
+        side: WidgetStateProperty.all(BorderSide(color: lightColorScheme.outline)),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
+      ),
+    ),
+    appBarTheme: const AppBarTheme(
+      centerTitle: true,
+    ),
+    popupMenuTheme: PopupMenuThemeData(
+      textStyle: TextStyle(
+        color: lightColorScheme.primary,
+        fontWeight: FontWeight.w700,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      menuPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      color: lightColorScheme.surfaceContainerHighest,
+    ),
   );
 
-  return theme.copyWith(textTheme: GoogleFonts.interTextTheme(theme.textTheme));
+  return theme.copyWith(textTheme: GoogleFonts.playfairDisplayTextTheme(theme.textTheme));
 }
 
 ThemeData darkTheme() {
@@ -134,6 +179,19 @@ ThemeData darkTheme() {
         enableFeedback: true,
       ),
     ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(darkColorScheme.primary),
+        foregroundColor: WidgetStateProperty.all(darkColorScheme.surface),
+        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
+          (Set<WidgetState> states) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
+            );
+          },
+        ),
+      ),
+    ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.all(darkColorScheme.primary),
@@ -159,10 +217,10 @@ ThemeData darkTheme() {
         ),
       ),
     ),
-    pageTransitionsTheme: const PageTransitionsTheme(
+    pageTransitionsTheme: PageTransitionsTheme(
       builders: {
-        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: MyTransition(),
+        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
       },
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -174,7 +232,77 @@ ThemeData darkTheme() {
       elevation: 4,
       highlightElevation: 8,
     ),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(darkColorScheme.primary),
+        backgroundColor: WidgetStateProperty.all(darkColorScheme.surface),
+        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
+          (Set<WidgetState> states) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
+            );
+          },
+        ),
+        side: WidgetStateProperty.all(BorderSide(color: darkColorScheme.outline)),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
+      ),
+    ),
+    appBarTheme: const AppBarTheme(
+      centerTitle: true,
+    ),
+    popupMenuTheme: PopupMenuThemeData(
+      textStyle: TextStyle(
+        color: darkColorScheme.primary,
+        fontWeight: FontWeight.w700,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      menuPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      color: darkColorScheme.surfaceContainerHighest,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(radius))),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: darkColorScheme.error),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: darkColorScheme.primary),
+        borderRadius: const BorderRadius.all(Radius.circular(radius + 6)),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: darkColorScheme.error),
+      ),
+    ),
   );
 
-  return theme.copyWith(textTheme: GoogleFonts.interTextTheme(theme.textTheme));
+  return theme.copyWith(textTheme: GoogleFonts.playfairDisplayTextTheme(theme.textTheme));
+}
+
+class MyTransition extends PageTransitionsBuilder {
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    const begin = Offset(1.0, 0.0);
+    const end = Offset.zero;
+    const enterCurve = Curves.easeInOutCubicEmphasized;
+
+    var longAnimation = CurvedAnimation(
+      parent: animation,
+      curve: enterCurve,
+      reverseCurve: enterCurve.flipped,
+    );
+
+    var enterTween = Tween(begin: begin, end: end);
+
+    return SlideTransition(
+      position: enterTween.animate(longAnimation),
+      child: child,
+    );
+  }
 }
