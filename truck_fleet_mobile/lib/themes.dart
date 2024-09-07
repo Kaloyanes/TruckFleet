@@ -33,7 +33,7 @@ const ColorScheme darkColorScheme = ColorScheme(
   inverseSurface: Color(0xFFE0E0E0), // Light grey
   onInverseSurface: Color(0xFF121212), // Very dark grey (almost black)
   primaryContainer: Color(0xFF424242), // Darker grey
-  onPrimaryContainer: Color(0xFFE0E0E0), // Light grey
+  onPrimaryContainer: Color(0xFFFFFFFF), // Light grey
   secondaryContainer: Color(0xFF424242), // Darker grey
   onSecondaryContainer: Color(0xFFE0E0E0), // Light grey
   error: Color.fromRGBO(122, 30, 30, 1),
@@ -42,12 +42,12 @@ const ColorScheme darkColorScheme = ColorScheme(
 
 const radius = 10.0;
 
-ThemeData lightTheme() {
+ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
   final theme = ThemeData(
-    colorScheme: lightColorScheme,
-    scaffoldBackgroundColor: lightColorScheme.surface,
+    colorScheme: colorScheme,
+    scaffoldBackgroundColor: colorScheme.surface,
     dividerTheme: DividerThemeData(
-      color: lightColorScheme.outline,
+      color: colorScheme.outline,
       space: 10,
       thickness: 1,
     ),
@@ -55,8 +55,8 @@ ThemeData lightTheme() {
     useMaterial3: true,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(lightColorScheme.surface),
-        backgroundColor: WidgetStateProperty.all(lightColorScheme.primary),
+        foregroundColor: WidgetStateProperty.all(colorScheme.surface),
+        backgroundColor: WidgetStateProperty.all(colorScheme.primary),
         shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
           (Set<WidgetState> states) {
             return RoundedRectangleBorder(
@@ -69,8 +69,22 @@ ThemeData lightTheme() {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(lightColorScheme.primary),
-        foregroundColor: WidgetStateProperty.all(lightColorScheme.surface),
+        backgroundColor: WidgetStateProperty.resolveWith(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.primaryContainer;
+            }
+            return colorScheme.primary;
+          },
+        ),
+        foregroundColor: WidgetStateProperty.resolveWith(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onPrimaryContainer;
+            }
+            return colorScheme.onPrimary;
+          },
+        ),
         shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
           (Set<WidgetState> states) {
             return RoundedRectangleBorder(
@@ -82,7 +96,7 @@ ThemeData lightTheme() {
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(lightColorScheme.primary),
+        foregroundColor: WidgetStateProperty.all(colorScheme.primary),
         shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
           (Set<WidgetState> states) {
             return RoundedRectangleBorder(
@@ -94,8 +108,8 @@ ThemeData lightTheme() {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(lightColorScheme.primary),
-        side: WidgetStateProperty.all(BorderSide(color: lightColorScheme.primary)),
+        foregroundColor: WidgetStateProperty.all(colorScheme.primary),
+        side: WidgetStateProperty.all(BorderSide(color: colorScheme.primary)),
         shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
           (Set<WidgetState> states) {
             return RoundedRectangleBorder(
@@ -112,8 +126,8 @@ ThemeData lightTheme() {
       },
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: lightColorScheme.primary,
-      foregroundColor: lightColorScheme.surface,
+      backgroundColor: colorScheme.primary,
+      foregroundColor: colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius + 6),
       ),
@@ -122,8 +136,8 @@ ThemeData lightTheme() {
     ),
     iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(lightColorScheme.primary),
-        backgroundColor: WidgetStateProperty.all(lightColorScheme.surface),
+        foregroundColor: WidgetStateProperty.all(colorScheme.primary),
+        backgroundColor: WidgetStateProperty.all(colorScheme.surface),
         shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
           (Set<WidgetState> states) {
             return RoundedRectangleBorder(
@@ -131,7 +145,7 @@ ThemeData lightTheme() {
             );
           },
         ),
-        side: WidgetStateProperty.all(BorderSide(color: lightColorScheme.outline)),
+        side: WidgetStateProperty.all(BorderSide(color: colorScheme.outline)),
         padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
     ),
@@ -140,138 +154,26 @@ ThemeData lightTheme() {
     ),
     popupMenuTheme: PopupMenuThemeData(
       textStyle: TextStyle(
-        color: lightColorScheme.primary,
+        color: colorScheme.primary,
         fontWeight: FontWeight.w700,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
       ),
       menuPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      color: lightColorScheme.surfaceContainerHighest,
-    ),
-  );
-
-  return theme.copyWith(textTheme: GoogleFonts.playfairDisplayTextTheme(theme.textTheme));
-}
-
-ThemeData darkTheme() {
-  final theme = ThemeData(
-    colorScheme: darkColorScheme,
-    scaffoldBackgroundColor: darkColorScheme.surface,
-    dividerTheme: DividerThemeData(
-      color: darkColorScheme.outline,
-      space: 10,
-      thickness: 1,
-    ),
-    splashFactory: InkSparkle.splashFactory,
-    useMaterial3: true,
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(darkColorScheme.surface),
-        backgroundColor: WidgetStateProperty.all(darkColorScheme.primary),
-        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
-          (Set<WidgetState> states) {
-            return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
-            );
-          },
-        ),
-        enableFeedback: true,
-      ),
-    ),
-    filledButtonTheme: FilledButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(darkColorScheme.primary),
-        foregroundColor: WidgetStateProperty.all(darkColorScheme.surface),
-        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
-          (Set<WidgetState> states) {
-            return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
-            );
-          },
-        ),
-      ),
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(darkColorScheme.primary),
-        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
-          (Set<WidgetState> states) {
-            return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
-            );
-          },
-        ),
-      ),
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(darkColorScheme.primary),
-        side: WidgetStateProperty.all(BorderSide(color: darkColorScheme.primary)),
-        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
-          (Set<WidgetState> states) {
-            return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
-            );
-          },
-        ),
-      ),
-    ),
-    pageTransitionsTheme: PageTransitionsTheme(
-      builders: {
-        TargetPlatform.android: MyTransition(),
-        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
-      },
-    ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: darkColorScheme.primary,
-      foregroundColor: darkColorScheme.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radius + 6),
-      ),
-      elevation: 4,
-      highlightElevation: 8,
-    ),
-    iconButtonTheme: IconButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(darkColorScheme.primary),
-        backgroundColor: WidgetStateProperty.all(darkColorScheme.surface),
-        shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
-          (Set<WidgetState> states) {
-            return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(states.contains(WidgetState.pressed) ? radius + 6 : radius),
-            );
-          },
-        ),
-        side: WidgetStateProperty.all(BorderSide(color: darkColorScheme.outline)),
-        padding: WidgetStateProperty.all(EdgeInsets.zero),
-      ),
-    ),
-    appBarTheme: const AppBarTheme(
-      centerTitle: true,
-    ),
-    popupMenuTheme: PopupMenuThemeData(
-      textStyle: TextStyle(
-        color: darkColorScheme.primary,
-        fontWeight: FontWeight.w700,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radius),
-      ),
-      menuPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-      color: darkColorScheme.surfaceContainerHighest,
+      color: colorScheme.surfaceContainerHighest,
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(radius))),
       errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: darkColorScheme.error),
+        borderSide: BorderSide(color: colorScheme.error),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: darkColorScheme.primary),
+        borderSide: BorderSide(color: colorScheme.primary),
         borderRadius: const BorderRadius.all(Radius.circular(radius + 6)),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: darkColorScheme.error),
+        borderSide: BorderSide(color: colorScheme.error),
       ),
     ),
   );

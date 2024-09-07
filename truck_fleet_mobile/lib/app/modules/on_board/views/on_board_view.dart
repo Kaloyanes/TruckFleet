@@ -3,11 +3,13 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
+import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_in/views/sign_in_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/sign_up_view.dart';
 import 'package:window_rounded_corners/window_rounded_corners.dart';
@@ -21,6 +23,15 @@ class OnBoardView extends GetView<OnBoardController> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: const [
+          LanguageSwitcher(),
+          ThemeSwitcher(),
+        ],
+      ),
       body: Stack(
         children: [
           Column(
@@ -29,18 +40,13 @@ class OnBoardView extends GetView<OnBoardController> {
               getStartedBottomSheet(context),
             ],
           ),
-          Positioned(
-            top: MediaQuery.of(context).viewPadding.top + 10,
-            right: 10,
-            child: const LanguageSwitcher(),
-          ),
         ],
       ),
     );
   }
 
   Expanded imageIntroduction(BuildContext context) {
-    const imageUrl = "https://images.unsplash.com/photo-1676359913375-032f3e5d494d";
+    const imageUrl = "lib/app/assets/images/landing.jpeg";
 
     return Expanded(
       child: Stack(
@@ -48,10 +54,10 @@ class OnBoardView extends GetView<OnBoardController> {
           AnimatedContainer(
             duration: Durations.extralong4,
             curve: Curves.easeInOutCubicEmphasized,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(
-                  Platform.isAndroid ? WindowCorners.getCorners().bottomLeft : 25,
+                  20,
                 ),
               ),
             ),
@@ -61,9 +67,10 @@ class OnBoardView extends GetView<OnBoardController> {
               fit: StackFit.expand,
               children: [
                 Positioned.fill(
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrl,
+                  child: Image.asset(
+                    imageUrl,
                     fit: BoxFit.cover,
+                    alignment: Alignment.bottomCenter,
                   ),
                 ),
                 Obx(
@@ -73,7 +80,7 @@ class OnBoardView extends GetView<OnBoardController> {
                       duration: Durations.extralong4,
                       curve: Curves.easeInOutCubicEmphasized,
                       child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                         child: ShaderMask(
                           shaderCallback: (rect) {
                             return LinearGradient(
@@ -84,8 +91,8 @@ class OnBoardView extends GetView<OnBoardController> {
                             ).createShader(rect);
                           },
                           blendMode: BlendMode.dstOut,
-                          child: CachedNetworkImage(
-                            imageUrl: imageUrl,
+                          child: Image.asset(
+                            imageUrl,
                             fit: BoxFit.cover,
                             alignment: Alignment.bottomCenter,
                           ),
@@ -123,6 +130,7 @@ class OnBoardView extends GetView<OnBoardController> {
                         height: 60,
                         child: FilledButton(
                           onPressed: () {
+                            HapticFeedback.lightImpact();
                             controller.height.value = MediaQuery.of(context).size.height * 0.5;
                           },
                           child: Text(
@@ -152,7 +160,6 @@ class OnBoardView extends GetView<OnBoardController> {
         curve: Curves.easeInOutCubicEmphasized,
         height: controller.height.value,
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        color: Theme.of(context).colorScheme.surface,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -194,6 +201,7 @@ class OnBoardView extends GetView<OnBoardController> {
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: FilledButton.icon(
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpView()));
                       },
                       label: Text("continue_with_platform".trParams({"platform": "email".tr})),
@@ -208,6 +216,7 @@ class OnBoardView extends GetView<OnBoardController> {
                       const Gap(10),
                       TextButton(
                         onPressed: () {
+                          HapticFeedback.lightImpact();
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignInView()));
                         },
                         child: Text("sign_in".tr),

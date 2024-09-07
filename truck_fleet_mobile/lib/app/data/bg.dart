@@ -10,4 +10,12 @@ final Map<String, String> bg = {
   "email": "Имейл",
   "already_have_an_account": "Вече имате акаунт?",
   "sign_in": "Влезте",
+  "enter_your_name": "Вашето Име",
+  "phone_number": "Телефонен номер",
+  "phone": "Време е за вашият телефонен номер",
+  "lets_upload_photo": "Нека качим ваша профилна снимка",
+  "continue": "Продължи",
+  "password": "Парола",
+  "forgot_password": "Забравена парола?",
+  "welcome_back": "Добре дошли отново в Truck Fleet",
 };

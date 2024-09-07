@@ -30,7 +30,7 @@ class SignInView extends GetView<SignInController> {
               children: [
                 Center(
                   child: Text(
-                    "Welcome Back To Truck Fleet",
+                    "welcome_back".tr,
                     style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                   ),
@@ -58,11 +58,11 @@ class SignInView extends GetView<SignInController> {
                         builder: (context) => const ForgotPasswordDialog(),
                       );
                     },
-                    child: const Text('Forgot Password?'),
+                    child: Text('forgot_password'.tr),
                   ),
                 ),
                 const Gap(20),
-                Center(child: FilledButton(onPressed: () {}, child: const Text('Sign In'))),
+                Center(child: FilledButton(onPressed: () {}, child: Text('sign_in'.tr))),
               ],
             ),
           ),

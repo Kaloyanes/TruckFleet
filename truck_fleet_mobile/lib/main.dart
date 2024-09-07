@@ -20,7 +20,7 @@ Future<void> main() async {
   if (Platform.isAndroid) await WindowCorners.init();
 
   GoogleFonts.config.allowRuntimeFetching = false;
-  debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+  // debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
   runApp(
     const App(),
   );
@@ -42,8 +42,8 @@ class App extends StatelessWidget {
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      theme: lightTheme(),
-      darkTheme: darkTheme(),
+      theme: theme(colorScheme: lightColorScheme),
+      darkTheme: theme(),
       locale: Get.deviceLocale,
       fallbackLocale: const Locale("en", "US"),
       translations: LocalMessages(),

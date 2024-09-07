@@ -10,4 +10,12 @@ final Map<String, String> en = {
   "email": "Email",
   "already_have_an_account": "Already have an account?",
   "sign_in": "Sign In",
+  "enter_your_name": "Enter your name",
+  "phone_number": "Phone Number",
+  "phone": "Time for your phone number",
+  "lets_upload_photo": "Let's upload your profile picture",
+  "continue": "Continue",
+  "password": "Password",
+  "forgot_password": "Forgot password?",
+  "welcome_back": "Welcome back to Truck Fleet",
 };
