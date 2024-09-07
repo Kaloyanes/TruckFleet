@@ -37,7 +37,7 @@ class MediaPickerView extends StatelessWidget {
                 height: 5,
                 width: 100,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),

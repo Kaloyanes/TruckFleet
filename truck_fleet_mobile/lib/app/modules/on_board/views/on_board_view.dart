@@ -21,14 +21,15 @@ class OnBoardView extends GetView<OnBoardController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(OnBoardController());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: const [
-          LanguageSwitcher(),
+        actions: [
+          const LanguageSwitcher(),
           ThemeSwitcher(),
         ],
       ),
@@ -136,7 +137,7 @@ class OnBoardView extends GetView<OnBoardController> {
                           child: Text(
                             "get_started".tr,
                             style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w900,
+                                  fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.onPrimary,
                                 ),
                           ),

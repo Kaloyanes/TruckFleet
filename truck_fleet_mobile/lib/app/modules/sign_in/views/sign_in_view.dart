@@ -12,11 +12,12 @@ class SignInView extends GetView<SignInController> {
   const SignInView({super.key});
   @override
   Widget build(BuildContext context) {
+    Get.put(SignInController());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        actions: const [
-          LanguageSwitcher(),
+        actions: [
+          const LanguageSwitcher(),
           ThemeSwitcher(),
         ],
       ),
@@ -36,16 +37,20 @@ class SignInView extends GetView<SignInController> {
                   ),
                 ),
                 const Gap(40),
-                Text("email".tr),
-                const Gap(10),
-                const TextField(
+                TextField(
                   textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    labelText: "email".tr,
+                  ),
+                  controller: controller.emailController,
                 ),
                 const Gap(20),
-                Text("password".tr),
-                const Gap(10),
-                const TextField(
+                TextField(
                   keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    labelText: "password".tr,
+                  ),
+                  controller: controller.passwordController,
                 ),
                 const Gap(20),
                 Align(
@@ -62,7 +67,7 @@ class SignInView extends GetView<SignInController> {
                   ),
                 ),
                 const Gap(20),
-                Center(child: FilledButton(onPressed: () {}, child: Text('sign_in'.tr))),
+                Center(child: FilledButton(onPressed: controller.signIn, child: Text('sign_in'.tr))),
               ],
             ),
           ),

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
+import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/introduction_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/phone_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/photo_view.dart';
@@ -23,6 +25,10 @@ class SignUpView extends GetView<SignUpController> {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
+        actions: [
+          const LanguageSwitcher(),
+          ThemeSwitcher(),
+        ],
       ),
       body: Stack(
         children: [
@@ -38,14 +44,18 @@ class SignUpView extends GetView<SignUpController> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 60,
-              child: FilledButton(
-                onPressed: controller.nextPage,
-                child: Text(
-                  "continue".tr, // Changed from "Continue" to "Продължи"
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+              child: Obx(
+                () => FilledButton(
+                  onPressed: controller.canGoNext.value ? controller.nextPage : null,
+                  child: Text(
+                    controller.progress.value > 0.90
+                        ? "sign_up".tr
+                        : "continue".tr, // Changed from "Continue" to "Продължи"
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
                 ),
               ),
             ),

@@ -4,27 +4,27 @@ import 'package:google_fonts/google_fonts.dart';
 
 const ColorScheme lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  primary: Color.fromARGB(255, 23, 23, 23), // --primary
-  onPrimary: Color.fromARGB(255, 250, 250, 250), // --primary-foreground
-  secondary: Color.fromARGB(255, 245, 245, 245), // --secondary
-  onSecondary: Color.fromARGB(255, 23, 23, 23), // --secondary-foreground
-  surface: Color.fromARGB(255, 255, 255, 255), // --card or --background
-  onSurface: Color.fromARGB(255, 71, 56, 56), // --foreground
-  error: Color.fromARGB(255, 224, 49, 49), // --destructive
-  onError: Color.fromARGB(255, 250, 250, 250), // --destructive-foreground
-  outline: Color.fromARGB(255, 217, 217, 217), // --border
-  shadow: Color.fromARGB(255, 10, 10, 10), // --ring
-  primaryContainer: Color.fromARGB(255, 244, 90, 51), // --chart-1
-  secondaryContainer: Color.fromARGB(255, 40, 158, 145), // --chart-2
-  tertiaryContainer: Color.fromARGB(255, 44, 78, 102), // --chart-3
+  primary: Color(0xFF2C2C2C), // Darker gray
+  onPrimary: Color(0xFFF5F5F5), // Light gray
+  secondary: Color(0xFFE0E0E0), // Light gray
+  onSecondary: Color(0xFF333333), // Dark gray
+  surface: Color(0xFFFFFFFF), // White
+  onSurface: Color(0xFF333333), // Dark gray
+  error: Color(0xFFD32F2F), // Red
+  onError: Color(0xFFFFFFFF), // White
+  outline: Color(0xFFBDBDBD), // Light gray
+  shadow: Color(0x33000000), // Semi-transparent black
+  primaryContainer: Color(0xFF78909C), // Blue-gray
+  secondaryContainer: Color(0xFF90A4AE), // Lighter blue-gray
+  tertiaryContainer: Color(0xFFB0BEC5), // Even lighter blue-gray
 );
 
 const ColorScheme darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
   primary: Color(0xFFE0E0E0), // Light grey
   onPrimary: Color(0xFF121212), // Very dark grey (almost black)
-  secondary: Color(0xFF303030), // Dark grey
-  onSecondary: Color(0xFFE0E0E0), // Light grey
+  secondary: Color.fromARGB(255, 181, 181, 181), // Dark grey
+  onSecondary: Color.fromARGB(255, 55, 55, 55), // Light grey
   surface: Color(0xFF121212), // Very dark grey (almost black)
   onSurface: Color(0xFFE0E0E0), // Light grey
   outline: Color(0xFF505050), // Medium grey
@@ -36,7 +36,7 @@ const ColorScheme darkColorScheme = ColorScheme(
   onPrimaryContainer: Color(0xFFFFFFFF), // Light grey
   secondaryContainer: Color(0xFF424242), // Darker grey
   onSecondaryContainer: Color(0xFFE0E0E0), // Light grey
-  error: Color.fromRGBO(122, 30, 30, 1),
+  error: Color.fromRGBO(248, 132, 132, 1),
   onError: Color.fromRGBO(255, 255, 255, 1),
 );
 
@@ -167,6 +167,7 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(radius))),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: colorScheme.error),
+        borderRadius: BorderRadius.circular(radius),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: colorScheme.primary),
@@ -174,6 +175,7 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: colorScheme.error),
+        borderRadius: BorderRadius.circular(radius + 6),
       ),
     ),
   );

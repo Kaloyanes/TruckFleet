@@ -1,23 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:truck_fleet_mobile/app/modules/home/views/home_view.dart';
 
 class SignInController extends GetxController {
   //TODO: Implement SignInController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  void signIn() async {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 
-  @override
-  void onClose() {
-    super.onClose();
+    Navigator.pushAndRemoveUntil(
+      Get.context!,
+      MaterialPageRoute(builder: (context) => const HomeView()),
+      (route) => false,
+    );
   }
-
-  void increment() => count.value++;
 }

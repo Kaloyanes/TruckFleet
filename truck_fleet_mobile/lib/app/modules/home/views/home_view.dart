@@ -8,6 +8,7 @@ class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
+    Get.put(HomeController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('HomeView'),
@@ -15,8 +16,8 @@ class HomeView extends GetView<HomeController> {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {},
-          child: const Text('Click me'),
+          onPressed: controller.signOut,
+          child: const Text('Sign Out'),
         ),
       ),
     );

@@ -34,9 +34,9 @@ class PhotoView extends GetView<SignUpController> {
           ),
           const Gap(10),
           Obx(() {
-            if (controller.image.value != null) {
+            if (controller.profilePicture.value != null) {
               return Image.file(
-                File(controller.image.value!.path),
+                File(controller.profilePicture.value!.path),
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,

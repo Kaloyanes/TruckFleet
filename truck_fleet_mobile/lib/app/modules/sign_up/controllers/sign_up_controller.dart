@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:truck_fleet_mobile/app/components/media_picker_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/introduction_view.dart';
-import 'package:truck_fleet_mobile/app/modules/sign_up/views/media_picker_view.dart';
+import 'package:truck_fleet_mobile/app/modules/sign_up/views/join_organization_view.dart';
+import 'package:truck_fleet_mobile/app/modules/sign_up/views/password_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/phone_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/photo_view.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
@@ -15,22 +17,24 @@ import 'package:smooth_sheets/smooth_sheets.dart';
 class SignUpController extends GetxController {
   var pages = <Widget>[
     const IntroductionView(),
+    const PasswordView(),
     const PhoneView(),
     const PhotoView(),
+    const JoinOrganizationView(),
   ];
 
   PageController pageController = PageController();
-  final page = 1.0.obs;
+  final page = 0.0.obs;
   final progress = 0.0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    progress.value = 1 / 3;
+    progress.value = 1 / (pages.length);
 
     pageController.addListener(() {
       final page = pageController.page ?? 0;
-      progress.value = (page + 1) / 3;
+      progress.value = (page + 1) / (pages.length);
     });
   }
 
@@ -41,23 +45,68 @@ class SignUpController extends GetxController {
     super.onClose();
   }
 
+  final introductionFormKey = GlobalKey<FormState>();
+  final passwordFormKey = GlobalKey<FormState>();
+  final phoneFormKey = GlobalKey<FormState>();
+  final photoFormKey = GlobalKey<FormState>();
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final organizationCodeController = TextEditingController();
+
+  final organizationCodeHasText = false.obs;
+
+  final profilePicture = Rx<XFile?>(null);
+
 // TODO: CHANGE VALUE
-  var canGoNext = true.obs;
+  var canGoNext = false.obs;
+
+  final isPasswordVisible = false.obs;
 
   void nextPage() {
     if (!canGoNext.value) {
       return;
     }
+
+    if (pageController.page == 0) {
+      if (!introductionFormKey.currentState!.validate()) {
+        canGoNext.value = false;
+        return;
+      }
+    }
+
+    if (pageController.page == 1) {
+      if (!passwordFormKey.currentState!.validate()) {
+        canGoNext.value = false;
+        return;
+      }
+    }
+
+    if (pageController.page == 2) {
+      if (!phoneFormKey.currentState!.validate()) {
+        canGoNext.value = false;
+        return;
+      }
+    }
+
+    if (pageController.page == 3) {
+      if (profilePicture.value == null) {
+        canGoNext.value = false;
+        return;
+      }
+    }
+
     FocusScope.of(Get.context!).unfocus();
 
     final nextPageIndex = (pageController.page?.round() ?? 0) + 1;
-    if (nextPageIndex < 3) {
+    if (nextPageIndex < pages.length) {
       HapticFeedback.lightImpact();
       pageController.nextPage(duration: Durations.long4, curve: Curves.easeInOutCubicEmphasized);
     }
   }
-
-  final image = Rx<XFile?>(null);
 
   final draggableScrollableController = DraggableScrollableController();
   void addPhotos() async {
@@ -100,7 +149,9 @@ class SignUpController extends GetxController {
       return;
     }
 
-    image.value = response;
+    canGoNext.value = true;
+
+    profilePicture.value = response;
     debugPrint(response.toString());
   }
 }

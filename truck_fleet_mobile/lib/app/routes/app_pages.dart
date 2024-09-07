@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import '../modules/home/bindings/home_binding.dart';
@@ -16,7 +17,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.ON_BOARD;
+  static var INITIAL = FirebaseAuth.instance.currentUser != null ? Routes.HOME : Routes.ON_BOARD;
 
   static final routes = [
     GetPage(
