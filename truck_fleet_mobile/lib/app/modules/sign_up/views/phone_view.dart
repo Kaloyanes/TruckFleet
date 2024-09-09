@@ -24,6 +24,11 @@ class PhoneView extends GetView<SignUpController> {
                     fontWeight: FontWeight.w900,
                   ),
             ),
+            const Gap(10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("add_country_code".tr),
+            ),
             const Gap(20),
             TextFormField(
               controller: controller.phoneController,
@@ -44,7 +49,7 @@ class PhoneView extends GetView<SignUpController> {
                 prefix: const Text("+"),
               ),
             ),
-            const Gap(100),
+            Gap(MediaQuery.sizeOf(context).height * 0.1),
           ],
         ),
       ),

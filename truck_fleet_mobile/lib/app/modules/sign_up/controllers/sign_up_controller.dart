@@ -60,6 +60,7 @@ class SignUpController extends GetxController {
   final organizationCodeHasText = false.obs;
 
   final profilePicture = Rx<XFile?>(null);
+  final isProfilePictureFocused = false.obs;
 
 // TODO: CHANGE VALUE
   var canGoNext = false.obs;

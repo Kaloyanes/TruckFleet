@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
-import 'package:truck_fleet_mobile/app/modules/sign_up/views/introduction_view.dart';
-import 'package:truck_fleet_mobile/app/modules/sign_up/views/phone_view.dart';
-import 'package:truck_fleet_mobile/app/modules/sign_up/views/photo_view.dart';
 
 import '../controllers/sign_up_controller.dart';
 
@@ -38,11 +35,11 @@ class SignUpView extends GetView<SignUpController> {
             children: controller.pages,
           ),
           AnimatedAlign(
-            alignment: Alignment(0, MediaQuery.of(context).viewInsets.bottom > 50 ? 0.9 : 0.85),
+            alignment: const Alignment(0, 0.9),
             curve: Curves.easeInOutCubicEmphasized,
             duration: Durations.medium2,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
+              width: MediaQuery.sizeOf(context).width * 0.9,
               height: 60,
               child: Obx(
                 () => FilledButton(

@@ -20,6 +20,16 @@ class JoinOrganizationView extends GetView<SignUpController> {
                     fontWeight: FontWeight.normal,
                   ),
             ),
+            const Gap(20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "join_organization_description".tr,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+              ),
+            ),
             const Gap(30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,16 +63,6 @@ class JoinOrganizationView extends GetView<SignUpController> {
                   ),
                 ),
               ],
-            ),
-            const Gap(20),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "join_organization_description".tr,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-              ),
             ),
             const Gap(100)
           ],

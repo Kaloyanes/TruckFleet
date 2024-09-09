@@ -22,7 +22,7 @@ class MediaPickerView extends StatelessWidget {
         minExtent: const Extent.proportional(1),
         physics: const BouncingSheetPhysics(),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.8,
+          height: MediaQuery.sizeOf(context).height * 0.8,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.only(

@@ -25,6 +25,8 @@ final Map<String, String> en = {
   "name": "Name",
   "make_password": "Create a secure password",
   "full_name": "Full Name",
+  "first_and_last_name": "First and Last Name",
+  "add_country_code": "Add country code. Example: +359",
   "join": "Join",
   "organization_code": "Organization Code",
   "join_organization": "Join Company With Code",

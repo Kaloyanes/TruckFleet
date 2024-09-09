@@ -49,7 +49,7 @@ class IntroductionView extends GetView<SignUpController> {
                 },
                 controller: controller.nameController,
                 decoration: InputDecoration(
-                  labelText: "full_name".tr,
+                  labelText: "first_and_last_name".tr,
                   prefixIcon: const Icon(
                     TablerIcons.user,
                   ),
@@ -81,7 +81,7 @@ class IntroductionView extends GetView<SignUpController> {
                   ),
                 ),
               ),
-              const Gap(150)
+              Gap(MediaQuery.sizeOf(context).height * 0.1),
             ],
           ),
         ),

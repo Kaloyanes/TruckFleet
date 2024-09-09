@@ -25,6 +25,8 @@ final Map<String, String> bg = {
   "welcome_back": "Добре дошли отново в Truck Fleet",
   "make_password": "Създайте силна парола",
   "full_name": "Пълно име",
+  "first_and_last_name": "Първо и последно име",
+  "add_country_code": "Добавете код на държавата. Пример: +359",
   "join": "Влезте",
   "organization_code": "Код на организацията",
   "join_organization": "Влезте в към компания с код ",

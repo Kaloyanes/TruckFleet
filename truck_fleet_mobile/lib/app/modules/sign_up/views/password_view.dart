@@ -44,6 +44,8 @@ class PasswordView extends GetView<SignUpController> {
                         labelText: "password".tr,
                       ),
                       obscureText: !controller.isPasswordVisible.value,
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.next,
                     ),
                     Positioned(
                       right: 5,
@@ -82,6 +84,7 @@ class PasswordView extends GetView<SignUpController> {
                         labelText: "confirm_password".tr,
                       ),
                       obscureText: !controller.isPasswordVisible.value,
+                      keyboardType: TextInputType.visiblePassword,
                     ),
                     Positioned(
                       right: 5,
@@ -99,7 +102,7 @@ class PasswordView extends GetView<SignUpController> {
                   ],
                 ),
               ),
-              const Gap(100),
+              Gap(MediaQuery.sizeOf(context).height * 0.1),
             ],
           ),
         ),

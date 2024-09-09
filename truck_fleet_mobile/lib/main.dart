@@ -20,10 +20,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Animate.restartOnHotReload = true;
 
-  if (Platform.isAndroid) await WindowCorners.init();
-
   GoogleFonts.config.allowRuntimeFetching = false;
-  // debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,6 +39,23 @@ class App extends StatelessWidget {
 
   final storage = GetStorage("settings_truck_fleet");
 
+  @override
+  Widget build(BuildContext context) {
+    setupInsets(context);
+
+    return GetMaterialApp(
+      title: "Application",
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
+      theme: theme(colorScheme: lightColorScheme),
+      darkTheme: theme(),
+      themeMode: getThemeMode(),
+      locale: storage.read("language") == null ? Get.deviceLocale : Locale(storage.read("language")),
+      fallbackLocale: const Locale("en", "US"),
+      translations: LocalMessages(),
+    );
+  }
+
   ThemeMode getThemeMode() {
     if (storage.read("theme") == null) {
       return ThemeMode.system;
@@ -58,38 +72,33 @@ class App extends StatelessWidget {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setPreferredOrientations([
+  void setupInsets(BuildContext context) {
+    final isSmall = MediaQuery.sizeOf(context).shortestSide / MediaQuery.devicePixelRatioOf(context) < 600;
+
+    final orientations = [
       DeviceOrientation.portraitUp,
-    ]);
+      DeviceOrientation.portraitDown,
+    ];
 
-    return GetMaterialApp(
-      title: "Application",
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-      theme: theme(colorScheme: lightColorScheme),
-      darkTheme: theme(),
-      themeMode: getThemeMode(),
-      locale: storage.read("language") == null ? Get.deviceLocale : Locale(storage.read("language")),
-      fallbackLocale: const Locale("en", "US"),
-      translations: LocalMessages(),
-      builder: (context, child) {
-        // Get the current brightness
-        final brightness = MediaQuery.of(context).platformBrightness;
+    if (!isSmall) {
+      orientations.addAll([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    }
 
-        // Set the status bar icon brightness based on the device brightness
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: brightness == Brightness.light ? Brightness.dark : Brightness.light,
-          systemStatusBarContrastEnforced: false,
-          systemNavigationBarColor: Colors.transparent,
-          systemNavigationBarContrastEnforced: false,
-        ));
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setPreferredOrientations(orientations);
 
-        return child!;
-      },
-    );
+    final brightness = Theme.of(context).colorScheme.brightness;
+
+    // Set the status bar icon brightness based on the device brightness
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: brightness == Brightness.light ? Brightness.dark : Brightness.light,
+      systemStatusBarContrastEnforced: false,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
+    ));
   }
 }

@@ -132,7 +132,7 @@ class OnBoardView extends GetView<OnBoardController> {
                         child: FilledButton(
                           onPressed: () {
                             HapticFeedback.lightImpact();
-                            controller.height.value = MediaQuery.of(context).size.height * 0.5;
+                            controller.height.value = MediaQuery.sizeOf(context).height * 0.5;
                           },
                           child: Text(
                             "get_started".tr,
@@ -190,7 +190,7 @@ class OnBoardView extends GetView<OnBoardController> {
                   const Gap(20),
                   Expanded(child: Container()),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
+                    width: MediaQuery.sizeOf(context).width * 0.8,
                     child: FilledButton.icon(
                       onPressed: () {},
                       label: Text("continue_with_platform".trParams({"platform": "Google"})),
@@ -199,7 +199,7 @@ class OnBoardView extends GetView<OnBoardController> {
                   ),
                   const Gap(10),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
+                    width: MediaQuery.sizeOf(context).width * 0.8,
                     child: FilledButton.icon(
                       onPressed: () {
                         HapticFeedback.lightImpact();
@@ -224,7 +224,7 @@ class OnBoardView extends GetView<OnBoardController> {
                       ),
                     ],
                   ),
-                  Gap(MediaQuery.of(context).viewPadding.bottom),
+                  Gap(MediaQuery.viewPaddingOf(context).bottom),
                 ],
               ),
             ),
