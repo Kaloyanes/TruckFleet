@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -12,7 +10,6 @@ import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_in/views/sign_in_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/sign_up_view.dart';
-import 'package:window_rounded_corners/window_rounded_corners.dart';
 
 import '../controllers/on_board_controller.dart';
 
@@ -29,7 +26,7 @@ class OnBoardView extends GetView<OnBoardController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          const LanguageSwitcher(),
+          LanguageSwitcher(),
           ThemeSwitcher(),
         ],
       ),
@@ -47,7 +44,7 @@ class OnBoardView extends GetView<OnBoardController> {
   }
 
   Expanded imageIntroduction(BuildContext context) {
-    const imageUrl = "lib/app/assets/images/landing.jpeg";
+    const imageUrl = "lib/app/assets/images/landing5.jpg";
 
     return Expanded(
       child: Stack(
@@ -105,6 +102,24 @@ class OnBoardView extends GetView<OnBoardController> {
               ],
             ),
           ),
+          Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "lib/app/assets/images/packages_dark.png",
+                  width: 50,
+                ),
+                const Gap(10),
+                Text(
+                  "Truck Fleet",
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
           Obx(
             () => AnimatedOpacity(
               opacity: controller.height.value > 0 ? 0 : 1,
@@ -117,14 +132,13 @@ class OnBoardView extends GetView<OnBoardController> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        "welcome_to_truck_fleet".tr,
-                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
-                      ),
-                      Text(
-                        "description".tr,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
-                      ),
+                      // Align(
+                      //   alignment: Alignment.centerLeft,
+                      //   child: Text(
+                      //     "welcome_to_truck_fleet".tr,
+                      //     style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+                      //   ),
+                      // ),
                       const Gap(20),
                       SizedBox(
                         width: double.infinity,
@@ -189,15 +203,15 @@ class OnBoardView extends GetView<OnBoardController> {
                   ),
                   const Gap(20),
                   Expanded(child: Container()),
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.8,
-                    child: FilledButton.icon(
-                      onPressed: () {},
-                      label: Text("continue_with_platform".trParams({"platform": "Google"})),
-                      icon: const Icon(TablerIcons.brand_google_filled),
-                    ),
-                  ),
-                  const Gap(10),
+                  // SizedBox(
+                  //   width: MediaQuery.sizeOf(context).width * 0.8,
+                  //   child: FilledButton.icon(
+                  //     onPressed: () {},
+                  //     label: Text("continue_with_platform".trParams({"platform": "Google"})),
+                  //     icon: const Icon(TablerIcons.brand_google_filled),
+                  //   ),
+                  // ),
+                  // const Gap(10),
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.8,
                     child: FilledButton.icon(

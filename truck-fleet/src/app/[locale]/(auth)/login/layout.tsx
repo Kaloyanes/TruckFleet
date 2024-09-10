@@ -1,4 +1,4 @@
-import LoginRedirect from "@/components/redirects/login-redirect";
+import LoginRedirect from "@/components/redirects/LoginRedirect";
 import { unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next/types";
 

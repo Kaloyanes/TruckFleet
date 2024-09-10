@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -23,9 +21,10 @@ class SignUpView extends GetView<SignUpController> {
           ),
         ),
         actions: [
-          const LanguageSwitcher(),
+          LanguageSwitcher(),
           ThemeSwitcher(),
         ],
+        leading: BackButton(onPressed: controller.goBack),
       ),
       body: Stack(
         children: [
@@ -43,7 +42,7 @@ class SignUpView extends GetView<SignUpController> {
               height: 60,
               child: Obx(
                 () => FilledButton(
-                  onPressed: controller.canGoNext.value ? controller.nextPage : null,
+                  onPressed: controller.nextPage,
                   child: Text(
                     controller.progress.value > 0.90
                         ? "sign_up".tr

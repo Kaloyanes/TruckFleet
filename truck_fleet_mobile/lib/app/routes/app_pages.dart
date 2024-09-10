@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/on_board/bindings/on_board_binding.dart';
-import '../modules/on_board/bindings/on_board_binding.dart';
-import '../modules/on_board/views/on_board_view.dart';
 import '../modules/on_board/views/on_board_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';

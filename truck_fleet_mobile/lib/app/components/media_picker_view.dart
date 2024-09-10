@@ -1,14 +1,13 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
-import 'package:truck_fleet_mobile/themes.dart';
-import 'package:window_rounded_corners/window_rounded_corners.dart';
+import 'package:truck_fleet_mobile/app/utils/themes.dart';
 
 class MediaPickerView extends StatelessWidget {
   const MediaPickerView({super.key});
@@ -42,9 +41,9 @@ class MediaPickerView extends StatelessWidget {
                 ),
               ),
               const Gap(20),
-              optionContainer(context, 'Gallery', TablerIcons.photo, ImageSource.gallery),
+              optionContainer(context, 'gallery'.tr, TablerIcons.photo, ImageSource.gallery),
               const Gap(20),
-              optionContainer(context, 'Camera', TablerIcons.camera, ImageSource.camera),
+              optionContainer(context, 'camera'.tr, TablerIcons.camera, ImageSource.camera),
             ],
           ),
         ),

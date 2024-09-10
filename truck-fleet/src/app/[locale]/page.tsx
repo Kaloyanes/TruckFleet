@@ -1,5 +1,5 @@
 "use client";
-import { ThemeToggle } from "@/components/settings/theme-toggle";
+import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { db } from "@/firebase/firebase";
 import { collection } from "firebase/firestore";
 import {

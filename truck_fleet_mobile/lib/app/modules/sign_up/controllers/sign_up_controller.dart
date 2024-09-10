@@ -1,18 +1,22 @@
-import 'dart:async';
-import 'dart:ui';
+import 'dart:io';
+import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:croppy/croppy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:truck_fleet_mobile/app/components/media_picker_view.dart';
+import 'package:truck_fleet_mobile/app/modules/home/views/home_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/introduction_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/join_organization_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/password_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/phone_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/photo_view.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
+import 'package:truck_fleet_mobile/app/services/auth_service.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class SignUpController extends GetxController {
   var pages = <Widget>[
@@ -56,46 +60,45 @@ class SignUpController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final organizationCodeController = TextEditingController();
+  final companyId = "".obs;
 
   final organizationCodeHasText = false.obs;
+  final joinedOrganization = false.obs;
+  final joinedOrganizationError = false.obs;
+  final organizationName = "".obs;
 
   final profilePicture = Rx<XFile?>(null);
+  final profilePictureBytes = Rx<Uint8List?>(null);
   final isProfilePictureFocused = false.obs;
-
-// TODO: CHANGE VALUE
-  var canGoNext = false.obs;
 
   final isPasswordVisible = false.obs;
 
-  void nextPage() {
-    if (!canGoNext.value) {
+  Future<void> nextPage() async {
+    if (pageController.page == pages.length - 1) {
+      await signUp();
       return;
     }
 
     if (pageController.page == 0) {
       if (!introductionFormKey.currentState!.validate()) {
-        canGoNext.value = false;
         return;
       }
     }
 
     if (pageController.page == 1) {
       if (!passwordFormKey.currentState!.validate()) {
-        canGoNext.value = false;
         return;
       }
     }
 
     if (pageController.page == 2) {
       if (!phoneFormKey.currentState!.validate()) {
-        canGoNext.value = false;
         return;
       }
     }
 
     if (pageController.page == 3) {
       if (profilePicture.value == null) {
-        canGoNext.value = false;
         return;
       }
     }
@@ -107,6 +110,61 @@ class SignUpController extends GetxController {
       HapticFeedback.lightImpact();
       pageController.nextPage(duration: Durations.long4, curve: Curves.easeInOutCubicEmphasized);
     }
+  }
+
+  Future<void> joinOrganization() async {
+    if (!organizationCodeHasText.value) {
+      return;
+    }
+
+    FirebaseFirestore.instance
+        .collection("users")
+        .where("companyCode", isEqualTo: organizationCodeController.text.trim())
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        companyId.value = value.docs.first.id;
+        joinedOrganization.value = true;
+        joinedOrganizationError.value = false;
+        organizationName.value = value.docs.first.data()["name"];
+      } else {
+        joinedOrganizationError.value = true;
+        joinedOrganization.value = false;
+      }
+    });
+  }
+
+  Future signUp() async {
+    showDialog(
+      context: Get.context!,
+      builder: (context) => BackdropFilter(
+        filter: ui.ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Center(
+          child: const CircularProgressIndicator()
+              .animate()
+              .blur(
+                  duration: Durations.long2,
+                  curve: Curves.easeInOutCubicEmphasized,
+                  begin: const Offset(10, 10),
+                  end: Offset.zero)
+              .scaleXY(duration: Durations.long2, curve: Curves.easeInOutCubicEmphasized),
+        ),
+      ),
+    );
+
+    await AuthService.signUp(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+      fullName: nameController.text.trim(),
+      phone: "+${phoneController.text.trim()}",
+      profilePicture: profilePictureBytes.value!,
+      companyId: companyId.value,
+    );
+
+    await Navigator.of(Get.context!)
+        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeView()), (route) => false);
+
+    ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("signup_success".tr)));
   }
 
   final draggableScrollableController = DraggableScrollableController();
@@ -150,9 +208,34 @@ class SignUpController extends GetxController {
       return;
     }
 
-    canGoNext.value = true;
+    final cropper = await showMaterialImageCropper(
+      Get.context!,
+      imageProvider: FileImage(File(response.path)),
+      allowedAspectRatios: [
+        const CropAspectRatio(width: 1, height: 1),
+      ],
+      themeData: Theme.of(Get.context!),
+      locale: Get.locale,
+    );
 
-    profilePicture.value = response;
-    debugPrint(response.toString());
+    if (cropper == null) {
+      return;
+    }
+
+    final image = await cropper.uiImage.toByteData(format: ui.ImageByteFormat.png);
+
+    final croppedImage = XFile.fromData(image!.buffer.asUint8List());
+
+    profilePictureBytes.value = await croppedImage.readAsBytes();
+    profilePicture.value = croppedImage;
+  }
+
+  void goBack() {
+    HapticFeedback.lightImpact();
+    if (pageController.page! < 0.8) {
+      Navigator.of(Get.context!).pop();
+    } else {
+      pageController.previousPage(duration: Durations.long2, curve: Curves.easeInOutCubicEmphasized);
+    }
   }
 }

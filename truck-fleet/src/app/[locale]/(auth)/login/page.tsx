@@ -1,5 +1,5 @@
-import LoginForm from "@/components/login/login-form";
-import { ThemeToggle } from "@/components/settings/theme-toggle";
+import LoginForm from "@/components/login/LoginForm";
+import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { TruckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
