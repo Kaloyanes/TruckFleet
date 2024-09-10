@@ -39,17 +39,18 @@ class ThemeSwitcher extends StatelessWidget {
       },
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) => <PopupMenuEntry<ThemeMode>>[
-        const PopupMenuItem<ThemeMode>(
+        // TODO: ADD LANGUAGES
+        PopupMenuItem<ThemeMode>(
           value: ThemeMode.light,
-          child: Text('Light theme'),
+          child: Text('light_theme'.tr),
         ),
-        const PopupMenuItem<ThemeMode>(
+        PopupMenuItem<ThemeMode>(
           value: ThemeMode.dark,
-          child: Text('Dark theme'),
+          child: Text('dark_theme'.tr),
         ),
-        const PopupMenuItem<ThemeMode>(
+        PopupMenuItem<ThemeMode>(
           value: ThemeMode.system,
-          child: Text('System theme'),
+          child: Text('system_theme'.tr),
         ),
       ],
     );

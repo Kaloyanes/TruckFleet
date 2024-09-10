@@ -1,6 +1,6 @@
-import 'dart:io';
-
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,10 +10,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/data/app_translation.dart';
-import 'package:truck_fleet_mobile/firebase_options.dart';
-import 'package:truck_fleet_mobile/themes.dart';
-import 'package:window_rounded_corners/window_rounded_corners.dart';
-
+import 'package:truck_fleet_mobile/app/data/croppy_translations.dart';
+import 'package:truck_fleet_mobile/app/utils/firebase_options.dart';
+import 'package:truck_fleet_mobile/app/utils/themes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
@@ -24,6 +24,15 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await FirebaseAnalytics.instance.logEvent(name: "app_launched");
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  if (kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+  } else {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  }
 
   await GetStorage.init("settings_truck_fleet");
 
@@ -51,8 +60,18 @@ class App extends StatelessWidget {
       darkTheme: theme(),
       themeMode: getThemeMode(),
       locale: storage.read("language") == null ? Get.deviceLocale : Locale(storage.read("language")),
-      fallbackLocale: const Locale("en", "US"),
+      fallbackLocale: const Locale("en"),
       translations: LocalMessages(),
+      supportedLocales: const [
+        Locale("en"),
+        Locale("bg"),
+      ],
+      localizationsDelegates: [
+        MyCroppyLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
     );
   }
 

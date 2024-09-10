@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -36,6 +35,7 @@ class JoinOrganizationView extends GetView<SignUpController> {
               children: [
                 Expanded(
                   child: TextFormField(
+                    key: const Key("organization_code"),
                     controller: controller.organizationCodeController,
                     decoration: InputDecoration(
                       labelText: "organization_code".tr,
@@ -43,6 +43,7 @@ class JoinOrganizationView extends GetView<SignUpController> {
                     onChanged: (value) {
                       controller.organizationCodeHasText.value = value.isNotEmpty;
                     },
+                    cursorOpacityAnimates: true,
                   ),
                 ),
                 Obx(
@@ -54,7 +55,7 @@ class JoinOrganizationView extends GetView<SignUpController> {
                     duration: Durations.long4,
                     alignment: Alignment.center,
                     child: FilledButton(
-                      onPressed: () {},
+                      onPressed: controller.joinOrganization,
                       child: Text(
                         controller.organizationCodeHasText.value ? "join".tr : "",
                         softWrap: false,
@@ -64,6 +65,30 @@ class JoinOrganizationView extends GetView<SignUpController> {
                 ),
               ],
             ),
+            const Gap(10),
+            Obx(() {
+              if (controller.joinedOrganizationError.value) {
+                return Text(
+                  "organization_code_not_found".tr,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                );
+              }
+
+              if (controller.joinedOrganization.value) {
+                return Text(
+                  "joined_organization".trParams({
+                    "name": controller.organizationName.value,
+                  }),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                );
+              }
+
+              return const SizedBox.shrink();
+            }),
             const Gap(100)
           ],
         ),

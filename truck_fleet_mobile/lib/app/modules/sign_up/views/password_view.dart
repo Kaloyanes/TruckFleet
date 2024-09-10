@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/controllers/sign_up_controller.dart';
+import 'package:truck_fleet_mobile/app/utils/password_strength.dart'; // Add this import
 
 class PasswordView extends GetView<SignUpController> {
   const PasswordView({super.key});
@@ -14,9 +14,6 @@ class PasswordView extends GetView<SignUpController> {
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         child: Form(
-          onChanged: () {
-            controller.canGoNext.value = controller.passwordFormKey.currentState!.validate();
-          },
           key: controller.passwordFormKey,
           autovalidateMode: AutovalidateMode.always,
           child: Column(
@@ -37,15 +34,24 @@ class PasswordView extends GetView<SignUpController> {
                         if (value == null || value.isEmpty) {
                           return "password_is_required".tr;
                         }
+
+                        // Check password strength
+                        final strength = checkPasswordStrength(value);
+                        if (strength != PasswordStrength.strong) {
+                          return "password_not_strong_enough".tr;
+                        }
+
                         return null;
                       },
                       controller: controller.passwordController,
                       decoration: InputDecoration(
                         labelText: "password".tr,
+                        helperStyle: Theme.of(context).textTheme.bodyMedium,
                       ),
                       obscureText: !controller.isPasswordVisible.value,
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
+                      cursorOpacityAnimates: true,
                     ),
                     Positioned(
                       right: 5,
@@ -77,6 +83,7 @@ class PasswordView extends GetView<SignUpController> {
                         if (value != controller.passwordController.text) {
                           return "password_and_confirm_password_must_be_same".tr;
                         }
+
                         return null;
                       },
                       controller: controller.confirmPasswordController,
@@ -85,6 +92,7 @@ class PasswordView extends GetView<SignUpController> {
                       ),
                       obscureText: !controller.isPasswordVisible.value,
                       keyboardType: TextInputType.visiblePassword,
+                      cursorOpacityAnimates: true,
                     ),
                     Positioned(
                       right: 5,

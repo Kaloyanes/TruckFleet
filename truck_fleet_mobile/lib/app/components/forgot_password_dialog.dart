@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
-import 'package:truck_fleet_mobile/main.dart';
+import 'package:get/get.dart';
 
 class ForgotPasswordDialog extends StatelessWidget {
   const ForgotPasswordDialog({
@@ -15,17 +15,17 @@ class ForgotPasswordDialog extends StatelessWidget {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: AlertDialog.adaptive(
-        title: const Text('Forgot Password?'),
-        content: const Material(
+        title: Text('forgot_password'.tr),
+        content: Material(
           color: Colors.transparent,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Enter your email address and we'll send you a link to reset your password"),
-              Gap(20),
+              Text("enter_your_email_address_and_we_ll_send_you_a_link_to_reset_your_password".tr),
+              const Gap(20),
               TextField(
                 decoration: InputDecoration(
-                  label: Text("Email"),
+                  label: Text("email".tr),
                 ),
               ),
             ],
@@ -36,8 +36,8 @@ class ForgotPasswordDialog extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancel')),
-          TextButton(onPressed: () {}, child: const Text('Reset Password')),
+              child: Text('cancel'.tr)),
+          TextButton(onPressed: () {}, child: Text('reset_password'.tr)),
         ],
       )
           .animate()

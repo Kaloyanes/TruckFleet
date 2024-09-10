@@ -14,9 +14,6 @@ class IntroductionView extends GetView<SignUpController> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           autovalidateMode: AutovalidateMode.always,
-          onChanged: () {
-            controller.canGoNext.value = controller.introductionFormKey.currentState!.validate();
-          },
           key: controller.introductionFormKey,
           child: Column(
             children: [
@@ -54,7 +51,6 @@ class IntroductionView extends GetView<SignUpController> {
                     TablerIcons.user,
                   ),
                 ),
-                autofocus: true,
                 textCapitalization: TextCapitalization.words,
                 cursorOpacityAnimates: true,
               ),
@@ -62,11 +58,11 @@ class IntroductionView extends GetView<SignUpController> {
               TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Email is required";
+                    return "email_required".tr;
                   }
 
                   if (!value.isEmail) {
-                    return "Email is not valid";
+                    return "email_not_valid".tr;
                   }
 
                   return null;
