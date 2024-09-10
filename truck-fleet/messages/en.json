@@ -136,5 +136,13 @@
     "delete": "Delete",
     "deletedSuccessfully": "Order deleted",
     "deletedDescription": "Order #{id} has been deleted"
+  },
+  "EmployeePage": {
+    "generateNewCode": "Generate New Code",
+    "generateNewCodeTitle": "Generate New Code",
+    "generateNewCodeDescription": "Are you sure you want to generate a new code?",
+    "yes": "Yes",
+    "cancel": "Cancel",
+    "codeCopied": "Code Copied"
   }
 }

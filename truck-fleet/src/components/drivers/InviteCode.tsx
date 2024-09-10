@@ -31,7 +31,6 @@ export default function InviteCodeInfo() {
 		setClipboard(companyData?.companyCode);
 		toast({
 			title: t("codeCopied"),
-			description: t("codeCopiedDescription"),
 			variant: "success",
 			duration: 2000,
 		});

@@ -1,3 +1,4 @@
+"use server";
 import { updateDoc, type DocumentReference } from "firebase/firestore";
 import crypto from "node:crypto";
 

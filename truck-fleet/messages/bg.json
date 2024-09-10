@@ -136,5 +136,13 @@
     "delete": "Изтрий",
     "deletedSuccessfully": "Поръчката е изтрита",
     "deletedDescription": "Поръчка #{id} е изтрита"
+  },
+  "EmployeePage": {
+    "generateNewCode": "Генериране на нов код",
+    "generateNewCodeTitle": "Генериране на нов код",
+    "generateNewCodeDescription": "Сигурни ли сте, че искате да генерирате нов код?",
+    "yes": "Да",
+    "cancel": "Отказ",
+    "codeCopied": "Кодът е копиран"
   }
 }
