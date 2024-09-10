@@ -1,0 +1,148 @@
+{
+  "Home": {
+    "loading": "Зареждане...",
+    "welcome": "Добре дошли в Truck Fleet"
+  },
+  "TimeTitle": {
+    "monday": "понеделник",
+    "tuesday": "вторник",
+    "wednesday": "сряда",
+    "thursday": "четвъртък",
+    "friday": "петък",
+    "saturday": "събота",
+    "sunday": "неделя",
+    "jan": "януари",
+    "feb": "февруари",
+    "mar": "март",
+    "apr": "април",
+    "may": "май",
+    "jun": "юни",
+    "jul": "юли",
+    "aug": "август",
+    "sep": "септември",
+    "oct": "октомври",
+    "nov": "ноември",
+    "dec": "декември"
+  },
+  "SidebarLink": {
+    "chat": "Чат",
+    "dashboard": "Табло",
+    "map": "Карта",
+    "orders": "Поръчки",
+    "drivers": "Шофьори",
+    "trucks": "Камиони",
+    "settings": "Настройки",
+    "sign out": "Изход"
+  },
+  "LocaleSwitcher": {
+    "bg": "Български",
+    "en": "English"
+  },
+  "LoginPage": {
+    "welcome_back": "Добре дошли обратно в Truck Fleet",
+    "welcome_description": "Въведете вашия имейл и парола, за да продължите",
+    "email": "Имейл",
+    "password": "Парола",
+    "forgot_password_q": "Забравена парола?",
+    "forgot_password": "Забравена парола",
+    "forgot_password_desc": "Въведете вашия имейл адрес и ще ви изпратим връзка за нулиране на паролата",
+    "submit": "Вход",
+    "cancel": "Отказ",
+    "send_email": "Изпрати имейл",
+    "success": "Успех",
+    "signed_in": "Влязохте успешно в акаунта ви.",
+    "sent_email": "Изпратен имейл",
+    "check_email": "Проверете имейла си за връзка, за да нулирате паролата си"
+  },
+  "ThemeToggle": {
+    "light": "Светла",
+    "dark": "Тъмна",
+    "system": "Системна"
+  },
+  "SignOutPage": {
+    "sign_out": "Изход",
+    "sign_out_description": "Успешно сте излезли от профила си."
+  },
+  "OrderList": {
+    "orderId": "Номер на поръчката",
+    "status": "Статус",
+    "driver": "Шофьор",
+    "truck": "Камион",
+    "company": "Компания",
+    "palletes": "Палети",
+    "locations": "Места",
+    "documents": "Документи",
+    "note": "Бележка",
+    "actions": "Действия",
+    "details": "Преглед",
+    "edit": "Редактиране",
+    "delete": "Изтриване",
+    "noOrdersFound": "Няма намерени поръчки",
+    "searchOrderId": "Търси поръчка по ID"
+  },
+  "AddOrderSheet": {
+    "title": "Добавяне на поръчка",
+    "add": "Добави",
+    "cancel": "Отказ",
+    "editTitle": "Редактиране на поръчка",
+    "edit": "Редактирай",
+    "order": "Поръчка",
+    "status": "Статус",
+    "Pick Up": "За Вземане",
+    "In Delivery": "В Доставка",
+    "Delivered": "Доставена",
+    "selectDriver": "Изберете шофьор",
+    "filterDrivers": "Търси шофьори",
+    "addDriver": "Добави шофьор",
+    "noResultsFound": "Няма намерени резултати",
+    "selectTruck": "Изберете камион",
+    "filterTrucks": "Търси камиони",
+    "addTruck": "Добави камион",
+    "company": "Компания",
+    "selectCompany": "Изберете компания",
+    "filterCompanies": "Търси компании",
+    "addCompany": "Добави компания",
+    "worker": "Име на работник",
+    "palletes": "Палети",
+    "width": "Ширина",
+    "height": "Височина",
+    "length": "Дължина",
+    "weight": "Тегло",
+    "pickUps": "За вземане",
+    "deliveries": "Доставки",
+    "locations": "Места",
+    "address": "Адрес",
+    "start": "От кога може да се вземе",
+    "end": "До кога може да се вземе",
+    "note": "Бележка",
+    "documents": "Документи",
+    "selectOption": "Изберете опция",
+    "success": "Успех",
+    "orderAddedSuccessfully": "Поръчката е добавена успешно",
+    "orderEditedSuccessfully": "Поръчката е редактирана успешно"
+  },
+  "AutoForm": {
+    "add": "Добави",
+    "pickDate": "Изберете дата"
+  },
+  "FileUpload": {
+    "uploadFile": "Качване на документи",
+    "uploadFileDescription": "Плъзнете или пуснете вашия PDF файл тук или кликнете за качване"
+  },
+  "DeleteConfirmationDialog": {
+    "title": "Изтриване на поръчка",
+    "description": "Сигурни ли сте, че искате да изтриете тази поръчка?",
+    "cancel": "Отказ",
+    "delete": "Изтрий",
+    "deletedSuccessfully": "Поръчката е изтрита",
+    "deletedDescription": "Поръчка #{id} е изтрита"
+  },
+  "EmployeePage": {
+    "generateNewCode": "Генериране на нов код",
+    "generateNewCodeTitle": "Генериране на нов код",
+    "generateNewCodeDescription": "Сигурни ли сте, че искате да генерирате нов код?",
+    "yes": "Да",
+    "cancel": "Отказ",
+    "codeCopied": "Кодът е копиран"
+  }
+}
