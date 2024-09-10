@@ -64,12 +64,14 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		accessorFn: (row) => [row.name, row.photoUrl],
 		header: "Name",
 		cell: ({ getValue }) => {
-      const {view} = useDriverToggleViewContext();
+			const { view } = useDriverToggleViewContext();
 			const [name, photoUrl] = getValue() as [string, string];
 
 			return (
-				<div className={`flex items-center gap-2  ${view === "grid" ? "flex-col" : ""}`}>
-					<Avatar  className={`${view === "grid" ? "w-10 h-10" : ""}`}>
+				<div
+					className={`flex items-center gap-2  ${view === "grid" ? "flex-col" : ""}`}
+				>
+					<Avatar className={`${view === "grid" ? "w-10 h-10" : ""}`}>
 						<AvatarImage src={photoUrl} alt={name} />
 						<AvatarFallback>
 							{(name as string)
@@ -91,7 +93,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		},
 	},
 	{
-		accessorKey: "phoneNumber",
+		accessorKey: "phone",
 		header: "Phone",
 		cell: ({ getValue }) => {
 			return <span>{getValue() as string}</span>;
@@ -101,15 +103,17 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		accessorKey: "actions",
 		header: "",
 		cell: ({ row }) => {
-      const {view} = useDriverToggleViewContext();
-			return <div className="flex gap-2">
-        <Button variant="outline" size="icon">
-          <IconPhone />
-        </Button>
-        <Button variant="outline" size="icon">
-          <IconMessage />
-        </Button>
-      </div>;
+			const { view } = useDriverToggleViewContext();
+			return (
+				<div className="flex gap-2">
+					<Button variant="outline" size="icon">
+						<IconPhone />
+					</Button>
+					<Button variant="outline" size="icon">
+						<IconMessage />
+					</Button>
+				</div>
+			);
 		},
 	},
 ];
