@@ -1,5 +1,5 @@
 import DashboardSidebar from "@/components/dashboard/dashboard-sidebar";
-import AuthRedirect from "@/components/redirects/auth-redirect";
+import AuthRedirect from "@/components/redirects/AuthRedirect";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { unstable_setRequestLocale } from "next-intl/server";
 

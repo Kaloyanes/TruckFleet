@@ -26,7 +26,7 @@ import { useUploadFile } from "react-firebase-hooks/storage";
 import { db, storage } from "@/firebase/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 
-import SelectMenu from "./select-menu";
+import SelectMenu from "./SelectMenu";
 import { useToast } from "@/components/ui/use-toast";
 import { getDownloadURL, ref } from "firebase/storage";
 import type { Order } from "@/models/orders";

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EyeIcon, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
-import ForgotPasswordDialog from "./forgot-password-dialog";
+import ForgotPasswordDialog from "./ForgotPasswordDialog";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
 import { useToast } from "../ui/use-toast";

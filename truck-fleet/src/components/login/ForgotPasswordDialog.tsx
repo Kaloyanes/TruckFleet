@@ -17,14 +17,14 @@ import { auth } from "@/firebase/firebase";
 import { useToast } from "../ui/use-toast";
 import { useTranslations } from "next-intl";
 
-const schema = z.object({
-	email: z.string().email(),
-});
-
 export default function ForgotPasswordDialog() {
 	const t = useTranslations("LoginPage");
 	const [open, setOpen] = useState(false);
 	const { toast } = useToast();
+
+	const schema = z.object({
+		email: z.string().describe(t("email")).email(),
+	});
 
 	async function sendResetEmail(values: { email: string }) {
 		try {

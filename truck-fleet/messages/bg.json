@@ -61,7 +61,7 @@
   },
   "SignOutPage": {
     "sign_out": "Изход",
-    "sign_out_description": "Успешно сте излезли от профила си."
+    "sign_out_description": "Излязохте от профила си."
   },
   "OrderList": {
     "orderId": "Номер на поръчката",
