@@ -51,7 +51,7 @@ import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useCopyToClipboard } from "react-use";
-import ShowLocations from "./Locations";
+import Locations from "./Locations";
 
 export const OrderColumns: ColumnDef<Order>[] = [
 	{
@@ -321,7 +321,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 
 			values.sort((a, b) => a.start.getTime() - b.start.getTime());
 
-			return <ShowLocations locations={values} />;
+			return <Locations locations={values} />;
 		},
 	},
 
