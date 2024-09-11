@@ -24,8 +24,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { TruckIcon } from "lucide-react";
 import AnimatedBackground from "../ui/animated-background";
+import useProfileDoc from "@/hooks/useProfileDoc";
 
 export default function DashboardSidebar() {
+	const { profile } = useProfileDoc();
+
 	const links = [
 		{
 			customLabel: true,
@@ -67,20 +70,6 @@ export default function DashboardSidebar() {
 	];
 
 	const endLinks = [
-		{
-			label: "Kaloyan Stoyanov",
-			href: "/dashboard/profile",
-			customLabel: true,
-			icon: (
-				<Image
-					src="/kala.jpg"
-					className="h-6 w-6 flex-shrink-0 rounded-full object-cover bg-neutral-200 dark:bg-neutral-800"
-					width={50}
-					height={50}
-					alt="Avatar"
-				/>
-			),
-		},
 		{
 			label: "Settings",
 			href: "/dashboard/settings",
@@ -125,6 +114,24 @@ export default function DashboardSidebar() {
 					</div>
 				</div>
 				<div className="flex flex-col gap-2">
+					{profile && (
+						<SidebarLink
+							link={{
+								label: profile.name,
+								href: "/dashboard/profile",
+								customLabel: true,
+								icon: (
+									<Image
+										src={profile.photoUrl}
+										className="h-6 w-6 flex-shrink-0 rounded-full object-cover bg-neutral-200 dark:bg-neutral-800"
+										width={50}
+										height={50}
+										alt="Avatar"
+									/>
+								),
+							}}
+						/>
+					)}
 					{endLinks.map((link, idx) => (
 						<SidebarLink key={link.href} link={link} />
 					))}
