@@ -4,12 +4,18 @@ import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/modules/home/views/home_view.dart';
 
 class SignInController extends GetxController {
-  //TODO: Implement SignInController
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final signInFormKey = GlobalKey<FormState>();
+
+  final isPasswordVisible = false.obs;
+
   void signIn() async {
+    if (!signInFormKey.currentState!.validate()) {
+      return;
+    }
+
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
 

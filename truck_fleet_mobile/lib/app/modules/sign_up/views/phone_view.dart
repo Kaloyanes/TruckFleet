@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/controllers/sign_up_controller.dart';
 
 class PhoneView extends GetView<SignUpController> {
@@ -18,8 +19,14 @@ class PhoneView extends GetView<SignUpController> {
             children: [
               Text(
                 "phone".tr,
-                style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge!
+                    .copyWith(
                       fontWeight: FontWeight.w900,
+                    )
+                    .merge(
+                      GoogleFonts.playfairDisplay(),
                     ),
               ),
               const Gap(10),

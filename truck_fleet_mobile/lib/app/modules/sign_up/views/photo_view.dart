@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/controllers/sign_up_controller.dart';
 import 'package:truck_fleet_mobile/app/utils/themes.dart';
 
@@ -19,8 +20,14 @@ class PhotoView extends GetView<SignUpController> {
           children: [
             Text(
               "lets_upload_photo".tr,
-              style: Theme.of(context).textTheme.displayLarge!.copyWith(
+              style: Theme.of(context)
+                  .textTheme
+                  .displayLarge!
+                  .copyWith(
                     fontWeight: FontWeight.w900,
+                  )
+                  .merge(
+                    GoogleFonts.playfairDisplay(),
                   ),
             ),
             const Gap(50),

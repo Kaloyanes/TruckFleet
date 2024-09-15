@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:croppy/croppy.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -164,7 +165,20 @@ class SignUpController extends GetxController {
     await Navigator.of(Get.context!)
         .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeView()), (route) => false);
 
+    await FirebaseAnalytics.instance.logEvent(name: "signup_success");
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("signup_success".tr)));
+
+    emailController.clear();
+    passwordController.clear();
+    nameController.clear();
+    phoneController.clear();
+    profilePicture.value = null;
+    profilePictureBytes.value = null;
+    companyId.value = "";
+    organizationCodeController.clear();
+    organizationName.value = "";
+    joinedOrganization.value = false;
+    joinedOrganizationError.value = false;
   }
 
   final draggableScrollableController = DraggableScrollableController();

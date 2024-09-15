@@ -16,7 +16,6 @@ class ThemeSwitcher extends StatelessWidget {
           Theme.of(context).brightness == Brightness.dark ? const Icon(TablerIcons.moon) : const Icon(TablerIcons.sun),
       tooltip: 'Select theme',
       onSelected: (ThemeMode selectedMode) {
-        print('Selected theme: ${selectedMode.toString()}');
         HapticFeedback.lightImpact();
         Get.changeThemeMode(selectedMode);
 
@@ -39,7 +38,6 @@ class ThemeSwitcher extends StatelessWidget {
       },
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) => <PopupMenuEntry<ThemeMode>>[
-        // TODO: ADD LANGUAGES
         PopupMenuItem<ThemeMode>(
           value: ThemeMode.light,
           child: Text('light_theme'.tr),

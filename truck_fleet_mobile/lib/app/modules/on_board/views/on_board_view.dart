@@ -6,6 +6,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_in/views/sign_in_view.dart';
@@ -115,7 +116,12 @@ class OnBoardView extends GetView<OnBoardController> {
                 const Gap(10),
                 Text(
                   "Truck Fleet",
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.headlineLarge!.merge(
+                        GoogleFonts.playfairDisplay(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                 ),
               ],
             ),
@@ -189,14 +195,22 @@ class OnBoardView extends GetView<OnBoardController> {
                     children: [
                       Text(
                         "create_account".tr,
-                        style: Theme.of(context).textTheme.headlineMedium!,
+                        style: Theme.of(context).textTheme.headlineMedium!.merge(
+                              GoogleFonts.playfairDisplay(),
+                            ),
                       ),
                       const Gap(2),
                       Text(
                         "account".tr,
-                        style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
                               fontWeight: FontWeight.w900,
                               fontStyle: FontStyle.italic,
+                            )
+                            .merge(
+                              GoogleFonts.playfairDisplay(),
                             ),
                       ),
                     ],

@@ -8,7 +8,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/data/app_translation.dart';
 import 'package:truck_fleet_mobile/app/data/croppy_translations.dart';
 import 'package:truck_fleet_mobile/app/utils/firebase_options.dart';
@@ -20,7 +19,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Animate.restartOnHotReload = true;
 
-  GoogleFonts.config.allowRuntimeFetching = false;
+  // GoogleFonts.config.allowRuntimeFetching = false;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

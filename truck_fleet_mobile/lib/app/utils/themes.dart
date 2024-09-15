@@ -195,7 +195,7 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
     ),
   );
 
-  return theme.copyWith(textTheme: GoogleFonts.playfairDisplayTextTheme(theme.textTheme));
+  return theme.copyWith(textTheme: GoogleFonts.notoSansTextTheme(theme.textTheme));
 }
 
 class MyTransition extends PageTransitionsBuilder {
