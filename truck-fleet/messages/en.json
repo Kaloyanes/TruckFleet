@@ -3,26 +3,29 @@
     "loading": "Loading...",
     "welcome": "Welcome to Truck Fleet"
   },
+  "General": {
+    "copiedToClipboard": "Copied to clipboard"
+  },
   "TimeTitle": {
-    "monday": "monday",
-    "tuesday": "tuesday",
-    "wednesday": "wednesday",
-    "thursday": "thursday",
-    "friday": "friday",
-    "saturday": "saturday",
-    "sunday": "sunday",
-    "jan": "jan",
-    "feb": "feb",
-    "mar": "mar",
-    "apr": "apr",
-    "may": "may",
-    "jun": "jun",
-    "jul": "jul",
-    "aug": "aug",
-    "sep": "sep",
-    "oct": "oct",
-    "nov": "nov",
-    "dec": "dec"
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "may": "May",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December"
   },
   "SidebarLink": {
     "chat": "Chat",
@@ -35,24 +38,24 @@
     "sign out": "Sign Out"
   },
   "LocaleSwitcher": {
-    "bg": "Български",
+    "bg": "Bulgarian",
     "en": "English"
   },
   "LoginPage": {
-    "welcome_back": "Welcome Back To Truck Fleet",
-    "welcome_description": "Enter your email and password to continue",
+    "welcome_back": "Welcome Back to Truck Fleet",
+    "welcome_description": "Please enter your email and password to continue",
     "email": "Email",
     "password": "Password",
     "forgot_password_q": "Forgot Password?",
     "forgot_password": "Forgot Password",
-    "forgot_password_desc": "Enter your email address and we'll send you a link to reset your password",
+    "forgot_password_desc": "Please enter your email address and we will send you a link to reset your password",
     "submit": "Sign In",
     "cancel": "Cancel",
     "send_email": "Send Email",
     "success": "Success",
     "signed_in": "You have successfully signed in.",
-    "sent_email": "Sent email",
-    "check_email": " Check your email for a link to reset your password"
+    "sent_email": "Email Sent",
+    "check_email": "Please check your email for a link to reset your password"
   },
   "ThemeToggle": {
     "light": "Light",
@@ -78,7 +81,12 @@
     "edit": "Edit",
     "delete": "Delete Order",
     "noOrdersFound": "No orders found",
-    "searchOrderId": "Search Order ID"
+    "searchOrderId": "Search Order ID",
+    "noEmployeesFound": "No employees found",
+    "selectType": "Select Type",
+    "all": "All",
+    "driverDetails": "Driver Details",
+    "phone": "Phone"
   },
   "AddOrderSheet": {
     "title": "Add Order",
@@ -144,5 +152,13 @@
     "yes": "Yes",
     "cancel": "Cancel",
     "codeCopied": "Code Copied"
+  },
+  "RemoveDriverConfirmationDialog": {
+    "title": "Remove Driver",
+    "description": "Are you sure you want to remove {name}?",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "removedSuccessfully": "Driver successfully removed from the company",
+    "removedDescription": "Driver #{name} has been removed"
   }
 }

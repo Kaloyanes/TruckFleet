@@ -1,4 +1,4 @@
-import DeleteOrderConfirmationDialog from "@/components/orders/DeleteConfirmationDialog";
+import DeleteOrderConfirmationDialog from "@/components/orders/DeleteOrderConfirmationDialog";
 import OrdersMainContent from "@/components/orders/OrderMainContent";
 import OrderSidebar from "@/components/orders/OrderSidebar";
 import DeleteOrderContextProvider, {
@@ -19,19 +19,17 @@ export default function OrdersLayout({
 	unstable_setRequestLocale(locale);
 
 	return (
-	
-			<OrderSelectedContextProvider>
-				<EditOrderContextProvider>
-					<DeleteOrderContextProvider>
-						<DeleteOrderConfirmationDialog />
-						<div className={"relative  flex overflow-hidden flex-1"}>
-							<OrdersMainContent>{children}</OrdersMainContent>
+		<OrderSelectedContextProvider>
+			<EditOrderContextProvider>
+				<DeleteOrderContextProvider>
+					<DeleteOrderConfirmationDialog />
+					<div className={"relative  flex overflow-hidden flex-1"}>
+						<OrdersMainContent>{children}</OrdersMainContent>
 
-							<OrderSidebar />
-						</div>
-					</DeleteOrderContextProvider>
-				</EditOrderContextProvider>
-			</OrderSelectedContextProvider>
-	
+						<OrderSidebar />
+					</div>
+				</DeleteOrderContextProvider>
+			</EditOrderContextProvider>
+		</OrderSelectedContextProvider>
 	);
 }

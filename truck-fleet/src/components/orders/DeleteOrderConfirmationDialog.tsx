@@ -3,6 +3,7 @@ import React from "react";
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -43,7 +44,7 @@ export default function DeleteOrderConfirmationDialog() {
 						{t("title")} #{order?.id}
 					</DialogTitle>
 				</DialogHeader>
-				<p>{t("description")}</p>
+				<DialogDescription>{t("description")}</DialogDescription>
 				<DialogFooter>
 					<Button variant={"outline"} onClick={() => setConfirm(false)}>
 						{t("cancel")}

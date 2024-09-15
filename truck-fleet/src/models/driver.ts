@@ -3,7 +3,7 @@ export type Driver = {
   companyId: string;
   name: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   photoUrl: string;
-  type: "Driver";
+  type: "driver";
 };

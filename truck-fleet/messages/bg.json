@@ -3,6 +3,9 @@
     "loading": "Зареждане...",
     "welcome": "Добре дошли в Truck Fleet"
   },
+  "General": {
+    "copiedToClipboard": "Копирано"
+  },
   "TimeTitle": {
     "monday": "понеделник",
     "tuesday": "вторник",
@@ -78,7 +81,12 @@
     "edit": "Редактиране",
     "delete": "Изтриване",
     "noOrdersFound": "Няма намерени поръчки",
-    "searchOrderId": "Търси поръчка по ID"
+    "searchOrderId": "Търси поръчка по ID",
+    "noEmployeesFound": "Няма намерени работници",
+    "selectType": "Изберете тип",
+    "all": "Всички",
+    "driverDetails": "Детайли за шофьора",
+    "phone": "Телефон"
   },
   "AddOrderSheet": {
     "title": "Добавяне на поръчка",

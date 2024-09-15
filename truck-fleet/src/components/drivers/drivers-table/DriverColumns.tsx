@@ -58,6 +58,7 @@ import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
+import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context";
 
 export const DriverColumns: ColumnDef<Driver>[] = [
 	{
@@ -104,6 +105,8 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		header: "",
 		cell: ({ row }) => {
 			const { view } = useDriverToggleViewContext();
+			const { setConfirm, setDriver } = useRemoveDriverContext();
+
 			return (
 				<div className="flex gap-2">
 					<Button variant="outline" size="icon">
@@ -111,6 +114,17 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 					</Button>
 					<Button variant="outline" size="icon">
 						<IconMessage />
+					</Button>
+					<Button
+						variant="outline"
+						className="bg-red-500/15 hover:bg-red-500/50 border-red-500/50 text-red-800 dark:text-red-200"
+						size="icon"
+						onClick={() => {
+							setConfirm(true);
+							setDriver(row.original);
+						}}
+					>
+						<IconTrash />
 					</Button>
 				</div>
 			);

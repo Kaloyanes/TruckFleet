@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin("./src/lib/i18n.ts");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [{ hostname: "github.com" }],
+    remotePatterns: [{ hostname: "firebasestorage.googleapis.com" }],
   },
 };
 

@@ -7,7 +7,7 @@ export const driverConverter: FirestoreDataConverter<Driver> = {
       companyId: driver.companyId,
       email: driver.email,
       name: driver.name,
-      phoneNumber: driver.phoneNumber,
+      phone: driver.phone,
       photoUrl: driver.photoUrl,
       type: driver.type,
     };
@@ -19,7 +19,7 @@ export const driverConverter: FirestoreDataConverter<Driver> = {
       companyId: data.companyId,
       email: data.email,
       name: data.name,
-      phoneNumber: data.phoneNumber,
+      phone: data.phone,
       photoUrl: data.photoUrl,
       type: data.type,
     };

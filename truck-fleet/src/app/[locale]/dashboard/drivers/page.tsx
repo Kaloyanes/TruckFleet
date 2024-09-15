@@ -9,9 +9,9 @@ export default function DriversPage({
 	unstable_setRequestLocale(locale);
 
 	return (
-  <>
+		<>
 			<DriverList />
 			<ToggleView />
-  </>
+		</>
 	);
 }

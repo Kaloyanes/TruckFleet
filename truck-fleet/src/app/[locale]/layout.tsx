@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Sans, Poppins } from "next/font/google";
+import { Inter, Noto_Sans, Playfair_Display, Poppins } from "next/font/google";
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
@@ -12,7 +12,7 @@ import Favicon from "@/components/ui/favicon";
 
 const noto = Noto_Sans({
 	preload: true,
-	weight: ["400", "500", "600", "700", "800"],
+	weight: ["400", "500", "600", "700", "800", "900"],
 	subsets: ["cyrillic", "latin"],
 });
 

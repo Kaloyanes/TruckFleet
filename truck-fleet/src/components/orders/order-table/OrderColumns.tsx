@@ -52,6 +52,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useCopyToClipboard } from "react-use";
 import Locations from "./Locations";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const OrderColumns: ColumnDef<Order>[] = [
 	{
@@ -101,7 +104,6 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				</div>
 			);
 		},
-
 		cell: ({ getValue }) => {
 			const { toast } = useToast();
 			const [state, copyToClipboard] = useCopyToClipboard();
@@ -126,8 +128,51 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		accessorKey: "status",
 		id: "status",
 		header(props) {
-			const t = useTranslations("OrderList");
-			return <span>{t("status")}</span>;
+			const t = useTranslations();
+			return (
+				<div className="flex gap-2 items-center">
+					<span>{t("OrderList.status")}</span>
+					<Popover>
+						<PopoverTrigger>
+							<Button size={"icon"} className="w-8 h-8" variant={"outline"}>
+								<IconFilter size={18} />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="space-y-2">
+							<h1 className="font-bold">{t("OrderList.selectType")}</h1>
+							<RadioGroup
+								defaultValue={
+									(props.table
+										.getColumn("status")
+										?.getFilterValue() as string) ?? ""
+								}
+								onValueChange={(value) => {
+									if (value === "") value = "";
+
+									props.table.getColumn("status")?.setFilterValue(value);
+								}}
+							>
+								<div className="flex items-center space-x-2">
+									<RadioGroupItem value="" id="r1" />
+									<Label htmlFor="r1">{t("OrderList.all")}</Label>
+								</div>
+								<div className="flex items-center space-x-2">
+									<RadioGroupItem value="Pick Up" id="r1" />
+									<Label htmlFor="r1">{t("AddOrderSheet.Pick Up")}</Label>
+								</div>
+								<div className="flex items-center space-x-2">
+									<RadioGroupItem value="In Delivery" id="r2" />
+									<Label htmlFor="r2">{t("AddOrderSheet.In Delivery")}</Label>
+								</div>
+								<div className="flex items-center space-x-2">
+									<RadioGroupItem value="Delivered" id="r3" />
+									<Label htmlFor="r3">{t("AddOrderSheet.Delivered")}</Label>
+								</div>
+							</RadioGroup>
+						</PopoverContent>
+					</Popover>
+				</div>
+			);
 		},
 		cell: ({ getValue }) => {
 			const status = getValue() as string;
@@ -144,12 +189,44 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		},
 		cell: ({ getValue }) => {
 			const driverRef = getValue() as DocumentReference;
+
 			const [driver] = useDocumentData(
 				driverRef.withConverter(driverConverter),
 			);
+
+			const t = useTranslations();
+
+			const [clipboard, copyToClipboard] = useCopyToClipboard();
+
+			const { toast } = useToast();
+
+			if (!driver) return <span>{t("OrderList.noEmployeesFound")}</span>;
+
+			function handleCopy(value: string) {
+				copyToClipboard(value);
+				toast({
+					title: t("General.copiedToClipboard"),
+					variant: "success",
+					duration: 2000,
+				});
+			}
+
 			return (
-				<HoverCard openDelay={150} closeDelay={0}>
-					<HoverCardTrigger>{driver?.name}</HoverCardTrigger>
+				<HoverCard openDelay={150} closeDelay={50}>
+					<HoverCardTrigger>
+						<div className="flex gap-2 items-center">
+							<Avatar>
+								<AvatarImage src={driver.photoUrl} alt={driver.name} />
+								<AvatarFallback>
+									{(driver.name as string)
+										?.split(" ")
+										.map((name) => name[0])
+										.join("")}
+								</AvatarFallback>
+							</Avatar>
+							<p>{driver?.name}</p>
+						</div>
+					</HoverCardTrigger>
 					<HoverCardContent className="w-full">
 						<motion.ol
 							initial={{ opacity: 0, scale: 0.7, y: -10 }}
@@ -164,9 +241,13 @@ export const OrderColumns: ColumnDef<Order>[] = [
 							}}
 							className="flex flex-col gap-2 "
 						>
-							<li className="text-center text-lg">Driver Details</li>
-							<li>Email: {driver?.email}</li>
-							<li>Phone: {driver?.phoneNumber}</li>
+							<li className=" font-bold">{t("OrderList.driverDetails")}</li>
+							<li className="text-sm" onClick={() => handleCopy(driver.email)}>
+								{t("LoginPage.email")}: {driver?.email}
+							</li>
+							<li className="text-sm" onClick={() => handleCopy(driver.phone)}>
+								{t("OrderList.phone")}: {driver?.phone}
+							</li>
 						</motion.ol>
 					</HoverCardContent>
 				</HoverCard>
@@ -183,7 +264,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 			const truckRef = getValue() as DocumentReference;
 			const [truck] = useDocumentData(truckRef.withConverter(truckConverter));
 			return (
-				<HoverCard openDelay={150} closeDelay={0}>
+				<HoverCard openDelay={150} closeDelay={50}>
 					<HoverCardTrigger>{truck?.licensePlate}</HoverCardTrigger>
 					<HoverCardContent>
 						<motion.div
@@ -226,7 +307,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				companyInfo.ref.withConverter(companyConverter),
 			);
 			return (
-				<HoverCard openDelay={150} closeDelay={0}>
+				<HoverCard openDelay={150} closeDelay={50}>
 					<HoverCardTrigger>{company?.name}</HoverCardTrigger>
 					<HoverCardContent>
 						<motion.div
@@ -360,7 +441,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 			}
 
 			return (
-				<HoverCard openDelay={150} closeDelay={0}>
+				<HoverCard openDelay={150} closeDelay={50}>
 					<HoverCardTrigger>
 						<span>{note.length > 50 ? `${note.slice(0, 50)}...` : note}</span>
 					</HoverCardTrigger>
@@ -412,7 +493,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							color="red"
-							className="flex justify-between bg-red-500/15 border-red-500/50 text-red-800 dark:text-red-300"
+							className="flex justify-between bg-red-500/15 hover:bg-red-500/50 border-red-500/50 text-red-800 dark:text-red-200 "
 							onClick={() => {
 								setConfirm(true);
 								setOrderConfirm(row.original);

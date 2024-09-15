@@ -34,7 +34,7 @@ export default function OrderList({ truckId }: { truckId: string }) {
 		console.error("Firebase ERROR", error.message);
 		return <div>Error fetching orders {error.message}</div>;
 	}
-	if (orders === undefined) return <div>No orders found</div>;
+	if (orders === undefined) return <div />;
 
 	return <OrderDataTable columns={OrderColumns} data={orders} />;
 }

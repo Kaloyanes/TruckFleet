@@ -41,7 +41,7 @@ export default function DriverList() {
 
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error: {error.message}</div>;
-	if (!drivers) return <div>No drivers found</div>;
+	if (!drivers) return <div></div>;
 
 	return <DriverDataTable columns={DriverColumns} data={drivers} />;
 }

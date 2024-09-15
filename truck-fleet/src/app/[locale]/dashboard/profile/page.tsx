@@ -1,9 +1,8 @@
-import { unstable_setRequestLocale } from "next-intl/server";
+"use client";
+import useProfileDoc from "@/hooks/useProfileDoc";
 
-export default function ProfilePage({
-	params: { locale },
-}: { params: { locale: string } }) {
-	unstable_setRequestLocale(locale);
+export default function ProfilePage() {
+	const { profile } = useProfileDoc();
 
-	return <h1>Welcome to ProfilePagepage!</h1>;
+	return <h1>{JSON.stringify(profile)}</h1>;
 }
