@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:toastification/toastification.dart';
 import 'package:truck_fleet_mobile/app/modules/home/views/home_view.dart';
 import 'package:truck_fleet_mobile/app/services/toast_service.dart';
 

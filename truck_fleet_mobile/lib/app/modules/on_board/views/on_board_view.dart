@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:soft_edge_blur/soft_edge_blur.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_in/views/sign_in_view.dart';
@@ -50,57 +51,59 @@ class OnBoardView extends GetView<OnBoardController> {
     return Expanded(
       child: Stack(
         children: [
-          AnimatedContainer(
-            duration: Durations.extralong4,
-            curve: Curves.easeInOutCubicEmphasized,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(
-                  20,
-                ),
-              ),
-            ),
-            clipBehavior: Clip.hardEdge,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              fit: StackFit.expand,
-              children: [
-                Positioned.fill(
-                  child: Image.asset(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.bottomCenter,
+          Obx(
+            () => AnimatedContainer(
+              duration: Durations.extralong4 + const Duration(milliseconds: 500),
+              curve: Curves.easeInOutCubicEmphasized,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(
+                    controller.height.value > 0 ? 20 : 1,
                   ),
                 ),
-                Obx(
-                  () => Positioned.fill(
-                    child: AnimatedOpacity(
-                      opacity: controller.height.value > 0 ? 0 : 1,
-                      duration: Durations.extralong4,
-                      curve: Curves.easeInOutCubicEmphasized,
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                        child: ShaderMask(
-                          shaderCallback: (rect) {
-                            return LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [Colors.black.withOpacity(1), Colors.black.withOpacity(0)],
-                              stops: const [0.5, 0.65],
-                            ).createShader(rect);
-                          },
-                          blendMode: BlendMode.dstOut,
-                          child: Image.asset(
-                            imageUrl,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.bottomCenter,
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                fit: StackFit.expand,
+                children: [
+                  Positioned.fill(
+                    child: Image.asset(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.bottomCenter,
+                    ),
+                  ),
+                  Obx(
+                    () => Positioned.fill(
+                      child: AnimatedOpacity(
+                        opacity: controller.height.value > 0 ? 0 : 1,
+                        duration: Durations.extralong4,
+                        curve: Curves.easeInOutCubicEmphasized,
+                        child: ImageFiltered(
+                          imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                          child: ShaderMask(
+                            shaderCallback: (rect) {
+                              return LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [Colors.black.withOpacity(1), Colors.black.withOpacity(0)],
+                                stops: const [0.5, 0.65],
+                              ).createShader(rect);
+                            },
+                            blendMode: BlendMode.dstOut,
+                            child: Image.asset(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                              alignment: Alignment.bottomCenter,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Align(

@@ -58,6 +58,7 @@ dependencies:
   firebase_analytics: ^11.3.0
   firebase_performance: ^0.10.0+5
   flutter_drawer_plus: ^1.1.1
+  soft_edge_blur: ^0.1.0
 
 dev_dependencies:
   flutter_test:

@@ -57,6 +57,7 @@ class SignInView extends GetView<SignInController> {
 
                         return null;
                       },
+                      keyboardType: TextInputType.emailAddress,
                       controller: controller.emailController,
                     ),
                     const Gap(20),
