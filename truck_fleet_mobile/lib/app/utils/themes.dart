@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,6 +37,7 @@ const ColorScheme darkColorScheme = ColorScheme(
   secondaryContainer: Color(0xFF424242), // Darker grey
   onSecondaryContainer: Color(0xFFE0E0E0), // Light grey
   error: Color.fromRGBO(248, 132, 132, 1),
+  errorContainer: Color.fromRGBO(248, 132, 132, 0.1),
   onError: Color.fromRGBO(255, 255, 255, 1),
 );
 
@@ -118,10 +120,13 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
         ),
       ),
     ),
-    pageTransitionsTheme: PageTransitionsTheme(
+    pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
-        TargetPlatform.android: MyTransition(),
-        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+          transitionType: SharedAxisTransitionType.horizontal,
+          fillColor: Colors.transparent,
+        ),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       },
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -148,8 +153,9 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
         padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       centerTitle: true,
+      color: colorScheme.surface,
     ),
     popupMenuTheme: PopupMenuThemeData(
       textStyle: TextStyle(

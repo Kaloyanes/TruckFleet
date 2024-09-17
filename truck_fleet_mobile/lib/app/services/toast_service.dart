@@ -16,6 +16,9 @@ class ToastService {
   }
 
   static void showToast(String message) {
+    Get.closeAllSnackbars();
+    Get.closeCurrentSnackbar();
+
     Get.showSnackbar(
       GetSnackBar(
         backgroundColor: Theme.of(Get.context!).colorScheme.inverseSurface,

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:truck_fleet_mobile/app/modules/home/views/home_view.dart';
+import 'package:truck_fleet_mobile/app/modules/home/views/layout_view.dart';
 import 'package:truck_fleet_mobile/app/services/toast_service.dart';
 
 class SignInController extends GetxController {
@@ -53,7 +53,7 @@ class SignInController extends GetxController {
 
     Navigator.pushAndRemoveUntil(
       Get.context!,
-      MaterialPageRoute(builder: (context) => const HomeView()),
+      MaterialPageRoute(builder: (context) => const LayoutView()),
       (route) => false,
     );
   }

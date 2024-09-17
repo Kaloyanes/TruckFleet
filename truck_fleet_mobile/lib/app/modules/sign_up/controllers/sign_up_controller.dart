@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:truck_fleet_mobile/app/components/media_picker_view.dart';
-import 'package:truck_fleet_mobile/app/modules/home/views/home_view.dart';
+import 'package:truck_fleet_mobile/app/modules/home/views/layout_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/introduction_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/join_organization_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/password_view.dart';
@@ -163,7 +163,7 @@ class SignUpController extends GetxController {
     );
 
     await Navigator.of(Get.context!)
-        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeView()), (route) => false);
+        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LayoutView()), (route) => false);
 
     await FirebaseAnalytics.instance.logEvent(name: "signup_success");
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(content: Text("signup_success".tr)));

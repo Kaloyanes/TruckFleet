@@ -33,11 +33,15 @@ class ForgotPasswordDialog extends StatelessWidget {
         ),
         actions: [
           TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('cancel'.tr)),
-          TextButton(onPressed: () {}, child: Text('reset_password'.tr)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('cancel'.tr),
+          ),
+          FilledButton(
+            onPressed: () {},
+            child: Text('reset_password'.tr),
+          ),
         ],
       )
           .animate()

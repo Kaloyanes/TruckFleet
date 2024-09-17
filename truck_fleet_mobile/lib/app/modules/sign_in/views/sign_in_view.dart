@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:truck_fleet_mobile/app/components/forgot_password_dialog.dart';
+import 'package:truck_fleet_mobile/app/modules/sign_in/components/forgot_password_dialog.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
 
@@ -52,7 +52,7 @@ class SignInView extends GetView<SignInController> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "email_is_required".tr;
+                          return "email_required".tr;
                         }
 
                         return null;
