@@ -73,11 +73,11 @@ export default function DriverDataTable<TData, TValue>({
 
 	if (view === "grid") {
 		return (
-			<div className="grid grid-cols-6 grid-rows-4 p-4 grid-flow-row  gap-4 overflow-auto w-full min-h-screen  h-full pb-[70px]">
+			<div className="grid h-full min-h-screen w-full grid-flow-row grid-cols-6 grid-rows-4 gap-4 overflow-auto p-4 pb-[70px]">
 				{table.getRowModel().rows.map((row) => (
 					<div
 						key={row.id}
-						className="col-span-1 bg-black/20 rounded-lg p-5 flex flex-col items-center gap-2"
+						className="col-span-1 flex flex-col items-center gap-2 rounded-lg bg-black/20 p-5"
 					>
 						{row.getVisibleCells().map((cell) => (
 							<div key={cell.id}>
@@ -94,7 +94,7 @@ export default function DriverDataTable<TData, TValue>({
 		<>
 			<ScrollArea
 				className={
-					" whitespace-nowrap overflow-auto w-full min-h-screen h-full pb-[70px] "
+					"h-full min-h-screen w-full overflow-auto whitespace-nowrap pb-[70px] "
 				}
 			>
 				<ScrollBar orientation="vertical" />
@@ -156,7 +156,7 @@ export default function DriverDataTable<TData, TValue>({
 				</Table>
 			</ScrollArea>
 
-			<div className="flex items-center justify-end space-x-2 sticky bottom-6 right-6 px-6">
+			<div className="sticky right-6 bottom-6 flex items-center justify-end space-x-2 px-6">
 				<Button
 					variant="outline"
 					size="icon"

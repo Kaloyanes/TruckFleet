@@ -11,6 +11,7 @@ export default function MapPage({
 	return (
 		<APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
 			<GoogleMap
+				mapId={"71b489216afed105"}
 				style={{ width: "100%", height: "100%" }}
 				defaultCenter={{ lat: 22.54992, lng: 0 }}
 				defaultZoom={3}
