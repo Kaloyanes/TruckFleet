@@ -16,11 +16,17 @@ class HomeNavigationBar extends GetView<HomeController> {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
         borderRadius: BorderRadius.circular(radius + 25),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+          width: 1,
+          style: BorderStyle.solid,
+          strokeAlign: 1,
+        ),
         boxShadow: const [
           BoxShadow(
-            color: Colors.black38,
-            blurRadius: 10,
-            offset: Offset(0, 5),
+            color: Colors.white12,
+            blurRadius: 20,
+            blurStyle: BlurStyle.inner,
           ),
         ],
       ),
@@ -41,26 +47,30 @@ class HomeNavigationBar extends GetView<HomeController> {
                       HapticFeedback.lightImpact();
                       controller.previousIndex.value = controller.selectedIndex.value;
                       controller.selectedIndex.value = i;
-
-                      // controller.changePageBool.value = !controller.changePageBool.value;
                     },
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 400),
                       curve: Curves.easeInOutCubicEmphasized,
                       decoration: BoxDecoration(
                         color: controller.selectedIndex.value == i
-                            ? Theme.of(context).colorScheme.inverseSurface
-                            : Colors.white.withOpacity(0),
+                            ? Theme.of(context).colorScheme.surfaceTint
+                            : Theme.of(context).colorScheme.surfaceTint.withOpacity(0),
                         borderRadius: BorderRadius.circular(radius + 25),
+                        border: Border.all(
+                          color: controller.selectedIndex.value == i
+                              ? Theme.of(context).colorScheme.primary.withOpacity(0.4)
+                              : Theme.of(context).colorScheme.primary.withOpacity(0),
+                          width: 1,
+                          style: BorderStyle.solid,
+                          strokeAlign: 1,
+                        ),
                       ),
-                      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                      margin: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
                       height: 60,
-                      width: 60,
+                      width: controller.selectedIndex.value == i ? 60 : 0,
                       child: Icon(
                         controller.pages[i]['icon'] as IconData,
-                        color: controller.selectedIndex.value == i
-                            ? Theme.of(context).colorScheme.onInverseSurface
-                            : Theme.of(context).colorScheme.onSurface,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),

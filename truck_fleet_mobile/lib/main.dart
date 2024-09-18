@@ -51,8 +51,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    setupInsets(context);
-
     return GetMaterialApp(
       title: "Application",
       initialRoute: AppPages.INITIAL,
@@ -73,6 +71,11 @@ class App extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      builder: (context, child) {
+        setupInsets(context);
+
+        return child!;
+      },
     );
   }
 

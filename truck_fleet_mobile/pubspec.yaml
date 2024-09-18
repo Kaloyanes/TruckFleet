@@ -42,7 +42,7 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
   google_fonts: ^6.2.1
   window_rounded_corners: ^0.0.3
-  flutter_tabler_icons: ^1.38.0
+  flutter_tabler_icons: ^1.41.0
   gap: ^3.0.1
   cached_network_image: ^3.4.0
   image_picker: ^1.1.2

@@ -11,7 +11,6 @@ class SettingsView extends GetView<SettingsController> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('SettingsView'),
-        centerTitle: true,
       ),
       body: const Center(
         child: Text(

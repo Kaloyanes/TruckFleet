@@ -4,19 +4,25 @@ import 'package:google_fonts/google_fonts.dart';
 
 const ColorScheme lightColorScheme = ColorScheme(
   brightness: Brightness.light,
-  primary: Color(0xFF2C2C2C), // Darker gray
-  onPrimary: Color(0xFFF5F5F5), // Light gray
-  secondary: Color(0xFFE0E0E0), // Light gray
-  onSecondary: Color(0xFF333333), // Dark gray
-  surface: Color(0xFFFFFFFF), // White
-  onSurface: Color(0xFF333333), // Dark gray
-  error: Color(0xFFD32F2F), // Red
-  onError: Color(0xFFFFFFFF), // White
-  outline: Color(0xFFBDBDBD), // Light gray
-  shadow: Color(0x33000000), // Semi-transparent black
-  primaryContainer: Color(0xFF78909C), // Blue-gray
-  secondaryContainer: Color(0xFF90A4AE), // Lighter blue-gray
-  tertiaryContainer: Color(0xFFB0BEC5), // Even lighter blue-gray
+  primary: Color(0xFF424242), // Darker gray, matching darkColorScheme.primaryContainer
+  onPrimary: Color(0xFFFFFFFF), // White, matching darkColorScheme.onPrimaryContainer
+  secondary: Color(0xFFB5B5B5), // Matching darkColorScheme.secondary
+  onSecondary: Color(0xFF373737), // Matching darkColorScheme.onSecondary
+  surface: Color(0xFFF5F5F5), // Very light gray, contrasting with dark surface
+  onSurface: Color(0xFF121212), // Very dark gray, matching darkColorScheme.onPrimary
+  error: Color(0xFFF88484), // Matching darkColorScheme.error
+  onError: Color(0xFFFFFFFF), // White, matching darkColorScheme.onError
+  outline: Color(0xFFBDBDBD), // Light gray, slightly darker than before
+  shadow: Color(0x66000000), // Matching darkColorScheme.shadow
+  primaryContainer: Color(0xFFE0E0E0), // Light gray, matching darkColorScheme.primary
+  secondaryContainer: Color(0xFFD4D4D4), // Slightly darker than primaryContainer
+  tertiaryContainer: Color(0xFFC8C8C8), // Even darker, for variety
+  surfaceTint: Color.fromRGBO(200, 200, 200, 1), // Light gray, complementing darkColorScheme.surfaceTint
+  inverseSurface: Color(0xFF121212), // Very dark gray, matching darkColorScheme.surface
+  onInverseSurface: Color(0xFFE0E0E0), // Light gray, matching darkColorScheme.onSurface
+  errorContainer: Color(0xFFFFF0F0), // Very light red, complementing darkColorScheme.errorContainer
+  onPrimaryContainer: Color(0xFF121212), // Very dark gray, for contrast
+  onSecondaryContainer: Color(0xFF121212), // Very dark gray, for contrast
 );
 
 const ColorScheme darkColorScheme = ColorScheme(
@@ -25,11 +31,11 @@ const ColorScheme darkColorScheme = ColorScheme(
   onPrimary: Color(0xFF121212), // Very dark grey (almost black)
   secondary: Color.fromARGB(255, 181, 181, 181), // Dark grey
   onSecondary: Color.fromARGB(255, 55, 55, 55), // Light grey
-  surface: Color(0xFF121212), // Very dark grey (almost black)
+  surface: Color.fromRGBO(13, 13, 13, 1), // Very dark grey (almost black)
   onSurface: Color(0xFFE0E0E0), // Light grey
   outline: Color(0xFF505050), // Medium grey
   shadow: Color(0x66000000), // Semi-transparent black for shadows
-  surfaceTint: Color(0xFFE0E0E0), // Light grey
+  surfaceTint: Color.fromRGBO(50, 50, 50, 1), // Light grey
   inverseSurface: Color(0xFFE0E0E0), // Light grey
   onInverseSurface: Color(0xFF121212), // Very dark grey (almost black)
   primaryContainer: Color(0xFF424242), // Darker grey
@@ -155,7 +161,9 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
     ),
     appBarTheme: AppBarTheme(
       centerTitle: true,
-      color: colorScheme.surface,
+      color: colorScheme.surfaceContainerHigh,
+      scrolledUnderElevation: 30,
+      surfaceTintColor: colorScheme.surfaceTint,
     ),
     popupMenuTheme: PopupMenuThemeData(
       textStyle: TextStyle(

@@ -15,11 +15,12 @@ class ChatView extends GetView<ChatController> {
         title: const Text('ChatView'),
         centerTitle: true,
       ),
-      body: Center(
-        child: FilledButton(
-          onPressed: () {},
-          child: const Text("sd"),
-        ),
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Center(child: Text('Item $index')),
+          );
+        },
       ),
     );
   }

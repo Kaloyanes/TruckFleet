@@ -21,19 +21,27 @@ class HomeController extends GetxController {
   final pages = [
     {
       'icon': TablerIcons.home,
+      'activeIcon': TablerIcons.home,
       'view': const HomeView(),
+      'label': "Home",
     },
     {
       'icon': TablerIcons.message,
+      'activeIcon': TablerIcons.message_filled,
       'view': const ChatView(),
+      'label': "Chat",
     },
     {
       'icon': TablerIcons.file,
+      'activeIcon': TablerIcons.file_filled,
       'view': const DocsView(),
+      'label': "Docs",
     },
     {
       'icon': TablerIcons.dots,
+      'activeIcon': TablerIcons.dots,
       'view': const MoreView(),
+      'label': "More",
     },
   ];
 }
