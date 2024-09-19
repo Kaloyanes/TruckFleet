@@ -9,14 +9,14 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { IconX } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { generateCompanyCode } from "@/lib/generateCompanyCode";
 import useCompanyId from "@/hooks/useCompanyId";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useCopyToClipboard } from "react-use";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import GenerateNewCodeButton from "./GenerateNewCodeButton";
 
 export default function InviteCodeInfo() {

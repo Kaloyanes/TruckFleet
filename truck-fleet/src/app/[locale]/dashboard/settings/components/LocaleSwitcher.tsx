@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { Button } from "../ui/button";
+import { Button } from "../../../../../components/ui/button";
 
 import { locales } from "@/lib/i18n";
 import { useTransition } from "react";
@@ -12,7 +12,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../../../../components/ui/dropdown-menu";
 
 export default function LocaleSwitcher() {
 	const [_, startTransition] = useTransition();

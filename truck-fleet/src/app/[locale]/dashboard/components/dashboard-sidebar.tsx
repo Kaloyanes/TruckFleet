@@ -6,13 +6,15 @@ import {
 	SidebarBody,
 	SidebarCategory,
 	SidebarLink,
-} from "../ui/sidebar";
+} from "../../../../components/ui/sidebar";
 import {
 	IconChartPie,
 	IconLogout,
 	IconMap,
 	IconMap2,
 	IconMessage,
+	IconPackage,
+	IconPackages,
 	IconReceiptDollar,
 	IconSettings,
 	IconSubtask,
@@ -23,7 +25,7 @@ import { Link } from "@/lib/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { TruckIcon } from "lucide-react";
-import AnimatedBackground from "../ui/animated-background";
+import AnimatedBackground from "../../../../components/ui/animated-background";
 import useProfileDoc from "@/hooks/useProfileDoc";
 
 export default function DashboardSidebar() {
@@ -34,7 +36,7 @@ export default function DashboardSidebar() {
 			customLabel: true,
 			label: "Truck Fleet",
 			href: "#",
-			icon: <TruckIcon className="h-6 w-6 flex-shrink-0" />,
+			icon: <IconPackages className="h-6 w-6 flex-shrink-0" />,
 		},
 		{
 			label: "Chat",
@@ -127,6 +129,7 @@ export default function DashboardSidebar() {
 										width={50}
 										height={50}
 										alt="Avatar"
+										priority
 									/>
 								),
 							}}

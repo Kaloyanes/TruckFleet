@@ -4,9 +4,9 @@ import useCompanyId from "@/hooks/useCompanyId";
 import { collection, query, where } from "firebase/firestore";
 import React from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import type { Order } from "@/models/orders";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import {
 	useReactTable,
@@ -16,14 +16,14 @@ import {
 	flexRender,
 } from "@tanstack/react-table";
 import { Table } from "lucide-react";
-import { ScrollBar } from "../ui/scroll-area";
+import { ScrollBar } from "@/components/ui/scroll-area";
 import {
 	TableHeader,
 	TableRow,
 	TableHead,
 	TableBody,
 	TableCell,
-} from "../ui/table";
+} from "@/components/ui/table";
 import { DriverColumns } from "./drivers-table/DriverColumns";
 import { driverConverter } from "@/firebase/converters/driverConverter";
 import DriverDataTable from "./drivers-table/DriverDataTable";

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import AnimatedBackground from "../ui/animated-background";
+import AnimatedBackground from "../../../../../components/ui/animated-background";
 // import { usePathname, useRouter } from "next/navigation";
 
 import { Link, usePathname, useRouter } from "@/lib/navigation";

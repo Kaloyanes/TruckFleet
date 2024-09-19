@@ -1,4 +1,4 @@
-import LoginForm from "@/components/login/LoginForm";
+import LoginForm from "@/app/[locale]/(auth)/login/components/LoginForm";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { TruckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";

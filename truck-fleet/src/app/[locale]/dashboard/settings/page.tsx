@@ -1,4 +1,4 @@
-import LocaleSwitcher from "@/components/settings/LocaleSwitcher";
+import LocaleSwitcher from "@/app/[locale]/dashboard/settings/components/LocaleSwitcher";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { unstable_setRequestLocale } from "next-intl/server";
 

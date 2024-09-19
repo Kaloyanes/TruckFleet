@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { IconLayout2, IconLayoutList } from "@tabler/icons-react";
 import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
 import { useLocalStorage } from "react-use";

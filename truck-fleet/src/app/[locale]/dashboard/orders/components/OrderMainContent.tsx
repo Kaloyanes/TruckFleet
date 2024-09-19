@@ -1,10 +1,18 @@
 "use client";
 import type React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "../../../../../components/ui/card";
 import TruckTabs from "./TruckTabs";
 import TimeTitle from "./TimeTitle";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { Button } from "../ui/button";
+import {
+	ScrollArea,
+	ScrollBar,
+} from "../../../../../components/ui/scroll-area";
+import { Button } from "../../../../../components/ui/button";
 import AddOrdersSheet from "./add-order/AddOrdersSheet";
 import { useEditOrderContext } from "@/context/orders/order-edit-context";
 import { useOrderIdContext } from "@/context/orders/order-selected-context";

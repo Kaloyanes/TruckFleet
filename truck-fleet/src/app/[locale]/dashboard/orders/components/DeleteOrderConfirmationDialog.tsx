@@ -8,12 +8,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "../ui/dialog";
+} from "../../../../../components/ui/dialog";
 import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
-import { Button } from "../ui/button";
+import { Button } from "../../../../../components/ui/button";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../../../../components/ui/use-toast";
 import { useTranslations } from "next-intl";
 
 export default function DeleteOrderConfirmationDialog() {

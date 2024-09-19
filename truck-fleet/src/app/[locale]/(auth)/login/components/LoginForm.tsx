@@ -8,7 +8,7 @@ import { z } from "zod";
 import ForgotPasswordDialog from "./ForgotPasswordDialog";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../../../../components/ui/use-toast";
 import type { FirebaseError } from "firebase/app";
 import { redirect } from "@/lib/navigation";
 import { useRouter } from "next/navigation";

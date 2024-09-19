@@ -1,4 +1,4 @@
-import OrderList from "@/components/orders/OrderList";
+import OrderList from "@/app/[locale]/dashboard/orders/components/OrderList";
 import { unstable_setRequestLocale } from "next-intl/server";
 import React from "react";
 

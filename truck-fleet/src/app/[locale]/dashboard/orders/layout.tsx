@@ -1,6 +1,6 @@
-import DeleteOrderConfirmationDialog from "@/components/orders/DeleteOrderConfirmationDialog";
-import OrdersMainContent from "@/components/orders/OrderMainContent";
-import OrderSidebar from "@/components/orders/OrderSidebar";
+import DeleteOrderConfirmationDialog from "@/app/[locale]/dashboard/orders/components/DeleteOrderConfirmationDialog";
+import OrdersMainContent from "@/app/[locale]/dashboard/orders/components/OrderMainContent";
+import OrderSidebar from "@/app/[locale]/dashboard/orders/components/OrderSidebar";
 import DeleteOrderContextProvider, {
 	DeleteOrderContext,
 } from "@/context/orders/order-delete-context";

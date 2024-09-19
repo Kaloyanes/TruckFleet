@@ -2,7 +2,7 @@
 import { generateCompanyCode } from "@/lib/generateCompanyCode";
 import type { DocumentReference } from "firebase/firestore";
 import React, { useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import {
 	Dialog,
@@ -13,7 +13,7 @@ import {
 	DialogDescription,
 	DialogTitle,
 	DialogTrigger,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 
 export default function GenerateNewCodeButton({
 	companyRef,

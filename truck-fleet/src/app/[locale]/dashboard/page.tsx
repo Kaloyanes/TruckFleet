@@ -1,4 +1,4 @@
-import SignOutButton from "@/components/dashboard/sign-out-button";
+import SignOutButton from "@/app/[locale]/dashboard/components/sign-out-button";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default function DashboardPage({

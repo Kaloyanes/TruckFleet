@@ -1,12 +1,20 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
-import { CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "../../../../../components/ui/card";
 import { OrderSelectedContext } from "@/context/orders/order-selected-context";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "../../../../../components/ui/avatar";
+import { Button } from "../../../../../components/ui/button";
 import {
 	IconMessage,
 	IconPhone,

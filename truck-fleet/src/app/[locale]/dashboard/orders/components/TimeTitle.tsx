@@ -9,7 +9,7 @@ import {
 	Quarter,
 } from "date-fns";
 import React, { useEffect, useState } from "react";
-import { TextEffect } from "../ui/text-effect";
+import { TextEffect } from "../../../../../components/ui/text-effect";
 import { useTranslations } from "next-intl";
 
 export default function TimeTitle() {

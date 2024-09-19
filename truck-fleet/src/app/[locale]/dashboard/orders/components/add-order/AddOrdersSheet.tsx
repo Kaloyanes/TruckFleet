@@ -6,11 +6,11 @@ import {
 	SheetContent,
 	SheetTitle,
 	SheetTrigger,
-} from "../../ui/sheet";
-import { Button } from "../../ui/button";
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
-import AutoForm from "../../ui/auto-form";
+import AutoForm from "@/components/ui/auto-form";
 import {
 	collection,
 	doc,
