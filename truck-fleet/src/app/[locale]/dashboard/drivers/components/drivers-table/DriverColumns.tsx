@@ -62,11 +62,15 @@ import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context"
 
 export const DriverColumns: ColumnDef<Driver>[] = [
 	{
-		accessorFn: (row) => [row.name, row.photoUrl],
+		accessorFn: (row) => row.name,
 		header: "Name",
-		cell: ({ getValue }) => {
+		enableGlobalFilter: true,
+
+		cell: ({ getValue, row }) => {
 			const { view } = useDriverToggleViewContext();
-			const [name, photoUrl] = getValue() as [string, string];
+			const name = getValue() as string;
+
+			const photoUrl = row.original.photoUrl;
 
 			return (
 				<div

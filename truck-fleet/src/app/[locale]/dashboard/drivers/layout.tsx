@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 import RemoveDriverConfirmationDialog from "./components/RemoveDriverConfirmationDialog";
 import InviteCodeInfo from "./components/InviteCode";
+import DriverFilter from "./components/DriverFilter";
+import DriverFilterInputContextProvider from "@/context/drivers/driver-filter-input-context";
 
 export default function DriversLayout({
 	children,
@@ -20,24 +22,26 @@ export default function DriversLayout({
 
 	return (
 		<RemoveDriverContextProvider>
-			<RemoveDriverConfirmationDialog />
-			<DriverToggleViewContextProvider>
-				<div className={"relative flex flex-1 overflow-hidden"}>
-					<Card className="relative w-full flex-1 rounded-none border-0 border-border border-l backdrop-saturate-150 transition-all duration-300">
-						<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b">
-							<div className="flex flex-col gap-4">
-								<h1 className="font-bold text-2xl">{t("drivers")}</h1>
-								<Input placeholder={t2("filterDrivers")} />
-							</div>
-							<InviteCodeInfo />
-						</CardHeader>
-						{/* <CardContent className="p-0 relative overflow-hidden flex-1"> */}
+			<DriverFilterInputContextProvider>
+				<RemoveDriverConfirmationDialog />
+				<DriverToggleViewContextProvider>
+					<div className={"relative flex flex-1 overflow-hidden"}>
+						<Card className="relative w-full flex-1 rounded-none border-0 border-border border-l backdrop-saturate-150 transition-all duration-300">
+							<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b">
+								<div className="flex flex-col gap-4">
+									<h1 className="font-bold text-2xl">{t("drivers")}</h1>
+									<DriverFilter />
+								</div>
+								<InviteCodeInfo />
+							</CardHeader>
+							{/* <CardContent className="p-0 relative overflow-hidden flex-1"> */}
 
-						<div className="relative w-full">{children}</div>
-						{/* </CardContent> */}
-					</Card>
-				</div>
-			</DriverToggleViewContextProvider>
+							<div className="relative w-full">{children}</div>
+							{/* </CardContent> */}
+						</Card>
+					</div>
+				</DriverToggleViewContextProvider>
+			</DriverFilterInputContextProvider>
 		</RemoveDriverContextProvider>
 	);
 }

@@ -17,6 +17,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { useDriverFilterInputContext } from "@/context/drivers/driver-filter-input-context";
 import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
 import { useOrderIdContext } from "@/context/orders/order-selected-context";
 import type { Order } from "@/models/orders";
@@ -31,7 +32,7 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -89,6 +90,12 @@ export default function DriverDataTable<TData, TValue>({
 			</div>
 		);
 	}
+
+	const { search } = useDriverFilterInputContext();
+
+	useEffect(() => {
+		table.setGlobalFilter(search);
+	}, [search]);
 
 	return (
 		<>
