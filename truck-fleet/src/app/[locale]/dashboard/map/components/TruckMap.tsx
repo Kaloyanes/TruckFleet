@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	AdvancedMarker,
 	ControlPosition,
@@ -25,8 +25,7 @@ import { db } from "@/firebase/firebase";
 import { query, collection, where, orderBy } from "firebase/firestore";
 
 export default function TruckMap() {
-	const { theme } = useTheme();
-	const mapId = theme === "dark" ? "71b489216afed105" : "41fca17a46fdb39e";
+	const { resolvedTheme } = useTheme();
 
 	const { companyId } = useCompanyId();
 	const [orders, loading, error] = useCollectionData(
@@ -36,6 +35,9 @@ export default function TruckMap() {
 			orderBy("createdAt", "desc"),
 		).withConverter(orderConverter),
 	);
+
+	const mapId =
+		resolvedTheme === "dark" ? "71b489216afed105" : "41fca17a46fdb39e";
 
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error fetching orders {error.message}</div>;
