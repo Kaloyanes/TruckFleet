@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:truck_fleet_mobile/app/components/media_picker_view.dart';
-import 'package:truck_fleet_mobile/app/modules/home/views/layout_view.dart';
+import 'package:truck_fleet_mobile/app/modules/layout/views/layout_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/introduction_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/join_organization_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/password_view.dart';

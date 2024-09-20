@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:truck_fleet_mobile/app/modules/home/views/home_view.dart';
 
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
 import '../modules/docs/bindings/docs_binding.dart';
 import '../modules/docs/views/docs_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/layout_view.dart';
+import '../modules/layout/bindings/layout_binding.dart';
+import '../modules/layout/views/layout_view.dart';
 import '../modules/more/bindings/more_binding.dart';
 import '../modules/more/views/more_view.dart';
 import '../modules/on_board/bindings/on_board_binding.dart';
@@ -27,13 +29,12 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static var INITIAL =
-      FirebaseAuth.instance.currentUser != null ? Routes.HOME : Routes.ON_BOARD;
+  static var INITIAL = FirebaseAuth.instance.currentUser != null ? Routes.LAYOUT : Routes.ON_BOARD;
 
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => const LayoutView(),
+      page: () => const HomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -75,6 +76,11 @@ class AppPages {
       name: _Paths.SETTINGS,
       page: () => const SettingsView(),
       binding: SettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.LAYOUT,
+      page: () => const LayoutView(),
+      binding: LayoutBinding(),
     ),
   ];
 }

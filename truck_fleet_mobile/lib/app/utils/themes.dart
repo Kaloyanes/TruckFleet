@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -126,13 +125,10 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
         ),
       ),
     ),
-    pageTransitionsTheme: const PageTransitionsTheme(
+    pageTransitionsTheme: PageTransitionsTheme(
       builders: {
-        TargetPlatform.android: SharedAxisPageTransitionsBuilder(
-          transitionType: SharedAxisTransitionType.horizontal,
-          fillColor: Colors.transparent,
-        ),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: MyTransition(),
+        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
       },
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -162,8 +158,8 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
     appBarTheme: AppBarTheme(
       centerTitle: true,
       color: colorScheme.surfaceContainerHigh,
-      scrolledUnderElevation: 30,
-      surfaceTintColor: colorScheme.surfaceTint,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: colorScheme.primary,
     ),
     popupMenuTheme: PopupMenuThemeData(
       textStyle: TextStyle(
@@ -207,9 +203,29 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       actionTextColor: colorScheme.primary,
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
     ),
+    navigationBarTheme: const NavigationBarThemeData(
+      overlayColor: WidgetStatePropertyAll(
+        Colors.transparent,
+      ),
+      surfaceTintColor: Colors.transparent,
+      indicatorColor: Colors.transparent,
+      height: 50,
+    ),
+    cardTheme: CardTheme(
+      color: colorScheme.surface,
+      elevation: 2,
+      shadowColor: colorScheme.shadow,
+      margin: const EdgeInsets.all(8),
+      surfaceTintColor: colorScheme.primary,
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(radius + 6),
+        side: BorderSide(color: colorScheme.outline.withOpacity(0.6)),
+      ),
+    ),
   );
 
-  return theme.copyWith(textTheme: GoogleFonts.notoSansTextTheme(theme.textTheme));
+  return theme.copyWith(textTheme: GoogleFonts.plusJakartaSansTextTheme(theme.textTheme));
 }
 
 class MyTransition extends PageTransitionsBuilder {

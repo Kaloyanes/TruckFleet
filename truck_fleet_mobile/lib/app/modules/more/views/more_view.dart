@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/modules/profile/views/profile_view.dart';
 import 'package:truck_fleet_mobile/app/modules/settings/views/settings_view.dart';
-import 'package:truck_fleet_mobile/app/services/auth_service.dart';
 
 import '../controllers/more_controller.dart';
 

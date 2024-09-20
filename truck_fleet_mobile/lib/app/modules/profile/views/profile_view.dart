@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:truck_fleet_mobile/app/components/back_button.dart';
 
 import '../controllers/profile_controller.dart';
 
@@ -12,6 +13,7 @@ class ProfileView extends GetView<ProfileController> {
       appBar: AppBar(
         title: const Text('ProfileView'),
         centerTitle: true,
+        leading: const CustomBackButton(),
       ),
       body: const Center(
         child: Text(

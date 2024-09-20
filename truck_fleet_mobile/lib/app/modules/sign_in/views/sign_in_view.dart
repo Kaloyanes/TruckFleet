@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:truck_fleet_mobile/app/components/back_button.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_in/components/forgot_password_dialog.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
@@ -18,6 +19,7 @@ class SignInView extends GetView<SignInController> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        leading: const CustomBackButton(),
         actions: [
           LanguageSwitcher(),
           ThemeSwitcher(),

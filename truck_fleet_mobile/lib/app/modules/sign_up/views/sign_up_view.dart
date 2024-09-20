@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:truck_fleet_mobile/app/components/back_button.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
 
@@ -24,7 +25,7 @@ class SignUpView extends GetView<SignUpController> {
           LanguageSwitcher(),
           ThemeSwitcher(),
         ],
-        leading: BackButton(onPressed: controller.goBack),
+        leading: CustomBackButton(onPressed: controller.goBack),
       ),
       body: Stack(
         children: [

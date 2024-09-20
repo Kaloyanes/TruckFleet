@@ -16,6 +16,7 @@ class ChatView extends GetView<ChatController> {
         centerTitle: true,
       ),
       body: ListView.builder(
+        controller: controller.scrollController,
         itemBuilder: (context, index) {
           return ListTile(
             title: Center(child: Text('Item $index')),
