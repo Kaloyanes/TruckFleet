@@ -63,6 +63,12 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.all(colorScheme.surface),
         backgroundColor: WidgetStateProperty.all(colorScheme.primary),
+        shadowColor: WidgetStateProperty.all(colorScheme.shadow),
+        elevation: WidgetStateProperty.resolveWith<double>(
+          (Set<WidgetState> states) {
+            return states.contains(WidgetState.pressed) ? 8 : 4;
+          },
+        ),
         shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
           (Set<WidgetState> states) {
             return RoundedRectangleBorder(

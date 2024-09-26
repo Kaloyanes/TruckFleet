@@ -11,7 +11,6 @@ class LayoutView extends GetView<LayoutController> {
   @override
   Widget build(BuildContext context) {
     Get.put(LayoutController());
-
     return Scaffold(
       extendBody: true,
       body: Obx(

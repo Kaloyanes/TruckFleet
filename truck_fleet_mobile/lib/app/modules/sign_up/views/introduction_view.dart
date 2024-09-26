@@ -11,6 +11,7 @@ class IntroductionView extends GetView<SignUpController> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -34,19 +35,19 @@ class IntroductionView extends GetView<SignUpController> {
               TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Name is required";
+                    return "name_required".tr;
                   }
 
                   if (value.length < 3) {
-                    return "Name must be at least 3 characters";
+                    return "name_must_be_3_chars".tr;
                   }
 
                   if (!RegExp(r'^[a-zA-Zа-яА-Я ]+$').hasMatch(value)) {
-                    return "Name must only contain letters";
+                    return "name_must_contain_only_letters".tr;
                   }
 
                   if (value.split(" ").length < 2) {
-                    return "Name must contain first and last name";
+                    return "name_must_contain_first_and_last_name".tr;
                   }
 
                   return null;

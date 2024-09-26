@@ -48,4 +48,9 @@ final Map<String, String> bg = {
   "password_not_strong_enough": "Паролата не е достатъчно силна",
   "phone_number_required": "Телефонният номер е задължителен",
   "phone_number_not_valid": "Телефонният номер не е валиден",
+  "email_required": "Имейлът е задължителен",
+  "name_required": "Името е задължително",
+  "name_must_be_3_chars": "Името трябва да е поне 3 символа",
+  "name_must_contain_only_letters": "Името трябва да съдържа само букви",
+  "name_must_contain_first_and_last_name": "Името трябва да съдържа първо и последно име",
 };

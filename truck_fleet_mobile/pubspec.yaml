@@ -61,6 +61,9 @@ dependencies:
   soft_edge_blur: ^0.1.0
   animations: ^2.0.11
   material_symbols_icons: ^4.2785.1
+  flutter_foreground_task: ^8.10.0
+  permission_handler: ^11.3.1
+  fl_location: ^4.1.0+1
 
 dev_dependencies:
   flutter_test:

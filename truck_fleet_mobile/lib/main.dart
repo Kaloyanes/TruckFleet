@@ -1,4 +1,3 @@
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -6,11 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:truck_fleet_mobile/app/data/app_translation.dart';
 import 'package:truck_fleet_mobile/app/data/croppy_translations.dart';
+import 'package:truck_fleet_mobile/app/services/background_location_service.dart';
 import 'package:truck_fleet_mobile/app/utils/firebase_options.dart';
 import 'package:truck_fleet_mobile/app/utils/themes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,6 +25,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  FlutterForegroundTask.initCommunicationPort();
 
   await FirebaseAnalytics.instance.logEvent(name: "app_launched");
 

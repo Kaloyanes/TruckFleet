@@ -57,6 +57,9 @@ class SignInView extends GetView<SignInController> {
                           return "email_required".tr;
                         }
 
+                        if (!value.isEmail) {
+                          return "email_not_valid".tr;
+                        }
                         return null;
                       },
                       keyboardType: TextInputType.emailAddress,

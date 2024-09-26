@@ -15,6 +15,7 @@ class PhoneView extends GetView<SignUpController> {
         autovalidateMode: AutovalidateMode.always,
         key: controller.phoneFormKey,
         child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Column(
             children: [
               Text(

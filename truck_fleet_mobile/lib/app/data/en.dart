@@ -49,4 +49,9 @@ final Map<String, String> en = {
   "email_required": "Email is required",
   "password_required": "Password is required",
   "password_not_strong_enough": "Password is not strong enough",
+  "name_required": "Name is required",
+  "name_must_be_3_chars": "Name must be at least 3 characters",
+  "name_must_contain_only_letters": "Name must contain only letters",
+  "name_must_contain_first_and_last_name": "Name must contain first and last name",
+  "signup_success": "Sign up successful",
 };

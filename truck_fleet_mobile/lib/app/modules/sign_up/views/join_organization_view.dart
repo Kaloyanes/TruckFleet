@@ -10,6 +10,7 @@ class JoinOrganizationView extends GetView<SignUpController> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
