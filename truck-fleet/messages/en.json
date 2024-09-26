@@ -151,7 +151,11 @@
     "generateNewCodeDescription": "Are you sure you want to generate a new code?",
     "yes": "Yes",
     "cancel": "Cancel",
-    "codeCopied": "Code Copied"
+    "codeCopied": "Code Copied",
+    "driver": "Driver",
+    "speditor": "Speditor",
+    "drivers": "Drivers",
+    "speditors": "Speditors"
   },
   "RemoveDriverConfirmationDialog": {
     "title": "Remove Driver",

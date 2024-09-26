@@ -46,6 +46,7 @@ export default function DriverDataTable<TData, TValue>({
 	const { view, setView } = useDriverToggleViewContext();
 
 	const t = useTranslations("OrderList");
+	const t2 = useTranslations("EmployeePage");
 
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[],
@@ -130,25 +131,46 @@ export default function DriverDataTable<TData, TValue>({
 					</TableHeader>
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map((row) => (
-								<TableRow
-									key={row.id}
-									className="w-full"
-									data-state={row.getIsSelected() && "selected"}
-								>
-									{row.getVisibleCells().map((cell) => (
-										<TableCell
-											key={cell.id}
-											className={`min-w-[${cell.column.getSize()}px]`}
+							table.getRowModel().rows.map((row, rowIndex) => {
+								const previousRow = table.getRowModel().rows[rowIndex - 1];
+								const isDifferentType =
+									previousRow &&
+									(row.original as any).type !==
+										(previousRow.original as any).type;
+
+								const isFirstRow = rowIndex === 0;
+
+								return (
+									<React.Fragment key={row.id}>
+										{(isFirstRow || isDifferentType) && (
+											<TableRow className="sticky top-0 w-full ">
+												<TableCell
+													colSpan={columns.length}
+													className="font-bold text-xl"
+												>
+													{t2(`${(row.original as any).type + "s"}` as any)}
+												</TableCell>
+											</TableRow>
+										)}
+										<TableRow
+											className="w-full"
+											data-state={row.getIsSelected() && "selected"}
 										>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext(),
-											)}
-										</TableCell>
-									))}
-								</TableRow>
-							))
+											{row.getVisibleCells().map((cell) => (
+												<TableCell
+													key={cell.id}
+													className={`min-w-[${cell.column.getSize()}px]`}
+												>
+													{flexRender(
+														cell.column.columnDef.cell,
+														cell.getContext(),
+													)}
+												</TableCell>
+											))}
+										</TableRow>
+									</React.Fragment>
+								);
+							})
 						) : (
 							<TableRow>
 								<TableCell

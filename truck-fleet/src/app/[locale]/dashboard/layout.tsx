@@ -1,6 +1,5 @@
 import DashboardSidebar from "@/app/[locale]/dashboard/components/dashboard-sidebar";
 import AuthRedirect from "@/components/redirects/AuthRedirect";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 export default function DashboardLayout({
@@ -15,7 +14,7 @@ export default function DashboardLayout({
 	return (
 		<>
 			<AuthRedirect />
-			<div className="flex relative h-screen max-h-screen max-w-[100vw] ">
+			<div className="relative flex h-screen max-h-screen max-w-[100vw] ">
 				<DashboardSidebar />
 
 				{/* <Animated>{children}</Animated> */}

@@ -1,7 +1,7 @@
 "use client";
 import { db } from "@/firebase/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
-import { collection, query, where } from "firebase/firestore";
+import { collection, orderBy, query, where } from "firebase/firestore";
 import React from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,7 @@ export default function DriverList() {
 	const [drivers, loading, error] = useCollectionData(
 		query(
 			collection(db, "users"),
-			where("type", "==", "driver"),
+			orderBy("type"),
 			where("companyId", "==", companyId),
 		).withConverter(driverConverter),
 	);

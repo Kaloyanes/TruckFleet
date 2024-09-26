@@ -15,7 +15,7 @@
         "useExhaustiveDependencies": "off"
       },
       "nursery": {
-        "useSortedClasses": "info"
+        "useSortedClasses": "error"
       }
     },
     "ignore": [
@@ -29,6 +29,14 @@
       "node_modules",
       "dist"
     ]
+  },
+  "css": {
+    "formatter": {
+      "enabled": true
+    },
+    "linter": {
+      "enabled": true
+    }
   },
   "files": {
     "ignore": [

@@ -151,6 +151,10 @@
     "generateNewCodeDescription": "Сигурни ли сте, че искате да генерирате нов код?",
     "yes": "Да",
     "cancel": "Отказ",
-    "codeCopied": "Кодът е копиран"
+    "codeCopied": "Кодът е копиран",
+    "driver": "Шофьор",
+    "speditor": "Спедитор",
+    "drivers": "Шофьори",
+    "speditors": "Спедитори"
   }
 }

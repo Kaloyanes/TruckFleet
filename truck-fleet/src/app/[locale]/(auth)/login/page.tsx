@@ -3,14 +3,13 @@ import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { TruckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
-
+// fkoskfo
 export default function Login({
 	params: { locale },
 }: { params: { locale: string } }) {
 	unstable_setRequestLocale(locale);
 
 	const t = useTranslations("LoginPage");
-
 	return (
 		<>
 			<div className="absolute top-5 right-5 z-50">
