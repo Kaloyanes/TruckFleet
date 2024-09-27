@@ -1,26 +1,15 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuLabel,
-	ContextMenuTrigger,
-} from "@/components/ui/context-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
 	Table,
 	TableBody,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
 import { useDriverFilterInputContext } from "@/context/drivers/driver-filter-input-context";
 import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
-import { useOrderIdContext } from "@/context/orders/order-selected-context";
-import type { Order } from "@/models/orders";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import {
 	type ColumnDef,
@@ -96,7 +85,7 @@ export default function DriverDataTable<TData, TValue>({
 
 	useEffect(() => {
 		table.setGlobalFilter(search);
-	}, [search]);
+	}, [search, table]);
 
 	return (
 		<>
@@ -148,7 +137,7 @@ export default function DriverDataTable<TData, TValue>({
 													colSpan={columns.length}
 													className="font-bold text-xl"
 												>
-													{t2(`${(row.original as any).type + "s"}` as any)}
+													{t2(`${`${(row.original as any).type}s`}` as any)}
 												</TableCell>
 											</TableRow>
 										)}
