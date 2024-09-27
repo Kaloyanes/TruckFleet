@@ -13,6 +13,15 @@
       "nursery": {
         "useSortedClasses": "info"
       }
-    }
+    },
+    "ignore": [
+      "node_modules",
+      "dist"
+    ]
+  },
+  "files": {
+    "ignore": [
+      "node_modules"
+    ]
   }
 }

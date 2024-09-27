@@ -1,16 +1,7 @@
 "use client";
-import {
-	Era,
-	format,
-	FormatLongFnOptions,
-	LocaleDayPeriod,
-	LocalizeFnOptions,
-	Month,
-	Quarter,
-} from "date-fns";
-import React, { useEffect, useState } from "react";
-import { TextEffect } from "../../../../../components/ui/text-effect";
+import { format } from "date-fns";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
 export default function TimeTitle() {
 	const [time, setTime] = useState(new Date());
