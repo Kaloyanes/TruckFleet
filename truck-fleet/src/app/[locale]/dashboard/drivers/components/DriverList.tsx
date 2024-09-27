@@ -1,31 +1,10 @@
 "use client";
+import { driverConverter } from "@/firebase/converters/driverConverter";
 import { db } from "@/firebase/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import { collection, orderBy, query, where } from "firebase/firestore";
-import React from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { Button } from "@/components/ui/button";
-import type { Order } from "@/models/orders";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import {
-	useReactTable,
-	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	flexRender,
-} from "@tanstack/react-table";
-import { Table } from "lucide-react";
-import { ScrollBar } from "@/components/ui/scroll-area";
-import {
-	TableHeader,
-	TableRow,
-	TableHead,
-	TableBody,
-	TableCell,
-} from "@/components/ui/table";
 import { DriverColumns } from "./drivers-table/DriverColumns";
-import { driverConverter } from "@/firebase/converters/driverConverter";
 import DriverDataTable from "./drivers-table/DriverDataTable";
 
 export default function DriverList() {
@@ -41,7 +20,7 @@ export default function DriverList() {
 
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error: {error.message}</div>;
-	if (!drivers) return <div></div>;
+	if (!drivers) return <div />;
 
 	return <DriverDataTable columns={DriverColumns} data={drivers} />;
 }

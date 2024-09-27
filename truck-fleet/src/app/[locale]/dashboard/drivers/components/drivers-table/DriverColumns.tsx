@@ -4,7 +4,12 @@ import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view
 import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context";
 import type { Driver } from "@/models/driver";
 import { AvatarFallback } from "@radix-ui/react-avatar";
-import { IconMessage, IconPhone, IconTrash } from "@tabler/icons-react";
+import {
+	IconGraphFilled,
+	IconMessage,
+	IconPhone,
+	IconTrash,
+} from "@tabler/icons-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
 
@@ -57,6 +62,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		header: "Type",
 		cell: ({ getValue }) => {
 			const t = useTranslations("EmployeePage");
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			return <span>{t(getValue() as string as any)}</span>;
 		},
 	},
@@ -69,6 +75,9 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 
 			return (
 				<div className="flex justify-end gap-2">
+					<Button variant="outline" size="icon">
+						<IconGraphFilled />
+					</Button>
 					<Button variant="outline" size="icon">
 						<IconPhone />
 					</Button>

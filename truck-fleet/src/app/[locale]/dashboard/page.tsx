@@ -6,7 +6,7 @@ export default function DashboardPage({
 }: { params: { locale: string } }) {
 	unstable_setRequestLocale(locale);
 	return (
-		<div>
+		<div className="h-20 flex w-20">
 			<h1>Dashboard Page</h1>
 			<SignOutButton />
 		</div>
