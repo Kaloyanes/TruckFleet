@@ -2,6 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
 import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context";
+import { useRouter } from "@/lib/navigation";
 import type { Driver } from "@/models/driver";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import {
@@ -62,7 +63,6 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		header: "Type",
 		cell: ({ getValue }) => {
 			const t = useTranslations("EmployeePage");
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			return <span>{t(getValue() as string as any)}</span>;
 		},
 	},
@@ -72,10 +72,16 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		cell: ({ row }) => {
 			const { view } = useDriverToggleViewContext();
 			const { setConfirm, setDriver } = useRemoveDriverContext();
-
+			const router = useRouter();
 			return (
 				<div className="flex justify-end gap-2">
-					<Button variant="outline" size="icon">
+					<Button
+						variant="outline"
+						size="icon"
+						onClick={() => {
+							router.push(`/dashboard/drivers/${row.original.id}/stats`);
+						}}
+					>
 						<IconGraphFilled />
 					</Button>
 					<Button variant="outline" size="icon">

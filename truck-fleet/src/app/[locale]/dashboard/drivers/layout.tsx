@@ -1,13 +1,13 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardHeader } from "@/components/ui/card";
+import DriverFilterInputContextProvider from "@/context/drivers/driver-filter-input-context";
 import DriverToggleViewContextProvider from "@/context/drivers/driver-toggle-view-context";
 import RemoveDriverContextProvider from "@/context/drivers/remove-driver-context";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
-import RemoveDriverConfirmationDialog from "./components/RemoveDriverConfirmationDialog";
-import InviteCodeInfo from "./components/InviteCode";
+import BackButton from "./components/BackButton";
 import DriverFilter from "./components/DriverFilter";
-import DriverFilterInputContextProvider from "@/context/drivers/driver-filter-input-context";
+import InviteCodeInfo from "./components/InviteCode";
+import RemoveDriverConfirmationDialog from "./components/RemoveDriverConfirmationDialog";
 
 export default function DriversLayout({
 	children,
@@ -18,7 +18,7 @@ export default function DriversLayout({
 }) {
 	unstable_setRequestLocale(locale);
 	const t = useTranslations("SidebarLink");
-	const t2 = useTranslations("AddOrderSheet");
+	const t2 = useTranslations("EmployeePage");
 
 	return (
 		<RemoveDriverContextProvider>
@@ -29,7 +29,7 @@ export default function DriversLayout({
 						<Card className="relative w-full flex-1 rounded-none border-0 border-border border-l backdrop-saturate-150 transition-all duration-300">
 							<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b">
 								<div className="flex flex-col gap-4">
-									<h1 className="font-bold text-2xl">{t("drivers")}</h1>
+									<BackButton />
 									<DriverFilter />
 								</div>
 								<InviteCodeInfo />

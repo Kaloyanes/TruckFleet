@@ -18,14 +18,14 @@ export default function TimeTitle() {
 	}, []);
 
 	return (
-		<div className="text-3xl font-bold py-4 flex gap-2">
-			<h1 className="capitalize flex items-center gap-2">
+		<div className="flex gap-2 py-4 font-bold text-3xl">
+			<h1 className="flex items-center gap-2 capitalize">
 				<div className="">{t(format(time, "MMM").toLowerCase() as any)}</div>
 				<div className="">{format(time, "d, yyyy").toLowerCase()}</div>|
 				<div className="uppercase">{format(time, "pp").toLowerCase()}</div>
 			</h1>
 
-			<div className="flex gap-3 items-end ">
+			<div className="flex items-end gap-3 ">
 				<span className="text-sm capitalize">
 					{t(format(time, "EEEE").toLowerCase() as any)}
 				</span>

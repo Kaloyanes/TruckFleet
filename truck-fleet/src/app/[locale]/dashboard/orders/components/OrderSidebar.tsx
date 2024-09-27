@@ -1,14 +1,15 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useContext, useEffect, useState } from "react";
-import {
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "../../../../../components/ui/card";
 import { OrderSelectedContext } from "@/context/orders/order-selected-context";
+import { IconMessage, IconPhone, IconX } from "@tabler/icons-react";
+import {
+	APIProvider,
+	Map as GoogleMap,
+	useMap,
+	useMapsLibrary,
+} from "@vis.gl/react-google-maps";
+import { AnimatePresence, motion } from "framer-motion";
+import { useContext, useEffect, useState } from "react";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
-import Image from "next/image";
 import {
 	Avatar,
 	AvatarFallback,
@@ -16,17 +17,10 @@ import {
 } from "../../../../../components/ui/avatar";
 import { Button } from "../../../../../components/ui/button";
 import {
-	IconMessage,
-	IconPhone,
-	IconPhoneCall,
-	IconX,
-} from "@tabler/icons-react";
-import {
-	APIProvider,
-	Map as GoogleMap,
-	useMap,
-	useMapsLibrary,
-} from "@vis.gl/react-google-maps";
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "../../../../../components/ui/card";
 
 export default function OrderSidebar() {
 	const orderSelectedContext = useContext(OrderSelectedContext);
