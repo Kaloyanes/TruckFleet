@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/components/back_button.dart';
+import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 
 import '../controllers/settings_controller.dart';
 
@@ -15,11 +16,8 @@ class SettingsView extends GetView<SettingsController> {
         centerTitle: true,
         leading: const CustomBackButton(),
       ),
-      body: const Center(
-        child: Text(
-          'SettingsView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Center(
+        child: LanguageSwitcher(),
       ),
     );
   }

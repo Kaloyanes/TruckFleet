@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_location/fl_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class BackgroundLocationService {
@@ -31,14 +35,35 @@ class BackgroundLocationService {
   }
 
   Future<void> requestLocationPermission() async {
-    final LocationPermission locationPermission = await FlLocation.requestLocationPermission();
-    if (locationPermission == LocationPermission.denied || locationPermission == LocationPermission.deniedForever) {
+    if (!await FlLocation.isLocationServicesEnabled) {
+      throw Exception('To start location service, you must enable location services.');
+    }
+
+    var permission = await FlLocation.checkLocationPermission();
+
+    if (permission == LocationPermission.deniedForever) {
       throw Exception('To start location service, you must grant location permission.');
+    } else if (permission == LocationPermission.denied) {
+      permission = await FlLocation.requestLocationPermission();
+      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+        throw Exception('To start location service, you must grant location permission.');
+      }
+    }
+
+    if (permission == LocationPermission.whileInUse) {
+      permission = await FlLocation.requestLocationPermission();
+      throw Exception('To start location service, you must grant location permission for always in use.');
     }
   }
 
   Future<void> initService() async {
-    await requestLocationPermission();
+    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
+
+    try {
+      await requestLocationPermission();
+    } catch (e) {
+      showDialog(context: Get.context!, builder: (_) => AlertDialog(title: Text(e.toString())));
+    }
     await requestPlatformPermissions();
 
     FlutterForegroundTask.init(
@@ -53,7 +78,7 @@ class BackgroundLocationService {
         playSound: false,
       ),
       foregroundTaskOptions: ForegroundTaskOptions(
-        eventAction: ForegroundTaskEventAction.repeat(2000),
+        eventAction: ForegroundTaskEventAction.repeat(5000),
         autoRunOnBoot: true,
         autoRunOnMyPackageReplaced: true,
         allowWakeLock: true,
@@ -92,49 +117,26 @@ class BackgroundLocationService {
     isInitialized = false;
   }
 
-  void _onReceiveTaskData(Object data) {
-    if (data is String) {
-      final Map<String, dynamic> locationJson = jsonDecode(data);
-      final Location location = Location.fromJson(locationJson);
-      locationNotifier.value = location;
-    }
-  }
+  Future<void> _onReceiveTaskData(Object data) async {
+    await FlutterForegroundTask.updateService(notificationText: "Sending Location");
 
-  void _handleError(Object e, StackTrace s) {
-    String errorMessage;
-    if (e is PlatformException) {
-      errorMessage = '${e.code}: ${e.message}';
-    } else {
-      errorMessage = e.toString();
-    }
+    log('Received location: $data');
+    if (data is Map<String, dynamic>) {
+      log("Data is string");
+      final Location location = Location.fromJson(data);
 
-    // print error to console.
-    log('$errorMessage\n${s.toString()}');
-
-    // show error to user.
-    final SnackBar snackBar = SnackBar(content: Text(errorMessage));
-    ScaffoldMessenger.of(Get.context!).showSnackBar(snackBar);
-  }
-
-  Future<void> init() async {
-    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
-
-    try {
-      // check permissions -> if granted -> start service
-      requestPlatformPermissions().then((_) {
-        requestLocationPermission().then((_) async {
-          // already started
-          if (await FlutterForegroundTask.isRunningService) {
-            return;
-          }
-
-          await initService();
-          startService();
-        });
+      var userId = FirebaseAuth.instance.currentUser!.uid;
+      log("userId: $userId");
+      await FirebaseFirestore.instance.collection("users").doc(userId).update({
+        "currentInformation": location.toJson(),
       });
-    } catch (e, s) {
-      // _handleError(e, s);
+      log("Location sent");
     }
+
+    var is24Hour = MediaQuery.alwaysUse24HourFormatOf(Get.context!);
+    var formatter = is24Hour ? DateFormat('HH:mm') : DateFormat('hh:mm a');
+
+    await FlutterForegroundTask.updateService(notificationText: "Sent Location at ${formatter.format(DateTime.now())}");
   }
 
   void dispose() {
@@ -149,41 +151,34 @@ void startLocationService() {
 }
 
 class LocationServiceHandler extends TaskHandler {
-  StreamSubscription<Location>? _streamSubscription;
-
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
-    // _streamSubscription = FlLocation.getLocationStream().listen((location) {
-    //   final double lat = location.latitude;
-    //   final double lon = location.longitude;
-
-    //   // Update notification content.
-    //   final String text = 'lat: $lat, lon: $lon';
-    //   FlutterForegroundTask.updateService(notificationText: text);
-
-    //   // Send data to main isolate.
-    //   final String locationJson = jsonEncode(location.toJson());
-    //   FlutterForegroundTask.sendDataToMain(locationJson);
-    // });
+    log("onStart");
+    sendLocation(timestamp);
   }
 
   @override
   void onRepeatEvent(DateTime timestamp) {
-    // not use
-    log('onRepeatEvent: $timestamp');
-
-    FlutterForegroundTask.updateService(notificationText: 'onRepeatEvent: $timestamp');
+    sendLocation(timestamp);
   }
 
   @override
   void onNotificationButtonPressed(String id) {
     log('onNotificationButtonPressed: $id');
     super.onNotificationButtonPressed(id);
+    switch (id) {
+      case 'stopButton':
+        BackgroundLocationService.instance.stopService();
+        break;
+    }
+  }
+
+  Future<void> sendLocation(DateTime timestamp) async {
+    final Location location = await FlLocation.getLocation();
+
+    FlutterForegroundTask.sendDataToTask(location.toJson());
   }
 
   @override
-  Future<void> onDestroy(DateTime timestamp) async {
-    _streamSubscription?.cancel();
-    _streamSubscription = null;
-  }
+  Future<void> onDestroy(DateTime timestamp) async {}
 }
