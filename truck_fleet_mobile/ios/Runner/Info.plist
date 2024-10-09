@@ -51,5 +51,16 @@
     <string>This app requires access to your camera to upload photos.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>This app requires access to your microphone to upload photos.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Used to collect location data for the speditors.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Used to collect location data in the background to send to the speditors.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Used to collect location data in the background to send to the speditors.</string>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>location</string>
+    </array>
   </dict>
 </plist>
