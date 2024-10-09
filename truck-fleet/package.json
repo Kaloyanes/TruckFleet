@@ -62,7 +62,8 @@
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.9",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@tauri-apps/cli": ">=2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.16.9",
