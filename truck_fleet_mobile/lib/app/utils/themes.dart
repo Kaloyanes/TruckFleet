@@ -162,7 +162,7 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       ),
     ),
     appBarTheme: AppBarTheme(
-      centerTitle: true,
+      centerTitle: false,
       color: colorScheme.surfaceContainerHigh,
       scrolledUnderElevation: 0,
       surfaceTintColor: colorScheme.primary,
@@ -215,7 +215,10 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       ),
       surfaceTintColor: Colors.transparent,
       indicatorColor: Colors.transparent,
-      height: 50,
+      height: 80,
+    ),
+    bottomAppBarTheme: BottomAppBarTheme(
+      height: 80,
     ),
     cardTheme: CardTheme(
       color: colorScheme.surface,

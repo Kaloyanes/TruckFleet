@@ -1,18 +1,19 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_location/fl_location.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
+
+@pragma('vm:entry-point')
+void startLocationService() {
+  FlutterForegroundTask.setTaskHandler(LocationServiceHandler());
+}
 
 class BackgroundLocationService {
   static final BackgroundLocationService instance = BackgroundLocationService();
@@ -57,20 +58,18 @@ class BackgroundLocationService {
   }
 
   Future<void> initService() async {
-    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
-
     try {
       await requestLocationPermission();
+      await requestPlatformPermissions();
     } catch (e) {
       showDialog(context: Get.context!, builder: (_) => AlertDialog(title: Text(e.toString())));
     }
-    await requestPlatformPermissions();
 
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
         channelId: 'location_service',
         channelName: 'Location Service',
-        channelImportance: NotificationChannelImportance.HIGH,
+        channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
       ),
       iosNotificationOptions: const IOSNotificationOptions(
@@ -78,18 +77,19 @@ class BackgroundLocationService {
         playSound: false,
       ),
       foregroundTaskOptions: ForegroundTaskOptions(
-        eventAction: ForegroundTaskEventAction.repeat(5000),
+        eventAction: ForegroundTaskEventAction.repeat(60 * 1000),
         autoRunOnBoot: true,
         autoRunOnMyPackageReplaced: true,
         allowWakeLock: true,
         allowWifiLock: true,
       ),
     );
+    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
     isInitialized = true;
   }
 
   Future<void> startService() async {
-    if (!isInitialized) await initService();
+    await initService();
 
     final ServiceRequestResult result = await FlutterForegroundTask.startService(
         serviceId: 200,
@@ -120,15 +120,19 @@ class BackgroundLocationService {
   Future<void> _onReceiveTaskData(Object data) async {
     await FlutterForegroundTask.updateService(notificationText: "Sending Location");
 
-    log('Received location: $data');
+    if (data is String) {
+      log("");
+    }
+
+    log("data: $data");
+
     if (data is Map<String, dynamic>) {
-      log("Data is string");
       final Location location = Location.fromJson(data);
 
       var userId = FirebaseAuth.instance.currentUser!.uid;
       log("userId: $userId");
       await FirebaseFirestore.instance.collection("users").doc(userId).update({
-        "currentInformation": location.toJson(),
+        "location ": location.toJson(),
       });
       log("Location sent");
     }
@@ -145,11 +149,6 @@ class BackgroundLocationService {
   }
 }
 
-@pragma('vm:entry-point')
-void startLocationService() {
-  FlutterForegroundTask.setTaskHandler(LocationServiceHandler());
-}
-
 class LocationServiceHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
@@ -160,6 +159,7 @@ class LocationServiceHandler extends TaskHandler {
   @override
   void onRepeatEvent(DateTime timestamp) {
     sendLocation(timestamp);
+    log("onRepeatEvent $timestamp");
   }
 
   @override
@@ -175,8 +175,9 @@ class LocationServiceHandler extends TaskHandler {
 
   Future<void> sendLocation(DateTime timestamp) async {
     final Location location = await FlLocation.getLocation();
+    log('Sending location: $location');
 
-    FlutterForegroundTask.sendDataToTask(location.toJson());
+    FlutterForegroundTask.sendDataToTask(location.toJson().toString());
   }
 
   @override

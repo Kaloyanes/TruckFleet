@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -68,7 +68,7 @@ class MediaPickerView extends StatelessWidget {
               enableFeedback: true,
               borderRadius: BorderRadius.circular(borderRadius),
               onTap: () {
-                HapticFeedback.lightImpact();
+                Gaimon.light();
                 Navigator.pop(
                   context,
                   source,

@@ -1,10 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:gap/gap.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
@@ -153,7 +152,7 @@ class OnBoardView extends GetView<OnBoardController> {
                         height: 60,
                         child: FilledButton(
                           onPressed: () {
-                            HapticFeedback.lightImpact();
+                            Gaimon.light();
                             controller.height.value = MediaQuery.sizeOf(context).height * 0.5;
                           },
                           child: Text(
@@ -232,7 +231,7 @@ class OnBoardView extends GetView<OnBoardController> {
                     width: MediaQuery.sizeOf(context).width * 0.8,
                     child: FilledButton.icon(
                       onPressed: () {
-                        HapticFeedback.lightImpact();
+                        Gaimon.light();
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpView()));
                       },
                       label: Text("continue_with_platform".trParams({"platform": "email".tr})),
@@ -247,7 +246,7 @@ class OnBoardView extends GetView<OnBoardController> {
                       const Gap(10),
                       TextButton(
                         onPressed: () {
-                          HapticFeedback.lightImpact();
+                          Gaimon.light();
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignInView()));
                         },
                         child: Text("sign_in".tr),

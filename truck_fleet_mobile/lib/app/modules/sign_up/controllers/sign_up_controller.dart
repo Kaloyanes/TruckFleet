@@ -6,8 +6,11 @@ import 'package:croppy/croppy.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:truck_fleet_mobile/app/components/media_picker_view.dart';
 import 'package:truck_fleet_mobile/app/modules/layout/views/layout_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/introduction_view.dart';
@@ -15,9 +18,7 @@ import 'package:truck_fleet_mobile/app/modules/sign_up/views/join_organization_v
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/password_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/phone_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/photo_view.dart';
-import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:truck_fleet_mobile/app/services/auth_service.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class SignUpController extends GetxController {
   var pages = <Widget>[
@@ -108,7 +109,8 @@ class SignUpController extends GetxController {
 
     final nextPageIndex = (pageController.page?.round() ?? 0) + 1;
     if (nextPageIndex < pages.length) {
-      HapticFeedback.lightImpact();
+      Gaimon.light();
+
       pageController.nextPage(duration: Durations.long4, curve: Curves.easeInOutCubicEmphasized);
     }
   }
@@ -205,7 +207,7 @@ class SignUpController extends GetxController {
         minDragDistance: 200.0,
       ),
     );
-    HapticFeedback.lightImpact();
+    Gaimon.light();
     var source = await Navigator.push<ImageSource>(Get.context!, modalRoute);
 
     if (source == null) return;
@@ -245,7 +247,8 @@ class SignUpController extends GetxController {
   }
 
   void goBack() {
-    HapticFeedback.lightImpact();
+    Gaimon.light();
+
     if (pageController.page! < 0.8) {
       Navigator.of(Get.context!).pop();
     } else {

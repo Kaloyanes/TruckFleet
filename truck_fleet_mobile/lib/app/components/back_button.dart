@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:gaimon/gaimon.dart';
 
 class CustomBackButton extends StatelessWidget {
   const CustomBackButton({super.key, this.onPressed, this.padding});
@@ -16,7 +16,7 @@ class CustomBackButton extends StatelessWidget {
         icon: const Icon(TablerIcons.arrow_left),
         onPressed: onPressed ??
             () {
-              HapticFeedback.mediumImpact();
+              Gaimon.light();
               Navigator.of(context).pop();
             },
       ),

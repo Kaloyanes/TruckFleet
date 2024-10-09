@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:gaimon/gaimon.dart';
 import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/modules/layout/controllers/layout_controller.dart';
 
@@ -46,7 +46,7 @@ class LayoutView extends GetView<LayoutController> {
           ],
           selectedIndex: controller.selectedIndex.value,
           onDestinationSelected: (index) {
-            HapticFeedback.mediumImpact();
+            Gaimon.light();
             controller.previousIndex.value = controller.selectedIndex.value;
             controller.selectedIndex.value = index;
           },
