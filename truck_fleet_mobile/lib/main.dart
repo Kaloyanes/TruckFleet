@@ -6,15 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:truck_fleet_mobile/app/data/app_translation.dart';
 import 'package:truck_fleet_mobile/app/data/croppy_translations.dart';
-import 'package:truck_fleet_mobile/app/services/background_location_service.dart';
 import 'package:truck_fleet_mobile/app/utils/firebase_options.dart';
 import 'package:truck_fleet_mobile/app/utils/themes.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {

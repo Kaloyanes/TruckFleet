@@ -2,7 +2,6 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
 import 'package:get/get.dart';
 import 'package:truck_fleet_mobile/app/modules/layout/controllers/layout_controller.dart';
 
@@ -30,11 +29,15 @@ class LayoutView extends GetView<LayoutController> {
       ),
       bottomNavigationBar: Obx(
         () => NavigationBar(
+          height: 80,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           destinations: [
             for (var i = 0; i < controller.pages.length; i++)
               NavigationDestination(
-                icon: Icon(controller.pages[i]['icon'] as IconData),
+                icon: Icon(
+                  controller.pages[i]['icon'] as IconData,
+                  color: Colors.grey,
+                ),
                 selectedIcon: Icon(
                   controller.pages[i]['activeIcon'] as IconData,
                 ),
