@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -84,11 +85,12 @@ class BackgroundLocationService {
         allowWifiLock: true,
       ),
     );
-    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
     isInitialized = true;
   }
 
   Future<void> startService() async {
+    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
+
     await initService();
 
     final ServiceRequestResult result = await FlutterForegroundTask.startService(
@@ -118,16 +120,12 @@ class BackgroundLocationService {
   }
 
   Future<void> _onReceiveTaskData(Object data) async {
+    log("data: $data");
     await FlutterForegroundTask.updateService(notificationText: "Sending Location");
 
     if (data is String) {
-      log("");
-    }
-
-    log("data: $data");
-
-    if (data is Map<String, dynamic>) {
-      final Location location = Location.fromJson(data);
+      log("data is string");
+      final Location location = Location.fromJson(jsonDecode(data));
 
       var userId = FirebaseAuth.instance.currentUser!.uid;
       log("userId: $userId");
@@ -137,14 +135,44 @@ class BackgroundLocationService {
       log("Location sent");
     }
 
+    if (data is Map<String, dynamic>) {}
+
     var is24Hour = MediaQuery.alwaysUse24HourFormatOf(Get.context!);
     var formatter = is24Hour ? DateFormat('HH:mm') : DateFormat('hh:mm a');
 
     await FlutterForegroundTask.updateService(notificationText: "Sent Location at ${formatter.format(DateTime.now())}");
   }
 
-  void dispose() {
+  @mustCallSuper
+  void attach(State state) {
+    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
+
+    try {
+      // check permissions -> if granted -> start service
+      requestPlatformPermissions().then((_) {
+        requestLocationPermission().then((_) async {
+          // already started
+          if (await FlutterForegroundTask.isRunningService) {
+            return;
+          }
+
+          await initService();
+          startService();
+        });
+      });
+    } catch (e, s) {
+      log('Error starting location service', error: e, stackTrace: s);
+    }
+  }
+
+  @mustCallSuper
+  void detach() {
     FlutterForegroundTask.removeTaskDataCallback(_onReceiveTaskData);
+  }
+
+  @mustCallSuper
+  void dispose() {
+    detach();
     locationNotifier.dispose();
   }
 }
@@ -158,8 +186,8 @@ class LocationServiceHandler extends TaskHandler {
 
   @override
   void onRepeatEvent(DateTime timestamp) {
-    sendLocation(timestamp);
     log("onRepeatEvent $timestamp");
+    sendLocation(timestamp);
   }
 
   @override
@@ -177,9 +205,12 @@ class LocationServiceHandler extends TaskHandler {
     final Location location = await FlLocation.getLocation();
     log('Sending location: $location');
 
-    FlutterForegroundTask.sendDataToTask(location.toJson().toString());
+    FlutterForegroundTask.sendDataToMain(jsonEncode(location.toJson()));
   }
 
   @override
-  Future<void> onDestroy(DateTime timestamp) async {}
+  Future<void> onDestroy(DateTime timestamp) async {
+    log("onDestroy");
+    BackgroundLocationService.instance.dispose();
+  }
 }
