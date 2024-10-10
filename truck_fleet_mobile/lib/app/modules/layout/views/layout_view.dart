@@ -29,7 +29,6 @@ class LayoutView extends GetView<LayoutController> {
       ),
       bottomNavigationBar: Obx(
         () => NavigationBar(
-          height: 80,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           destinations: [
             for (var i = 0; i < controller.pages.length; i++)

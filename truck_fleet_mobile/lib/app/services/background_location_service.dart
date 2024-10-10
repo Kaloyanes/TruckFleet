@@ -136,7 +136,7 @@ class BackgroundLocationService {
       var userId = FirebaseAuth.instance.currentUser!.uid;
       log("userId: $userId");
       await FirebaseFirestore.instance.collection("users").doc(userId).update({
-        "location ": location.toJson(),
+        "location": location.toJson(),
       });
       log("Location sent");
     }

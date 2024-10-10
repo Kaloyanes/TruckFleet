@@ -34,8 +34,8 @@ class LayoutController extends GetxController {
       'label': "Docs",
     },
     {
-      'icon': TablerIcons.adjustments,
-      'activeIcon': TablerIcons.adjustments_filled,
+      'icon': TablerIcons.dots,
+      'activeIcon': TablerIcons.dots,
       'view': const MoreView(),
       'label': "More",
     },

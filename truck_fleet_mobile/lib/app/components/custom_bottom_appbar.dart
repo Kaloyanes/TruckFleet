@@ -26,7 +26,6 @@ class CustomBottomAppbar extends StatelessWidget {
         ),
       ),
       child: BottomAppBar(
-        height: 80,
         child: Row(
           mainAxisAlignment: actions!.length > 1 ? MainAxisAlignment.spaceAround : MainAxisAlignment.start,
           children: actions!.map((action) {
