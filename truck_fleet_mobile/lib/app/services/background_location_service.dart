@@ -94,16 +94,22 @@ class BackgroundLocationService {
     await initService();
 
     final ServiceRequestResult result = await FlutterForegroundTask.startService(
-        serviceId: 200,
-        notificationTitle: 'Location Service',
-        notificationText: '',
-        callback: startLocationService,
-        notificationButtons: [
-          const NotificationButton(
-            id: 'stopButton',
-            text: 'Stop',
-          ),
-        ]);
+      serviceId: 200,
+      notificationTitle: 'Location Service',
+      notificationText: '',
+      notificationIcon: const NotificationIconData(
+        resType: ResourceType.mipmap,
+        resPrefix: ResourcePrefix.ic,
+        name: 'launcher',
+      ),
+      callback: startLocationService,
+      notificationButtons: [
+        const NotificationButton(
+          id: 'stopButton',
+          text: 'Stop',
+        ),
+      ],
+    );
 
     if (!result.success) {
       throw result.error ?? Exception('An error occurred and the service could not be started.');
