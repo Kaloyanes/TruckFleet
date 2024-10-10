@@ -3,7 +3,6 @@ import { Toaster } from "@/components/ui/toaster";
 import MotionConfigProvider from "@/context/motion-config-provider";
 import { ThemeProvider } from "@/context/theme-provider";
 import { locales } from "@/lib/i18n";
-import { IconX } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
@@ -47,14 +46,7 @@ export default async function RootLayout({
 				<link rel="icon" href="/packages_light.png" />
 			</head>
 			<body className={noto.className}>
-				<div
-					data-tauri-drag-region
-					className="fixed top-0 z-[1000000] flex h-10 w-full bg-white justify-end "
-				>
-					<IconX className="h-10 w-10 text-black" />
-					<IconX className="h-10 w-10 text-black" />
-					<IconX className="h-10 w-10 text-black" />
-				</div>
+				
 
 				<Favicon />
 				<MotionConfigProvider

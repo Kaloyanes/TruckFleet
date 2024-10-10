@@ -1,32 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-	AdvancedMarker,
-	ControlPosition,
-	Map as GoogleMap,
-	InfoWindow,
-	MapControl,
-	Pin,
-	RenderingType,
-} from "@vis.gl/react-google-maps";
-import {
-	IconCircle,
-	IconCircleFilled,
-	IconMapPinFilled,
-	IconPinFilled,
-} from "@tabler/icons-react";
-import TruckDirections from "./TruckDirections";
-import { useTheme } from "next-themes";
-import useCompanyId from "@/hooks/useCompanyId";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import { orderConverter } from "@/firebase/converters/orderConverter";
 import { db } from "@/firebase/firebase";
-import { query, collection, where, orderBy } from "firebase/firestore";
+import useCompanyId from "@/hooks/useCompanyId";
+import { IconNavigation } from "@tabler/icons-react";
+import {
+	AdvancedMarker,
+	Map as GoogleMap,
+	Marker,
+	RenderingType,
+} from "@vis.gl/react-google-maps";
+import { collection, orderBy, query, where } from "firebase/firestore";
+import { useTheme } from "next-themes";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import TruckDirections from "./TruckDirections";
 
 export default function TruckMap() {
-	const { resolvedTheme } = useTheme();
-
 	const { companyId } = useCompanyId();
 	const [orders, loading, error] = useCollectionData(
 		query(
@@ -36,13 +25,21 @@ export default function TruckMap() {
 		).withConverter(orderConverter),
 	);
 
+	const [users, loadingUsers, errorUsers] = useCollectionData(
+		query(collection(db, "users"), where("companyId", "==", companyId)),
+	);
+
+	const { resolvedTheme } = useTheme();
 	const mapId =
 		resolvedTheme === "dark" ? "71b489216afed105" : "41fca17a46fdb39e";
 
-	if (loading) return <div>Loading...</div>;
-	if (error) return <div>Error fetching orders {error.message}</div>;
+	if (loading || loadingUsers) return <div>Loading...</div>;
+	if (error || errorUsers)
+		return (
+			<div>Error fetching orders {error?.message ?? errorUsers?.message}</div>
+		);
 
-	if (orders === undefined) return <div />;
+	if (orders === undefined || users === undefined) return <div />;
 
 	return (
 		<>
@@ -54,6 +51,7 @@ export default function TruckMap() {
 				minZoom={3}
 				gestureHandling={"greedy"}
 				disableDefaultUI={true}
+				reuseMaps
 				renderingType={RenderingType.VECTOR}
 			>
 				{orders?.map((order) => {
@@ -90,6 +88,33 @@ export default function TruckMap() {
 							}
 							waypoints={waypoints.length > 0 ? waypoints : undefined}
 						/>
+					);
+				})}
+				<Marker position={{ lat: 53.54992, lng: 10.00678 }} />
+				{users.map((user) => {
+					if (user.location === undefined) return <></>;
+					console.log(user.location);
+
+					return (
+						<AdvancedMarker
+							key={user.id}
+							position={{
+								lat: user.location.latitude,
+								lng: user.location.longitude,
+							}}
+							anchorPoint={["50%", "50%"]}
+							className="relative"
+						>
+							<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-14 w-14 rounded-full bg-chart-1/30" />
+							<div
+								className="flex aspect-square h-10 w-10 items-center justify-center rounded-full bg-chart-1/75 transition-all duration-300"
+								style={{
+									transform: `rotate(${Math.round(user.location.heading)}deg)`,
+								}}
+							>
+								<IconNavigation />
+							</div>
+						</AdvancedMarker>
 					);
 				})}
 			</GoogleMap>

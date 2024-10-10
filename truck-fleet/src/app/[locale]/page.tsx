@@ -1,13 +1,6 @@
 "use client";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
-import { db } from "@/firebase/firebase";
-import { collection } from "firebase/firestore";
-import {
-	useCollection,
-	useCollectionOnce,
-} from "react-firebase-hooks/firestore";
 import { useTranslations } from "next-intl";
-import { unstable_setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 
 export default function Home({
