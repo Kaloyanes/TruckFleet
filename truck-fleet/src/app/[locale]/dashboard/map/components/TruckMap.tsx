@@ -102,18 +102,16 @@ export default function TruckMap() {
 								lat: user.location.latitude,
 								lng: user.location.longitude,
 							}}
-							anchorPoint={["50%", "50%"]}
 							className="relative"
 						>
-							<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-14 w-14 rounded-full bg-chart-1/30" />
+							<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-7 w-7 rounded-full bg-chart-1/30" />
 							<div
-								className="flex aspect-square h-10 w-10 items-center justify-center rounded-full bg-chart-1/75 transition-all duration-300"
+								className="flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-chart-1 transition-all duration-300"
 								style={{
 									transform: `rotate(${Math.round(user.location.heading)}deg)`,
 								}}
-							>
-								<IconNavigation />
-							</div>
+							/>
+							{/* <IconNavigation /> */}
 						</AdvancedMarker>
 					);
 				})}
