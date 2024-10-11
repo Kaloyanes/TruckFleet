@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:gap/gap.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
+import 'package:truck_fleet_mobile/app/modules/layout/views/layout_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_in/views/sign_in_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/sign_up_view.dart';
 
@@ -79,7 +81,7 @@ class OnBoardView extends GetView<OnBoardController> {
                         duration: Durations.extralong4,
                         curve: Curves.easeInOutCubicEmphasized,
                         child: ImageFiltered(
-                          imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                          imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                           child: ShaderMask(
                             shaderCallback: (rect) {
                               return LinearGradient(
@@ -128,47 +130,48 @@ class OnBoardView extends GetView<OnBoardController> {
             ),
           ),
           Obx(
-            () => AnimatedOpacity(
-              opacity: controller.height.value > 0 ? 0 : 1,
-              duration: Durations.extralong4,
-              curve: Curves.easeInOutCubicEmphasized,
-              child: Align(
-                alignment: const Alignment(0, 0.8),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Align(
-                      //   alignment: Alignment.centerLeft,
-                      //   child: Text(
-                      //     "welcome_to_truck_fleet".tr,
-                      //     style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
-                      //   ),
-                      // ),
-                      const Gap(20),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 60,
-                        child: FilledButton(
-                          onPressed: () {
-                            Gaimon.light();
-                            controller.height.value = MediaQuery.sizeOf(context).height * 0.5;
-                          },
-                          child: Text(
-                            "get_started".tr,
-                            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                ),
-                          ),
+            () => Align(
+              alignment: const Alignment(0, 0.9),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Text(
+                    //     "welcome_to_truck_fleet".tr,
+                    //     style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+                    //   ),
+                    // ),
+                    const Gap(20),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: FilledButton(
+                        onPressed: () {
+                          Gaimon.light();
+                          controller.height.value = MediaQuery.sizeOf(context).height * 0.5;
+                        },
+                        child: Text(
+                          "get_started".tr,
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ),
+            )
+                .animate(
+                  target: controller.height.value > 0 ? 1 : 0,
+                )
+                .fade(begin: 1, end: 0, duration: Durations.medium2)
+                .scaleXY(begin: 1, end: 0.8, duration: Durations.medium2, curve: Curves.easeInOutCubicEmphasized)
+                .slideY(begin: 0, end: 0.20, duration: Durations.medium2, curve: Curves.easeInOutCubicEmphasized),
           ),
         ],
       ),
