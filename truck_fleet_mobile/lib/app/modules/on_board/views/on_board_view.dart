@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:truck_fleet_mobile/app/components/language_switcher.dart';
 import 'package:truck_fleet_mobile/app/components/theme_switcher.dart';
-import 'package:truck_fleet_mobile/app/modules/layout/views/layout_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_in/views/sign_in_view.dart';
 import 'package:truck_fleet_mobile/app/modules/sign_up/views/sign_up_view.dart';
 

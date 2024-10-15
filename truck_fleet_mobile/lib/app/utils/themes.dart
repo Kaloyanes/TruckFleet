@@ -217,7 +217,7 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       indicatorColor: Colors.transparent,
       height: 80,
     ),
-    bottomAppBarTheme: BottomAppBarTheme(
+    bottomAppBarTheme: const BottomAppBarTheme(
       height: 80,
     ),
     cardTheme: CardTheme(
