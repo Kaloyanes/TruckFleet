@@ -23,7 +23,7 @@ export default function OrdersLayout({
 			<EditOrderContextProvider>
 				<DeleteOrderContextProvider>
 					<DeleteOrderConfirmationDialog />
-					<div className={"relative  flex overflow-hidden flex-1"}>
+					<div className={"relative flex flex-1 overflow-hidden"}>
 						<OrdersMainContent>{children}</OrdersMainContent>
 
 						<OrderSidebar />

@@ -9,7 +9,7 @@ export default function MapPage({
 	// unstable_setRequestLocale(locale);
 
 	return (
-		<div className="h-full w-full relative bg-background">
+		<div className="relative h-full w-full bg-background">
 			<TruckMap />
 		</div>
 	);
