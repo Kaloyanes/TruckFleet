@@ -20,7 +20,6 @@ export default function ErrorPage({
 			<p>
 				We're sorry, an unexpected error occurred. Please try again in a few
 				minutes.
-				{error.stack as string}
 			</p>
 			<button
 				type="button"

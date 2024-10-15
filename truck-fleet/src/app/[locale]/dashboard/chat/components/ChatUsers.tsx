@@ -1,33 +1,49 @@
 "use client";
-import React from "react";
+import { auth, db } from "@/firebase/firebase";
+import useProfileDoc from "@/hooks/useProfileDoc";
+import { collection, orderBy, query, where } from "firebase/firestore";
+import React, { Suspense, useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import {
+	useCollection,
+	useCollectionData,
+} from "react-firebase-hooks/firestore";
+import ChatItem from "./ChatItem";
 
-export default function ChatUsers() {
-	const chats = [
-		{
-			id: 1,
-			name: "John Doe",
-			avatar:
-				"https://firebasestorage.googleapis.com/v0/b/truck-fleet.appspot.com/o/users%2FLBd1a3t0rGWB5ICNZFCbSEI3fjg1%2FprofilePicture.png?alt=media&token=925b0526-aacf-4f07-bf32-d0798e17c321",
-			status: "online",
-		},
-		{
-			id: 1,
-			name: "John Doe",
-			avatar:
-				"https://firebasestorage.googleapis.com/v0/b/truck-fleet.appspot.com/o/users%2F0L6tXVKkt1TtpQQiNjFsCcWzOmG3%2FprofilePicture.png?alt=media&token=efa3c5d8-99cc-445e-afda-f75971f588f4",
-			status: "offline",
-		},
-	];
+export default async function ChatUsers() {
+	// Use the useAuthState hook to get the current user's authentication state
+	const [user, loadingAuth, errorAuth] = useAuthState(auth);
+
+	// Define the query unconditionally, but only run if user is available
+	const chatQuery = user
+		? query(
+				collection(db, "chats"),
+				where("participants", "array-contains", user.uid),
+				orderBy("lastMessageAt", "desc"),
+			)
+		: null;
+
+	// Use the useCollectionData hook unconditionally (pass null if no user)
+	const [chats, chatLoading, error] = useCollection(chatQuery);
+	if (loadingAuth || chatLoading)
+		// Handle loading states
+		return <div>Loading...</div>;
+	if (errorAuth) return <div>Error: {errorAuth.message}</div>;
+	if (error) return <div>Error: {error.message}</div>;
+
+	if (!chats || chats.docs.length === 0) {
+		return <div>No chats available</div>; // Or a fallback if no chats
+	}
 
 	function renderStatus(status: string) {
 		switch (status) {
 			case "online":
 				return (
-					<div className="absolute right-1 bottom-0 h-2 w-2 rounded-full bg-green-500" />
+					<div className="absolute right-1 bottom-0 h-3 w-3 rounded-full bg-green-500" />
 				);
 			case "offline":
 				return (
-					<div className="absolute right-1 bottom-0 h-2 w-2 rounded-full bg-gray-500" />
+					<div className="absolute right-1 bottom-0 h-3 w-3 rounded-full bg-gray-500" />
 				);
 			default:
 				return null;
@@ -36,25 +52,18 @@ export default function ChatUsers() {
 
 	return (
 		<div>
-			{chats.map((chat) => (
-				<div
-					key={chat.id}
-					className="my-2 flex items-center space-x-2 rounded-full p-1 transition-all hover:bg-gray-700"
-				>
-					<div className="relative">
-						<img
-							src={chat.avatar}
-							alt={chat.name}
-							className="h-10 w-10 rounded-full"
-						/>
-						{renderStatus(chat.status)}
-					</div>
-
-					<div>
-						<h3>{chat.name}</h3>
-					</div>
-				</div>
-			))}
+			{chats?.docs.map((chat) =>
+				chat ? (
+					<ChatItem
+						key={chat.id}
+						chatId={chat.id}
+						chat={chat.data()}
+						currentUserId={auth.currentUser?.uid}
+					/>
+				) : (
+					<div key="undefined-chat">Loading chat data...</div>
+				),
+			)}
 		</div>
 	);
 }

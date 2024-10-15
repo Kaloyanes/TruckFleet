@@ -6,7 +6,7 @@ export default function ChatPage({
 	unstable_setRequestLocale(locale);
 
 	return (
-		<h1 className="flex h-screen w-full items-center justify-center text-2xl font-bold">
+		<h1 className="flex h-screen w-full items-center justify-center font-bold text-2xl">
 			Select Chat
 		</h1>
 	);
