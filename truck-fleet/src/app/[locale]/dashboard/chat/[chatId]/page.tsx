@@ -1,15 +1,13 @@
-import OrderList from "@/app/[locale]/dashboard/orders/components/OrderList";
-import { unstable_setRequestLocale } from "next-intl/server";
-import React from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export default function OrdersSlug({
-	params,
-}: { params: { chatId: string; locale: string } }) {
-	unstable_setRequestLocale(params.locale);
-
+export default function ChatSlug({ params }: { params: { chatId: string } }) {
 	return (
-		<div className="w-full">
-			<h1>Hello World</h1>
+		<div className="relative flex flex-col overflow-y-scroll">
+			<ScrollArea className="flex-1 h-screen">
+				{new Array(250).fill(0).map((_, i) => (
+					<h1>My Post: {params.chatId}</h1>
+				))}
+			</ScrollArea>
 		</div>
 	);
 }

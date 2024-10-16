@@ -1,20 +1,20 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { Link } from "@/lib/navigation";
-import type React from "react";
-import { useState, createContext, useContext, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
-import { usePathname } from "next/navigation";
-import { Button } from "./button";
-import type { LinkProps } from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import type { LinkProps } from "next/link";
+import { usePathname } from "next/navigation";
+import type React from "react";
+import { createContext, useContext, useState } from "react";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "./accordion";
+import { Button } from "./button";
 
 interface Links {
 	label: string;
@@ -128,7 +128,7 @@ export const MobileSidebar = ({
 		<>
 			<div
 				className={cn(
-					"h-20 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-background border-b border-border w-full",
+					"flex h-20 w-full flex-row items-center justify-between border-border border-b bg-background px-4 py-4 md:hidden",
 				)}
 				{...props}
 			>
@@ -144,19 +144,19 @@ export const MobileSidebar = ({
 							animate={{ x: 0, opacity: 1 }}
 							exit={{ x: "-100%", opacity: 0.8 }}
 							transition={{
-								duration: 0.6,
+								duration: 0.7,
 								type: "spring",
-								bounce: 0.1,
+								bounce: 0.2,
 							}}
 							className={cn(
-								"fixed h-full w-full inset-0 bg-background p-10 z-[100] flex flex-col justify-between",
+								"fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-background p-10",
 								className,
 							)}
 						>
 							<Button
 								size="icon"
 								variant={"ghost"}
-								className="absolute right-10 top-10 z-50 "
+								className="absolute top-10 right-10 z-50 "
 								onKeyUp={() => setOpen(!open)}
 								onClick={() => setOpen(!open)}
 							>
@@ -190,7 +190,7 @@ export const SidebarLink = ({
 		<Link
 			href={isActive ? "#" : link.href}
 			className={cn(
-				"flex items-center justify-start gap-2 group/sidebar py-2 hover:text-neutral-700 dark:hover:text-neutral-300 hover:scale-[1.02] bg-transparent  rounded-lg px-2.5 mx-1 transition-all duration-600 ease-out",
+				"group/sidebar mx-1 flex items-center justify-start gap-2 rounded-lg bg-transparent px-2.5 py-2 transition-all duration-600 ease-out hover:scale-[1.02] hover:text-neutral-700 dark:hover:text-neutral-300",
 				className,
 				isActive ? "bg-accent" : "hover:bg-accent/50",
 			)}
@@ -202,11 +202,11 @@ export const SidebarLink = ({
 				animate={{
 					display: animate ? (open ? "inline-block" : "none") : "inline-block",
 					opacity: animate ? (open ? 1 : 0) : 1,
-					scale: animate ? (open ? 1 : 0.2) : 1,
-					x: animate ? (open ? 0 : -50) : 0,
+					scale: animate ? (open ? 1 : 0.4) : 1,
+					x: animate ? (open ? 0 : -30) : 0,
 				}}
-				transition={{ duration: 0.3, type: "spring", bounce: 0.3 }}
-				className=" text-sm group-hover/sidebar:translate-x-1 transition ease-out duration-300 whitespace-pre inline-block !p-0 !m-0  "
+				transition={{ duration: 0.3, type: "spring", bounce: 0.2 }}
+				className=" !p-0 !m-0 inline-block whitespace-pre text-sm transition duration-300 ease-out group-hover/sidebar:translate-x-1 "
 			>
 				{link.customLabel ? link.label : t(link.label.toLowerCase() as any)}
 			</motion.span>

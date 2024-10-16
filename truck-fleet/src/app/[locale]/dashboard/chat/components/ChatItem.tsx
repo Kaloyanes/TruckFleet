@@ -1,7 +1,9 @@
 "use client";
-import React, { useMemo } from "react";
 import useProfileDoc from "@/hooks/useProfileDoc";
+import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useMemo } from "react";
 
 interface ChatItemProps {
 	chat: any;
@@ -15,7 +17,9 @@ export default function ChatItem({
 	chatId,
 }: ChatItemProps) {
 	// Get the other participant's ID
-	const participantId = chat.participants.find((p: any) => p !== currentUserId);
+	const participantId = chat.participants.find(
+		(p: string) => p !== currentUserId,
+	);
 
 	// Fetch the profile of the other participant
 	const { profile, loading, error } = useProfileDoc(participantId);
@@ -25,11 +29,11 @@ export default function ChatItem({
 			switch (status) {
 				case "online":
 					return (
-						<div className="absolute right-1 bottom-0 h-3 w-3 rounded-full bg-green-500" />
+						<div className="absolute right-0 bottom-0 h-4 w-4 rounded-full bg-green-500" />
 					);
 				case "offline":
 					return (
-						<div className="absolute right-1 bottom-0 h-3 w-3 rounded-full bg-gray-500" />
+						<div className="absolute right-0 bottom-0 h-4 w-4 rounded-full bg-gray-500" />
 					);
 				default:
 					return null;
@@ -37,20 +41,24 @@ export default function ChatItem({
 		};
 	}, []);
 
+	const params = useParams();
+
 	// Handle loading and error states
 	if (loading) return <div>Loading profile...</div>;
 	if (error) return <div>Error loading profile</div>;
 	if (!profile) return <div>Loading...</div>;
-	console.log(chat);
+	console.log(params.chatId);
 
 	return (
-		<Link href={`/chat/${chatId}`}>
+		<Link href={`/dashboard/chat/${chatId}`}>
 			<div
-				key={chat.id}
-				className="my-2 flex items-center space-x-2 rounded-full p-1 transition-all hover:bg-gray-700"
+				key={chatId}
+				className={`my-2 flex items-center gap-3 rounded-full p-1 transition-all ease-in-out ${chatId === params.chatId ? "bg-secondary font-semibold" : "hover:bg-secondary/50"}`}
 			>
 				<div className="relative">
-					<img
+					<Image
+						width={48 * 2}
+						height={48 * 2}
 						src={profile.photoUrl}
 						alt={profile.name}
 						className="h-12 w-12 rounded-full"
