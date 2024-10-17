@@ -47,7 +47,6 @@ export default function ChatItem({
 	if (loading) return <div>Loading profile...</div>;
 	if (error) return <div>Error loading profile</div>;
 	if (!profile) return <div>Loading...</div>;
-	console.log(params.chatId);
 
 	return (
 		<Link href={`/dashboard/chat/${chatId}`}>

@@ -1,11 +1,50 @@
-import React from "react";
+import { cn } from "@/lib/utils";
+import { type VariantProps, cva } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
+import type React from "react";
 
-export default function LoadingSpinner() {
+const spinnerVariants = cva("flex-col items-center justify-center", {
+	variants: {
+		show: {
+			true: "flex",
+			false: "hidden",
+		},
+	},
+	defaultVariants: {
+		show: true,
+	},
+});
+
+const loaderVariants = cva("animate-spin text-primary", {
+	variants: {
+		size: {
+			small: "size-6",
+			medium: "size-8",
+			large: "size-12",
+		},
+	},
+	defaultVariants: {
+		size: "medium",
+	},
+});
+
+interface SpinnerContentProps
+	extends VariantProps<typeof spinnerVariants>,
+		VariantProps<typeof loaderVariants> {
+	className?: string;
+	children?: React.ReactNode;
+}
+
+export function Spinner({
+	size,
+	show,
+	children,
+	className,
+}: SpinnerContentProps) {
 	return (
-		<div className="flex flex-col items-center justify-center h-screen w-screen z-[10000] ">
-			<div className="w-20 h-20 mt-4">
-				<div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-gray-900 dark:border-gray-100" />
-			</div>
-		</div>
+		<span className={spinnerVariants({ show })}>
+			<Loader2 className={cn(loaderVariants({ size }), className)} />
+			{children}
+		</span>
 	);
 }

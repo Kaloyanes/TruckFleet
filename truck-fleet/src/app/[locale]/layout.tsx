@@ -46,12 +46,14 @@ export default async function RootLayout({
 				<link rel="icon" href="/packages_light.png" />
 			</head>
 			<body className={noto.className}>
-				
-
 				<Favicon />
 				<MotionConfigProvider
 					props={{
 						reducedMotion: "user",
+						transition: {
+							bounce: 0.2,
+							type: "spring",
+						},
 					}}
 				>
 					<ThemeProvider

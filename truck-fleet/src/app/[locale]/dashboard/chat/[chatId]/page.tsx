@@ -6,7 +6,7 @@ export default function ChatSlug({ params }: { params: { chatId: string } }) {
 			<ScrollArea className="h-screen">
 				<ScrollBar />
 				{new Array(250).fill(0).map((_, i) => (
-					<h1 key={i}>My Post: {params.chatId}</h1>
+					<h1 key={Math.random()}>My Post: {params.chatId}</h1>
 				))}
 			</ScrollArea>
 		</div>
