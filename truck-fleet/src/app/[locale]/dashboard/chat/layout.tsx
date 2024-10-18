@@ -1,5 +1,4 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import ChatInput from "./[chatId]/components/ChatInput";
 import ChatUsers from "./components/ChatUsers";
 
 export default function ChatLayout({
@@ -18,8 +17,7 @@ export default function ChatLayout({
 			</Card>
 
 			<Card className="relative w-full flex-1 rounded-none border-0 border-border border-l backdrop-saturate-150 transition-all duration-300">
-				<div className="relative w-full">{children}</div>
-				<ChatInput />
+				<div className="relative w-full">{children}</div>x{" "}
 			</Card>
 		</div>
 	);

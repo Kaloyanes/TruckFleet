@@ -1,5 +1,5 @@
-import { browserLocalPersistence, initializeAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import { browserLocalPersistence, initializeAuth } from "firebase/auth";
 import {
   CACHE_SIZE_UNLIMITED,
   initializeFirestore,

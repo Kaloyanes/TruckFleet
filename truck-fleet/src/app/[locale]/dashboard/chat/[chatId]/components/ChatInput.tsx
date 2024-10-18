@@ -7,6 +7,8 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Spinner } from "@/components/ui/loading-spinner";
+import { auth, db } from "@/firebase/firebase";
 import {
 	IconMap2,
 	IconMicrophone,
@@ -14,44 +16,60 @@ import {
 	IconPlus,
 	IconSend2,
 } from "@tabler/icons-react";
+import { addDoc, collection } from "firebase/firestore";
 import { motion } from "framer-motion";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ChatInput() {
 	const [message, setMessage] = useState("");
 	const [showSend, setShowSend] = useState(false);
+	const chatId = useParams().chatId;
+
+	const [user, loadingAuth, errorAuth] = useAuthState(auth);
 
 	useEffect(() => {
 		setShowSend(message.trim().length > 0);
 	}, [message]);
 
-	const container = {
-		hidden: { opacity: 0 },
-		show: {
-			opacity: 1,
-			transition: {
-				staggerChildren: 0.5,
-			},
-		},
-	};
+	if (loadingAuth) return <Spinner />;
 
-	const item = {
-		hidden: { opacity: 0 },
-		show: { opacity: 1 },
-	};
+	const messagesCollection = collection(db, `chats/${chatId}/messages`);
+
+	async function sendMessage(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+		if (e.key !== "Enter") {
+			return;
+		}
+
+		e.preventDefault();
+		if (!showSend) {
+			return;
+		}
+		const tempMessage = message;
+		setMessage("");
+
+		console.log(message);
+		await addDoc(messagesCollection, {
+			content: tempMessage,
+			createdAt: new Date(),
+			sender: user?.uid,
+			type: "text",
+		});
+	}
 
 	return (
 		<motion.div
 			className="fixed right-0 bottom-0 left-0 m-2 flex items-center gap-2"
 			initial={{
-				scale: 0.2,
+				y: 50,
 				opacity: 0,
-				y: 150,
+				gap: -10,
 			}}
 			animate={{
-				scale: 1,
-				opacity: 1,
 				y: 0,
+				gap: 8,
+				opacity: 1,
 				transition: {
 					type: "spring",
 					bounce: 0.15,
@@ -60,7 +78,7 @@ export default function ChatInput() {
 		>
 			<motion.div
 				className="flex items-center gap-2"
-				initial={{ opacity: 0, x: 50 }}
+				initial={{ opacity: 0, x: 100 }}
 				animate={{ opacity: 1, x: 0 }}
 			>
 				<DropdownMenu>
@@ -128,9 +146,10 @@ export default function ChatInput() {
 					onChange={(e) => setMessage(e.target.value)}
 					maxHeight={100}
 					minHeight={30}
+					onKeyDown={sendMessage}
 				/>
 				<Button
-					className="absolute right-0 top-0"
+					className="absolute top-0 right-0"
 					size={"icon"}
 					variant={"outline"}
 				>

@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/ui/loading-spinner";
 import { auth, db } from "@/firebase/firebase";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { motion } from "framer-motion";
@@ -23,7 +24,12 @@ export default function ChatUsers() {
 
 	const [chats, loading, error] = useCollection(chatQuery);
 
-	if (loadingAuth || loading) return <div>Loading...</div>;
+	if (loadingAuth || loading)
+		return (
+			<div className="flex h-full flex-col items-center justify-center">
+				<Spinner />
+			</div>
+		);
 	if (errorAuth) return <div>Error: {errorAuth.message}</div>;
 	if (error) return <div>Error: {error.message}</div>;
 
