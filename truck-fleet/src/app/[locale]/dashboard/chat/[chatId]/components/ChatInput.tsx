@@ -22,7 +22,7 @@ export default function ChatInput() {
 	const [showSend, setShowSend] = useState(false);
 
 	useEffect(() => {
-		setShowSend(message.length > 0);
+		setShowSend(message.trim().length > 0);
 	}, [message]);
 
 	const container = {
@@ -92,10 +92,6 @@ export default function ChatInput() {
 									icon: <IconPhoto />,
 									label: "Photo",
 								},
-								{
-									icon: <IconMicrophone />,
-									label: "Voice Message",
-								},
 							].map((item) => {
 								return (
 									<motion.div
@@ -123,15 +119,24 @@ export default function ChatInput() {
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</motion.div>
-			<AutosizeTextarea
-				className="h-10 flex-1 resize-none whitespace-pre-wrap transition-all duration-75 ease-in-out "
-				placeholder="Type a message..."
-				value={message}
-				onChange={(e) => setMessage(e.target.value)}
-				maxHeight={100}
-				minHeight={30}
-			/>
 
+			<div className="relative flex-1">
+				<AutosizeTextarea
+					className="h-10 flex-1 resize-none whitespace-pre-wrap transition-all duration-75 ease-in-out "
+					placeholder="Type a message..."
+					value={message}
+					onChange={(e) => setMessage(e.target.value)}
+					maxHeight={100}
+					minHeight={30}
+				/>
+				<Button
+					className="absolute right-0 top-0"
+					size={"icon"}
+					variant={"outline"}
+				>
+					<IconMicrophone />
+				</Button>
+			</div>
 			<motion.div
 				variants={{
 					hidden: { opacity: 0, width: 0, x: 50 },
