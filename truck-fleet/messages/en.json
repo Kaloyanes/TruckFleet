@@ -31,10 +31,12 @@
     "chat": "Chat",
     "dashboard": "Dashboard",
     "map": "Map",
+    "Fleet Managment": "Fleet Managment",
     "orders": "Orders",
     "drivers": "Drivers",
     "trucks": "Trucks",
     "settings": "Settings",
+    "account": "Account",
     "sign out": "Sign Out"
   },
   "LocaleSwitcher": {

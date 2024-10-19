@@ -39,7 +39,7 @@ export const useAutosizeTextArea = ({
 				textAreaRef.style.height = `${scrollHeight + offsetBorder}px`;
 			}
 		}
-	}, [textAreaRef, triggerAutoSize]);
+	}, [textAreaRef, init, maxHeight, minHeight]);
 };
 
 export type AutosizeTextAreaRef = {
@@ -87,7 +87,7 @@ export const AutosizeTextarea = React.forwardRef<
 
 		React.useEffect(() => {
 			setTriggerAutoSize(value as string);
-		}, [props?.defaultValue, value]);
+		}, [value]);
 
 		return (
 			<textarea
