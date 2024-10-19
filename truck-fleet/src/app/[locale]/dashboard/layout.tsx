@@ -2,12 +2,6 @@ import DashboardSidebar from "@/app/[locale]/dashboard/components/DashboardSideb
 import AuthRedirect from "@/components/redirects/AuthRedirect";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { unstable_setRequestLocale } from "next-intl/server";
-import { CSSProperties } from "react";
-
-interface CustomCSSProperties extends CSSProperties {
-	"--sidebar-width"?: string;
-	"--sidebar-width-mobile"?: string;
-}
 
 export default function DashboardLayout({
 	children,
@@ -26,7 +20,7 @@ export default function DashboardLayout({
 					{
 						"--sidebar-width": "15rem",
 						"--sidebar-width-mobile": "20rem",
-					} as CustomCSSProperties
+					} as React.CSSProperties
 				}
 				className="relative flex h-screen max-h-screen max-w-[100vw] "
 			>
