@@ -124,7 +124,11 @@ export default function DashboardSidebar() {
 	return (
 		<Sidebar collapsible="icon">
 			<SidebarHeader>
-				<SidebarMenuButton size={"lg"} className="font-bold">
+				<SidebarMenuButton
+					size={"lg"}
+					className="font-bold"
+					tooltip={"Truck Fleet"}
+				>
 					<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 						<IconPackages className="size-6" />
 					</div>
@@ -149,7 +153,7 @@ export default function DashboardSidebar() {
 											<CollapsibleTrigger asChild>
 												<SidebarMenuButton
 													size={"lg"}
-													tooltip={item.title}
+													tooltip={t(item.title as any)}
 													isActive={firstGroupIsActive}
 												>
 													<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
@@ -222,7 +226,7 @@ export default function DashboardSidebar() {
 					<SidebarMenuButton
 						onClick={toggleSidebar}
 						size={"lg"}
-						tooltip={"collapse"}
+						tooltip={t("collapse")}
 					>
 						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 							<IconLayoutSidebar className="size-6 flex-shrink-0" />
