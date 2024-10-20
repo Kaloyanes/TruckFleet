@@ -1,6 +1,6 @@
 import LoginForm from "@/app/[locale]/(auth)/login/components/LoginForm";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
-import { TruckIcon } from "lucide-react";
+import { IconPackages } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 // fkoskfo
@@ -15,21 +15,25 @@ export default function Login({
 			<div className="absolute top-5 right-5 z-50">
 				<ThemeToggle />
 			</div>
-			<div className="flex max-h-screen h-screen   z-10  ">
-				<div className="flex-1 bg-dot-white/10 max-w-[50vw] lg:block hidden relative">
-					<div className="absolute top-10 left-10 gap-2 items-center flex text-white ">
-						<TruckIcon />
-						<h1 className="text-xl font-bold">Truck Fleet</h1>
+			<div className="z-10 flex h-screen max-h-screen ">
+				<div className="relative hidden max-w-[50vw] flex-1 bg-dot-black/15 lg:block dark:bg-dot-white/15">
+					<div className="absolute top-10 left-10 gap-2 items-center flex dark:text-white ">
+						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+							<IconPackages className="size-6" />
+						</div>
+						<div className="grid flex-1 text-left text-lg leading-tight">
+							<span className="truncate font-semibold">Truck Fleet</span>
+						</div>
 					</div>
 				</div>
 
-				<div className="flex-1 relative p-20 xl:p-52 flex flex-col items-center lg:max-w-[50vw] bg-background justify-center gap-10">
+				<div className="relative flex flex-1 flex-col items-center justify-center gap-10 bg-background p-20 lg:max-w-[50vw] xl:p-52">
 					{/* Mask fade */}
 					<div className="space-y-2 text-center">
-						<h1 className="text-3xl font-sans capitalize">
+						<h1 className="font-sans text-3xl font-semibold capitalize">
 							{t("welcome_back")}
 						</h1>
-						<h3 className="text-lg font-sans text-neutral-400">
+						<h3 className="font-sans text-lg text-neutral-600 dark:text-neutral-400">
 							{t("welcome_description")}
 						</h3>
 					</div>

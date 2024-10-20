@@ -37,7 +37,8 @@
     "trucks": "Trucks",
     "settings": "Settings",
     "account": "Account",
-    "sign out": "Sign Out"
+    "sign out": "Sign Out",
+    "collapse": "Collapse"
   },
   "LocaleSwitcher": {
     "bg": "Bulgarian",

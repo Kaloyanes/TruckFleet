@@ -5,6 +5,7 @@ import { messageConverter } from "@/firebase/converters/messageConverter";
 import { auth, db } from "@/firebase/firebase";
 import { redirect } from "@/lib/navigation";
 import { collection, doc, orderBy, query } from "firebase/firestore";
+import { useParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
 	useCollectionData,
@@ -12,7 +13,8 @@ import {
 } from "react-firebase-hooks/firestore";
 import ChatMessage from "./ChatMessage";
 
-export default function ChatWindow({ chatId }: { chatId: string }) {
+export default function ChatWindow() {
+	const chatId = useParams().chatId as string;
 	const [user, userLoading, userError] = useAuthState(auth);
 
 	const [chatData, chatLoading, chatError] = useDocumentData(

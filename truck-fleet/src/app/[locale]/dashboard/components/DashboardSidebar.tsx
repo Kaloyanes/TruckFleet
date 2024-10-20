@@ -51,51 +51,49 @@ export default function DashboardSidebar() {
 
 	const pathName = usePathname();
 
-	const data = {
-		navMain: [
-			{
-				title: "chat",
-				url: "/dashboard/chat",
-				icon: IconMessage,
-			},
-			{
-				title: "dashboard",
-				url: "/dashboard",
-				icon: IconChartPie,
-			},
-			{
-				title: "map",
-				url: "/dashboard/map",
-				icon: IconMap2,
-			},
-			{
-				title: "Fleet Managment",
-				icon: IconTruck,
-				type: "group",
-				items: [
-					{
-						title: "orders",
-						url: "/dashboard/orders",
-						icon: IconReceiptDollar,
-					},
-					{
-						title: "drivers",
-						url: "/dashboard/drivers",
-						icon: IconUsersGroup,
-					},
-					{
-						title: "trucks",
-						url: "/dashboard/trucks",
-						icon: IconTruck,
-					},
-				],
-			},
-		],
-	};
+	const navMain = [
+		{
+			title: "chat",
+			url: "/dashboard/chat",
+			icon: IconMessage,
+		},
+		{
+			title: "dashboard",
+			url: "/dashboard",
+			icon: IconChartPie,
+		},
+		{
+			title: "map",
+			url: "/dashboard/map",
+			icon: IconMap2,
+		},
+		{
+			title: "Fleet Managment",
+			icon: IconTruck,
+			type: "group",
+			items: [
+				{
+					title: "orders",
+					url: "/dashboard/orders",
+					icon: IconReceiptDollar,
+				},
+				{
+					title: "drivers",
+					url: "/dashboard/drivers",
+					icon: IconUsersGroup,
+				},
+				{
+					title: "trucks",
+					url: "/dashboard/trucks",
+					icon: IconTruck,
+				},
+			],
+		},
+	];
 
-	const firstGroupIsActive = data.navMain[3].items?.some((item) =>
-		pathName.includes(item.url),
-	);
+	const firstGroupIsActive = navMain
+		.find((x) => x.type === "group")
+		?.items?.some((item) => pathName.includes(item.url));
 
 	const profileSettings = [
 		{
@@ -138,7 +136,7 @@ export default function DashboardSidebar() {
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarMenu className="space-y-1">
-						{data.navMain.map((item) => {
+						{navMain.map((item) => {
 							if (item.type === "group") {
 								return (
 									<Collapsible
@@ -198,7 +196,12 @@ export default function DashboardSidebar() {
 
 							return (
 								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton size={"lg"} isActive={isActive} asChild>
+									<SidebarMenuButton
+										size={"lg"}
+										isActive={isActive}
+										asChild
+										tooltip={t(item.title as any)}
+									>
 										<Link href={item.url}>
 											<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 												{item.icon && (
@@ -216,11 +219,15 @@ export default function DashboardSidebar() {
 			</SidebarContent>
 			<SidebarFooter>
 				<SidebarMenu className="space-y-1">
-					<SidebarMenuButton onClick={toggleSidebar} size={"lg"}>
+					<SidebarMenuButton
+						onClick={toggleSidebar}
+						size={"lg"}
+						tooltip={"collapse"}
+					>
 						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 							<IconLayoutSidebar className="size-6 flex-shrink-0" />
 						</div>
-						Collapse
+						{t("collapse")}
 					</SidebarMenuButton>
 
 					<SidebarMenuItem>

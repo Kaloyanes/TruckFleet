@@ -34,8 +34,11 @@
     "orders": "Поръчки",
     "drivers": "Шофьори",
     "trucks": "Камиони",
+    "account": "Акаунт",
+    "Fleet Managment": "Управление на флота",
     "settings": "Настройки",
-    "sign out": "Изход"
+    "sign out": "Изход",
+    "collapse": "Свий"
   },
   "LocaleSwitcher": {
     "bg": "Български",
