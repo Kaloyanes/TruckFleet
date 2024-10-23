@@ -9,16 +9,25 @@ import OrderSelectedContextProvider from "@/context/orders/order-selected-contex
 import { unstable_setRequestLocale } from "next-intl/server";
 import { APIProvider } from "@vis.gl/react-google-maps";
 
-export default function OrdersLayout({
-	children,
-	params: { locale },
-}: {
-	children: React.ReactNode;
-	params: { locale: string };
-}) {
-	unstable_setRequestLocale(locale);
+export default async function OrdersLayout(
+    props: {
+        children: React.ReactNode;
+        params: Promise<{ locale: string }>;
+    }
+) {
+    const params = await props.params;
 
-	return (
+    const {
+        locale
+    } = params;
+
+    const {
+        children
+    } = props;
+
+    unstable_setRequestLocale(locale);
+
+    return (
 		<OrderSelectedContextProvider>
 			<EditOrderContextProvider>
 				<DeleteOrderContextProvider>

@@ -1,16 +1,21 @@
+import { use } from "react";
 import LoginForm from "@/app/[locale]/(auth)/login/components/LoginForm";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { IconPackages } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 // fkoskfo
-export default function Login({
-	params: { locale },
-}: { params: { locale: string } }) {
-	unstable_setRequestLocale(locale);
+export default function Login(props: { params: Promise<{ locale: string }> }) {
+    const params = use(props.params);
 
-	const t = useTranslations("LoginPage");
-	return (
+    const {
+        locale
+    } = params;
+
+    unstable_setRequestLocale(locale);
+
+    const t = useTranslations("LoginPage");
+    return (
 		<>
 			<div className="absolute top-5 right-5 z-50">
 				<ThemeToggle />

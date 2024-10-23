@@ -1,20 +1,13 @@
 import {
 	ContextMenu,
+	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuTrigger,
-	ContextMenuContent,
 } from "@/components/ui/context-menu";
-import { Spinner } from "@/components/ui/loading-spinner";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/models/message";
-import {
-	IconClipboard,
-	IconCopy,
-	IconEdit,
-	IconTrash,
-} from "@tabler/icons-react";
-import { format } from "date-fns";
+import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -48,7 +41,7 @@ export default function ChatMessage({
 		},
 	];
 
-	if (loading) return <></>;
+	if (loading || senderProfile === null) return <></>;
 
 	return (
 		<ContextMenu>

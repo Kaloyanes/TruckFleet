@@ -2,12 +2,16 @@ import { unstable_setRequestLocale } from "next-intl/server";
 import DriverList from "./components/DriverList";
 import ToggleView from "./components/ToggleView";
 
-export default function DriversPage({
-	params: { locale },
-}: { params: { locale: string } }) {
-	unstable_setRequestLocale(locale);
+export default async function DriversPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
 
-	return (
+    const {
+        locale
+    } = params;
+
+    unstable_setRequestLocale(locale);
+
+    return (
 		<>
 			<DriverList />
 			<ToggleView />

@@ -158,7 +158,8 @@
     "driver": "Шофьор",
     "speditor": "Спедитор",
     "drivers": "Шофьори",
-    "speditors": "Спедитори"
+    "speditors": "Спедитори",
+    "inviteCode": "Код за покана: {code}"
   },
   "EmployeeList": {
     "name": "Име",

@@ -1,22 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
-import {
-	Sheet,
-	SheetClose,
-	SheetContent,
-	SheetDescription,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { IconX } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
-import { generateCompanyCode } from "@/lib/generateCompanyCode";
+import { useToast } from "@/components/ui/use-toast";
 import useCompanyId from "@/hooks/useCompanyId";
+import { generateCompanyCode } from "@/lib/generateCompanyCode";
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useCopyToClipboard } from "react-use";
-import { useToast } from "@/components/ui/use-toast";
 import GenerateNewCodeButton from "./GenerateNewCodeButton";
 
 export default function InviteCodeInfo() {
@@ -40,18 +29,18 @@ export default function InviteCodeInfo() {
 		if (companyData && companyRef && companyData.companyCode === undefined) {
 			generateCompanyCode(companyRef);
 		}
-	}, [loading]);
+	}, [companyData, companyRef]);
 
 	if (companyRef === null || loading || error) return null;
 
 	return (
-		<div className="flex flex-col gap-2 items-end">
+		<div className="flex flex-col items-end gap-2">
 			<h1
 				onClick={handleCopy}
 				onKeyDown={handleCopy}
-				className="text-xl cursor-pointer"
+				className="cursor-pointer text-xl"
 			>
-				Invite Code: {companyData?.companyCode}
+				{t("inviteCode", { code: companyData?.companyCode })}
 			</h1>
 
 			<GenerateNewCodeButton companyRef={companyRef} />
