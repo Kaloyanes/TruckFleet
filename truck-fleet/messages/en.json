@@ -160,6 +160,13 @@
     "drivers": "Drivers",
     "speditors": "Speditors"
   },
+  "EmployeeList": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "phone": "Phone",
+    "actions": "Actions"
+  },
   "RemoveDriverConfirmationDialog": {
     "title": "Remove Driver",
     "description": "Are you sure you want to remove {name}?",

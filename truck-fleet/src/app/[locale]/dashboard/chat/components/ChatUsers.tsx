@@ -1,5 +1,6 @@
 "use client";
 import { Spinner } from "@/components/ui/loading-spinner";
+import { chatConverter } from "@/firebase/converters/chatConverter";
 import { auth, db } from "@/firebase/firebase";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { motion } from "framer-motion";
@@ -17,7 +18,7 @@ export default function ChatUsers() {
 				collection(db, "chats"),
 				where("participants", "array-contains", user.uid),
 				orderBy("lastMessageAt", "desc"),
-			);
+			).withConverter(chatConverter);
 		}
 		return null;
 	}, [user]);

@@ -159,5 +159,20 @@
     "speditor": "Спедитор",
     "drivers": "Шофьори",
     "speditors": "Спедитори"
+  },
+  "EmployeeList": {
+    "name": "Име",
+    "email": "Имейл",
+    "role": "Роля",
+    "phone": "Телефон",
+    "actions": "Действия"
+  },
+  "RemoveDriverConfirmationDialog": {
+    "title": "Премахни шофьор",
+    "description": "Сигурни ли сте, че искате да премахнете {name}?",
+    "cancel": "Отказ",
+    "remove": "Премахни",
+    "removedSuccessfully": "Шофьорът е успешно премахнат от компанията",
+    "removedDescription": "Шофьор #{name} беше премахнат"
   }
 }

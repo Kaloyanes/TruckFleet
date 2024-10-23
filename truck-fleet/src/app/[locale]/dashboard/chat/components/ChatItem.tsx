@@ -1,12 +1,13 @@
 "use client";
 import useProfileDoc from "@/hooks/useProfileDoc";
+import type { Chat } from "@/models/chat";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
 interface ChatItemProps {
-	chat: any;
+	chat: Chat;
 	currentUserId: string | undefined;
 	chatId: string;
 }
