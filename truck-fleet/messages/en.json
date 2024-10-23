@@ -175,5 +175,8 @@
     "remove": "Remove",
     "removedSuccessfully": "Driver successfully removed from the company",
     "removedDescription": "Driver #{name} has been removed"
+  },
+  "ChatPage": {
+    "messageDeleted": "Message deleted successfully"
   }
 }

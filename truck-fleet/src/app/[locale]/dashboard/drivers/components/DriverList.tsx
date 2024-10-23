@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/ui/loading-spinner";
 import { driverConverter } from "@/firebase/converters/driverConverter";
 import { db } from "@/firebase/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
@@ -18,7 +19,7 @@ export default function DriverList() {
 		).withConverter(driverConverter),
 	);
 
-	if (loading) return <div>Loading...</div>;
+	if (loading) return <Spinner />;
 	if (error) return <div>Error: {error.message}</div>;
 	if (!drivers) return <div />;
 

@@ -8,8 +8,8 @@ export default function ChatLayout({
 }) {
 	return (
 		<div className={"relative flex flex-1 overflow-hidden"}>
-			<Card className="relative w-full flex-[0.15] rounded-none border-0 border-border border-l px-3 backdrop-saturate-150 transition-all duration-">
-				<CardHeader className="px-0 flex">
+			<Card className="relative w-full flex-[0.2] rounded-none border-0 border-border border-l px-3 backdrop-saturate-150 transition-all duration-300">
+				<CardHeader className="flex px-0">
 					<CardTitle className="flex items-center gap-2">Chats</CardTitle>
 				</CardHeader>
 

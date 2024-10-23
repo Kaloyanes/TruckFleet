@@ -1,16 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { orderConverter } from "@/firebase/converters/orderConverter";
-import { db } from "@/firebase/firebase";
-import useCompanyId from "@/hooks/useCompanyId";
 import { getCssVariableValue } from "@/lib/utils";
-import { IconCircle } from "@tabler/icons-react";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
-import { collection, orderBy, query, where } from "firebase/firestore";
 import { useLocale } from "next-intl";
-import React, { useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useCss } from "react-use";
+import { useEffect, useState } from "react";
 
 export default function TruckDirections({
 	originAddress,
@@ -23,17 +15,22 @@ export default function TruckDirections({
 }) {
 	useEffect(() => {
 		console.log(originAddress, destinationAddress, waypoints);
-	}, []);
+	}, [destinationAddress, originAddress, waypoints]);
 
 	const map = useMap();
 	const routesLibrary = useMapsLibrary("routes");
+
 	const [directionsService, setDirectionsService] =
 		useState<google.maps.DirectionsService>();
+
 	const [directionsRenderer, setDirectionsRenderer] =
 		useState<google.maps.DirectionsRenderer>();
+
 	const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
 	const [routeIndex, setRouteIndex] = useState(0);
+
 	const selected = routes[routeIndex];
+
 	const leg = selected?.legs[0];
 
 	// Initialize directions service and renderer
@@ -87,7 +84,13 @@ export default function TruckDirections({
 			});
 
 		return () => directionsRenderer.setMap(null);
-	}, [directionsService, directionsRenderer]);
+	}, [
+		directionsService,
+		directionsRenderer,
+		destinationAddress,
+		locale,
+		originAddress,
+	]);
 
 	// Update direction route
 	useEffect(() => {

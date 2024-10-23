@@ -175,5 +175,8 @@
     "remove": "Премахни",
     "removedSuccessfully": "Шофьорът е успешно премахнат от компанията",
     "removedDescription": "Шофьор #{name} беше премахнат"
+  },
+  "ChatPage": {
+    "messageDeleted": "Съобщението беше изтрито успешно"
   }
 }

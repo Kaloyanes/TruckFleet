@@ -4,25 +4,66 @@ import {
 	ContextMenuItem,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { useToast } from "@/components/ui/use-toast";
+import { db } from "@/firebase/firebase";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/models/message";
 import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
+import { deleteDoc, doc } from "firebase/firestore";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useCopyToClipboard } from "react-use";
 
 export default function ChatMessage({
 	message,
 	userId,
 }: { message: Message; userId: string }) {
 	const { profile: senderProfile, loading } = useProfileDoc(message.sender);
+	const { chatId } = useParams();
+	const { toast } = useToast();
+	const [clipboard, setCopyToClipboard] = useCopyToClipboard();
+	const docRef = doc(db, "chats", chatId as string, "messages", message.id);
+
+	const tGeneral = useTranslations("General");
+	const t = useTranslations("ChatPage");
+
+	function copyMessage() {
+		setCopyToClipboard(message.content.trim());
+
+		toast({
+			title: tGeneral("copiedToClipboard"),
+			variant: "success",
+			duration: 2000,
+		});
+	}
+
+	console.log(docRef);
+
+	async function deleteMessage() {
+		try {
+			await deleteDoc(docRef);
+		} catch (e: any) {
+			console.log(e);
+			toast({
+				title: e.message,
+			});
+			return;
+		}
+
+		toast({
+			title: t("messageDeleted"),
+		});
+	}
 
 	const messageOptions = [
 		{
 			icon: IconClipboard,
 			label: "Copy",
 			isSender: false,
-			onPress: () => {},
+			onPress: copyMessage,
 			danger: false,
 		},
 		{
@@ -36,7 +77,7 @@ export default function ChatMessage({
 			icon: IconTrash,
 			label: "Delete",
 			isSender: true,
-			onPress: () => {},
+			onPress: deleteMessage,
 			danger: true,
 		},
 	];
@@ -66,7 +107,6 @@ export default function ChatMessage({
 			</div>
 			<ContextMenuContent>
 				<motion.div
-					className="flex flex-col gap-1"
 					variants={{
 						hidden: {},
 						visible: {
@@ -112,7 +152,7 @@ export default function ChatMessage({
 									visible: { opacity: 1, y: 0, scale: 1 },
 								}}
 							>
-								<ContextMenuItem className="gap-2">
+								<ContextMenuItem className="gap-2" onClick={item.onPress}>
 									<item.icon />
 									{item.label}
 								</ContextMenuItem>

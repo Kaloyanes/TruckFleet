@@ -1,9 +1,9 @@
 "use client";
 
+import { Spinner } from "@/components/ui/loading-spinner";
 import { orderConverter } from "@/firebase/converters/orderConverter";
 import { db } from "@/firebase/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
-import { IconNavigation } from "@tabler/icons-react";
 import {
 	AdvancedMarker,
 	Map as GoogleMap,
@@ -33,7 +33,7 @@ export default function TruckMap() {
 	const mapId =
 		resolvedTheme === "dark" ? "71b489216afed105" : "41fca17a46fdb39e";
 
-	if (loading || loadingUsers) return <div>Loading...</div>;
+	if (loading || loadingUsers) return <Spinner />;
 	if (error || errorUsers)
 		return (
 			<div>Error fetching orders {error?.message ?? errorUsers?.message}</div>
@@ -90,14 +90,16 @@ export default function TruckMap() {
 						/>
 					);
 				})}
+
 				<Marker position={{ lat: 53.54992, lng: 10.00678 }} />
+
 				{users.map((user) => {
 					if (user.location === undefined) return <></>;
 					console.log(user.location);
 
 					return (
 						<AdvancedMarker
-							key={user.id}
+							key={user.id + Math.random().toString()}
 							position={{
 								lat: user.location.latitude,
 								lng: user.location.longitude,

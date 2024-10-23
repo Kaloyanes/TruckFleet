@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/ui/loading-spinner";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import type { Chat } from "@/models/chat";
 import Image from "next/image";
@@ -47,7 +48,7 @@ export default function ChatItem({
 	// Handle loading and error states
 	if (loading) return <div>Loading profile...</div>;
 	if (error) return <div>Error loading profile</div>;
-	if (!profile) return <div>Loading...</div>;
+	if (!profile) return <Spinner />;
 
 	return (
 		<Link href={`/dashboard/chat/${chatId}`}>
