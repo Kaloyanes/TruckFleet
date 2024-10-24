@@ -43,7 +43,7 @@ import {
 	IconUser,
 	IconUsersGroup,
 } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 export default function DashboardSidebar() {
@@ -155,6 +155,7 @@ export default function DashboardSidebar() {
 													size={"lg"}
 													tooltip={t(item.title as any)}
 													isActive={firstGroupIsActive}
+													className="z-50"
 												>
 													<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 														{item.icon && (
@@ -167,22 +168,59 @@ export default function DashboardSidebar() {
 													<IconChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
 												</SidebarMenuButton>
 											</CollapsibleTrigger>
-											<CollapsibleContent className="data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 text-popover-foreground outline-none data-[state=closed]:animate-out data-[state=open]:animate-in">
+											<CollapsibleContent className="data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 [state=closed]:zoom-out-95 data-[state=open]:fade-in-0 duration-300 ease-in-out data-[state=closed]:animate-out data-[state=open]:animate-in">
 												<SidebarMenuSub>
-													{item.items?.map((subItem) => (
-														<SidebarMenuSubItem key={subItem.title}>
-															<SidebarMenuSubButton
-																size="md"
-																asChild
-																isActive={pathName.includes(subItem.url)}
-															>
-																<Link href={subItem.url}>
-																	{subItem.icon && <subItem.icon />}
-																	<span>{t(subItem.title as any)}</span>
-																</Link>
-															</SidebarMenuSubButton>
-														</SidebarMenuSubItem>
-													))}
+													<AnimatePresence>
+														<motion.div
+															variants={{
+																hidden: {},
+																visible: {
+																	transition: {
+																		staggerChildren: 0.07,
+																		delayChildren: 0.05,
+																	},
+																},
+															}}
+															initial="hidden"
+															animate="visible"
+															exit={"hidden"}
+														>
+															{item.items?.map((subItem) => (
+																<motion.div
+																	key={subItem.url}
+																	variants={{
+																		hidden: {
+																			opacity: 0,
+																			y: -20,
+																			// scale: 0.5,
+																		},
+																		visible: {
+																			opacity: 1,
+																			y: 0,
+																			// scale: 1,
+																			transition: {
+																				type: "spring",
+																				bounce: 0.3,
+																			},
+																		},
+																	}}
+																>
+																	<SidebarMenuSubItem key={subItem.title}>
+																		<SidebarMenuSubButton
+																			size="md"
+																			asChild
+																			isActive={pathName.includes(subItem.url)}
+																		>
+																			<Link href={subItem.url}>
+																				{subItem.icon && <subItem.icon />}
+																				<span>{t(subItem.title as any)}</span>
+																			</Link>
+																		</SidebarMenuSubButton>
+																	</SidebarMenuSubItem>
+																</motion.div>
+															))}
+														</motion.div>
+													</AnimatePresence>
 												</SidebarMenuSub>
 											</CollapsibleContent>
 										</SidebarMenuItem>
