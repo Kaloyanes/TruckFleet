@@ -1,60 +1,66 @@
-import type {
-	DocumentData,
-	DocumentReference,
-	Timestamp,
-} from "firebase/firestore";
-import type { ColumnDef } from "@tanstack/react-table";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useContext, useEffect, useState } from "react";
-import { useDocumentData } from "react-firebase-hooks/firestore";
-import { useTranslations } from "next-intl";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import {
-	IconArrowDown,
-	IconArrowsRightDown,
-	IconDetails,
-	IconEdit,
-	IconFilter,
-	IconListDetails,
-	IconMenu,
-	IconMenu2,
-	IconSearch,
-	IconTrash,
-} from "@tabler/icons-react";
-import type { Order } from "@/models/orders";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import {
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { truckConverter } from "@/firebase/converters/truckConverter";
-import { motion } from "framer-motion";
-import { driverConverter } from "@/firebase/converters/driverConverter";
-import { companyConverter } from "@/firebase/converters/companyConverter";
-import Link from "next/link";
-import { useEditOrderContext } from "@/context/orders/order-edit-context";
-import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { useCopyToClipboard } from "react-use";
-import Locations from "./Locations";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useToast } from "@/components/ui/use-toast";
+import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
+import { useEditOrderContext } from "@/context/orders/order-edit-context";
+import { companyConverter } from "@/firebase/converters/companyConverter";
+import { driverConverter } from "@/firebase/converters/driverConverter";
+import { truckConverter } from "@/firebase/converters/truckConverter";
+import {
+	dropdownMenuParentVariants,
+	dropdownMenuVariants,
+} from "@/lib/dropdownMenuVariants";
+import { cn } from "@/lib/utils";
+import type { Order } from "@/models/orders";
+import {
+	Icon,
+	IconArrowDown,
+	IconCalendarFilled,
+	IconEdit,
+	IconFilter,
+	IconListDetails,
+	IconMail,
+	IconMenu2,
+	IconPhone,
+	IconProps,
+	IconStatusChange,
+	IconTrash,
+	IconTruckDelivery,
+	IconUser,
+	IconWeight,
+} from "@tabler/icons-react";
+import type { ColumnDef } from "@tanstack/react-table";
+import type { DocumentReference } from "firebase/firestore";
+import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useCopyToClipboard } from "react-use";
+import AnimatedHover from "./AnimatedHover";
+import Locations from "./Locations";
 
 export const OrderColumns: ColumnDef<Order>[] = [
 	{
@@ -74,14 +80,13 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		accessorKey: "id",
 		header(props) {
 			const t = useTranslations("OrderList");
-			const { toast } = useToast();
 
 			return (
-				<div className="flex gap-2 items-center">
+				<div className="flex items-center gap-2">
 					<span>{t("orderId")}</span>
 					<Popover>
 						<PopoverTrigger>
-							<Button size={"icon"} className="w-8 h-8" variant={"outline"}>
+							<Button size={"icon"} className="h-8 w-8" variant={"outline"}>
 								<IconFilter size={18} />
 							</Button>
 						</PopoverTrigger>
@@ -130,11 +135,11 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		header(props) {
 			const t = useTranslations();
 			return (
-				<div className="flex gap-2 items-center">
+				<div className="flex items-center gap-2">
 					<span>{t("OrderList.status")}</span>
 					<Popover>
 						<PopoverTrigger>
-							<Button size={"icon"} className="w-8 h-8" variant={"outline"}>
+							<Button size={"icon"} className="h-8 w-8" variant={"outline"}>
 								<IconFilter size={18} />
 							</Button>
 						</PopoverTrigger>
@@ -147,7 +152,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 										?.getFilterValue() as string) ?? ""
 								}
 								onValueChange={(value) => {
-									if (value === "") value = "";
+									// if (value === "") value = "";
 
 									props.table.getColumn("status")?.setFilterValue(value);
 								}}
@@ -211,46 +216,58 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				});
 			}
 
+			const actions: {
+				label?: string;
+				type: "separator" | "info" | "label";
+				value?: string;
+				icon?:
+					| ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>
+					| undefined;
+				onClick?: () => void;
+			}[] = [
+				{
+					label: "OrderList.driverDetails",
+					type: "label",
+					icon: IconListDetails,
+				},
+				{
+					type: "separator",
+				},
+				{
+					label: "LoginPage.email",
+					type: "info",
+					icon: IconMail,
+					value: driver.email,
+					onClick() {
+						handleCopy(driver.email);
+					},
+				},
+				{
+					label: "OrderList.phone",
+					type: "info",
+					icon: IconPhone,
+					value: driver.phone,
+					onClick() {
+						handleCopy(driver.phone);
+					},
+				},
+			];
+
 			return (
-				<HoverCard openDelay={150} closeDelay={50}>
-					<HoverCardTrigger>
-						<div className="flex gap-2 items-center">
-							<Avatar>
-								<AvatarImage src={driver.photoUrl} alt={driver.name} />
-								<AvatarFallback>
-									{(driver.name as string)
-										?.split(" ")
-										.map((name) => name[0])
-										.join("")}
-								</AvatarFallback>
-							</Avatar>
-							<p>{driver?.name}</p>
-						</div>
-					</HoverCardTrigger>
-					<HoverCardContent className="w-full">
-						<motion.ol
-							initial={{ opacity: 0, scale: 0.7, y: -10 }}
-							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0 }}
-							transition={{
-								duration: 0.3,
-								delay: 0.1,
-								type: "spring",
-								bounce: 0.2,
-								staggerChildren: 0.1,
-							}}
-							className="flex flex-col gap-2 "
-						>
-							<li className=" font-bold">{t("OrderList.driverDetails")}</li>
-							<li className="text-sm" onClick={() => handleCopy(driver.email)}>
-								{t("LoginPage.email")}: {driver?.email}
-							</li>
-							<li className="text-sm" onClick={() => handleCopy(driver.phone)}>
-								{t("OrderList.phone")}: {driver?.phone}
-							</li>
-						</motion.ol>
-					</HoverCardContent>
-				</HoverCard>
+				<AnimatedHover actions={actions}>
+					<div className="flex items-center gap-2">
+						<Avatar>
+							<AvatarImage src={driver.photoUrl} alt={driver.name} />
+							<AvatarFallback>
+								{(driver.name as string)
+									?.split(" ")
+									.map((name) => name[0])
+									.join("")}
+							</AvatarFallback>
+						</Avatar>
+						<p>{driver?.name}</p>
+					</div>
+				</AnimatedHover>
 			);
 		},
 	},
@@ -263,30 +280,54 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		cell: ({ getValue }) => {
 			const truckRef = getValue() as DocumentReference;
 			const [truck] = useDocumentData(truckRef.withConverter(truckConverter));
+
+			const t = useTranslations("OrderList");
+
+			const actions: {
+				label?: string;
+				type: "separator" | "info" | "label";
+				value?: string;
+				icon?:
+					| ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>
+					| undefined;
+				onClick?: () => void;
+			}[] = [
+				{
+					label: "OrderList.truckDetails",
+					type: "label",
+					icon: IconListDetails,
+				},
+				{
+					type: "separator",
+				},
+				{
+					label: "OrderList.licensePlate",
+					type: "info",
+					icon: IconTruckDelivery,
+					value: truck?.licensePlate,
+				},
+				{
+					label: "OrderList.model",
+					type: "info",
+					icon: IconCalendarFilled,
+					value: `${truck?.model} ${truck?.year}`,
+				},
+				{
+					label: "OrderList.status",
+					type: "info",
+					icon: IconStatusChange,
+					value: truck?.status,
+				},
+				{
+					label: "OrderList.capacity",
+					type: "info",
+					icon: IconWeight,
+					value: `${truck?.capacity} kg`,
+				},
+			];
+
 			return (
-				<HoverCard openDelay={150} closeDelay={50}>
-					<HoverCardTrigger>{truck?.licensePlate}</HoverCardTrigger>
-					<HoverCardContent>
-						<motion.div
-							initial={{ opacity: 0, scale: 0.7, y: -10 }}
-							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0 }}
-							transition={{
-								duration: 0.3,
-								delay: 0.1,
-								type: "spring",
-								bounce: 0.2,
-							}}
-							className="flex flex-col gap-2"
-						>
-							<span>
-								Model: {truck?.model} {truck?.year}
-							</span>
-							<span>Status: {truck?.status}</span>
-							<span>Capacity: {truck?.capacity}</span>
-						</motion.div>
-					</HoverCardContent>
-				</HoverCard>
+				<AnimatedHover actions={actions}>{truck?.licensePlate}</AnimatedHover>
 			);
 		},
 	},
@@ -303,34 +344,72 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				ref: DocumentReference;
 				worker: string;
 			};
+
 			const [company] = useDocumentData(
 				companyInfo.ref.withConverter(companyConverter),
 			);
+
+			const { toast } = useToast();
+			const [clipboard, copyToClipboard] = useCopyToClipboard();
+
+			function handleCopy(value: string) {
+				copyToClipboard(value);
+				toast({
+					title: "Copied to clipboard",
+					variant: "success",
+					duration: 2000,
+				});
+			}
+
+			const actions: {
+				label?: string;
+				type: "separator" | "info" | "label";
+				value?: string;
+				icon?:
+					| ForwardRefExoticComponent<IconProps & RefAttributes<Icon>>
+					| undefined;
+				onClick?: () => void;
+			}[] = [
+				{
+					label: "OrderList.companyDetails",
+					type: "label",
+					icon: IconListDetails,
+				},
+				{
+					type: "separator",
+				},
+				{
+					label: "OrderList.worker",
+					type: "info",
+					icon: IconUser,
+					value: companyInfo.worker,
+				},
+				{
+					label: "OrderList.email",
+					type: "info",
+					icon: IconMail,
+					value: company?.email,
+					onClick() {
+						handleCopy(company?.email as string);
+					},
+				},
+			];
+
 			return (
-				<HoverCard openDelay={150} closeDelay={50}>
-					<HoverCardTrigger>{company?.name}</HoverCardTrigger>
-					<HoverCardContent>
-						<motion.div
-							initial={{ opacity: 0, scale: 0.7, y: -10 }}
-							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0 }}
-							transition={{
-								duration: 0.3,
-								delay: 0.1,
-								type: "spring",
-								bounce: 0.2,
-							}}
-							className="flex flex-col gap-2"
-						>
-							<span>Rating: {company?.rating}</span>
-							<span>Worker: {companyInfo.worker}</span>
-							<span>
-								Email:{" "}
-								<Link href={`mailto:${company?.email}`}>{company?.email}</Link>
-							</span>
-						</motion.div>
-					</HoverCardContent>
-				</HoverCard>
+				<AnimatedHover actions={actions}>
+					<div className="flex items-center gap-2">
+						{/* <Avatar>
+              <AvatarImage src={company?.logoUrl} alt={company?.name} />
+              <AvatarFallback>
+                {(company?.name as string)
+                  ?.split(" ")
+                  .map((name) => name[0])
+                  .join("")}
+              </AvatarFallback>
+            </Avatar> */}
+						<p>{company?.name}</p>
+					</div>
+				</AnimatedHover>
 			);
 		},
 	},
@@ -349,6 +428,8 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				weight: number;
 				width: number;
 			}[];
+
+			// TODO: CHANGE THIS TO ANIMATED HOVER
 
 			return (
 				<Popover>
@@ -461,6 +542,46 @@ export const OrderColumns: ColumnDef<Order>[] = [
 
 			const t = useTranslations("OrderList");
 
+			const actions = [
+				{
+					label: "actions",
+					type: "label",
+				},
+				{
+					type: "seperator",
+				},
+				{
+					type: "button",
+					label: "details",
+					icon: IconListDetails,
+					onClick: () => {
+						row.toggleSelected(!row.getIsSelected());
+					},
+				},
+				{
+					type: "button",
+					label: "edit",
+					icon: IconEdit,
+					onClick: () => {
+						setOrder(row.original);
+						setOpen(true);
+					},
+				},
+				{
+					type: "seperator",
+				},
+				{
+					danger: true,
+					type: "button",
+					label: "delete",
+					icon: IconTrash,
+					onClick: () => {
+						setConfirm(true);
+						setOrderConfirm(row.original);
+					},
+				},
+			];
+
 			return (
 				<DropdownMenu>
 					<DropdownMenuTrigger>
@@ -469,39 +590,43 @@ export const OrderColumns: ColumnDef<Order>[] = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent className="w-[150px]" align="end">
-						<DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							onClick={() => {
-								row.toggleSelected(!row.getIsSelected());
-							}}
-							className="flex justify-between"
+						<motion.div
+							variants={dropdownMenuParentVariants}
+							initial="hidden"
+							animate="visible"
 						>
-							{t("details")}
-							<IconListDetails />
-						</DropdownMenuItem>
-						<DropdownMenuItem
-							onClick={() => {
-								setOrder(row.original);
-								setOpen(true);
-							}}
-							className="flex justify-between"
-						>
-							{t("edit")}
-							<IconEdit />
-						</DropdownMenuItem>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							color="red"
-							className="flex justify-between bg-red-500/15 hover:bg-red-500/50 border-red-500/50 text-red-800 dark:text-red-200 "
-							onClick={() => {
-								setConfirm(true);
-								setOrderConfirm(row.original);
-							}}
-						>
-							{t("delete")}
-							<IconTrash />
-						</DropdownMenuItem>
+							{actions.map((action, index) => {
+								return (
+									<motion.div key={index} variants={dropdownMenuVariants}>
+										{action.type === "label" && (
+											<DropdownMenuLabel>
+												{t(action.label as any)}
+											</DropdownMenuLabel>
+										)}
+
+										{action.type === "seperator" && (
+											<DropdownMenuSeparator key={index} />
+										)}
+
+										{action.type === "button" && (
+											<DropdownMenuItem
+												key={index}
+												onClick={action.onClick}
+												className={cn(
+													"flex justify-between gap-2",
+													action.danger
+														? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+														: "",
+												)}
+											>
+												{t(action.label as any)}
+												{action.icon && <action.icon />}
+											</DropdownMenuItem>
+										)}
+									</motion.div>
+								);
+							})}
+						</motion.div>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);

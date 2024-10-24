@@ -27,6 +27,10 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import useProfileDoc from "@/hooks/useProfileDoc";
+import {
+	dropdownMenuParentVariants,
+	dropdownMenuVariants,
+} from "@/lib/dropdownMenuVariants";
 import { Link, usePathname } from "@/lib/navigation";
 import {
 	IconChartPie,
@@ -172,15 +176,7 @@ export default function DashboardSidebar() {
 												<SidebarMenuSub>
 													<AnimatePresence>
 														<motion.div
-															variants={{
-																hidden: {},
-																visible: {
-																	transition: {
-																		staggerChildren: 0.07,
-																		delayChildren: 0.05,
-																	},
-																},
-															}}
+															variants={dropdownMenuParentVariants}
 															initial="hidden"
 															animate="visible"
 															exit={"hidden"}
@@ -192,12 +188,10 @@ export default function DashboardSidebar() {
 																		hidden: {
 																			opacity: 0,
 																			y: -20,
-																			// scale: 0.5,
 																		},
 																		visible: {
 																			opacity: 1,
 																			y: 0,
-																			// scale: 1,
 																			transition: {
 																				type: "spring",
 																				bounce: 0.3,
@@ -269,6 +263,7 @@ export default function DashboardSidebar() {
 						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 							<IconLayoutSidebar className="size-6 flex-shrink-0" />
 						</div>
+						{/* TODO: ADD TOOLTIP FOR CTRL + B */}
 						{t("collapse")}
 					</SidebarMenuButton>
 
@@ -315,25 +310,14 @@ export default function DashboardSidebar() {
 								className="w-[--radix-popper-anchor-width]"
 							>
 								<motion.div
-									variants={{
-										hidden: {},
-										visible: {
-											transition: {
-												staggerChildren: 0.05,
-												delayChildren: 0.05,
-											},
-										},
-									}}
+									variants={dropdownMenuParentVariants}
 									initial="hidden"
 									animate="visible"
 								>
 									{profileSettings.map((item) => (
 										<motion.div
 											key={item.title}
-											variants={{
-												hidden: { opacity: 0, y: 100, scale: 0.5 },
-												visible: { opacity: 1, y: 0, scale: 1 },
-											}}
+											variants={dropdownMenuVariants}
 										>
 											<DropdownMenuItem asChild>
 												<Link

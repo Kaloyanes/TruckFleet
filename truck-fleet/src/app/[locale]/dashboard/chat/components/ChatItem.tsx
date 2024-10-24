@@ -1,9 +1,9 @@
 "use client";
 import { Spinner } from "@/components/ui/loading-spinner";
 import useProfileDoc from "@/hooks/useProfileDoc";
+import { Link } from "@/lib/navigation";
 import type { Chat } from "@/models/chat";
 import Image from "next/image";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 

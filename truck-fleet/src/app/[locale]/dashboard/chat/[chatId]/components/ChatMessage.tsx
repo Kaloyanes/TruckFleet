@@ -2,11 +2,16 @@ import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
+	ContextMenuSeparator,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { useToast } from "@/components/ui/use-toast";
 import { db } from "@/firebase/firebase";
 import useProfileDoc from "@/hooks/useProfileDoc";
+import {
+	dropdownMenuParentVariants,
+	dropdownMenuVariants,
+} from "@/lib/dropdownMenuVariants";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/models/message";
 import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
@@ -107,51 +112,34 @@ export default function ChatMessage({
 			</div>
 			<ContextMenuContent>
 				<motion.div
-					variants={{
-						hidden: {},
-						visible: {
-							transition: {
-								staggerChildren: 0.03,
-								delayChildren: 0.05,
-							},
-						},
-					}}
+					variants={dropdownMenuParentVariants}
 					initial="hidden"
 					animate="visible"
 				>
 					{messageOptions.map((item) => {
 						if (item.isSender && message.sender === userId) {
 							return (
-								<motion.div
-									variants={{
-										hidden: { opacity: 0, y: 100, scale: 0.5 },
-										visible: { opacity: 1, y: 0, scale: 1 },
-									}}
-									key={item.label}
-								>
-									<ContextMenuItem
-										className={cn(
-											"gap-2",
-											item.danger
-												? "flex gap-2 border-red-500/50 bg-red-500/15 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
-												: "",
-										)}
-									>
-										<item.icon />
-										{item.label}
-									</ContextMenuItem>
-								</motion.div>
+								<>
+									<motion.div variants={dropdownMenuVariants} key={item.label}>
+										{item.danger && <ContextMenuSeparator />}
+										<ContextMenuItem
+											className={cn(
+												"gap-2",
+												item.danger
+													? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+													: "",
+											)}
+										>
+											<item.icon />
+											{item.label}
+										</ContextMenuItem>
+									</motion.div>
+								</>
 							);
 						}
 
 						return (
-							<motion.div
-								key={item.label}
-								variants={{
-									hidden: { opacity: 0, y: 100, scale: 0.5 },
-									visible: { opacity: 1, y: 0, scale: 1 },
-								}}
-							>
+							<motion.div key={item.label} variants={dropdownMenuVariants}>
 								<ContextMenuItem className="gap-2" onClick={item.onPress}>
 									<item.icon />
 									{item.label}

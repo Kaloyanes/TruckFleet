@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
-import React, { useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { IconUpload } from "@tabler/icons-react";
-import { useDropzone } from "react-dropzone";
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useRef } from "react";
+import { useDropzone } from "react-dropzone";
 
 const mainVariant = {
 	initial: {

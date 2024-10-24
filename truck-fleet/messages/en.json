@@ -89,7 +89,14 @@
     "selectType": "Select Type",
     "all": "All",
     "driverDetails": "Driver Details",
-    "phone": "Phone"
+    "truckDetails": "Truck Details",
+    "companyDetails": "Company Details",
+    "worker": "Worker",
+    "licensePlate": "License Plate",
+    "model": "Model",
+    "capacity": "Capacity",
+    "phone": "Phone",
+    "email": "Email"
   },
   "AddOrderSheet": {
     "title": "Add Order",

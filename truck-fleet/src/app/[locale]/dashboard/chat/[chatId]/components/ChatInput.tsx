@@ -10,6 +10,10 @@ import {
 import { Spinner } from "@/components/ui/loading-spinner";
 import { auth, db } from "@/firebase/firebase";
 import {
+	dropdownMenuParentVariants,
+	dropdownMenuVariants,
+} from "@/lib/dropdownMenuVariants";
+import {
 	IconMap2,
 	IconMicrophone,
 	IconPhoto,
@@ -89,15 +93,7 @@ export default function ChatInput() {
 					</DropdownMenuTrigger>
 					<DropdownMenuContent>
 						<motion.div
-							variants={{
-								hidden: {},
-								visible: {
-									transition: {
-										staggerChildren: 0.05,
-										delayChildren: 0.05,
-									},
-								},
-							}}
+							variants={dropdownMenuParentVariants}
 							initial="hidden"
 							animate="visible"
 						>
@@ -114,10 +110,7 @@ export default function ChatInput() {
 								return (
 									<motion.div
 										key={Math.random()}
-										variants={{
-											hidden: { opacity: 0, y: 100, scale: 0.5 },
-											visible: { opacity: 1, y: 0, scale: 1 },
-										}}
+										variants={dropdownMenuVariants}
 									>
 										<DropdownMenuItem
 											onClick={() => {
