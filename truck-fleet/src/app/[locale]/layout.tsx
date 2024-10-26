@@ -5,11 +5,7 @@ import { ThemeProvider } from "@/context/theme-provider";
 import { locales } from "@/lib/i18n";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import {
-	getMessages,
-	setRequestLocale,
-	unstable_setRequestLocale,
-} from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { Noto_Sans } from "next/font/google";
 import "../globals.css";
 

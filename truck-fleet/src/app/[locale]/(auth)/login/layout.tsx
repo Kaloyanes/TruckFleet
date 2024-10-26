@@ -1,5 +1,5 @@
 import LoginRedirect from "@/components/redirects/LoginRedirect";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next/types";
 
 export const metadata: Metadata = {
@@ -7,25 +7,16 @@ export const metadata: Metadata = {
 	description: "Login page for the app.",
 };
 
-export default async function LoginLayout(
-    props: {
-        children: React.ReactNode;
-        params: Promise<{ locale: string }>;
-    }
-) {
-    const params = await props.params;
+export default async function LoginLayout({
+	children,
+	params: { locale },
+}: Readonly<{
+	children: React.ReactNode;
+	params: { locale: string };
+}>) {
+	setRequestLocale(locale);
 
-    const {
-        locale
-    } = params;
-
-    const {
-        children
-    } = props;
-
-    unstable_setRequestLocale(locale);
-
-    return (
+	return (
 		<>
 			<div className="z-100">
 				<LoginRedirect />
