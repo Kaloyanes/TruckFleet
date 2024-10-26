@@ -1,13 +1,9 @@
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 
-export default async function TruckPage(props: { params: Promise<{ locale: string }> }) {
-    const params = await props.params;
+export default async function TruckPage({
+	params: { locale },
+}: { params: { locale: string } }) {
+	setRequestLocale(locale);
 
-    const {
-        locale
-    } = params;
-
-    unstable_setRequestLocale(locale);
-
-    return <h1>Welcome to page!</h1>;
+	return <h1>Welcome to page!</h1>;
 }

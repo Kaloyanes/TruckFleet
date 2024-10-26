@@ -1,27 +1,18 @@
 import DashboardSidebar from "@/app/[locale]/dashboard/components/DashboardSidebar";
 import AuthRedirect from "@/components/redirects/AuthRedirect";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 
-export default async function DashboardLayout(
-    props: {
-        children: React.ReactNode;
-        params: Promise<{ locale: string }>;
-    }
-) {
-    const params = await props.params;
+export default async function DashboardLayout({
+	children,
+	params: { locale },
+}: {
+	children: React.ReactNode;
+	params: { locale: string };
+}) {
+	setRequestLocale(locale);
 
-    const {
-        locale
-    } = params;
-
-    const {
-        children
-    } = props;
-
-    unstable_setRequestLocale(locale);
-
-    return (
+	return (
 		<>
 			<AuthRedirect />
 			<SidebarProvider

@@ -1,11 +1,16 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import ChatUsers from "./components/ChatUsers";
+import { setRequestLocale } from "next-intl/server";
 
 export default function ChatLayout({
+	params: { locale },
 	children,
 }: {
+	params: { locale: string };
 	children: React.ReactNode;
 }) {
+	setRequestLocale(locale);
+
 	return (
 		<div className={"relative flex flex-1 overflow-hidden"}>
 			<Card className="relative w-full flex-[0.2] rounded-none border-0 border-border border-l px-3 backdrop-saturate-150 transition-all duration-300">

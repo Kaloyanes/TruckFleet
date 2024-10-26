@@ -3,24 +3,19 @@ import DriverFilterInputContextProvider from "@/context/drivers/driver-filter-in
 import DriverToggleViewContextProvider from "@/context/drivers/driver-toggle-view-context";
 import RemoveDriverContextProvider from "@/context/drivers/remove-driver-context";
 import { useTranslations } from "next-intl";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 import { use } from "react";
 import BackButton from "./components/BackButton";
 import DriverFilter from "./components/DriverFilter";
 import InviteCodeInfo from "./components/InviteCode";
 import RemoveDriverConfirmationDialog from "./components/RemoveDriverConfirmationDialog";
 
-export default function DriversLayout(props: {
-	children: React.ReactNode;
-	params: Promise<{ locale: string }>;
-}) {
-	const params = use(props.params);
+export default function DriversLayout({
+	params: { locale },
+	children,
+}: { params: { locale: string }; children: React.ReactNode }) {
+	setRequestLocale(locale);
 
-	const { locale } = params;
-
-	const { children } = props;
-
-	unstable_setRequestLocale(locale);
 	const t = useTranslations("SidebarLink");
 	const t2 = useTranslations("EmployeePage");
 

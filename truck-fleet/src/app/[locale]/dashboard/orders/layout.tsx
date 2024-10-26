@@ -6,28 +6,19 @@ import DeleteOrderContextProvider, {
 } from "@/context/orders/order-delete-context";
 import EditOrderContextProvider from "@/context/orders/order-edit-context";
 import OrderSelectedContextProvider from "@/context/orders/order-selected-context";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 import { APIProvider } from "@vis.gl/react-google-maps";
 
-export default async function OrdersLayout(
-    props: {
-        children: React.ReactNode;
-        params: Promise<{ locale: string }>;
-    }
-) {
-    const params = await props.params;
+export default async function OrdersLayout({
+	children,
+	params: { locale },
+}: {
+	children: React.ReactNode;
+	params: { locale: string };
+}) {
+	setRequestLocale(locale);
 
-    const {
-        locale
-    } = params;
-
-    const {
-        children
-    } = props;
-
-    unstable_setRequestLocale(locale);
-
-    return (
+	return (
 		<OrderSelectedContextProvider>
 			<EditOrderContextProvider>
 				<DeleteOrderContextProvider>
