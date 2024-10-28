@@ -8,6 +8,7 @@ const nextConfig = {
     remotePatterns: [{ hostname: "firebasestorage.googleapis.com" }],
   },
 
+
   // compiler: {
   //   removeConsole: process.env.NODE_ENV === "production",
   // }

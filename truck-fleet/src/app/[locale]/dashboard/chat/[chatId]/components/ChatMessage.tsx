@@ -47,8 +47,6 @@ export default function ChatMessage({
 		});
 	}
 
-	console.log(docRef);
-
 	async function editMessage() {
 		setIsEditing(true);
 		setDocRef(docRef);
@@ -104,12 +102,12 @@ export default function ChatMessage({
 				<ContextMenuTrigger>
 					<div className="flex flex-col">
 						<div
-							className={`relative flex min-h-13 w-fit min-w-64 max-w-[30vw] flex-col items-start whitespace-break-spaces break-words rounded-3xl rounded-bl-none bg-secondary px-4 py-3 ${message.sender === userId ? " bg-sidebar-border" : "bg-secondary"}`}
+							className={`relative flex min-h-13 w-fit min-w-64 max-w-[30vw] flex-col items-start whitespace-break-spaces break-words rounded-3xl rounded-bl-md bg-secondary px-4 py-3 ${message.sender === userId ? " bg-sidebar-border" : "bg-secondary"}`}
 						>
 							<h1 className="font-semibold">{senderProfile?.name}</h1>
 							<p>{message.content}</p>
 							{message.updatedAt && (
-								<p className="text-xs text-gray-400">{t("edited")}</p>
+								<p className="text-gray-400 text-xs">{t("edited")}</p>
 							)}
 						</div>
 					</div>

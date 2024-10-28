@@ -1,5 +1,8 @@
 "use client";
-import { AutosizeTextarea } from "@/components/ui/autosize-textarea";
+import {
+	AutosizeTextarea,
+	type AutosizeTextAreaRef,
+} from "@/components/ui/autosize-textarea";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -26,7 +29,7 @@ import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ChatInput() {
@@ -42,6 +45,7 @@ export default function ChatInput() {
 		setIsEditing,
 		setMessageValue,
 	} = useChatEditContext();
+	const inputRef = useRef<AutosizeTextAreaRef>(null);
 
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
 
@@ -57,6 +61,12 @@ export default function ChatInput() {
 			label: "photo",
 		},
 	];
+
+	useEffect(() => {
+		console.log({ inputRef, isEditing });
+		if (isEditing) inputRef.current?.textArea.focus();
+		else inputRef.current?.textArea.blur();
+	}, [isEditing]);
 
 	useEffect(() => {
 		setMessage(messageValue);
@@ -205,6 +215,7 @@ export default function ChatInput() {
 
 				<div className="relative flex-1">
 					<AutosizeTextarea
+						ref={inputRef}
 						className="h-10 flex-1 resize-none whitespace-pre-wrap transition-all duration-75 ease-in-out "
 						placeholder={t("type")}
 						value={message}

@@ -8,7 +8,7 @@ export default async function DashboardPage({
 }) {
 	setRequestLocale(locale);
 	return (
-		<div className="h-20 flex w-20">
+		<div className="flex h-20 w-20">
 			<h1>Dashboard Page</h1>
 			<SignOutButton />
 		</div>

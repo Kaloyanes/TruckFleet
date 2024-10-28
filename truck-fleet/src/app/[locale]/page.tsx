@@ -11,7 +11,7 @@ export default function HomePage() {
 			<div className="absolute top-5 right-5">
 				<ThemeToggle />
 			</div>
-			<h1>Truck Fleet</h1>
+			<h1>{t("welcome")}</h1>
 			<Link href="/dashboard">Go To Dashboard</Link>
 		</main>
 	);

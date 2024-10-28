@@ -12,8 +12,11 @@ import {
 	useDocumentData,
 } from "react-firebase-hooks/firestore";
 import ChatMessage from "./ChatMessage";
+import { createRef, useEffect, useRef } from "react";
 
 export default function ChatWindow() {
+	const bottomRef = createRef<HTMLDivElement>();
+
 	const chatId = useParams().chatId as string;
 	const [user, userLoading, userError] = useAuthState(auth);
 
@@ -28,23 +31,24 @@ export default function ChatWindow() {
 		).withConverter(messageConverter),
 	);
 
+	useEffect(() => {
+		if (!messages) return;
+		if (messages.length === 0) return;
+
+		console.log(bottomRef.current);
+
+		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages, bottomRef.current]);
+
 	if (userLoading || chatLoading || messagesLoading) return <></>;
-
 	if (chatError) return <div>Error: {chatError.message}</div>;
-
 	if (messagesError) return <div>Error: {messagesError.message}</div>;
+	if (!messages) return <div>Get the conversation going</div>;
+	if (user === undefined || user === null) return <div>Not logged in</div>;
 
 	if (!chatData?.participants.includes(user?.uid)) {
 		redirect("/dashboard/chat");
 		return;
-	}
-
-	if (!messages) {
-		return <div>Get the conversation going</div>;
-	}
-
-	if (user === undefined || user === null) {
-		return <div>Not logged in</div>;
 	}
 
 	return (
@@ -53,13 +57,18 @@ export default function ChatWindow() {
 
 			<div className="space-y-4">
 				{messages.map((message, index: number) => {
-					console.log(message);
+					if (index === messages.length - 1) {
+						setTimeout(() => {
+							bottomRef.current?.scrollIntoView({ behavior: "auto" });
+						}, 100);
+					}
+
 					return (
 						<ChatMessage message={message} userId={user.uid} key={message.id} />
 					);
 				})}
 			</div>
-			<div className="h-20" />
+			<div ref={bottomRef} className="h-20" />
 			<ScrollBar />
 		</ScrollArea>
 	);
