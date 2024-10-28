@@ -1,7 +1,12 @@
 "use client";
-import { Spinner } from "@/components/ui/loading-spinner";
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarProvider,
+} from "@/components/ui/sidebar";
 import { OrderSelectedContext } from "@/context/orders/order-selected-context";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+import { useTheme } from "next-themes";
 import { useContext, useEffect, useState } from "react";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 
@@ -15,8 +20,22 @@ export default function OrderSidebar() {
 		orderSelectedContext?.order?.driver,
 	);
 
-	if (loading) return <Spinner />;
+	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error fetching driver {error.message}</div>;
+
+	const { resolvedTheme } = useTheme();
+	const mapId =
+		resolvedTheme === "dark" ? "71b489216afed105" : "41fca17a46fdb39e";
+
+	return (
+		<SidebarProvider open={show}>
+			<Sidebar side="right" hidden={show} collapsible="offcanvas">
+				<SidebarContent>
+					<h1>Test</h1>
+				</SidebarContent>
+			</Sidebar>
+		</SidebarProvider>
+	);
 }
 
 function Directions() {

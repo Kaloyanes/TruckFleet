@@ -1,7 +1,7 @@
 "use client";
 
 import { Slot } from "@radix-ui/react-slot";
-import { VariantProps, cva } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 import * as React from "react";
 
@@ -16,7 +16,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/utils";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
@@ -695,7 +695,7 @@ const SidebarMenuSub = React.forwardRef<
 		ref={ref}
 		data-sidebar="menu-sub"
 		className={cn(
-			"ml-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-sidebar-border border-l px-2.5 py-0.5",
+			"ml-2.5 flex min-w-0 translate-x-px flex-col gap-2 border-sidebar-border border-l py-0.5 pl-2.5",
 			"group-data-[collapsible=icon]:hidden ",
 			className,
 		)}
@@ -727,7 +727,7 @@ const SidebarMenuSubButton = React.forwardRef<
 			data-size={size}
 			data-active={isActive}
 			className={cn(
-				"-translate-x-px flex h-7 min-w-0 items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring transition-all duration-150 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
+				"-translate-x-px flex h-7 min-w-0 items-center gap-2 overflow-hidden rounded-md px-2 my-1 text-sidebar-foreground outline-none ring-sidebar-ring transition-all duration-150 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
 				"data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
 				size === "sm" && "text-xs",
 				size === "md" && "text-sm",

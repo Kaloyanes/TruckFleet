@@ -33,6 +33,7 @@ import {
 } from "@/lib/dropdownMenuVariants";
 import { Link, usePathname } from "@/lib/navigation";
 import {
+	IconBell,
 	IconChartPie,
 	IconChevronRight,
 	IconChevronUp,
@@ -49,6 +50,7 @@ import {
 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 export default function DashboardSidebar() {
 	const { profile } = useProfileDoc();
@@ -66,11 +68,7 @@ export default function DashboardSidebar() {
 			url: "/dashboard",
 			icon: IconChartPie,
 		},
-		{
-			title: "map",
-			url: "/dashboard/map",
-			icon: IconMap2,
-		},
+
 		{
 			title: "Fleet Managment",
 			icon: IconTruck,
@@ -93,11 +91,12 @@ export default function DashboardSidebar() {
 				},
 			],
 		},
+		{
+			title: "map",
+			url: "/dashboard/map",
+			icon: IconMap2,
+		},
 	];
-
-	const firstGroupIsActive = navMain
-		.find((x) => x.type === "group")
-		?.items?.some((item) => pathName.includes(item.url));
 
 	const profileSettings = [
 		{
@@ -127,18 +126,29 @@ export default function DashboardSidebar() {
 
 	return (
 		<Sidebar collapsible="icon">
-			<SidebarHeader>
-				<SidebarMenuButton
-					size={"lg"}
-					className="font-bold"
-					tooltip={"Truck Fleet"}
-				>
+			<SidebarHeader className="gap-1 ">
+				<SidebarMenuButton size={"lg"} tooltip={"Truck Fleet"}>
 					<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-						<IconPackages className="size-6" />
+						<IconPackages className="" />
 					</div>
 					<div className="grid flex-1 text-left text-lg leading-tight">
 						<span className="truncate font-semibold">Truck Fleet</span>
 					</div>
+				</SidebarMenuButton>
+				<SidebarMenuButton
+					size={"default"}
+					className=""
+					tooltip={"Notifications"}
+					asChild
+				>
+					<Link href="/dashboard/notifications" className="flex gap-2">
+						<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
+							<IconBell />
+						</div>
+						<div className="grid flex-1 text-left leading-tight">
+							<span className="truncate">Notifications</span>
+						</div>
+					</Link>
 				</SidebarMenuButton>
 			</SidebarHeader>
 			<SidebarContent>
@@ -146,25 +156,29 @@ export default function DashboardSidebar() {
 					<SidebarMenu className="space-y-1">
 						{navMain.map((item) => {
 							if (item.type === "group") {
+								const isGroupActive = item?.items?.some((item) =>
+									pathName.includes(item.url),
+								);
+								const [isActive, setActive] = useState(isGroupActive);
+
 								return (
 									<Collapsible
 										key={item.title}
 										asChild
 										className="group/collapsible"
-										defaultOpen={firstGroupIsActive}
+										defaultOpen={isActive}
+										onOpenChange={(isOpen) => setActive(isOpen)}
 									>
 										<SidebarMenuItem>
 											<CollapsibleTrigger asChild>
 												<SidebarMenuButton
-													size={"lg"}
+													size={"default"}
 													tooltip={t(item.title as any)}
-													isActive={firstGroupIsActive}
+													isActive={isGroupActive}
 													className="z-50"
 												>
-													<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-														{item.icon && (
-															<item.icon className="size-6 flex-shrink-0" />
-														)}
+													<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
+														{item.icon && <item.icon className="" />}
 													</div>
 													<span className="truncate">
 														{t(item.title as any)}
@@ -172,50 +186,77 @@ export default function DashboardSidebar() {
 													<IconChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
 												</SidebarMenuButton>
 											</CollapsibleTrigger>
-											<CollapsibleContent className="data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 [state=closed]:zoom-out-95 data-[state=open]:fade-in-0 duration-300 ease-in-out data-[state=closed]:animate-out data-[state=open]:animate-in">
-												<SidebarMenuSub>
-													<AnimatePresence>
+											<CollapsibleContent className="">
+												<AnimatePresence>
+													{isActive && (
 														<motion.div
-															variants={dropdownMenuParentVariants}
-															initial="hidden"
-															animate="visible"
-															exit={"hidden"}
+															key={item.type + item.title}
+															initial={{
+																height: 0,
+																opacity: 0,
+															}}
+															animate={{
+																height: "auto",
+																opacity: 1,
+															}}
+															exit={{
+																height: 0,
+																opacity: 0,
+															}}
+															transition={{
+																type: "spring",
+																bounce: 0.3,
+															}}
+															className="overflow-hidden"
 														>
-															{item.items?.map((subItem) => (
+															<SidebarMenuSub>
 																<motion.div
-																	key={subItem.url}
-																	variants={{
-																		hidden: {
-																			opacity: 0,
-																			y: -20,
-																		},
-																		visible: {
-																			opacity: 1,
-																			y: 0,
-																			transition: {
-																				type: "spring",
-																				bounce: 0.3,
-																			},
-																		},
-																	}}
+																	variants={dropdownMenuParentVariants}
+																	initial="hidden"
+																	animate="visible"
+																	exit={"hidden"}
 																>
-																	<SidebarMenuSubItem key={subItem.title}>
-																		<SidebarMenuSubButton
-																			size="md"
-																			asChild
-																			isActive={pathName.includes(subItem.url)}
+																	{item.items?.map((subItem) => (
+																		<motion.div
+																			key={subItem.url}
+																			variants={{
+																				hidden: {
+																					opacity: 0,
+																					y: -20,
+																				},
+																				visible: {
+																					opacity: 1,
+																					y: 0,
+																					transition: {
+																						type: "spring",
+																						bounce: 0.3,
+																					},
+																				},
+																			}}
 																		>
-																			<Link href={subItem.url}>
-																				{subItem.icon && <subItem.icon />}
-																				<span>{t(subItem.title as any)}</span>
-																			</Link>
-																		</SidebarMenuSubButton>
-																	</SidebarMenuSubItem>
+																			<SidebarMenuSubItem key={subItem.title}>
+																				<SidebarMenuSubButton
+																					size="md"
+																					asChild
+																					isActive={pathName.includes(
+																						subItem.url,
+																					)}
+																				>
+																					<Link href={subItem.url}>
+																						{subItem.icon && <subItem.icon />}
+																						<span>
+																							{t(subItem.title as any)}
+																						</span>
+																					</Link>
+																				</SidebarMenuSubButton>
+																			</SidebarMenuSubItem>
+																		</motion.div>
+																	))}
 																</motion.div>
-															))}
+															</SidebarMenuSub>
 														</motion.div>
-													</AnimatePresence>
-												</SidebarMenuSub>
+													)}
+												</AnimatePresence>
 											</CollapsibleContent>
 										</SidebarMenuItem>
 									</Collapsible>
@@ -233,16 +274,14 @@ export default function DashboardSidebar() {
 							return (
 								<SidebarMenuItem key={item.title}>
 									<SidebarMenuButton
-										size={"lg"}
+										size={"default"}
 										isActive={isActive}
 										asChild
 										tooltip={t(item.title as any)}
 									>
 										<Link href={item.url}>
-											<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-												{item.icon && (
-													<item.icon className="size-6 flex-shrink-0" />
-												)}
+											<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
+												{item.icon && <item.icon className="" />}
 											</div>
 											<span className="truncate">{t(item.title as any)}</span>
 										</Link>
@@ -257,11 +296,11 @@ export default function DashboardSidebar() {
 				<SidebarMenu className="space-y-1">
 					<SidebarMenuButton
 						onClick={toggleSidebar}
-						size={"lg"}
+						size={"default"}
 						tooltip={t("collapse")}
 					>
-						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-							<IconLayoutSidebar className="size-6 flex-shrink-0" />
+						<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
+							<IconLayoutSidebar className="" />
 						</div>
 						{/* TODO: ADD TOOLTIP FOR CTRL + B */}
 						{t("collapse")}
@@ -278,12 +317,12 @@ export default function DashboardSidebar() {
 									<div className="flex gap-3 items-center">
 										<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 											{/* <Image
-											src={profile?.photoUrl}
-											alt={profile?.username}
-											width={24 * 2}
-											height={24 * 2}
-											className="size-6 rounded-full object-cover"
-										/> */}
+                      src={profile?.photoUrl}
+                      alt={profile?.username}
+                      width={24 * 2}
+                      height={24 * 2}
+                      className="size-6 rounded-full object-cover"
+                    /> */}
 											<Avatar>
 												<AvatarImage
 													width={24 * 2}
@@ -340,29 +379,3 @@ export default function DashboardSidebar() {
 		</Sidebar>
 	);
 }
-
-// export function Logo({ open }: { open: boolean }) {
-// 	return (
-// 		<Link
-// 			href="#"
-// 			className="font-normal flex space-x-2 items-center text-sm text-white py-1 relative z-20"
-// 		>
-// 			<TruckIcon />
-
-// 			<AnimatePresence>
-// 				{open ? (
-// 					<motion.span
-// 						initial={{ opacity: 0, scale: 0 }}
-// 						animate={{ opacity: 1, scale: 1 }}
-// 						exit={{ opacity: 0, scale: 0 }}
-// 						className="font-medium text-black dark:text-white whitespace-pre"
-// 					>
-// 						Truck Fleet
-// 					</motion.span>
-// 				) : (
-// 					<></>
-// 				)}
-// 			</AnimatePresence>
-// 		</Link>
-// 	);
-// }

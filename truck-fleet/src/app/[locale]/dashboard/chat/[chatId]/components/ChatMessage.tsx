@@ -6,6 +6,7 @@ import {
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { useToast } from "@/components/ui/use-toast";
+import { useChatEditContext } from "@/context/chat/chat-edit-context";
 import { db } from "@/firebase/firebase";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import {
@@ -31,6 +32,7 @@ export default function ChatMessage({
 	const { toast } = useToast();
 	const [clipboard, setCopyToClipboard] = useCopyToClipboard();
 	const docRef = doc(db, "chats", chatId as string, "messages", message.id);
+	const { setDocRef, setIsEditing, setMessageValue } = useChatEditContext();
 
 	const tGeneral = useTranslations("General");
 	const t = useTranslations("ChatPage");
@@ -47,6 +49,12 @@ export default function ChatMessage({
 
 	console.log(docRef);
 
+	async function editMessage() {
+		setIsEditing(true);
+		setDocRef(docRef);
+		setMessageValue(message.content);
+	}
+
 	async function deleteMessage() {
 		try {
 			await deleteDoc(docRef);
@@ -60,27 +68,28 @@ export default function ChatMessage({
 
 		toast({
 			title: t("messageDeleted"),
+			variant: "destructive",
 		});
 	}
 
 	const messageOptions = [
 		{
 			icon: IconClipboard,
-			label: "Copy",
+			label: "copy",
 			isSender: false,
 			onPress: copyMessage,
 			danger: false,
 		},
 		{
 			icon: IconEdit,
-			label: "Edit",
+			label: "edit",
 			isSender: true,
-			onPress: () => {},
+			onPress: editMessage,
 			danger: false,
 		},
 		{
 			icon: IconTrash,
-			label: "Delete",
+			label: "delete",
 			isSender: true,
 			onPress: deleteMessage,
 			danger: true,
@@ -99,6 +108,9 @@ export default function ChatMessage({
 						>
 							<h1 className="font-semibold">{senderProfile?.name}</h1>
 							<p>{message.content}</p>
+							{message.updatedAt && (
+								<p className="text-xs text-gray-400">{t("edited")}</p>
+							)}
 						</div>
 					</div>
 				</ContextMenuTrigger>
@@ -129,9 +141,10 @@ export default function ChatMessage({
 													? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
 													: "",
 											)}
+											onClick={item.onPress}
 										>
 											<item.icon />
-											{item.label}
+											{t(item.label as any)}
 										</ContextMenuItem>
 									</motion.div>
 								</>
@@ -142,7 +155,7 @@ export default function ChatMessage({
 							<motion.div key={item.label} variants={dropdownMenuVariants}>
 								<ContextMenuItem className="gap-2" onClick={item.onPress}>
 									<item.icon />
-									{item.label}
+									{t(item.label as any)}
 								</ContextMenuItem>
 							</motion.div>
 						);

@@ -1,7 +1,8 @@
 import DashboardSidebar from "@/app/[locale]/dashboard/components/DashboardSidebar";
 import AuthRedirect from "@/components/redirects/AuthRedirect";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import { cookies } from "next/headers";
 
 export default async function DashboardLayout({
 	children,
@@ -12,10 +13,18 @@ export default async function DashboardLayout({
 }) {
 	setRequestLocale(locale);
 
+	const sidebarState = cookies().get("sidebar:state");
+
+	let defaultOpen = true;
+	if (sidebarState) {
+		defaultOpen = sidebarState.value !== "true";
+	}
+
 	return (
 		<>
 			<AuthRedirect />
 			<SidebarProvider
+				defaultOpen={defaultOpen}
 				style={
 					{
 						"--sidebar-width": "15rem",

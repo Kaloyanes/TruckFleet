@@ -22,6 +22,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
 import { useEditOrderContext } from "@/context/orders/order-edit-context";
@@ -36,13 +37,13 @@ import { cn } from "@/lib/utils";
 import type { Order } from "@/models/orders";
 import {
 	Icon,
-	IconArrowDown,
 	IconCalendarFilled,
 	IconEdit,
 	IconFilter,
 	IconListDetails,
 	IconMail,
 	IconMenu2,
+	IconPackage,
 	IconPhone,
 	IconProps,
 	IconStatusChange,
@@ -432,34 +433,38 @@ export const OrderColumns: ColumnDef<Order>[] = [
 			// TODO: CHANGE THIS TO ANIMATED HOVER
 
 			return (
-				<Popover>
-					<PopoverTrigger>
-						<Button size={"icon"} variant={"outline"}>
-							<IconArrowDown />
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent>
+				<HoverCard openDelay={150} closeDelay={150}>
+					<HoverCardTrigger>
+						<span>{palletes.length} Palletes</span>
+					</HoverCardTrigger>
+					<HoverCardContent className="overflow-hidden">
 						<motion.div
-							initial={{ opacity: 0, scale: 0.7, y: -10 }}
-							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0 }}
-							transition={{
-								duration: 0.3,
-								delay: 0.1,
-								type: "spring",
-								bounce: 0.2,
-							}}
-							className="flex flex-col gap-2"
+							variants={dropdownMenuParentVariants}
+							initial="hidden"
+							animate="visible"
+							className="flex flex-col gap-2 "
 						>
+							<motion.div
+								variants={dropdownMenuVariants}
+								className="flex items-center gap-2"
+							>
+								<IconPackage />
+								<span className="font-semibold">Palletes</span>
+							</motion.div>
+
+							<motion.div variants={dropdownMenuVariants}>
+								<Separator className="-mx-6 my-1 h-px w-[50vw] bg-muted" />
+							</motion.div>
+
 							{palletes.map((pallete, index) => (
-								<span key={index}>
+								<motion.div variants={dropdownMenuVariants} key={index}>
 									{index + 1}. {pallete.height}x{pallete.width}x{pallete.length}{" "}
 									{pallete.weight}kg
-								</span>
+								</motion.div>
 							))}
 						</motion.div>
-					</PopoverContent>
-				</Popover>
+					</HoverCardContent>
+				</HoverCard>
 			);
 		},
 	},

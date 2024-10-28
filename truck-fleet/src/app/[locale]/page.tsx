@@ -1,5 +1,4 @@
 "use client";
-import { use } from "react";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { useTranslations } from "next-intl";
 import Link from "next/link";

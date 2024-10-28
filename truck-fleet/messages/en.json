@@ -184,6 +184,13 @@
     "removedDescription": "Driver #{name} has been removed"
   },
   "ChatPage": {
-    "messageDeleted": "Message deleted successfully"
+    "messageDeleted": "Message deleted successfully",
+    "edited": "Edited",
+    "edit": "Edit",
+    "copy": "Copy",
+    "delete": "Delete",
+    "location": "Location",
+    "photo": "Photo",
+    "type": "Type a message..."
   }
 }

@@ -1,4 +1,5 @@
 import ChatRedirect from "@/components/redirects/ChatRedirect";
+import ChatEditContextProvider from "@/context/chat/chat-edit-context";
 import { setRequestLocale } from "next-intl/server";
 
 export default function ChatSlugLayout({
@@ -11,9 +12,9 @@ export default function ChatSlugLayout({
 	setRequestLocale(locale);
 
 	return (
-		<>
+		<ChatEditContextProvider>
 			<ChatRedirect />
 			<section>{children}</section>
-		</>
+		</ChatEditContextProvider>
 	);
 }

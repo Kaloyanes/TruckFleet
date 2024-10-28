@@ -1,17 +1,9 @@
 import { Button } from "@/components/ui/button";
-import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuLabel,
-	ContextMenuTrigger,
-} from "@/components/ui/context-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
 	Table,
 	TableBody,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -82,7 +74,7 @@ export default function OrderDataTable<TData, TValue>({
 		<>
 			<ScrollArea
 				className={
-					" whitespace-nowrap overflow-auto w-full min-h-screen h-full pb-[70px]"
+					"h-full min-h-screen w-full overflow-auto whitespace-nowrap pb-[70px]"
 				}
 			>
 				<ScrollBar orientation="vertical" />

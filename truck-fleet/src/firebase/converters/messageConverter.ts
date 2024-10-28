@@ -18,6 +18,9 @@ export const messageConverter: FirestoreDataConverter<Message> = {
       createdAt: new Date((data.createdAt as Timestamp).seconds * 1000),
       sender: data.sender,
       type: data.type,
+      updatedAt: data.updatedAt
+        ? new Date((data.updatedAt as Timestamp).seconds * 1000)
+        : null,
     };
   },
 };
