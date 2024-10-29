@@ -37,11 +37,14 @@ import {
 	IconChartPie,
 	IconChevronRight,
 	IconChevronUp,
+	IconFileText,
+	IconInvoice,
 	IconLayoutSidebar,
 	IconLogout,
 	IconMap2,
 	IconMessage,
 	IconPackages,
+	IconPaperclip,
 	IconReceiptDollar,
 	IconSettings,
 	IconTruck,
@@ -96,6 +99,11 @@ export default function DashboardSidebar() {
 			url: "/dashboard/map",
 			icon: IconMap2,
 		},
+		{
+			title: "invoices",
+			url: "/dashboard/invoices",
+			icon: IconFileText,
+		},
 	];
 
 	const profileSettings = [
@@ -126,24 +134,24 @@ export default function DashboardSidebar() {
 
 	return (
 		<Sidebar collapsible="icon">
-			<SidebarHeader className="gap-1 ">
+			<SidebarHeader className="gap-2 ">
 				<SidebarMenuButton size={"lg"} tooltip={"Truck Fleet"}>
 					<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-						<IconPackages className="" />
+						<IconPackages className="size-6" />
 					</div>
 					<div className="grid flex-1 text-left text-lg leading-tight">
 						<span className="truncate font-semibold">Truck Fleet</span>
 					</div>
 				</SidebarMenuButton>
 				<SidebarMenuButton
-					size={"default"}
+					size={"lg"}
 					className=""
 					tooltip={"Notifications"}
 					asChild
 				>
 					<Link href="/dashboard/notifications" className="flex gap-2">
-						<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
-							<IconBell />
+						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+							<IconBell className="size-6" />
 						</div>
 						<div className="grid flex-1 text-left leading-tight">
 							<span className="truncate">Notifications</span>
@@ -172,18 +180,18 @@ export default function DashboardSidebar() {
 										<SidebarMenuItem>
 											<CollapsibleTrigger asChild>
 												<SidebarMenuButton
-													size={"default"}
+													size={"lg"}
 													tooltip={t(item.title as any)}
 													isActive={isGroupActive}
 													className="z-50"
 												>
-													<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
-														{item.icon && <item.icon className="" />}
+													<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+														{item.icon && <item.icon className="size-6" />}
 													</div>
 													<span className="truncate">
 														{t(item.title as any)}
 													</span>
-													<IconChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+													<IconChevronRight className="ml-auto transition-transform duration-300 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
 												</SidebarMenuButton>
 											</CollapsibleTrigger>
 											<CollapsibleContent className="">
@@ -274,14 +282,14 @@ export default function DashboardSidebar() {
 							return (
 								<SidebarMenuItem key={item.title}>
 									<SidebarMenuButton
-										size={"default"}
+										size={"lg"}
 										isActive={isActive}
 										asChild
 										tooltip={t(item.title as any)}
 									>
 										<Link href={item.url}>
-											<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
-												{item.icon && <item.icon className="" />}
+											<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+												{item.icon && <item.icon className="size-6" />}
 											</div>
 											<span className="truncate">{t(item.title as any)}</span>
 										</Link>
@@ -296,11 +304,11 @@ export default function DashboardSidebar() {
 				<SidebarMenu className="space-y-1">
 					<SidebarMenuButton
 						onClick={toggleSidebar}
-						size={"default"}
-						tooltip={t("collapse")}
+						size={"lg"}
+						tooltip={"CTRL + B"}
 					>
-						<div className="flex aspect-square size-4 items-center justify-center rounded-lg">
-							<IconLayoutSidebar className="" />
+						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+							<IconLayoutSidebar className="size-6" />
 						</div>
 						{/* TODO: ADD TOOLTIP FOR CTRL + B */}
 						{t("collapse")}
@@ -314,7 +322,7 @@ export default function DashboardSidebar() {
 									isActive={profileSettingsIsActive}
 									className=""
 								>
-									<div className="flex gap-3 items-center">
+									<div className="flex items-center gap-3">
 										<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 											{/* <Image
                       src={profile?.photoUrl}
@@ -341,7 +349,7 @@ export default function DashboardSidebar() {
 										<span className="truncate">{profile?.name}</span>
 									</div>
 
-									<IconChevronUp className="ml-auto" />
+									<IconChevronUp className="ml-auto transition-transform ease-in-out " />
 								</SidebarMenuButton>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent

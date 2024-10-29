@@ -93,7 +93,7 @@ export default function AddOrdersSheet() {
 				},
 			} as any);
 		}
-	}, [driverRef, truckRef, companyRef]);
+	}, [driverRef, truckRef, companyRef, companyName, licensePlate]);
 
 	const sheetFormSchema = z.object({
 		status: z

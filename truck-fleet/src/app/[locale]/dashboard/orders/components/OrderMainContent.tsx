@@ -13,13 +13,12 @@ export default function OrdersMainContent({
 	children: React.ReactNode;
 }) {
 	const { order: id } = useOrderIdContext();
-	const { order, open } = useEditOrderContext();
 
 	return (
 		<Card
 			className={`relative w-full flex-1 overflow-hidden rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300 ${id ? "rounded-r-none border-r-0" : "rounded-r-lg "} `}
 		>
-			<CardHeader className="sticky top-0   border-b flex flex-row justify-between items-center ">
+			<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b ">
 				<div>
 					<TimeTitle />
 					<TruckTabs />

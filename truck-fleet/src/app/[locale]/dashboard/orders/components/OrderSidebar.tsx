@@ -29,9 +29,11 @@ export default function OrderSidebar() {
 
 	return (
 		<SidebarProvider open={show}>
-			<Sidebar side="right" hidden={show} collapsible="offcanvas">
+			<Sidebar side="right" hidden={!show} collapsible="offcanvas">
 				<SidebarContent>
-					<h1>Test</h1>
+					<h1>Order Details</h1>
+					{/* Add order information here */}
+					{/* ...existing code... */}
 				</SidebarContent>
 			</Sidebar>
 		</SidebarProvider>

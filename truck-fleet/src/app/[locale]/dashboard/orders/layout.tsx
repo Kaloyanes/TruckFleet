@@ -8,6 +8,7 @@ import EditOrderContextProvider from "@/context/orders/order-edit-context";
 import OrderSelectedContextProvider from "@/context/orders/order-selected-context";
 import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 import { APIProvider } from "@vis.gl/react-google-maps";
+import DashboardSidebar from "@/app/[locale]/dashboard/components/DashboardSidebar";
 
 export default async function OrdersLayout({
 	children,
@@ -26,7 +27,7 @@ export default async function OrdersLayout({
 					<div className={"relative flex flex-1 overflow-hidden"}>
 						<OrdersMainContent>{children}</OrdersMainContent>
 
-						<OrderSidebar />
+						{/* <OrderSidebar /> */}
 					</div>
 				</DeleteOrderContextProvider>
 			</EditOrderContextProvider>

@@ -38,7 +38,8 @@
     "settings": "Settings",
     "account": "Account",
     "sign out": "Sign Out",
-    "collapse": "Collapse"
+    "collapse": "Collapse",
+    "invoices": "Invoices"
   },
   "LocaleSwitcher": {
     "bg": "Bulgarian",

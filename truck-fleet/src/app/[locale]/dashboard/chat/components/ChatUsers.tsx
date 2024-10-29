@@ -53,6 +53,7 @@ export default function ChatUsers() {
 							delay: (index + 1) * 0.1,
 						},
 					}}
+					className=""
 				>
 					<ChatItem
 						chatId={chat.id}
