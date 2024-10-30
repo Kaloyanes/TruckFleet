@@ -39,7 +39,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ON_BOARD,
-      page: () => const OnBoardView(),
+      page: () => OnBoardView(),
       binding: OnBoardBinding(),
     ),
     GetPage(

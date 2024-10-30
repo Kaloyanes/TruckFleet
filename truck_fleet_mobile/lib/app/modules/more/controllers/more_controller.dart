@@ -79,7 +79,7 @@ class MoreController extends GetxController {
 
     Navigator.pushAndRemoveUntil(
       Get.context!,
-      MaterialPageRoute(builder: (context) => const OnBoardView()),
+      MaterialPageRoute(builder: (context) => OnBoardView()),
       (route) => false,
     );
   }

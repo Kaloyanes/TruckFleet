@@ -15,7 +15,10 @@ import 'package:truck_fleet_mobile/app/modules/sign_up/views/sign_up_view.dart';
 import '../controllers/on_board_controller.dart';
 
 class OnBoardView extends GetView<OnBoardController> {
-  const OnBoardView({super.key});
+  OnBoardView({super.key});
+
+  final animationCurve = Curves.easeInOutCubicEmphasized;
+  final animationDuration = Durations.long4 + 500.ms;
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +30,28 @@ class OnBoardView extends GetView<OnBoardController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          LanguageSwitcher(),
-          ThemeSwitcher(),
+          Row(
+            children: [
+              LanguageSwitcher(),
+              ThemeSwitcher(),
+            ]
+                .animate(
+                  interval: const Duration(milliseconds: 100),
+                )
+                .scaleXY(
+                  begin: 0,
+                  end: 1,
+                  duration: Durations.long1,
+                  curve: animationCurve,
+                  delay: 250.ms,
+                ),
+          )
         ],
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              imageIntroduction(context),
-              getStartedBottomSheet(context),
-            ],
-          ),
+          imageIntroduction(context),
+          getStartedBottomSheet(context),
         ],
       ),
     );
@@ -52,8 +65,8 @@ class OnBoardView extends GetView<OnBoardController> {
         children: [
           Obx(
             () => AnimatedContainer(
-              duration: Durations.extralong4 + const Duration(milliseconds: 500),
-              curve: Curves.easeInOutCubicEmphasized,
+              duration: animationDuration,
+              curve: animationCurve,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(
@@ -77,8 +90,8 @@ class OnBoardView extends GetView<OnBoardController> {
                     () => Positioned.fill(
                       child: AnimatedOpacity(
                         opacity: controller.height.value > 0 ? 0 : 1,
-                        duration: Durations.extralong4,
-                        curve: Curves.easeInOutCubicEmphasized,
+                        duration: animationDuration,
+                        curve: animationCurve,
                         child: ImageFiltered(
                           imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                           child: ShaderMask(
@@ -115,7 +128,7 @@ class OnBoardView extends GetView<OnBoardController> {
                   "lib/app/assets/images/packages_dark.png",
                   width: 50,
                 ),
-                const Gap(10),
+                const SizedBox(width: 10),
                 Text(
                   "Truck Fleet",
                   style: Theme.of(context).textTheme.headlineLarge!.merge(
@@ -125,7 +138,24 @@ class OnBoardView extends GetView<OnBoardController> {
                         ),
                       ),
                 ),
-              ],
+              ]
+                  .animate(
+                    interval: const Duration(milliseconds: 100),
+                  )
+                  .scaleXY(
+                    begin: 0,
+                    end: 1,
+                    duration: Durations.extralong1,
+                    curve: animationCurve,
+                    delay: 150.ms,
+                  )
+                  .blurXY(
+                    begin: 5,
+                    end: 0,
+                    duration: Durations.extralong1,
+                    curve: animationCurve,
+                    delay: 150.ms,
+                  ),
             ),
           ),
           Obx(
@@ -150,7 +180,7 @@ class OnBoardView extends GetView<OnBoardController> {
                       child: FilledButton(
                         onPressed: () {
                           Gaimon.light();
-                          controller.height.value = MediaQuery.sizeOf(context).height * 0.5;
+                          controller.height.value = MediaQuery.sizeOf(context).height * 0.4;
                         },
                         child: Text(
                           "get_started".tr,
@@ -159,7 +189,29 @@ class OnBoardView extends GetView<OnBoardController> {
                                 color: Theme.of(context).colorScheme.onPrimary,
                               ),
                         ),
-                      ),
+                      )
+                          .animate()
+                          .slideY(
+                            begin: 2.5,
+                            end: 0,
+                            duration: Durations.extralong1,
+                            curve: animationCurve,
+                            delay: 150.ms,
+                          )
+                          .scaleXY(
+                            begin: 0.6,
+                            end: 1,
+                            duration: Durations.extralong1,
+                            curve: animationCurve,
+                            delay: 150.ms,
+                          )
+                          .blurXY(
+                            begin: 5,
+                            end: 0,
+                            duration: Durations.extralong1,
+                            curve: animationCurve,
+                            delay: 150.ms,
+                          ),
                     ),
                   ],
                 ),
@@ -168,9 +220,9 @@ class OnBoardView extends GetView<OnBoardController> {
                 .animate(
                   target: controller.height.value > 0 ? 1 : 0,
                 )
-                .fade(begin: 1, end: 0, duration: Durations.medium2)
-                .scaleXY(begin: 1, end: 0.8, duration: Durations.medium2, curve: Curves.easeInOutCubicEmphasized)
-                .slideY(begin: 0, end: 0.20, duration: Durations.medium2, curve: Curves.easeInOutCubicEmphasized),
+                .fade(begin: 1, end: 0, duration: Durations.short1, curve: animationCurve)
+                .scaleXY(begin: 1, end: 0.75, duration: Durations.long2, curve: animationCurve)
+                .slideY(begin: 0, end: 1, duration: Durations.long2, curve: animationCurve),
           ),
         ],
       ),
@@ -180,8 +232,8 @@ class OnBoardView extends GetView<OnBoardController> {
   Obx getStartedBottomSheet(BuildContext context) {
     return Obx(
       () => AnimatedContainer(
-        duration: Durations.extralong4,
-        curve: Curves.easeInOutCubicEmphasized,
+        duration: animationDuration,
+        curve: animationCurve,
         height: controller.height.value,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Stack(
