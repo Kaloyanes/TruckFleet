@@ -76,14 +76,14 @@ export default function ChatMessage({
 		});
 	}
 
+	async function downloadImage() {
+		const a = document.createElement("a");
+		a.href = message.content;
+		a.download = "image";
+		a.click();
+	}
+
 	const [messageOptions, setMessageOptions] = useState([
-		{
-			icon: IconEdit,
-			label: "edit",
-			isSender: true,
-			onPress: editMessage,
-			danger: false,
-		},
 		{
 			icon: IconTrash,
 			label: "delete",
@@ -104,21 +104,30 @@ export default function ChatMessage({
 					onPress: copyMessage,
 					danger: false,
 				},
-				...prevOptions,
+				{
+					icon: IconEdit,
+					label: "edit",
+					isSender: true,
+					onPress: editMessage,
+					danger: false,
+				},
+				...prevOptions.filter(
+					(option) => option.label !== "copy" && option.label !== "edit",
+				),
 			]);
 		} else if (message.type === "image") {
 			setMessageOptions((prevOptions) => [
 				{
 					icon: IconDownload,
-					label: "download",
+					label: "download_image",
 					isSender: false,
-					onPress: copyMessage,
+					onPress: downloadImage,
 					danger: false,
 				},
-				...prevOptions,
+				...prevOptions.filter((option) => option.label !== "download_image"),
 			]);
 		}
-	}, [message]);
+	}, []);
 
 	if (loading || senderProfile === null) return <></>;
 
@@ -141,10 +150,14 @@ export default function ChatMessage({
 					)}
 
 					{message.type === "image" && (
-						<img
+						<Image
+							priority
 							src={message.content}
 							alt={message.sender}
 							className="max-w-xs rounded-lg shadow-sm"
+							width={320}
+							height={320}
+							unoptimized
 						/>
 					)}
 				</ContextMenuTrigger>

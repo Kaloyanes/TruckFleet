@@ -6,7 +6,7 @@ export default async function ChatPage({
 	setRequestLocale(locale);
 
 	return (
-		<div className="flex flex-1 items-center justify-center">
+		<div className="flex flex-1 items-center justify-center h-screen">
 			<h1 className="font-bold text-2xl">Select Chat</h1>
 		</div>
 	);

@@ -92,7 +92,7 @@ export default function ChatInput() {
 					console.error("Error uploading image: ", error);
 				});
 		}
-	}, [plainFiles]);
+	}, [plainFiles, chatId, messagesCollection, user]);
 
 	const actions = [
 		{
@@ -177,12 +177,14 @@ export default function ChatInput() {
 			<motion.div
 				className="fixed right-0 bottom-0 left-0 m-2 flex items-center gap-2"
 				initial={{
-					y: 50,
+					y: 25,
 					opacity: 0,
+					filter: "blur(10px)",
 				}}
 				animate={{
 					y: 0,
 					opacity: 1,
+					filter: "blur(0px)",
 				}}
 			>
 				<div className="flex items-center">
@@ -193,11 +195,13 @@ export default function ChatInput() {
 								opacity: 0,
 								x: 100,
 								width: 0,
+								filter: "blur(10px)",
 							},
 							visible: {
 								opacity: 1,
 								x: 0,
 								width: "auto",
+								filter: "blur(0px)",
 							},
 						}}
 						initial="hidden"
@@ -239,8 +243,13 @@ export default function ChatInput() {
 					<motion.div
 						className="flex items-center gap-2"
 						variants={{
-							hidden: { opacity: 0, width: 0, x: 100 },
-							visible: { opacity: 1, width: "auto", x: 0 },
+							hidden: { opacity: 0, filter: "blur(10px)", width: 0, x: 100 },
+							visible: {
+								opacity: 1,
+								filter: "blur(0px)",
+								width: "auto",
+								x: 0,
+							},
 						}}
 						animate={isEditing ? "visible" : "hidden"}
 					>
@@ -265,6 +274,9 @@ export default function ChatInput() {
 						maxHeight={100}
 						minHeight={30}
 						onKeyDown={sendMessage}
+						onLoad={(e) => {
+							inputRef.current?.textArea.focus();
+						}}
 					/>
 					<motion.div
 						className="absolute top-0 right-0"
@@ -274,12 +286,14 @@ export default function ChatInput() {
 								width: 0,
 								scale: 0,
 								x: -25,
+								filter: "blur(10px)",
 							},
 							visible: {
 								opacity: 1,
 								width: "auto",
 								scale: 1,
 								x: 0,
+								filter: "blur(0px)",
 							},
 						}}
 						initial="hidden"
@@ -293,9 +307,22 @@ export default function ChatInput() {
 
 				<motion.div
 					variants={{
-						hidden: { opacity: 0, width: 0, x: 50 },
-						visible: { opacity: 1, width: "auto", x: 0 },
+						hidden: {
+							opacity: 1,
+							filter: "blur(10px)",
+							width: 0,
+							x: 50,
+							scale: 0.7,
+						},
+						visible: {
+							opacity: 1,
+							filter: "blur(0px)",
+							width: "auto",
+							x: 0,
+							scale: 1,
+						},
 					}}
+					initial="hidden"
 					animate={showSend ? "visible" : "hidden"}
 				>
 					<Button size={"icon"} disabled={!showSend}>

@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, type Transition, motion } from "framer-motion";
 import {
 	Children,
-	cloneElement,
 	type ReactElement,
+	cloneElement,
 	useEffect,
-	useState,
 	useId,
+	useState,
 } from "react";
 
 type AnimatedBackgroundProps = {
@@ -77,9 +77,11 @@ export default function AnimatedBackground({
 							initial={{ opacity: defaultValue ? 1 : 0 }}
 							animate={{
 								opacity: 1,
+								filter: "blur(0px)",
 							}}
 							exit={{
 								opacity: 0,
+								filter: "blur(5px)",
 							}}
 						/>
 					)}

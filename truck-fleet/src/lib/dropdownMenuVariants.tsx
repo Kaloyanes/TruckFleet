@@ -11,6 +11,6 @@ export const dropdownMenuParentVariants: Variants = {
 };
 
 export const dropdownMenuVariants: Variants = {
-	hidden: { opacity: 0, y: 50, scale: 0.7 },
-	visible: { opacity: 1, y: 0, scale: 1 },
+	hidden: { opacity: 0, y: 50, filter: "blur(5px)", scale: 0.7 },
+	visible: { opacity: 1, y: 0, filter: "blur(0px)", scale: 1 },
 };

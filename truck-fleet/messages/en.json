@@ -77,6 +77,7 @@
     "truck": "Truck",
     "company": "Company",
     "palletes": "Palletes",
+    "palette": "Palette",
     "locations": "Locations",
     "documents": "Documents",
     "note": "Note",
@@ -192,6 +193,7 @@
     "delete": "Delete",
     "location": "Location",
     "photo": "Photo",
-    "type": "Type a message..."
+    "type": "Type a message...",
+    "download_image": "Download Image"
   }
 }

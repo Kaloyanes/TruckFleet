@@ -43,10 +43,11 @@ export default function ChatUsers() {
 			{chats.docs.map((chat, index) => (
 				<motion.div
 					key={chat.id}
-					initial={{ opacity: 0, x: -250 }}
+					initial={{ opacity: 0, x: -250, filter: "blur(10px)" }}
 					animate={{
 						opacity: 1,
 						x: 0,
+						filter: "blur(0px)",
 						transition: {
 							type: "spring",
 							duration: 0.7,
