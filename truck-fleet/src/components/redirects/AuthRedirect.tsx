@@ -1,15 +1,17 @@
 "use client";
 import { auth } from "@/firebase/firebase";
-import { redirect } from "@/lib/navigation";
+import { redirect, usePathname } from "@/lib/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Spinner } from "../ui/loading-spinner";
 
 export default function AuthRedirect() {
 	const [user, loading] = useAuthState(auth);
 
+	const pathName = usePathname();
+
 	if (!loading) {
 		if (!user) {
-			redirect("/login");
+			redirect(`/login?redirect=${pathName}`);
 		}
 	} else if (loading) {
 		return (
