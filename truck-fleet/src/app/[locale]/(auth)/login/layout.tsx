@@ -1,6 +1,8 @@
 import LoginRedirect from "@/components/redirects/LoginRedirect";
-import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
+import { Spinner } from "@/components/ui/loading-spinner";
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next/types";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
 	title: "Login",
@@ -18,9 +20,9 @@ export default async function LoginLayout({
 
 	return (
 		<>
-			<div className="z-100">
+			<Suspense fallback={<Spinner />}>
 				<LoginRedirect />
-			</div>
+			</Suspense>
 			<section>{children}</section>
 		</>
 	);
