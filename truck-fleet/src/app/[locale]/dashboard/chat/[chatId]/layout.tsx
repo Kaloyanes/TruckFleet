@@ -14,7 +14,9 @@ export default function ChatSlugLayout({
 	return (
 		<ChatEditContextProvider>
 			<ChatRedirect />
-			<section>{children}</section>
+			<section className="flex flex-1 flex-col overflow-hidden">
+				{children}
+			</section>
 		</ChatEditContextProvider>
 	);
 }

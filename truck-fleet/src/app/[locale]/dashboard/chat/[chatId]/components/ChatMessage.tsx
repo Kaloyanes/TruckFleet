@@ -15,12 +15,18 @@ import {
 } from "@/lib/dropdownMenuVariants";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/models/message";
-import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
+import {
+	IconClipboard,
+	IconDownload,
+	IconEdit,
+	IconTrash,
+} from "@tabler/icons-react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useCopyToClipboard } from "react-use";
 
 export default function ChatMessage({
@@ -37,7 +43,7 @@ export default function ChatMessage({
 	const tGeneral = useTranslations("General");
 	const t = useTranslations("ChatPage");
 
-	function copyMessage() {
+	async function copyMessage() {
 		setCopyToClipboard(message.content.trim());
 
 		toast({
@@ -70,14 +76,7 @@ export default function ChatMessage({
 		});
 	}
 
-	const messageOptions = [
-		{
-			icon: IconClipboard,
-			label: "copy",
-			isSender: false,
-			onPress: copyMessage,
-			danger: false,
-		},
+	const [messageOptions, setMessageOptions] = useState([
 		{
 			icon: IconEdit,
 			label: "edit",
@@ -92,7 +91,34 @@ export default function ChatMessage({
 			onPress: deleteMessage,
 			danger: true,
 		},
-	];
+	]);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		if (message.type === "text") {
+			setMessageOptions((prevOptions) => [
+				{
+					icon: IconClipboard,
+					label: "copy",
+					isSender: false,
+					onPress: copyMessage,
+					danger: false,
+				},
+				...prevOptions,
+			]);
+		} else if (message.type === "image") {
+			setMessageOptions((prevOptions) => [
+				{
+					icon: IconDownload,
+					label: "download",
+					isSender: false,
+					onPress: copyMessage,
+					danger: false,
+				},
+				...prevOptions,
+			]);
+		}
+	}, [message]);
 
 	if (loading || senderProfile === null) return <></>;
 
@@ -100,17 +126,27 @@ export default function ChatMessage({
 		<ContextMenu>
 			<div className={"flex flex-row-reverse items-end justify-end gap-2"}>
 				<ContextMenuTrigger>
-					<div className="flex flex-col">
-						<div
-							className={`relative flex min-h-13 w-fit min-w-64 max-w-[30vw] flex-col items-start whitespace-break-spaces break-words rounded-3xl rounded-bl-md bg-secondary px-4 py-3 ${message.sender === userId ? " bg-sidebar-border" : "bg-secondary"}`}
-						>
-							<h1 className="font-semibold">{senderProfile?.name}</h1>
-							<p>{message.content}</p>
-							{message.updatedAt && (
-								<p className="text-gray-400 text-xs">{t("edited")}</p>
-							)}
+					{message.type === "text" && (
+						<div className="flex flex-col">
+							<div
+								className={`relative flex min-h-13 w-fit min-w-64 max-w-[30vw] flex-col items-start whitespace-break-spaces break-words rounded-3xl rounded-bl-md bg-accent px-4 py-3 ${message.sender === userId ? " bg-sidebar-border" : "bg-secondary"}`}
+							>
+								<h1 className="font-semibold">{senderProfile?.name}</h1>
+								<p>{message.content}</p>
+								{message.updatedAt && (
+									<p className="pt-2 text-gray-400 text-xs">{t("edited")}</p>
+								)}
+							</div>
 						</div>
-					</div>
+					)}
+
+					{message.type === "image" && (
+						<img
+							src={message.content}
+							alt={message.sender}
+							className="max-w-xs rounded-lg shadow-sm"
+						/>
+					)}
 				</ContextMenuTrigger>
 				<Image
 					src={senderProfile?.photoUrl}

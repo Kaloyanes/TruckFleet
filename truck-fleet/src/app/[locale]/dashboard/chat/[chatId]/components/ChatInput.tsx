@@ -1,7 +1,7 @@
 "use client";
 import {
-	AutosizeTextarea,
 	type AutosizeTextAreaRef,
+	AutosizeTextarea,
 } from "@/components/ui/autosize-textarea";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { useChatEditContext } from "@/context/chat/chat-edit-context";
-import { auth, db } from "@/firebase/firebase";
+import { auth, db, storage } from "@/firebase/firebase";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
@@ -26,13 +26,18 @@ import {
 	IconX,
 } from "@tabler/icons-react";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useFilePicker } from "use-file-picker";
 
 export default function ChatInput() {
+	const { openFilePicker, plainFiles, loading } = useFilePicker({
+		accept: "image/*",
+	});
 	const [message, setMessage] = useState("");
 	const [showSend, setShowSend] = useState(false);
 	const chatId = useParams().chatId;
@@ -46,19 +51,59 @@ export default function ChatInput() {
 		setMessageValue,
 	} = useChatEditContext();
 	const inputRef = useRef<AutosizeTextAreaRef>(null);
+	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
 
 	const messagesCollection = collection(db, `chats/${chatId}/messages`);
 
+	async function uploadImage() {
+		openFilePicker();
+	}
+
+	useEffect(() => {
+		if (plainFiles.length > 0) {
+			const file = plainFiles[0];
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setSelectedImage(reader.result as string);
+			};
+			reader.readAsDataURL(file);
+		} else {
+			setSelectedImage(null);
+		}
+	}, [plainFiles]);
+
+	useEffect(() => {
+		if (plainFiles.length > 0) {
+			const file = plainFiles[0];
+			const storageRef = ref(storage, `chats/${chatId}/images/${file.name}`);
+			uploadBytes(storageRef, file)
+				.then(() => getDownloadURL(storageRef))
+				.then((downloadURL) => {
+					return addDoc(messagesCollection, {
+						content: downloadURL,
+						createdAt: new Date(),
+						sender: user?.uid,
+						type: "image",
+					});
+				})
+				.catch((error) => {
+					console.error("Error uploading image: ", error);
+				});
+		}
+	}, [plainFiles]);
+
 	const actions = [
 		{
 			icon: IconMap2,
 			label: "location",
+			onPress: () => {},
 		},
 		{
 			icon: IconPhoto,
 			label: "photo",
+			onPress: uploadImage,
 		},
 	];
 
@@ -124,6 +169,7 @@ export default function ChatInput() {
 		setMessageValue("");
 		setIsEditing(false);
 		setDocRef(null);
+		setSelectedImage(null);
 	}
 
 	return (
@@ -176,11 +222,7 @@ export default function ChatInput() {
 												variants={dropdownMenuVariants}
 											>
 												<DropdownMenuItem
-													onClick={() => {
-														console.log(
-															item.label.toLowerCase().split(" ").join("-"),
-														);
-													}}
+													onClick={item.onPress}
 													className="gap-2"
 												>
 													{item.icon && <item.icon />}

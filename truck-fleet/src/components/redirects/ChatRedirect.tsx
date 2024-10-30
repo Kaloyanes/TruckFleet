@@ -1,22 +1,31 @@
 "use client";
-import { auth } from "@/firebase/firebase";
+import { auth, db } from "@/firebase/firebase";
 import { redirect } from "@/lib/navigation";
+import { doc } from "firebase/firestore";
+import { notFound, useParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Spinner } from "../ui/loading-spinner";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 export default function ChatRedirect() {
 	const [user, loading] = useAuthState(auth);
+	const { chatId } = useParams();
+	const [chatData, chatLoading] = useDocumentData(
+		doc(db, "chats", chatId as string),
+	);
 
-	if (!loading) {
-		if (!user) {
-			redirect("/login");
-		}
-	} else if (loading) {
-		return (
-			<div className="z-100 flex h-screen w-screen items-center justify-center">
-				<Spinner size={"large"} />
-			</div>
-		);
+	if (loading || chatLoading) return <></>;
+
+	if (!user) {
+		redirect("/login");
+	}
+
+	if (chatData === undefined) {
+		notFound();
+	}
+
+	if (!chatData?.participants.includes(user?.uid)) {
+		redirect("/dashboard/chat");
+		return;
 	}
 
 	return <></>;

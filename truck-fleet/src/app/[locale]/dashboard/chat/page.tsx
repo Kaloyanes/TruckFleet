@@ -1,4 +1,4 @@
-import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
 export default async function ChatPage({
 	params: { locale },
@@ -6,8 +6,8 @@ export default async function ChatPage({
 	setRequestLocale(locale);
 
 	return (
-		<h1 className="flex h-screen w-full items-center justify-center font-bold text-2xl">
-			Select Chat
-		</h1>
+		<div className="flex flex-1 items-center justify-center">
+			<h1 className="font-bold text-2xl">Select Chat</h1>
+		</div>
 	);
 }
