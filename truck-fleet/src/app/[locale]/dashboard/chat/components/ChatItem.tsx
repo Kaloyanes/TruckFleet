@@ -62,7 +62,7 @@ export default function ChatItem({
 						height={48 * 2}
 						src={profile.photoUrl}
 						alt={profile.name}
-						className="h-12 w-12 rounded-full"
+						className="h-12 w-12 rounded-full object-cover"
 					/>
 					{renderStatus(profile.status)}
 				</div>

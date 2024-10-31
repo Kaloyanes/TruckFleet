@@ -190,7 +190,9 @@ export default function DashboardSidebar() {
 														{item.icon && <item.icon className="size-6" />}
 													</div>
 													<span className="truncate">
-														{t(item.title as any)}
+														{t(
+															item.title as "account" | "settings" | "sign out",
+														)}
 													</span>
 													<IconChevronRight className="ml-auto transition-transform duration-300 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
 												</SidebarMenuButton>
