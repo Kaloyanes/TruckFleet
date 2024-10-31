@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import type { Message } from "@/models/message";
 import TextMessage from "./messages/TextMessage";
 import ImageMessage from "./messages/ImageMessage";
+import { useDeleteMessage } from "@/context/chat/delete-message-context";
 
 export default function ChatMessage({
 	message,
@@ -40,6 +41,7 @@ export default function ChatMessage({
 	const [clipboard, setCopyToClipboard] = useCopyToClipboard();
 	const docRef = doc(db, "chats", chatId as string, "messages", message.id);
 	const { setDocRef, setIsEditing, setMessageValue } = useChatEditContext();
+	const { openDeleteDialog } = useDeleteMessage();
 
 	const tGeneral = useTranslations("General");
 	const t = useTranslations("ChatPage");
@@ -84,12 +86,25 @@ export default function ChatMessage({
 		a.click();
 	}
 
+	async function handleDelete(e: React.MouseEvent) {
+		const messageRef = doc(db, `chats/${chatId}/messages/${message.id}`);
+		if (e.shiftKey) {
+			await deleteDoc(messageRef);
+			toast({
+				title: t("messageDeleted"),
+				variant: "destructive",
+			});
+			return;
+		}
+		openDeleteDialog(messageRef);
+	}
+
 	const [messageOptions, setMessageOptions] = useState<
 		{
 			icon: typeof IconClipboard;
 			label: string;
 			isSender: boolean;
-			onPress: () => Promise<void>;
+			onPress: (e: React.MouseEvent) => Promise<void>;
 			danger: boolean;
 		}[]
 	>([]);
@@ -124,7 +139,7 @@ export default function ChatMessage({
 					icon: IconEdit,
 					label: "edit",
 					isSender: true,
-					onPress: editMessage,
+					onPress: (e: React.MouseEvent) => editMessage(),
 					danger: false,
 				});
 			}
@@ -133,7 +148,7 @@ export default function ChatMessage({
 				icon: IconTrash,
 				label: "delete",
 				isSender: true,
-				onPress: deleteMessage,
+				onPress: handleDelete,
 				danger: true,
 			});
 		}
@@ -171,30 +186,18 @@ export default function ChatMessage({
 					animate="visible"
 				>
 					{messageOptions.map((item) => {
-						console.log({ isSender: message.sender === userId, message });
-						if (item.isSender && message.sender === userId) {
-							return (
-								<motion.div variants={dropdownMenuVariants} key={item.label}>
-									{item.danger && <ContextMenuSeparator />}
-									<ContextMenuItem
-										className={cn(
-											"gap-2",
-											item.danger
-												? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
-												: "",
-										)}
-										onClick={item.onPress}
-									>
-										<item.icon />
-										{t(item.label as any)}
-									</ContextMenuItem>
-								</motion.div>
-							);
-						}
-
 						return (
-							<motion.div key={item.label} variants={dropdownMenuVariants}>
-								<ContextMenuItem className="gap-2" onClick={item.onPress}>
+							<motion.div variants={dropdownMenuVariants} key={item.label}>
+								{item.danger && <ContextMenuSeparator />}
+								<ContextMenuItem
+									className={cn(
+										"gap-2",
+										item.danger
+											? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+											: "",
+									)}
+									onClick={item.onPress}
+								>
 									<item.icon />
 									{t(item.label as any)}
 								</ContextMenuItem>

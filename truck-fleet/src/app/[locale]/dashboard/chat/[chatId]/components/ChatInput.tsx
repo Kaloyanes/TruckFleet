@@ -25,7 +25,7 @@ import {
 	IconSend2,
 	IconX,
 } from "@tabler/icons-react";
-import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
@@ -33,6 +33,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFilePicker } from "use-file-picker";
+import { useDeleteMessage } from "@/context/chat/delete-message-context";
 
 export default function ChatInput() {
 	const { openFilePicker, plainFiles, loading } = useFilePicker({
@@ -51,28 +52,15 @@ export default function ChatInput() {
 		setMessageValue,
 	} = useChatEditContext();
 	const inputRef = useRef<AutosizeTextAreaRef>(null);
-	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
 
+	const chatDocRef = doc(db, "chats", chatId as string);
 	const messagesCollection = collection(db, `chats/${chatId}/messages`);
 
 	async function uploadImage() {
 		openFilePicker();
 	}
-
-	useEffect(() => {
-		if (plainFiles.length > 0) {
-			const file = plainFiles[0];
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setSelectedImage(reader.result as string);
-			};
-			reader.readAsDataURL(file);
-		} else {
-			setSelectedImage(null);
-		}
-	}, [plainFiles]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
@@ -81,12 +69,15 @@ export default function ChatInput() {
 			const storageRef = ref(storage, `chats/${chatId}/images/${file.name}`);
 			uploadBytes(storageRef, file)
 				.then(() => getDownloadURL(storageRef))
-				.then((downloadURL) => {
-					return addDoc(messagesCollection, {
+				.then(async (downloadURL) => {
+					await addDoc(messagesCollection, {
 						content: downloadURL,
 						createdAt: new Date(),
 						sender: user?.uid,
 						type: "image",
+					});
+					return updateDoc(chatDocRef, {
+						lastMessageAt: new Date(),
 					});
 				})
 				.catch((error) => {
@@ -144,6 +135,10 @@ export default function ChatInput() {
 
 		if (isEditing && docRef) await editMessage(tempMessage);
 		else await uploadMessage(tempMessage);
+
+		updateDoc(chatDocRef, {
+			lastMessageAt: new Date(),
+		});
 	}
 
 	async function uploadMessage(content: string) {
@@ -155,8 +150,11 @@ export default function ChatInput() {
 		});
 	}
 
+	const { openDeleteDialog } = useDeleteMessage();
+
 	async function editMessage(content: string) {
 		if (!docRef) return;
+
 		await updateDoc(docRef, {
 			content,
 			updatedAt: new Date(),
@@ -170,23 +168,20 @@ export default function ChatInput() {
 		setMessageValue("");
 		setIsEditing(false);
 		setDocRef(null);
-		setSelectedImage(null);
 	}
 
 	return (
 		<>
 			<motion.div
 				className="fixed right-0 bottom-0 left-0 m-2 flex items-center gap-2"
-				initial={{
-					y: 25,
-					opacity: 0,
-					filter: "blur(10px)",
-				}}
-				animate={{
-					y: 0,
-					opacity: 1,
-					filter: "blur(0px)",
-				}}
+				// initial={{
+				// 	opacity: 0,
+				// 	filter: "blur(10px)",
+				// }}
+				// animate={{
+				// 	opacity: 1,
+				// 	filter: "blur(0px)",
+				// }}
 			>
 				<div className="flex items-center">
 					<motion.div
@@ -205,7 +200,6 @@ export default function ChatInput() {
 								filter: "blur(0px)",
 							},
 						}}
-						initial="hidden"
 						animate={isEditing ? "hidden" : "visible"}
 					>
 						<DropdownMenu>
@@ -252,6 +246,7 @@ export default function ChatInput() {
 								x: 0,
 							},
 						}}
+						initial="hidden"
 						animate={isEditing ? "visible" : "hidden"}
 					>
 						<Button
@@ -297,7 +292,6 @@ export default function ChatInput() {
 								filter: "blur(0px)",
 							},
 						}}
-						initial="hidden"
 						animate={isEditing ? "hidden" : "visible"}
 					>
 						<Button size={"icon"} variant={"outline"}>

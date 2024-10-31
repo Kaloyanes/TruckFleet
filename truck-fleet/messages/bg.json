@@ -4,7 +4,7 @@
     "welcome": "Добре дошли в Truck Fleet"
   },
   "General": {
-    "copiedToClipboard": "Копирано"
+    "copiedToClipboard": "Копирано в клипборда"
   },
   "TimeTitle": {
     "monday": "понеделник",
@@ -181,7 +181,7 @@
     "removedDescription": "Шофьор #{name} беше премахнат"
   },
   "ChatPage": {
-    "messageDeleted": "Съобщението беше изтрито успешно",
+    "messageDeleted": "Съобщението е изтрито",
     "edited": "Редактирано",
     "edit": "Редактирай",
     "send": "Изпрати",
@@ -189,7 +189,11 @@
     "delete": "Изтрий",
     "location": "Местоположение",
     "photo": "Снимка",
-    "type": "Въведете съобщение...",
-    "download_image": "Изтегли изображението"
+    "type": "Напишете съобщение",
+    "download_image": "Изтегли изображението",
+    "deleteMessage": "Изтриване на съобщение",
+    "deleteMessageConfirmation": "Сигурни ли сте, че искате да изтриете това съобщение?",
+    "protip": "Про съвет: Задръжте Shift и щракнете върху изтриване, за да пропуснете този диалог.",
+    "cancel": "Отказ"
   }
 }
