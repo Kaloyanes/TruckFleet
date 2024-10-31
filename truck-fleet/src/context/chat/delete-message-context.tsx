@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import type { DocumentReference } from "firebase/firestore";
+import { deleteDoc, type DocumentReference } from "firebase/firestore";
 
 interface DeleteMessageContextType {
 	showDeleteDialog: boolean;
