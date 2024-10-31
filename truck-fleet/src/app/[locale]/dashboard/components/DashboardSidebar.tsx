@@ -9,6 +9,7 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -32,6 +33,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
 import { Link, usePathname } from "@/lib/navigation";
+import { cn } from "@/lib/utils";
 import {
 	IconBell,
 	IconChartPie,
@@ -116,6 +118,7 @@ export default function DashboardSidebar() {
 			icon: IconSettings,
 		},
 		{
+			danger: true,
 			title: "sign out",
 			url: "/dashboard/sign-out",
 			icon: IconLogout,
@@ -362,20 +365,31 @@ export default function DashboardSidebar() {
 									animate="visible"
 								>
 									{profileSettings.map((item) => (
-										<motion.div
-											key={item.title}
-											variants={dropdownMenuVariants}
-										>
-											<DropdownMenuItem asChild>
-												<Link
-													href={item.url}
-													className="flex items-center gap-2"
+										<>
+											<motion.div
+												key={item.title}
+												variants={dropdownMenuVariants}
+											>
+												{item.danger && <DropdownMenuSeparator />}
+												<DropdownMenuItem
+													asChild
+													className={cn(
+														"gap-2",
+														item.danger
+															? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+															: "",
+													)}
 												>
-													{item.icon && <item.icon />}
-													{t(item.title as any)}
-												</Link>
-											</DropdownMenuItem>
-										</motion.div>
+													<Link
+														href={item.url}
+														className="flex items-center gap-2"
+													>
+														{item.icon && <item.icon />}
+														{t(item.title as any)}
+													</Link>
+												</DropdownMenuItem>
+											</motion.div>
+										</>
 									))}
 								</motion.div>
 							</DropdownMenuContent>
