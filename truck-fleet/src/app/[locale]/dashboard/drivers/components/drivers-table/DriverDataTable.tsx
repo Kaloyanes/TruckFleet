@@ -62,6 +62,12 @@ export default function DriverDataTable<TData, TValue>({
 		columnResizeMode: "onChange",
 	});
 
+	const { search } = useDriverFilterInputContext();
+
+	useEffect(() => {
+		table.setGlobalFilter(search);
+	}, [search, table]);
+
 	if (view === "grid") {
 		return (
 			<div className="grid h-full min-h-screen w-full grid-flow-row grid-cols-6 grid-rows-4 gap-4 overflow-auto p-4 pb-[70px]">
@@ -80,12 +86,6 @@ export default function DriverDataTable<TData, TValue>({
 			</div>
 		);
 	}
-
-	const { search } = useDriverFilterInputContext();
-
-	useEffect(() => {
-		table.setGlobalFilter(search);
-	}, [search, table]);
 
 	return (
 		<>

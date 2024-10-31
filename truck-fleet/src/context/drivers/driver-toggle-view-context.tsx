@@ -1,26 +1,29 @@
 "use client";
-import type { Order } from "@/models/orders";
-import React, { useEffect } from "react";
-import { createContext, useState } from "react";
-import { useLocalStorage } from "react-use";
+import type React from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-type DriverToggleViewContextType = {
-	view: string | null;
-	setView: React.Dispatch<React.SetStateAction<string | null>>;
-};
+interface DriverToggleViewContextType {
+	view: string;
+	setView: (view: string) => void;
+}
 
-export const DriverToggleViewContext =
-	createContext<DriverToggleViewContextType | null>(null);
+const DriverToggleViewContext = createContext<DriverToggleViewContextType>({
+	view: "list",
+	setView: () => {},
+});
 
-export default function DriverToggleViewContextProvider({
+export function DriverToggleViewProvider({
 	children,
 }: { children: React.ReactNode }) {
-	const [view, setView] = useState<string | null>("list");
-	const [value, setValue] = useLocalStorage("driver-view", "list");
+	const [view, setView] = useState<string>("list");
 
 	useEffect(() => {
-		setView(value ?? "list");
-	}, [value]);
+		// Get the stored value on mount
+		const storedView = localStorage.getItem("driver-view");
+		if (storedView) {
+			setView(storedView);
+		}
+	}, []);
 
 	return (
 		<DriverToggleViewContext.Provider value={{ view, setView }}>
@@ -29,12 +32,5 @@ export default function DriverToggleViewContextProvider({
 	);
 }
 
-export function useDriverToggleViewContext() {
-	const context = React.useContext(DriverToggleViewContext);
-	if (!context) {
-		throw new Error(
-			"useDriverToggleViewContext must be used within a DriverToggleViewContextProvider",
-		);
-	}
-	return context;
-}
+export const useDriverToggleViewContext = () =>
+	useContext(DriverToggleViewContext);

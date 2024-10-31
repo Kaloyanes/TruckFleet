@@ -1,6 +1,5 @@
 import { Card, CardHeader } from "@/components/ui/card";
 import DriverFilterInputContextProvider from "@/context/drivers/driver-filter-input-context";
-import DriverToggleViewContextProvider from "@/context/drivers/driver-toggle-view-context";
 import RemoveDriverContextProvider from "@/context/drivers/remove-driver-context";
 import { useTranslations } from "next-intl";
 import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
@@ -9,6 +8,7 @@ import BackButton from "./components/BackButton";
 import DriverFilter from "./components/DriverFilter";
 import InviteCodeInfo from "./components/InviteCode";
 import RemoveDriverConfirmationDialog from "./components/RemoveDriverConfirmationDialog";
+import { DriverToggleViewProvider } from "@/context/drivers/driver-toggle-view-context";
 
 export default function DriversLayout({
 	params: { locale },
@@ -23,7 +23,7 @@ export default function DriversLayout({
 		<RemoveDriverContextProvider>
 			<DriverFilterInputContextProvider>
 				<RemoveDriverConfirmationDialog />
-				<DriverToggleViewContextProvider>
+				<DriverToggleViewProvider>
 					<div className={"relative flex flex-1 overflow-hidden"}>
 						<Card className="relative w-full flex-1 rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300">
 							<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b p-4">
@@ -33,13 +33,10 @@ export default function DriversLayout({
 								</div>
 								<InviteCodeInfo />
 							</CardHeader>
-							{/* <CardContent className="p-0 relative overflow-hidden flex-1"> */}
-
 							<div className="relative w-full">{children}</div>
-							{/* </CardContent> */}
 						</Card>
 					</div>
-				</DriverToggleViewContextProvider>
+				</DriverToggleViewProvider>
 			</DriverFilterInputContextProvider>
 		</RemoveDriverContextProvider>
 	);
