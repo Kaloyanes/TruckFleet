@@ -11,7 +11,9 @@ export default function AuthRedirect() {
 
 	if (!loading) {
 		if (!user) {
-			redirect(`/login?redirect=${pathName}`);
+			redirect(
+				`/login${pathName !== "/dashboard/sign-out" ? `?redirect=${pathName}` : ""}`,
+			);
 		}
 	} else if (loading) {
 		return (
