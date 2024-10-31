@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import LetterPullup from "@/components/ui/letter-pullup";
 import { usePathname, useRouter } from "@/lib/navigation";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -61,7 +62,7 @@ export default function BackButton() {
 					layout
 					className="font-bold text-2xl"
 				>
-					{t("drivers")}
+					<LetterPullup words={t("drivers")} delay={0.1} />
 				</motion.h1>
 			</motion.div>
 		</AnimatePresence>

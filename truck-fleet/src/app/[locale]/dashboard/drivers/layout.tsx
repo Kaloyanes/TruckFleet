@@ -26,7 +26,7 @@ export default function DriversLayout({
 				<DriverToggleViewContextProvider>
 					<div className={"relative flex flex-1 overflow-hidden"}>
 						<Card className="relative w-full flex-1 rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300">
-							<CardHeader className="sticky top-0 flex flex-row items-center justify-between p-4 border-b">
+							<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b p-4">
 								<div className="flex flex-col gap-4">
 									<BackButton />
 									<DriverFilter />

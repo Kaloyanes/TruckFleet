@@ -1,9 +1,10 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
 import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context";
-import { useRouter } from "@/lib/navigation";
+import { auth, db } from "@/firebase/firebase";
+import { Link, useRouter } from "@/lib/navigation";
 import type { Driver } from "@/models/driver";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import {
@@ -13,8 +14,19 @@ import {
 	IconTrash,
 } from "@tabler/icons-react";
 import type { ColumnDef } from "@tanstack/react-table";
+import {
+	addDoc,
+	collection,
+	getDoc,
+	getDocs,
+	getDocsFromCache,
+	or,
+	query,
+	where,
+} from "firebase/firestore";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useCopyToClipboard } from "react-use";
 
 export const DriverColumns: ColumnDef<Driver>[] = [
@@ -142,21 +154,66 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 			const { view } = useDriverToggleViewContext();
 			const { setConfirm, setDriver } = useRemoveDriverContext();
 			const router = useRouter();
+			const [user, userLoading] = useAuthState(auth);
+
+			async function createChat() {
+				if (userLoading || !user) {
+					toast({
+						title: "Couldn't create chat. Try again later.",
+						variant: "destructive",
+					});
+					return;
+				}
+
+				if (user.uid === row.original.id) {
+					toast({
+						title: "You can't chat with yourself.",
+						variant: "destructive",
+					});
+					return;
+				}
+
+				const chatQuery = query(
+					collection(db, "chats"),
+					where("participants", "array-contains", user.uid),
+				);
+
+				const chatSnapshot = await getDocs(chatQuery);
+				console.log("chatSnapshot", chatSnapshot);
+				if (!chatSnapshot.empty) {
+					for (const doc of chatSnapshot.docs) {
+						const chat = doc.data();
+
+						if (!chat.participants.includes(row.original.id)) {
+							continue;
+						}
+
+						router.push(`/dashboard/chat/${doc.id}`);
+						return;
+					}
+				}
+
+				const chatValues = {
+					createdAt: new Date(),
+					lastMessagedAt: new Date(),
+					participants: [row.original.id, user.uid].sort(),
+				};
+				const chatRef = await addDoc(collection(db, "chats"), chatValues);
+
+				router.push(`/dashboard/chat/${chatRef.id}`);
+			}
+
 			return (
 				<div className="flex justify-end gap-2">
-					<Button
-						variant="outline"
-						size="icon"
-						onClick={() => {
-							router.push(`/dashboard/drivers/${row.original.id}/stats`);
-						}}
-					>
-						<IconGraphFilled />
-					</Button>
+					<Link href={`/dashboard/drivers/${row.original.id}/stats`}>
+						<Button variant="outline" size="icon">
+							<IconGraphFilled />
+						</Button>
+					</Link>
 					<Button variant="outline" size="icon">
 						<IconPhone />
 					</Button>
-					<Button variant="outline" size="icon">
+					<Button variant="outline" size="icon" onClick={createChat}>
 						<IconMessage />
 					</Button>
 					<Button

@@ -15,12 +15,15 @@ export default function ErrorPage({
 	}, [error]);
 
 	return (
-		<div>
+		<div className="">
 			<h2>Something went wrong!</h2>
 			<p>
 				We're sorry, an unexpected error occurred. Please try again in a few
 				minutes.
 			</p>
+
+			<h3>Error details:</h3>
+			<pre>{error.message}</pre>
 			<button
 				type="button"
 				onClick={
