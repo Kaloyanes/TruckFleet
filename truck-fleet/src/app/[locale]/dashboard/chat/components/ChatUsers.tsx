@@ -6,24 +6,22 @@ import { collection, orderBy, query, where } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollection } from "react-firebase-hooks/firestore";
+import {
+	useCollection,
+	useCollectionData,
+} from "react-firebase-hooks/firestore";
 import ChatItem from "./ChatItem";
 
 export default function ChatUsers() {
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
 
-	const chatQuery = useMemo(() => {
-		if (user) {
-			return query(
-				collection(db, "chats"),
-				where("participants", "array-contains", user.uid),
-				orderBy("lastMessageAt", "desc"),
-			).withConverter(chatConverter);
-		}
-		return null;
-	}, [user]);
+	const chatQuery = query(
+		collection(db, "chats"),
+		where("participants", "array-contains", user?.uid ?? ""),
+		orderBy("lastMessageAt", "desc"),
+	).withConverter(chatConverter);
 
-	const [chats, loading, error] = useCollection(chatQuery);
+	const [chats, loading, error] = useCollectionData(chatQuery);
 
 	if (loadingAuth || loading)
 		return (
@@ -34,13 +32,13 @@ export default function ChatUsers() {
 	if (errorAuth) return <div>Error: {errorAuth.message}</div>;
 	if (error) return <div>Error: {error.message}</div>;
 
-	if (!chats || chats.empty) {
+	if (!chats || chats.length === 0) {
 		return <div>No chats available</div>;
 	}
 
 	return (
 		<div>
-			{chats.docs.map((chat, index) => (
+			{chats.map((chat, index) => (
 				<motion.div
 					key={chat.id}
 					initial={{ opacity: 0, x: -250, filter: "blur(10px)" }}
@@ -58,7 +56,7 @@ export default function ChatUsers() {
 				>
 					<ChatItem
 						chatId={chat.id}
-						chat={chat.data()}
+						chat={chat}
 						currentUserId={auth.currentUser?.uid}
 					/>
 				</motion.div>

@@ -3,6 +3,8 @@ import ChatEditContextProvider from "@/context/chat/chat-edit-context";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import ChatUsers from "./components/ChatUsers";
+import WordPullUp from "@/components/ui/word-pull-up";
+import LetterPullup from "@/components/ui/letter-pullup";
 
 export default function ChatLayout({
 	params: { locale },
@@ -21,7 +23,7 @@ export default function ChatLayout({
 				<Card className="!bg-sidebar relative w-full flex-[0.2] flex-shrink-0 rounded-none border-0 border-border border-l px-3 backdrop-saturate-150 transition-all duration-300">
 					<CardHeader className="flex px-0">
 						<CardTitle className="flex items-center gap-2">
-							{t("SidebarLink.chat")}
+							<LetterPullup words={t("SidebarLink.chat")} delay={0.1} />
 						</CardTitle>
 					</CardHeader>
 

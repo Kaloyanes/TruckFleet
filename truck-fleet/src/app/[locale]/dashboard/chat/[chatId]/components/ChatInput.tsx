@@ -74,8 +74,9 @@ export default function ChatInput() {
 		}
 	}, [plainFiles]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		if (plainFiles.length > 0) {
+		if (plainFiles.length > 0 && user) {
 			const file = plainFiles[0];
 			const storageRef = ref(storage, `chats/${chatId}/images/${file.name}`);
 			uploadBytes(storageRef, file)
@@ -92,7 +93,7 @@ export default function ChatInput() {
 					console.error("Error uploading image: ", error);
 				});
 		}
-	}, [plainFiles, chatId, messagesCollection, user]);
+	}, [plainFiles, user]);
 
 	const actions = [
 		{

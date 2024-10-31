@@ -1,3 +1,6 @@
+import LetterPullup from "@/components/ui/letter-pullup";
+import TypingAnimation from "@/components/ui/typing-animation";
+import WordPullUp from "@/components/ui/word-pull-up";
 import { setRequestLocale } from "next-intl/server";
 
 export default async function ChatPage({
@@ -6,8 +9,8 @@ export default async function ChatPage({
 	setRequestLocale(locale);
 
 	return (
-		<div className="flex flex-1 items-center justify-center h-screen">
-			<h1 className="font-bold text-2xl">Select Chat</h1>
+		<div className="flex h-screen flex-1 items-center justify-center">
+			<TypingAnimation className="font-semibold" text="Select Chat" />
 		</div>
 	);
 }
