@@ -30,6 +30,7 @@ import type { Message } from "@/models/message";
 import TextMessage from "./messages/TextMessage";
 import ImageMessage from "./messages/ImageMessage";
 import { useDeleteMessage } from "@/context/chat/delete-message-context";
+import AudioMessage from "./messages/AudioMessage";
 
 export default function ChatMessage({
 	message,
@@ -177,6 +178,15 @@ export default function ChatMessage({
 						senderProfile={senderProfile}
 					/>
 				)}
+
+				{message.type === "audio" && (
+					<AudioMessage
+						key={message.id}
+						message={message}
+						userId={userId}
+						senderProfile={senderProfile}
+					/>
+				)}
 			</ContextMenuTrigger>
 
 			<ContextMenuContent>
@@ -188,7 +198,9 @@ export default function ChatMessage({
 					{messageOptions.map((item) => {
 						return (
 							<motion.div variants={dropdownMenuVariants} key={item.label}>
-								{item.danger && <ContextMenuSeparator />}
+								{item.danger && messageOptions.length > 1 && (
+									<ContextMenuSeparator />
+								)}
 								<ContextMenuItem
 									className={cn(
 										"gap-2",

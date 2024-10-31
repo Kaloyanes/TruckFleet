@@ -399,7 +399,7 @@ export default function AddOrdersSheet() {
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
-			<SheetTrigger>
+			<SheetTrigger asChild>
 				<Button
 					onClick={() => {
 						setOrder(null);
@@ -494,7 +494,7 @@ export default function AddOrdersSheet() {
 							}}
 						>
 							<div className="flex sticky bottom-0 justify-center items-center gap-4 z-[99999999]">
-								<SheetClose>
+								<SheetClose asChild>
 									<Button type="button" className="min-w-32" variant="outline">
 										{t("cancel")}
 									</Button>

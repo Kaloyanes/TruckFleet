@@ -367,31 +367,29 @@ export default function DashboardSidebar() {
 									animate="visible"
 								>
 									{profileSettings.map((item) => (
-										<>
-											<motion.div
-												key={item.title}
-												variants={dropdownMenuVariants}
+										<motion.div
+											key={item.title}
+											variants={dropdownMenuVariants}
+										>
+											{item.danger && <DropdownMenuSeparator />}
+											<DropdownMenuItem
+												asChild
+												className={cn(
+													"gap-2",
+													item.danger
+														? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+														: "",
+												)}
 											>
-												{item.danger && <DropdownMenuSeparator />}
-												<DropdownMenuItem
-													asChild
-													className={cn(
-														"gap-2",
-														item.danger
-															? "flex gap-2 border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
-															: "",
-													)}
+												<Link
+													href={item.url}
+													className="flex items-center gap-2"
 												>
-													<Link
-														href={item.url}
-														className="flex items-center gap-2"
-													>
-														{item.icon && <item.icon />}
-														{t(item.title as any)}
-													</Link>
-												</DropdownMenuItem>
-											</motion.div>
-										</>
+													{item.icon && <item.icon />}
+													{t(item.title as any)}
+												</Link>
+											</DropdownMenuItem>
+										</motion.div>
 									))}
 								</motion.div>
 							</DropdownMenuContent>

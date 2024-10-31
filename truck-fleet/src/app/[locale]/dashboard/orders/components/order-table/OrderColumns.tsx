@@ -36,7 +36,8 @@ import {
 import { cn } from "@/lib/utils";
 import type { Order } from "@/models/orders";
 import {
-	Icon,
+	type Icon,
+	type IconProps,
 	IconCalendarFilled,
 	IconEdit,
 	IconFilter,
@@ -45,7 +46,6 @@ import {
 	IconMenu2,
 	IconPackage,
 	IconPhone,
-	IconProps,
 	IconStatusChange,
 	IconTrash,
 	IconTruckDelivery,
@@ -56,12 +56,12 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { DocumentReference } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useCopyToClipboard } from "react-use";
 import AnimatedHover from "./AnimatedHover";
 import Locations from "./Locations";
+import { Link } from "@/lib/navigation";
 
 export const OrderColumns: ColumnDef<Order>[] = [
 	{
@@ -431,11 +431,15 @@ export const OrderColumns: ColumnDef<Order>[] = [
 			}[];
 
 			// TODO: CHANGE THIS TO ANIMATED HOVER
+			const t = useTranslations("OrderList");
 
 			return (
 				<HoverCard openDelay={150} closeDelay={150}>
 					<HoverCardTrigger>
-						<span>{palletes.length} Palletes</span>
+						<span>
+							{palletes.length}{" "}
+							{palletes.length === 1 ? t("palette") : t("palletes")}
+						</span>
 					</HoverCardTrigger>
 					<HoverCardContent className="overflow-hidden">
 						<motion.div
@@ -449,7 +453,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 								className="flex items-center gap-2"
 							>
 								<IconPackage />
-								<span className="font-semibold">Palletes</span>
+								<span className="font-semibold">{t("palletes")}</span>
 							</motion.div>
 
 							<motion.div variants={dropdownMenuVariants}>

@@ -1,4 +1,5 @@
 "use client";
+
 import {
 	type AutosizeTextAreaRef,
 	AutosizeTextarea,
@@ -34,15 +35,18 @@ import { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useFilePicker } from "use-file-picker";
 import { useDeleteMessage } from "@/context/chat/delete-message-context";
+import { useReactMediaRecorder } from "react-media-recorder";
+import { v4 as uuidv4 } from "uuid";
 
 export default function ChatInput() {
-	const { openFilePicker, plainFiles, loading } = useFilePicker({
-		accept: "image/*",
-	});
+	// 1. Core state hooks
 	const [message, setMessage] = useState("");
 	const [showSend, setShowSend] = useState(false);
-	const chatId = useParams().chatId;
-	const t = useTranslations("ChatPage");
+	const inputRef = useRef<AutosizeTextAreaRef>(null);
+	const [user, loadingAuth, errorAuth] = useAuthState(auth);
+
+	// 2. Context hooks
+	const { openDeleteDialog } = useDeleteMessage();
 	const {
 		docRef,
 		messageValue,
@@ -51,56 +55,46 @@ export default function ChatInput() {
 		setIsEditing,
 		setMessageValue,
 	} = useChatEditContext();
-	const inputRef = useRef<AutosizeTextAreaRef>(null);
+	const t = useTranslations("ChatPage");
+	const chatId = useParams().chatId;
 
-	const [user, loadingAuth, errorAuth] = useAuthState(auth);
+	// 3. File picker hooks
+	const { openFilePicker, plainFiles, loading } = useFilePicker({
+		accept: "image/*",
+	});
 
+	// 4. Media recorder hooks
+	const { startRecording, stopRecording, mediaBlobUrl, status, error } =
+		useReactMediaRecorder({
+			audio: {
+				echoCancellation: true,
+				noiseSuppression: true,
+				sampleRate: 44100,
+			},
+			mediaRecorderOptions: {
+				mimeType: "audio/webm;codecs=opus",
+			},
+			onStart: () => {
+				console.log("Recording started");
+			},
+			onStop: (blobUrl, blob) => {
+				console.log("Recording stopped", { blobUrl, blob });
+			},
+		});
+
+	// 5. Firestore refs
 	const chatDocRef = doc(db, "chats", chatId as string);
 	const messagesCollection = collection(db, `chats/${chatId}/messages`);
 
-	async function uploadImage() {
-		openFilePicker();
-	}
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// 6. Effect hooks
 	useEffect(() => {
-		if (plainFiles.length > 0 && user) {
-			const file = plainFiles[0];
-			const storageRef = ref(storage, `chats/${chatId}/images/${file.name}`);
-			uploadBytes(storageRef, file)
-				.then(() => getDownloadURL(storageRef))
-				.then(async (downloadURL) => {
-					await addDoc(messagesCollection, {
-						content: downloadURL,
-						createdAt: new Date(),
-						sender: user?.uid,
-						type: "image",
-					});
-					return updateDoc(chatDocRef, {
-						lastMessageAt: new Date(),
-					});
-				})
-				.catch((error) => {
-					console.error("Error uploading image: ", error);
-				});
+		if (error) {
+			console.error("Recording error:", error);
 		}
-	}, [plainFiles, user]);
-
-	const actions = [
-		{
-			icon: IconMap2,
-			label: "location",
-			onPress: () => {},
-		},
-		{
-			icon: IconPhoto,
-			label: "photo",
-			onPress: uploadImage,
-		},
-	];
+		console.log("Recording status:", status);
+	}, [error, status]);
 
 	useEffect(() => {
-		console.log({ inputRef, isEditing });
 		if (isEditing) inputRef.current?.textArea.focus();
 		else inputRef.current?.textArea.blur();
 	}, [isEditing]);
@@ -112,6 +106,64 @@ export default function ChatInput() {
 	useEffect(() => {
 		setShowSend(message.trim().length > 0);
 	}, [message]);
+
+	useEffect(() => {
+		if (plainFiles.length > 0 && user) {
+			handleFileUpload(plainFiles[0]);
+		}
+	}, [plainFiles, user]);
+
+	useEffect(() => {
+		if (mediaBlobUrl && user) {
+			handleAudioUpload();
+		}
+	}, [mediaBlobUrl, user]);
+
+	// Rest of the component logic...
+	// (Keep all the existing functions and JSX, just move them after the hooks)
+
+	// Move your existing functions here (sendMessage, editMessage, etc.)
+
+	async function uploadImage() {
+		openFilePicker();
+	}
+
+	async function handleFileUpload(file: File) {
+		const storageRef = ref(storage, `chats/${chatId}/images/${file.name}`);
+		try {
+			await uploadBytes(storageRef, file);
+			const downloadURL = await getDownloadURL(storageRef);
+			await addDoc(messagesCollection, {
+				content: downloadURL,
+				createdAt: new Date(),
+				sender: user?.uid,
+				type: "image",
+			});
+			await updateDoc(chatDocRef, {
+				lastMessageAt: new Date(),
+			});
+		} catch (error) {
+			console.error("Error uploading image: ", error);
+		}
+	}
+
+	async function handleAudioUpload() {
+		const response = await fetch(mediaBlobUrl);
+		const blob = await response.blob();
+		const fileName = `${uuidv4()}.mp3`;
+		const storageRef = ref(storage, `chats/${chatId}/audio/${fileName}`);
+		await uploadBytes(storageRef, blob);
+		const downloadURL = await getDownloadURL(storageRef);
+		await addDoc(messagesCollection, {
+			content: downloadURL,
+			createdAt: new Date(),
+			sender: user?.uid,
+			type: "audio",
+		});
+		await updateDoc(chatDocRef, {
+			lastMessageAt: new Date(),
+		});
+	}
 
 	if (loadingAuth) return <Spinner />;
 
@@ -150,8 +202,6 @@ export default function ChatInput() {
 		});
 	}
 
-	const { openDeleteDialog } = useDeleteMessage();
-
 	async function editMessage(content: string) {
 		if (!docRef) return;
 
@@ -169,6 +219,19 @@ export default function ChatInput() {
 		setIsEditing(false);
 		setDocRef(null);
 	}
+
+	const actions = [
+		{
+			icon: IconMap2,
+			label: "location",
+			onPress: () => {},
+		},
+		{
+			icon: IconPhoto,
+			label: "photo",
+			onPress: uploadImage,
+		},
+	];
 
 	return (
 		<>
@@ -203,7 +266,7 @@ export default function ChatInput() {
 						animate={isEditing ? "hidden" : "visible"}
 					>
 						<DropdownMenu>
-							<DropdownMenuTrigger>
+							<DropdownMenuTrigger asChild>
 								<Button size={"icon"} variant={"outline"}>
 									<IconPlus />
 								</Button>
@@ -275,7 +338,7 @@ export default function ChatInput() {
 						}}
 					/>
 					<motion.div
-						className="absolute top-0 right-0"
+						className="absolute top-0 right-0 "
 						variants={{
 							hidden: {
 								opacity: 0,
@@ -291,13 +354,64 @@ export default function ChatInput() {
 								x: 0,
 								filter: "blur(0px)",
 							},
+							clicked: {
+								filter: "blur(0px)",
+								scale: 0.9,
+								x: 0,
+							},
+							hovered: {
+								filter: "blur(0px)",
+								scale: 1.1,
+								x: 0,
+							},
 						}}
+						whileTap={"clicked"}
+						whileHover={"hovered"}
 						animate={isEditing ? "hidden" : "visible"}
 					>
-						<Button size={"icon"} variant={"outline"}>
+						<Button
+							size={"icon"}
+							variant={"outline"}
+							onMouseDown={async () => {
+								try {
+									const stream = await navigator.mediaDevices.getUserMedia({
+										audio: true,
+									});
+									stream.getTracks().forEach((track) => track.stop());
+									startRecording();
+								} catch (err) {
+									console.error("Error accessing microphone:", err);
+									// Show error to user
+								}
+							}}
+							onMouseUp={stopRecording}
+							disabled={status === "recording" && error !== ""}
+						>
 							<IconMicrophone />
 						</Button>
 					</motion.div>
+					<motion.div
+						className="absolute top-2 right-2 h-3 w-3 rounded-full bg-red-500"
+						variants={{
+							recording: {
+								opacity: [0.5, 1],
+								scale: [0.8, 1.2],
+							},
+							idle: {
+								opacity: 0,
+								scale: 0,
+							},
+						}}
+						initial="idle"
+						// animate="recording"
+						animate={status === "recording" ? "recording" : "idle"}
+						transition={{
+							repeat: Number.POSITIVE_INFINITY,
+							repeatType: "reverse",
+							duration: 1,
+							ease: "easeInOut",
+						}}
+					/>
 				</div>
 
 				<motion.div

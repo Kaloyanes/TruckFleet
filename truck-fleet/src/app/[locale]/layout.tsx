@@ -5,10 +5,16 @@ import { locales } from "@/lib/i18n";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { Noto_Sans } from "next/font/google";
+import { Inter, Noto_Sans, Poppins } from "next/font/google";
 import "../globals.css";
 
-const noto = Noto_Sans({
+const poppins = Poppins({
+	preload: true,
+	weight: ["400", "500", "600", "700", "800", "900"],
+	subsets: ["latin-ext", "latin"],
+});
+
+const inter = Noto_Sans({
 	preload: true,
 	weight: ["400", "500", "600", "700", "800", "900"],
 	subsets: ["cyrillic", "latin"],
@@ -58,7 +64,9 @@ export default async function RootLayout({
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
-			<body className={noto.className}>
+			<body
+				className={params.locale === "en" ? poppins.className : inter.className}
+			>
 				<MotionConfigProvider
 					props={{
 						reducedMotion: "user",

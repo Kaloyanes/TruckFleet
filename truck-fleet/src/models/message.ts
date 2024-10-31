@@ -1,6 +1,6 @@
 export type Message = {
   id: string;
-  type: "text" | "image" | "voice" | "video" | "location";
+  type: "text" | "image" | "audio" | "video" | "location";
   content: string;
   createdAt: Date;
   sender: string;
