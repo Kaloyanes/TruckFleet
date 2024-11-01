@@ -37,15 +37,18 @@ import { useFilePicker } from "use-file-picker";
 import { useDeleteMessage } from "@/context/chat/delete-message-context";
 import { useReactMediaRecorder } from "react-media-recorder";
 import { v4 as uuidv4 } from "uuid";
+import LocationDialog from "@/app/[locale]/dashboard/chat/[chatId]/components/LocationDialog";
 
 export default function ChatInput() {
-	// 1. Core state hooks
 	const [message, setMessage] = useState("");
 	const [showSend, setShowSend] = useState(false);
 	const inputRef = useRef<AutosizeTextAreaRef>(null);
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
+	const [showLocationDialog, setShowLocationDialog] = useState(false);
+	const [isToggleRecording, setIsToggleRecording] = useState(false);
+	const [longPressTimeout, setLongPressTimeout] =
+		useState<NodeJS.Timeout | null>(null);
 
-	// 2. Context hooks
 	const { openDeleteDialog } = useDeleteMessage();
 	const {
 		docRef,
@@ -58,12 +61,10 @@ export default function ChatInput() {
 	const t = useTranslations("ChatPage");
 	const chatId = useParams().chatId;
 
-	// 3. File picker hooks
 	const { openFilePicker, plainFiles, loading } = useFilePicker({
 		accept: "image/*",
 	});
 
-	// 4. Media recorder hooks
 	const { startRecording, stopRecording, mediaBlobUrl, status, error } =
 		useReactMediaRecorder({
 			audio: {
@@ -82,11 +83,9 @@ export default function ChatInput() {
 			},
 		});
 
-	// 5. Firestore refs
 	const chatDocRef = doc(db, "chats", chatId as string);
 	const messagesCollection = collection(db, `chats/${chatId}/messages`);
 
-	// 6. Effect hooks
 	useEffect(() => {
 		if (error) {
 			console.error("Recording error:", error);
@@ -165,6 +164,21 @@ export default function ChatInput() {
 		});
 	}
 
+	async function handleLocationSelect(location: { lat: number; lng: number }) {
+		await addDoc(messagesCollection, {
+			content: JSON.stringify(location),
+			createdAt: new Date(),
+			sender: user?.uid,
+			type: "location",
+		});
+
+		await updateDoc(chatDocRef, {
+			lastMessageAt: new Date(),
+		});
+
+		setShowLocationDialog(false);
+	}
+
 	if (loadingAuth) return <Spinner />;
 
 	async function sendMessage(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -220,11 +234,61 @@ export default function ChatInput() {
 		setDocRef(null);
 	}
 
+	async function startAudioRecording() {
+		try {
+			const stream = await navigator.mediaDevices.getUserMedia({
+				audio: true,
+			});
+			stream.getTracks().forEach((track) => track.stop());
+			startRecording();
+		} catch (err) {
+			console.error("Error accessing microphone:", err);
+		}
+	}
+
+	function handleMicrophoneClick() {
+		if (status === "recording") {
+			stopRecording();
+			setIsToggleRecording(false);
+		} else {
+			startAudioRecording();
+			setIsToggleRecording(true);
+		}
+	}
+
+	function handleMicrophoneMouseDown() {
+		const timeout = setTimeout(() => {
+			startAudioRecording();
+			setLongPressTimeout(null);
+		}, 200);
+		setLongPressTimeout(timeout);
+	}
+
+	function handleMicrophoneMouseUp() {
+		if (longPressTimeout) {
+			clearTimeout(longPressTimeout);
+			setLongPressTimeout(null);
+			handleMicrophoneClick();
+		} else {
+			stopRecording();
+		}
+	}
+
+	function handleMicrophoneMouseLeave() {
+		if (longPressTimeout) {
+			clearTimeout(longPressTimeout);
+			setLongPressTimeout(null);
+		}
+		if (status === "recording" && !isToggleRecording) {
+			stopRecording();
+		}
+	}
+
 	const actions = [
 		{
 			icon: IconMap2,
 			label: "location",
-			onPress: () => {},
+			onPress: () => setShowLocationDialog(true),
 		},
 		{
 			icon: IconPhoto,
@@ -235,17 +299,12 @@ export default function ChatInput() {
 
 	return (
 		<>
-			<motion.div
-				className="fixed right-0 bottom-0 left-0 m-2 flex items-center gap-2"
-				// initial={{
-				// 	opacity: 0,
-				// 	filter: "blur(10px)",
-				// }}
-				// animate={{
-				// 	opacity: 1,
-				// 	filter: "blur(0px)",
-				// }}
-			>
+			<LocationDialog
+				open={showLocationDialog}
+				onOpenChange={setShowLocationDialog}
+				onLocationSelect={handleLocationSelect}
+			/>
+			<motion.div className="fixed right-0 bottom-0 left-0 m-2 flex items-center gap-2">
 				<div className="flex items-center">
 					<motion.div
 						className="flex items-center gap-2"
@@ -371,21 +430,12 @@ export default function ChatInput() {
 					>
 						<Button
 							size={"icon"}
-							variant={"outline"}
-							onMouseDown={async () => {
-								try {
-									const stream = await navigator.mediaDevices.getUserMedia({
-										audio: true,
-									});
-									stream.getTracks().forEach((track) => track.stop());
-									startRecording();
-								} catch (err) {
-									console.error("Error accessing microphone:", err);
-									// Show error to user
-								}
-							}}
-							onMouseUp={stopRecording}
-							disabled={status === "recording" && error !== ""}
+							variant={status === "recording" ? "default" : "outline"}
+							onClick={(e) => e.preventDefault()} // Prevent default to handle mouse events
+							onMouseDown={handleMicrophoneMouseDown}
+							onMouseUp={handleMicrophoneMouseUp}
+							onMouseLeave={handleMicrophoneMouseLeave}
+							disabled={error !== ""}
 						>
 							<IconMicrophone />
 						</Button>

@@ -31,6 +31,7 @@ import TextMessage from "./messages/TextMessage";
 import ImageMessage from "./messages/ImageMessage";
 import { useDeleteMessage } from "@/context/chat/delete-message-context";
 import AudioMessage from "./messages/AudioMessage";
+import LocationMessage from "./messages/LocationMessage";
 
 export default function ChatMessage({
 	message,
@@ -181,6 +182,15 @@ export default function ChatMessage({
 
 				{message.type === "audio" && (
 					<AudioMessage
+						key={message.id}
+						message={message}
+						userId={userId}
+						senderProfile={senderProfile}
+					/>
+				)}
+
+				{message.type === "location" && (
+					<LocationMessage
 						key={message.id}
 						message={message}
 						userId={userId}

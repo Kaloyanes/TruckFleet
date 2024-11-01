@@ -199,5 +199,11 @@
     "deleteMessageConfirmation": "Are you sure you want to delete this message?",
     "protip": "Pro tip: Hold Shift and click delete to skip this dialog.",
     "cancel": "Cancel"
+  },
+  "LocationDialog": {
+    "title": "Send Location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "send": "Send Location"
   }
 }

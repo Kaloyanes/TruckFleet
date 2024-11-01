@@ -45,6 +45,7 @@ export default function TruckMap() {
 		<>
 			<GoogleMap
 				mapId={mapId}
+				backgroundColor={"#0a0a0a"}
 				style={{ width: "100%", height: "100%", outline: "none" }}
 				defaultCenter={{ lat: 22.54992, lng: 0 }}
 				defaultZoom={3}
