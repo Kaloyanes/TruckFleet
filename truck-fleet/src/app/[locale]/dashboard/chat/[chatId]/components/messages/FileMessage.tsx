@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 interface FileMessageProps {
-	senderProfile: any;
+	senderProfile: { name: string; photoUrl: string };
 	userId?: string;
 	message: Message;
 }

@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import Image from "next/image";
+import { Card } from "@/components/ui/card";
 
 interface VideoMessageProps {
 	message: Message;
@@ -93,8 +94,13 @@ export default function VideoMessage({
 	};
 
 	return (
-		<div className={"flex flex-row-reverse items-end justify-end gap-2"}>
-			<div className="flex flex-col">
+		<div className="flex flex-row-reverse items-end justify-end gap-2">
+			<Card
+				className={cn(
+					"p-0",
+					message.sender === userId ? "bg-sidebar-accent" : "bg-muted",
+				)}
+			>
 				<div className="relative w-full overflow-hidden rounded-lg max-w-sm">
 					<video
 						ref={videoRef}
@@ -145,7 +151,7 @@ export default function VideoMessage({
 						</div>
 					</div>
 				</div>
-			</div>
+			</Card>
 			<Image
 				src={senderProfile.photoUrl}
 				width={40 * 2}

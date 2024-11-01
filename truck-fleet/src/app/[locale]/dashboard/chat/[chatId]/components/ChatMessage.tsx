@@ -179,6 +179,7 @@ export default function ChatMessage({
 						key={message.id}
 						message={message}
 						senderProfile={senderProfile}
+						userId={userId}
 					/>
 				)}
 

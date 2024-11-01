@@ -2,6 +2,8 @@ import Image from "next/image";
 import type { Message } from "@/models/message";
 import { useTranslations } from "next-intl";
 import { CustomAudioPlayer } from "../CustomAudioPlayer";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface AudioMessageProps {
 	message: Message;
@@ -17,22 +19,21 @@ const AudioMessage = ({
 	const t = useTranslations("ChatPage");
 
 	return (
-		<div className={"flex flex-row-reverse items-end justify-end gap-2"}>
-			<div className="flex flex-col">
-				<div
-					className={`relative flex min-h-13 w-fit min-w-64 max-w-[30vw] flex-col items-start whitespace-break-spaces break-words rounded-3xl rounded-bl-md bg-accent px-4 py-4 ${
-						message.sender === userId ? " bg-sidebar-border" : "bg-secondary"
-					}`}
-				>
+		<div className="flex flex-row-reverse items-end justify-end gap-2">
+			<Card
+				className={cn(
+					"p-3",
+					message.sender === userId ? "bg-sidebar-accent" : "bg-muted",
+				)}
+			>
+				<div className="flex flex-col gap-2">
 					<h1 className="font-semibold">{senderProfile.name}</h1>
-
 					<CustomAudioPlayer src={message.content} />
-
 					{message.updatedAt && (
-						<p className="pt-2 text-gray-400 text-xs">{t("edited")}</p>
+						<p className="text-xs text-muted-foreground">{t("edited")}</p>
 					)}
 				</div>
-			</div>
+			</Card>
 			<Image
 				src={senderProfile.photoUrl}
 				width={40 * 2}
