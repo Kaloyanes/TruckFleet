@@ -11,6 +11,12 @@ interface CustomAudioPlayerProps {
 	src: string;
 }
 
+const formatTime = (timeInSeconds: number): string => {
+	const minutes = Math.floor(timeInSeconds / 60);
+	const seconds = Math.floor(timeInSeconds % 60);
+	return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+};
+
 export function CustomAudioPlayer({ src }: CustomAudioPlayerProps) {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [duration, setDuration] = useState(0);
@@ -19,6 +25,7 @@ export function CustomAudioPlayer({ src }: CustomAudioPlayerProps) {
 	const [volume, setVolume] = useState(1);
 	const audioRef = useRef<HTMLAudioElement>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (typeof window === "undefined") return; // Only run on client side
 
@@ -149,7 +156,7 @@ export function CustomAudioPlayer({ src }: CustomAudioPlayerProps) {
 					onValueChange={handleProgressChange}
 					className="cursor-pointer"
 				/>
-				<div className="flex justify-between items-center">
+				<div className="flex items-center justify-between">
 					<div className="text-muted-foreground text-xs">
 						<span>{isLoading ? "0:00" : formatTime(currentTime)}</span>
 						{" / "}
@@ -163,7 +170,7 @@ export function CustomAudioPlayer({ src }: CustomAudioPlayerProps) {
 							step={0.01}
 							value={[volume]}
 							onValueChange={handleVolumeChange}
-							className="w-20 h-1 bg-secondary rounded-full"
+							className="h-1 w-20 rounded-full bg-secondary"
 						/>
 					</div>
 				</div>
