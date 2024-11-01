@@ -33,10 +33,11 @@ const LocationMessage = ({
 		return (
 			<div className="mt-2 h-[250px] w-full min-w-[400px] overflow-hidden rounded-lg">
 				<GoogleMap
-					zoom={15}
+					zoom={14}
 					center={location}
 					mapId={mapId}
 					disableDefaultUI={true}
+					keyboardShortcuts={false}
 					gestureHandling="none"
 					style={{ width: "100%", height: "100%" }}
 					onClick={() => {

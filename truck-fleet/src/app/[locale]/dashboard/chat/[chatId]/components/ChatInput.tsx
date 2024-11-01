@@ -147,6 +147,7 @@ export default function ChatInput() {
 	}
 
 	async function handleAudioUpload() {
+		if (!mediaBlobUrl) return;
 		const response = await fetch(mediaBlobUrl);
 		const blob = await response.blob();
 		const fileName = `${uuidv4()}.mp3`;
@@ -239,7 +240,7 @@ export default function ChatInput() {
 			const stream = await navigator.mediaDevices.getUserMedia({
 				audio: true,
 			});
-			stream.getTracks().forEach((track) => track.stop());
+			for (const track of stream.getTracks()) track.stop();
 			startRecording();
 		} catch (err) {
 			console.error("Error accessing microphone:", err);

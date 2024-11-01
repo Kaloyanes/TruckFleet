@@ -67,14 +67,14 @@ const TextMessage = ({ message, userId, senderProfile }: TextMessageProps) => {
 		<div className={"flex flex-row-reverse items-end justify-end gap-2"}>
 			<div className="flex flex-col">
 				<div
-					className={`relative flex min-h-13 w-fit min-w-64 max-w-[30vw] flex-col items-start whitespace-break-spaces break-words rounded-3xl rounded-bl-md bg-accent px-4 py-3 ${
-						message.sender === userId ? " bg-sidebar-border" : "bg-secondary"
+					className={`relative flex min-h-13 w-fit min-w-64 max-w-[30vw] flex-col items-start whitespace-break-spaces break-words rounded-3xl rounded-bl-md px-4 py-3 ${
+						message.sender === userId ? "bg-sidebar-accent" : "bg-muted"
 					}`}
 				>
 					<h1 className="font-semibold">{senderProfile.name}</h1>
 					<p>{renderContent(message.content)}</p>
 					{message.updatedAt && (
-						<p className="pt-2 text-gray-400 text-xs">{t("edited")}</p>
+						<p className="pt-2 text-xs opacity-70">{t("edited")}</p>
 					)}
 				</div>
 			</div>
