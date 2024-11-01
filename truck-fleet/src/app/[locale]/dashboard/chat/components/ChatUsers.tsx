@@ -11,6 +11,7 @@ import {
 	useCollectionData,
 } from "react-firebase-hooks/firestore";
 import ChatItem from "./ChatItem";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ChatUsers() {
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
@@ -46,11 +47,15 @@ export default function ChatUsers() {
 	}
 
 	return (
-		<div>
+		<ScrollArea className="h-[calc(100vh-130px)] w-full">
 			{chats.map((chat, index) => (
 				<motion.div
 					key={chat.id}
-					initial={{ opacity: 0, x: -250, filter: "blur(10px)" }}
+					initial={{
+						opacity: 0,
+						x: 250,
+						filter: "blur(10px)",
+					}}
 					animate={{
 						opacity: 1,
 						x: 0,
@@ -58,10 +63,11 @@ export default function ChatUsers() {
 						transition: {
 							type: "spring",
 							duration: 0.7,
+							bounce: 0.1,
 							delay: (index + 1) * 0.1,
 						},
 					}}
-					className=""
+					className="overflow-hidden"
 				>
 					<ChatItem
 						chatId={chat.id}
@@ -70,6 +76,6 @@ export default function ChatUsers() {
 					/>
 				</motion.div>
 			))}
-		</div>
+		</ScrollArea>
 	);
 }

@@ -26,22 +26,22 @@ export default function ChatItem({
 	// Fetch the profile of the other participant
 	const { profile, loading, error } = useProfileDoc(participantId);
 
-	const renderStatus = useMemo(() => {
-		return (status: string) => {
-			switch (status) {
-				case "online":
-					return (
-						<div className="absolute right-0 bottom-0 h-4 w-4 rounded-full bg-green-500" />
-					);
-				case "offline":
-					return (
-						<div className="absolute right-0 bottom-0 h-4 w-4 rounded-full bg-gray-500" />
-					);
-				default:
-					return null;
-			}
-		};
-	}, []);
+	// const renderStatus = useMemo(() => {
+	// 	return (status: string) => {
+	// 		switch (status) {
+	// 			case "online":
+	// 				return (
+	// 					<div className="absolute right-0 bottom-0 h-4 w-4 rounded-full bg-green-500" />
+	// 				);
+	// 			case "offline":
+	// 				return (
+	// 					<div className="absolute right-0 bottom-0 h-4 w-4 rounded-full bg-gray-500" />
+	// 				);
+	// 			default:
+	// 				return null;
+	// 		}
+	// 	};
+	// }, []);
 
 	const params = useParams();
 
@@ -54,7 +54,7 @@ export default function ChatItem({
 		<Link href={`/dashboard/chat/${chatId}`}>
 			<div
 				key={chatId}
-				className={`my-2 flex items-center gap-3 rounded-full p-1 transition-all ease-in-out ${chatId === params.chatId ? "bg-muted font-semibold" : "hover:bg-muted/50"}`}
+				className={`my-1 flex items-center gap-3 rounded-full rounded-r-none p-1 transition-all ease-in-out ${chatId === params.chatId ? "bg-muted font-semibold" : "hover:bg-muted/50"}`}
 			>
 				<div className="relative">
 					<Image
@@ -64,7 +64,7 @@ export default function ChatItem({
 						alt={profile.name}
 						className="h-12 w-12 rounded-full object-cover"
 					/>
-					{renderStatus(profile.status)}
+					{/* {renderStatus(profile.status)} */}
 				</div>
 				<div>
 					<h3>{profile.name}</h3>
