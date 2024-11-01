@@ -32,6 +32,8 @@ import ImageMessage from "./messages/ImageMessage";
 import { useDeleteMessage } from "@/context/chat/delete-message-context";
 import AudioMessage from "./messages/AudioMessage";
 import LocationMessage from "./messages/LocationMessage";
+import VideoMessage from "./messages/VideoMessage";
+import FileMessage from "./messages/FileMessage";
 
 export default function ChatMessage({
 	message,
@@ -124,7 +126,7 @@ export default function ChatMessage({
 				onPress: copyMessage,
 				danger: false,
 			});
-		} else if (message.type === "image") {
+		} else if (message.type === "image" || message.type === "video") {
 			baseOptions.push({
 				icon: IconDownload,
 				label: "download_image",
@@ -195,6 +197,24 @@ export default function ChatMessage({
 						message={message}
 						userId={userId}
 						senderProfile={senderProfile}
+					/>
+				)}
+
+				{message.type === "video" && (
+					<VideoMessage
+						key={message.id}
+						message={message}
+						userId={userId}
+						senderProfile={senderProfile}
+					/>
+				)}
+
+				{message.type === "file" && (
+					<FileMessage
+						message={message}
+						key={message.id}
+						senderProfile={senderProfile}
+						userId={userId}
 					/>
 				)}
 			</ContextMenuTrigger>

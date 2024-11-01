@@ -45,9 +45,13 @@ export default function ChatWindow() {
 	);
 
 	function scrollToBottom() {
-		if (bottomRef.current) {
-			bottomRef.current.scrollIntoView({ behavior: "auto" });
-		}
+		setTimeout(() => {
+			if (bottomRef.current) {
+				bottomRef.current.scrollIntoView({
+					behavior: "auto",
+				});
+			}
+		}, 70);
 	}
 
 	if (userLoading || messagesLoading || chatLoading || profileLoading) {
@@ -61,7 +65,7 @@ export default function ChatWindow() {
 
 	return (
 		<>
-			<div className="absolute top-0 z-50 flex h-16 w-full items-center justify-between bg-sidebar px-4 border-b border-sidebar-border">
+			<div className="absolute top-0 z-50 flex h-16 w-full items-center justify-between border-sidebar-border border-b bg-sidebar px-4">
 				<div className="flex items-center gap-3">
 					<div className="relative">
 						<Image
@@ -71,33 +75,33 @@ export default function ChatWindow() {
 							alt={participantProfile.name}
 							className="h-10 w-10 rounded-full object-cover"
 						/>
-						<div
+						{/* <div
 							className={`absolute right-0 bottom-0 h-3 w-3 rounded-full ${
 								participantProfile.status === "online"
 									? "bg-green-500"
 									: "bg-gray-500"
 							}`}
-						/>
+						/> */}
 					</div>
 					<div>
 						<h1 className="font-semibold">{participantProfile.name}</h1>
-						<p className="text-muted-foreground text-sm capitalize">
+						{/* <p className="text-muted-foreground text-sm capitalize">
 							{participantProfile.status ?? "offline"}
-						</p>
+						</p> */}
 					</div>
 				</div>
 			</div>
 
 			<ScrollArea
-				className="flex max-h-screen flex-1 flex-col gap-4 overflow-y-auto px-4"
+				className="h-screen pt-16"
 				ref={scrollAreaRef}
 				onLoad={scrollToBottom}
 			>
-				{/* Rest of the component remains the same */}
-				<div className="h-full space-y-4 pt-20 pb-14">
+				<div className="space-y-4 px-4 pb-14">
 					{messages.map((message: Message, index: number) => {
 						return (
 							<div
+								className="scroll-me-14"
 								key={message.id}
 								ref={index === messages.length - 1 ? bottomRef : undefined}
 							>
