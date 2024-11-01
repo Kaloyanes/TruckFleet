@@ -25,9 +25,16 @@ import {
 	IconPlus,
 	IconSend2,
 	IconX,
+	IconVideo,
+	IconFile,
 } from "@tabler/icons-react";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+	getDownloadURL,
+	ref,
+	uploadBytes,
+	uploadBytesResumable,
+} from "firebase/storage";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
@@ -38,6 +45,7 @@ import { useDeleteMessage } from "@/context/chat/delete-message-context";
 import { useReactMediaRecorder } from "react-media-recorder";
 import { v4 as uuidv4 } from "uuid";
 import LocationDialog from "@/app/[locale]/dashboard/chat/[chatId]/components/LocationDialog";
+import { Progress } from "@/components/ui/progress";
 
 export default function ChatInput() {
 	const [message, setMessage] = useState("");
@@ -48,6 +56,8 @@ export default function ChatInput() {
 	const [isToggleRecording, setIsToggleRecording] = useState(false);
 	const [longPressTimeout, setLongPressTimeout] =
 		useState<NodeJS.Timeout | null>(null);
+	const [uploadProgress, setUploadProgress] = useState<number>(0);
+	const [isUploading, setIsUploading] = useState(false);
 
 	const { openDeleteDialog } = useDeleteMessage();
 	const {
@@ -62,7 +72,20 @@ export default function ChatInput() {
 	const chatId = useParams().chatId;
 
 	const { openFilePicker, plainFiles, loading } = useFilePicker({
-		accept: "image/*",
+		accept: [
+			"video/mp4",
+			"video/quicktime",
+			"video/x-m4v",
+			"image/*",
+			// Add file types
+			"application/pdf",
+			"application/msword",
+			"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			"application/vnd.ms-excel",
+			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+			"text/plain",
+		],
+		readAs: "DataURL",
 	});
 
 	const { startRecording, stopRecording, mediaBlobUrl, status, error } =
@@ -118,31 +141,63 @@ export default function ChatInput() {
 		}
 	}, [mediaBlobUrl, user]);
 
-	// Rest of the component logic...
-	// (Keep all the existing functions and JSX, just move them after the hooks)
-
-	// Move your existing functions here (sendMessage, editMessage, etc.)
-
 	async function uploadImage() {
 		openFilePicker();
 	}
 
 	async function handleFileUpload(file: File) {
-		const storageRef = ref(storage, `chats/${chatId}/images/${file.name}`);
+		const isVideo = file.type.startsWith("video/");
+		const isImage = file.type.startsWith("image/");
+		let fileType = "files";
+
+		if (isVideo) fileType = "videos";
+		if (isImage) fileType = "images";
+
+		const fileName = `${uuidv4()}.${file.name.split(".").pop()}`;
+		const storageRef = ref(storage, `chats/${chatId}/${fileType}/${fileName}`);
+
 		try {
-			await uploadBytes(storageRef, file);
-			const downloadURL = await getDownloadURL(storageRef);
-			await addDoc(messagesCollection, {
-				content: downloadURL,
-				createdAt: new Date(),
-				sender: user?.uid,
-				type: "image",
+			setIsUploading(true);
+			setUploadProgress(0);
+
+			const uploadTask = uploadBytesResumable(storageRef, file, {
+				contentType: file.type,
 			});
-			await updateDoc(chatDocRef, {
-				lastMessageAt: new Date(),
-			});
+
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					setUploadProgress(progress);
+				},
+				(error) => {
+					console.error("Error uploading file: ", error);
+					setIsUploading(false);
+				},
+				async () => {
+					const downloadURL = await getDownloadURL(storageRef);
+					await addDoc(messagesCollection, {
+						createdAt: new Date(),
+						sender: user?.uid,
+						type: isVideo ? "video" : isImage ? "image" : "file",
+						content: downloadURL,
+						fileName: file.name, // Add original filename for files
+						fileType: file.type, // Add mimetype for files
+						status: "completed",
+					});
+
+					await updateDoc(chatDocRef, {
+						lastMessageAt: new Date(),
+					});
+
+					setIsUploading(false);
+					setUploadProgress(0);
+				},
+			);
 		} catch (error) {
-			console.error("Error uploading image: ", error);
+			console.error("Error uploading file: ", error);
+			setIsUploading(false);
 		}
 	}
 
@@ -285,6 +340,7 @@ export default function ChatInput() {
 		}
 	}
 
+	// Update the actions array to include separate file and image/video upload buttons
 	const actions = [
 		{
 			icon: IconMap2,
@@ -292,10 +348,15 @@ export default function ChatInput() {
 			onPress: () => setShowLocationDialog(true),
 		},
 		{
-			icon: IconPhoto,
-			label: "photo",
+			icon: IconFile,
+			label: "file",
 			onPress: uploadImage,
 		},
+		// {
+		// 	icon: IconPhoto,
+		// 	label: "media",
+		// 	onPress: uploadImage,
+		// },
 	];
 
 	return (
@@ -305,6 +366,16 @@ export default function ChatInput() {
 				onOpenChange={setShowLocationDialog}
 				onLocationSelect={handleLocationSelect}
 			/>
+			<motion.div
+				className="fixed right-0 bottom-14 left-0 px-2"
+				initial={{ opacity: 0, y: 10 }}
+				animate={{
+					opacity: isUploading ? 1 : 0,
+					y: isUploading ? 0 : 10,
+				}}
+			>
+				<Progress value={uploadProgress} className="h-1" />
+			</motion.div>
 			<motion.div className="fixed right-0 bottom-0 left-0 m-2 flex items-center gap-2">
 				<div className="flex items-center">
 					<motion.div
@@ -442,10 +513,10 @@ export default function ChatInput() {
 						</Button>
 					</motion.div>
 					<motion.div
-						className="absolute top-2 right-2 h-3 w-3 rounded-full bg-red-500"
+						className="pointer-events-none absolute top-2 right-2 h-3 w-3 rounded-full bg-red-500"
 						variants={{
 							recording: {
-								opacity: [0.5, 1],
+								opacity: [1, 1],
 								scale: [0.8, 1.2],
 							},
 							idle: {
