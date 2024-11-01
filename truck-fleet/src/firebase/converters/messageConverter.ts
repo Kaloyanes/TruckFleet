@@ -21,6 +21,8 @@ export const messageConverter: FirestoreDataConverter<Message> = {
       updatedAt: data.updatedAt
         ? new Date((data.updatedAt as Timestamp).seconds * 1000)
         : null,
+      fileName: data.fileName,
+      fileType: data.fileType,
     };
   },
 };

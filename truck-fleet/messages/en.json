@@ -193,6 +193,7 @@
     "delete": "Delete",
     "location": "Location",
     "photo": "Photo",
+    "file": "File",
     "type": "Type a message...",
     "download_image": "Download Image",
     "deleteMessage": "Delete Message",
