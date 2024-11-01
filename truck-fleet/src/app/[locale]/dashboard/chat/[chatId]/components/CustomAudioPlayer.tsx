@@ -40,9 +40,10 @@ export function CustomAudioPlayer({ src }: CustomAudioPlayerProps) {
 
 		const checkAndSetDuration = () => {
 			const audioDuration = audio.duration;
-			setDuration(audioDuration);
+			console.log(audioDuration);
+			setIsLoading(false);
 			if (!Number.isNaN(audioDuration) && Number.isFinite(audioDuration)) {
-				setIsLoading(false);
+				setDuration(audioDuration);
 			}
 		};
 
@@ -158,7 +159,7 @@ export function CustomAudioPlayer({ src }: CustomAudioPlayerProps) {
 				/>
 				<div className="flex items-center justify-between">
 					<div className="text-muted-foreground text-xs">
-						<span>{isLoading ? "0:00" : formatTime(currentTime)}</span>
+						<span>{formatTime(currentTime)}</span>
 						{" / "}
 						<span>{isLoading ? "0:00" : formatTime(duration)}</span>
 					</div>
