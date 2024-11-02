@@ -4,13 +4,13 @@ export const dropdownMenuParentVariants: Variants = {
 	hidden: {},
 	visible: {
 		transition: {
-			staggerChildren: 0.07,
+			staggerChildren: 0.05,
 			delayChildren: 0.05,
 		},
 	},
 };
 
 export const dropdownMenuVariants: Variants = {
-	hidden: { opacity: 0, y: 50, filter: "blur(5px)", scale: 0.7 },
+	hidden: { opacity: 0, y: 25, filter: "blur(5px)", scale: 0.8 },
 	visible: { opacity: 1, y: 0, filter: "blur(0px)", scale: 1 },
 };
