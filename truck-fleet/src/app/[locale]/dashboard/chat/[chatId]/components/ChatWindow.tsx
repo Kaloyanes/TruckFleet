@@ -18,6 +18,16 @@ import type { Message } from "@/models/message";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import type { Chat } from "@/models/chat";
 import { chatConverter } from "@/firebase/converters/chatConverter";
+import {
+	DropdownMenu,
+	DropdownMenuItem,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+	DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { IconDots, IconDotsVertical, IconTrash } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
 
 export default function ChatWindow() {
 	const bottomRef = useRef<HTMLDivElement>(null);
@@ -63,10 +73,21 @@ export default function ChatWindow() {
 	if (!messages) return <div>Get the conversation going</div>;
 	if (!participantProfile) return <div>Could not load participant info</div>;
 
+	const actions = [
+		{
+			label: "Delete Chat",
+			icon: <IconTrash />,
+			danger: true,
+			onClick: () => {
+				console.log("Delete chat");
+			},
+		},
+	];
+
 	return (
 		<>
 			<div className="absolute top-0 z-50 flex h-16 w-full items-center justify-between border-sidebar-border border-b bg-sidebar px-4">
-				<div className="flex items-center gap-3">
+				<div className="flex w-full items-center gap-3">
 					<div className="relative">
 						<Image
 							width={40}
@@ -75,25 +96,48 @@ export default function ChatWindow() {
 							alt={participantProfile.name}
 							className="h-10 w-10 rounded-full object-cover"
 						/>
-						{/* <div
-							className={`absolute right-0 bottom-0 h-3 w-3 rounded-full ${
-								participantProfile.status === "online"
-									? "bg-green-500"
-									: "bg-gray-500"
-							}`}
-						/> */}
 					</div>
 					<div>
 						<h1 className="font-semibold">{participantProfile.name}</h1>
-						{/* <p className="text-muted-foreground text-sm capitalize">
-							{participantProfile.status ?? "offline"}
-						</p> */}
 					</div>
+				</div>
+				<div className="justify-self-end">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" size={"icon"}>
+								<IconDotsVertical />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							{actions.map((action, index) => {
+								return (
+									<>
+										{action.danger && actions.length > 1 && (
+											<DropdownMenuSeparator />
+										)}
+										<DropdownMenuItem
+											key={index}
+											onClick={action.onClick}
+											className={cn(
+												"gap-2",
+												action.danger
+													? "border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+													: "",
+											)}
+										>
+											{action.icon}
+											<span>{action.label}</span>
+										</DropdownMenuItem>
+									</>
+								);
+							})}
+						</DropdownMenuContent>
+					</DropdownMenu>
 				</div>
 			</div>
 
 			<ScrollArea
-				className="h-screen pt-16"
+				className="h-screen pt-20"
 				ref={scrollAreaRef}
 				onLoad={scrollToBottom}
 			>

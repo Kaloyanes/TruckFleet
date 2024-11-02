@@ -27,11 +27,11 @@ export default function ChatUsers() {
 		).withConverter(chatConverter);
 	}, [user?.uid]);
 
-	const [snapshot, loading, error] = useCollection(chatQuery, {
+	const [snapshot, chatLoading, error] = useCollection(chatQuery, {
 		snapshotListenOptions: { includeMetadataChanges: true },
 	});
 
-	if (!user?.uid || loadingAuth) return <Spinner />;
+	if (!user?.uid || loadingAuth || chatLoading) return <Spinner />;
 	if (errorAuth || error) {
 		console.error("Error:", errorAuth || error);
 		return <div>Error loading chats</div>;
