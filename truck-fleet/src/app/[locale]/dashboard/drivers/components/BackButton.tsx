@@ -49,6 +49,7 @@ export default function BackButton() {
 					>
 						<Button
 							size={"icon"}
+							variant={"ghost"}
 							onClick={() => {
 								router.back();
 							}}
