@@ -37,6 +37,8 @@ export default function TruckDirections({
 
 	useEffect(() => {
 		if (!routesLibrary || !map) return;
+		// map.mapTypes.set("globe", new google.maps.);
+
 		setDirectionsService(new routesLibrary.DirectionsService());
 
 		const pathColor = getCssVariableValue("--chart-4");
@@ -50,7 +52,6 @@ export default function TruckDirections({
 				},
 				markerOptions: {
 					optimized: true,
-					animation: google.maps.Animation.DROP,
 					icon: {
 						fillColor: `hsl(${circleColor})`,
 						fillOpacity: 1,
