@@ -53,6 +53,7 @@ import {
 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function DashboardSidebar() {
@@ -125,7 +126,7 @@ export default function DashboardSidebar() {
 		},
 	];
 
-	const { toggleSidebar } = useSidebar();
+	const { toggleSidebar, open } = useSidebar();
 
 	const profileSettingsIsActive = profileSettings.some((item) =>
 		pathName.includes(item.url),
@@ -328,21 +329,22 @@ export default function DashboardSidebar() {
 									className=""
 								>
 									<div className="flex items-center gap-3">
-										<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-											{/* <Image
-                      src={profile?.photoUrl}
-                      alt={profile?.username}
-                      width={24 * 2}
-                      height={24 * 2}
-                      className="size-6 rounded-full object-cover"
-                    /> */}
-											<Avatar>
-												<AvatarImage
-													width={24 * 2}
-													height={24 * 2}
-													src={profile?.photoUrl}
-													className="object-cover"
-												/>
+										<div className="flex aspect-square size-8 items-center justify-center ">
+											<Avatar
+												className={cn(
+													"transition-all duration-200 ease-in-out",
+													!open ? "!rounded-md" : "",
+												)}
+											>
+												<AvatarImage asChild src={profile?.photoUrl}>
+													<Image
+														width={40 * 2}
+														height={40 * 2}
+														src={profile?.photoUrl}
+														alt={profile?.name}
+														className="object-cover !rounded-md "
+													/>
+												</AvatarImage>
 												<AvatarFallback>
 													{profile?.name
 														?.split(" ")
