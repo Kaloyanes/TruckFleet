@@ -18,10 +18,11 @@ export default function LetterPullup({
 	const letters = words.split("");
 
 	const pullupVariant = {
-		initial: { y: 25, opacity: 0 },
+		initial: { y: 25, opacity: 0, filter: "blur(5px)" },
 		animate: (i: any) => ({
 			y: 0,
 			opacity: 1,
+			filter: "blur(0px)",
 			transition: {
 				delay: i * (delay ? delay : 0.05), // By default, delay each letter's animation by 0.05 seconds
 			},
@@ -38,7 +39,7 @@ export default function LetterPullup({
 					animate="animate"
 					custom={i}
 					className={cn(
-						"font-display text-center text-4xl font-bold tracking-[-0.02em] text-black drop-shadow-sm dark:text-white md:text-4xl md:leading-[5rem]",
+						"text-center font-bold font-display text-4xl text-black tracking-[-0.02em] drop-shadow-sm md:text-4xl md:leading-[5rem] dark:text-white",
 						className,
 					)}
 				>

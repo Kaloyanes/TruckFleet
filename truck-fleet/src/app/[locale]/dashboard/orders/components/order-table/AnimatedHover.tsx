@@ -56,7 +56,7 @@ export default function AnimatedHover({
 							)}
 
 							{action.type === "separator" && (
-								<Separator className="-mx-6 my-1 h-px bg-muted w-[50vw]" />
+								<Separator className="-mx-6 my-1 h-px w-[50vw] bg-muted" />
 							)}
 
 							{action.type === "info" && (

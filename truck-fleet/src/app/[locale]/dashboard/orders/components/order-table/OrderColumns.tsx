@@ -33,11 +33,11 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
+import { Link } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import type { Order } from "@/models/orders";
 import {
 	type Icon,
-	type IconProps,
 	IconCalendarFilled,
 	IconEdit,
 	IconFilter,
@@ -46,6 +46,7 @@ import {
 	IconMenu2,
 	IconPackage,
 	IconPhone,
+	type IconProps,
 	IconStatusChange,
 	IconTrash,
 	IconTruckDelivery,
@@ -61,7 +62,6 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useCopyToClipboard } from "react-use";
 import AnimatedHover from "./AnimatedHover";
 import Locations from "./Locations";
-import { Link } from "@/lib/navigation";
 
 export const OrderColumns: ColumnDef<Order>[] = [
 	{
@@ -135,6 +135,37 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		id: "status",
 		header(props) {
 			const t = useTranslations();
+
+			const list = [
+				{
+					label: "OrderList.selectType",
+					type: "label",
+				},
+				{
+					type: "separator",
+				},
+				{
+					label: "OrderList.all",
+					type: "info",
+					value: "",
+				},
+				{
+					label: "AddOrderSheet.Pick Up",
+					type: "info",
+					value: "Pick Up",
+				},
+				{
+					label: "AddOrderSheet.In Delivery",
+					type: "info",
+					value: "In Delivery",
+				},
+				{
+					label: "AddOrderSheet.Delivered",
+					type: "info",
+					value: "Delivered",
+				},
+			];
+
 			return (
 				<div className="flex items-center gap-2">
 					<span>{t("OrderList.status")}</span>
@@ -144,8 +175,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 								<IconFilter size={18} />
 							</Button>
 						</PopoverTrigger>
-						<PopoverContent className="space-y-2">
-							<h1 className="font-bold">{t("OrderList.selectType")}</h1>
+						<PopoverContent className="space-y-2 overflow-hidden">
 							<RadioGroup
 								defaultValue={
 									(props.table
@@ -153,27 +183,44 @@ export const OrderColumns: ColumnDef<Order>[] = [
 										?.getFilterValue() as string) ?? ""
 								}
 								onValueChange={(value) => {
-									// if (value === "") value = "";
-
 									props.table.getColumn("status")?.setFilterValue(value);
 								}}
 							>
-								<div className="flex items-center space-x-2">
-									<RadioGroupItem value="" id="r1" />
-									<Label htmlFor="r1">{t("OrderList.all")}</Label>
-								</div>
-								<div className="flex items-center space-x-2">
-									<RadioGroupItem value="Pick Up" id="r1" />
-									<Label htmlFor="r1">{t("AddOrderSheet.Pick Up")}</Label>
-								</div>
-								<div className="flex items-center space-x-2">
-									<RadioGroupItem value="In Delivery" id="r2" />
-									<Label htmlFor="r2">{t("AddOrderSheet.In Delivery")}</Label>
-								</div>
-								<div className="flex items-center space-x-2">
-									<RadioGroupItem value="Delivered" id="r3" />
-									<Label htmlFor="r3">{t("AddOrderSheet.Delivered")}</Label>
-								</div>
+								<motion.div
+									variants={dropdownMenuParentVariants}
+									className="space-y-2 "
+									initial="hidden"
+									animate="visible"
+								>
+									{list.map((item, index) => (
+										<motion.div
+											key={index}
+											variants={dropdownMenuVariants}
+											className="w-fit"
+										>
+											{item.type === "label" && (
+												<h1 className="flex items-center gap-2 font-semibold">
+													<IconStatusChange />
+													{t(item.label as any)}
+												</h1>
+											)}
+											{item.type === "separator" && (
+												<Separator className="-mx-6 my-1 h-px w-[50vw] bg-muted" />
+											)}
+											{item.type === "info" && (
+												<div className="flex items-center space-x-2">
+													<RadioGroupItem
+														value={item.value as string}
+														id={`r${index}`}
+													/>
+													<Label htmlFor={`r${index}`}>
+														{t(item.label as any)}
+													</Label>
+												</div>
+											)}
+										</motion.div>
+									))}
+								</motion.div>
 							</RadioGroup>
 						</PopoverContent>
 					</Popover>

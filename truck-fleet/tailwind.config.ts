@@ -117,6 +117,7 @@ const config = {
   },
   plugins: [
     require("tailwindcss-animate"),
+    require("tailwindcss-motion"),
     ({ matchUtilities, theme }: any) => {
       matchUtilities(
         {

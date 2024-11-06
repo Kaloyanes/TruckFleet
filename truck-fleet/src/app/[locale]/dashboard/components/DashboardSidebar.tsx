@@ -286,7 +286,7 @@ export default function DashboardSidebar() {
 								pathName === item.url;
 
 							return (
-								<SidebarMenuItem key={item.title}>
+								<SidebarMenuItem key={item.title} className="">
 									<SidebarMenuButton
 										size={"lg"}
 										isActive={isActive}
@@ -316,7 +316,6 @@ export default function DashboardSidebar() {
 						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
 							<IconLayoutSidebar className="size-6" />
 						</div>
-						{/* TODO: ADD TOOLTIP FOR CTRL + B */}
 						{t("collapse")}
 					</SidebarMenuButton>
 

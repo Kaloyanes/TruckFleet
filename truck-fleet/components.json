@@ -3,6 +3,7 @@
   "style": "default",
   "rsc": true,
   "tsx": true,
+  "iconLibrary": "tabler",
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "src/app/globals.css",
