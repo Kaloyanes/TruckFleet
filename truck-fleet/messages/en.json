@@ -206,5 +206,9 @@
     "latitude": "Latitude",
     "longitude": "Longitude",
     "send": "Send Location"
+  },
+  "InvoicesPage": {
+    "invoices": "Invoices",
+    "newInvoice": "New Invoice"
   }
 }

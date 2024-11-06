@@ -1,3 +1,9 @@
+import { MoneyChart } from "./components/MoneyChart";
+
 export default function InvoicesPage() {
-	return <h1>Welcome to Invoicespage!</h1>;
+	return (
+		<div className="max-h-[50vh]">
+			<MoneyChart />
+		</div>
+	);
 }
