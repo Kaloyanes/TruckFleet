@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { InputWithIcon } from "@/components/ui/input-with-icon";
 import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
+import { AddInvoice } from "./components/AddInvoice";
 
 export default function InvoicesPage() {
 	return (
@@ -23,9 +24,10 @@ export default function InvoicesPage() {
 					</Button>
 				</div>
 				<div className="flex-[3]" />
-				<Button variant={"outline"} size={"icon"}>
+				{/* <Button variant={"outline"} size={"icon"}>
 					<IconPlus />
-				</Button>
+				</Button> */}
+				<AddInvoice />
 			</div>
 		</div>
 	);

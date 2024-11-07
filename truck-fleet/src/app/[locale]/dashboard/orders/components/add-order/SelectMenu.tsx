@@ -122,7 +122,7 @@ function DriverList({
 	return (
 		<Command>
 			<CommandInput placeholder={filterText} />
-			<CommandList>
+			<CommandList className="w-[--radix-popper-anchor-width]">
 				<CommandEmpty>
 					<motion.div
 						initial={{ opacity: 0, scale: 0.7, y: -10 }}

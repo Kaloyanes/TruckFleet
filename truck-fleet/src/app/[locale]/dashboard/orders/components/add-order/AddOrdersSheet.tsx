@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import {
 	Sheet,
 	SheetClose,
+	SheetCloseButton,
 	SheetContent,
+	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
@@ -37,6 +39,12 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
+import { IconPlus } from "@tabler/icons-react";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function AddOrdersSheet() {
 	const t = useTranslations("AddOrderSheet");
@@ -399,21 +407,34 @@ export default function AddOrdersSheet() {
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
-			<SheetTrigger asChild>
-				<Button
-					onClick={() => {
-						setOrder(null);
-					}}
-				>
-					{t("title")}
-				</Button>
-			</SheetTrigger>
-			<SheetContent className="overflow-y-scroll overflow-x-hidden ">
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<SheetTrigger asChild>
+						<Button
+							onClick={() => {
+								setOrder(null);
+							}}
+							variant={"outline"}
+							size={"icon"}
+						>
+							<IconPlus />
+						</Button>
+					</SheetTrigger>
+				</TooltipTrigger>
+				<TooltipContent>{t("title")}</TooltipContent>
+			</Tooltip>
+			<SheetContent
+				className="overflow-y-scroll overflow-x-hidden "
+				showCloseButton={false}
+			>
 				{!driverLoading && !companiesLoading && !truckLoading && (
 					<>
-						<SheetTitle className="w-full py-6">
-							{order ? `${t("editTitle")} #${order.id}` : t("title")}
-						</SheetTitle>
+						<SheetHeader className="flex flex-row items-center">
+							<SheetTitle className="w-full flex-1">
+								{order ? `${t("editTitle")} #${order.id}` : t("title")}
+							</SheetTitle>
+							<SheetCloseButton className="static" />
+						</SheetHeader>
 						<AutoForm
 							values={initialValues as any}
 							formSchema={sheetFormSchema}

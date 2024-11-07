@@ -1,4 +1,5 @@
 "use client";
+import NumberFlow from "@number-flow/react";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -22,7 +23,35 @@ export default function TimeTitle() {
 			<h1 className="flex items-center gap-2 capitalize">
 				<div>{t(format(time, "MMM").toLowerCase() as any)}</div>
 				<div>{format(time, "d, yyyy").toLowerCase()}</div>|
-				<div>{format(time, "pp")}</div>
+				<div className="">
+					<NumberFlow
+						value={time.getHours()}
+						format={{
+							style: "decimal",
+							unit: "hour",
+							maximumFractionDigits: 0,
+						}}
+					/>
+					:
+					<NumberFlow
+						value={time.getMinutes()}
+						format={{
+							style: "decimal",
+							unit: "minute",
+							maximumFractionDigits: 0,
+						}}
+					/>
+					:
+					<NumberFlow
+						value={time.getSeconds()}
+						format={{
+							style: "decimal",
+							unit: "second",
+							maximumFractionDigits: 0,
+						}}
+					/>
+				</div>
+				{/* <div>{format(time, "aa").toLowerCase()}</div> */}
 			</h1>
 
 			<div className="flex items-end gap-3 ">
