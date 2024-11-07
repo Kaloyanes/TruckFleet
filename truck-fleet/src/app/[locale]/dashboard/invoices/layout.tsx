@@ -1,9 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
-import LetterPullup from "@/components/ui/letter-pullup";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
+import InfoCard from "./components/InfoCard";
 
 export default async function InvoicesLayout({
 	children,
@@ -13,25 +11,25 @@ export default async function InvoicesLayout({
 	params: { locale: string };
 }) {
 	const t = useTranslations("InvoicesPage");
+
 	return (
-		<Card
+		<div
 			className={
-				"relative w-full flex-1 overflow-hidden rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300"
+				"relative mt-5 w-full flex-1 overflow-hidden rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300"
 			}
 		>
-			<CardHeader className="sticky top-0 flex select-none flex-row items-center justify-between border-b bg-sidebar">
-				<LetterPullup words={t("invoices")} className="font-semibold" />
-				<Button
-					variant="expandIcon"
-					Icon={IconCirclePlus}
-					iconPlacement="right"
-					className="motion-preset-blur-left-lg font-bold"
-				>
-					{t("newInvoice")}
-				</Button>
-			</CardHeader>
+			<div className="mx-5 flex items-center gap-2">
+				<InfoCard amount={250000} description={"open"} invoicesCount={5} />
+				<InfoCard amount={1500} description={"overdue"} invoicesCount={5} />
+				<InfoCard amount={250000} description={"paid"} invoicesCount={5} />
 
+				<Card className="flex-1 min-h-28">
+					<CardHeader>
+						<CardTitle>Payment Score</CardTitle>
+					</CardHeader>
+				</Card>
+			</div>
 			<section className="">{children}</section>
-		</Card>
+		</div>
 	);
 }

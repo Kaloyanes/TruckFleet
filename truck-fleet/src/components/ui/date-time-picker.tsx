@@ -1,8 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { addDays, format } from "date-fns";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -10,14 +7,12 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { TimePickerDemo } from "./time-picker-demo";
+import { cn } from "@/lib/utils";
+import { IconCalendarClock } from "@tabler/icons-react";
+import { addDays, format } from "date-fns";
 import { useTranslations } from "next-intl";
-import {
-	IconCalendar,
-	IconCalendarBolt,
-	IconCalendarClock,
-} from "@tabler/icons-react";
-import { Calendar } from "lucide-react";
+import * as React from "react";
+import { TimePickerDemo } from "./time-picker-demo";
 
 export function DateTimePicker() {
 	const [date, setDate] = React.useState<Date>();

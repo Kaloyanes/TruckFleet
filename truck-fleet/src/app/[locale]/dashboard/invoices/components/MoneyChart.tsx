@@ -11,8 +11,6 @@ import {
 import { IconCurrencyDollar } from "@tabler/icons-react";
 import { useLocale } from "next-intl";
 
-export const description = "An area chart with gradient fill";
-
 export function MoneyChart() {
 	const locale = useLocale();
 
@@ -45,7 +43,7 @@ export function MoneyChart() {
 	} satisfies ChartConfig;
 
 	return (
-		<ChartContainer config={chartConfig}>
+		<ChartContainer config={chartConfig} className="w-full max-h-[50vh]">
 			<AreaChart
 				accessibilityLayer
 				data={chartData}
