@@ -18,12 +18,12 @@ export default async function InvoicesLayout({
 				"relative mt-5 w-full flex-1 overflow-hidden rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300"
 			}
 		>
-			<div className="mx-5 flex items-center gap-2">
+			<div className="mx-5 flex items-center gap-4">
 				<InfoCard amount={250000} description={"open"} invoicesCount={5} />
 				<InfoCard amount={1500} description={"overdue"} invoicesCount={5} />
 				<InfoCard amount={250000} description={"paid"} invoicesCount={5} />
 
-				<Card className="flex-1 min-h-28">
+				<Card className="min-h-40 flex-1">
 					<CardHeader>
 						<CardTitle>Payment Score</CardTitle>
 					</CardHeader>

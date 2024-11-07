@@ -209,6 +209,9 @@
   },
   "InvoicesPage": {
     "invoices": "Invoices",
-    "newInvoice": "New Invoice"
+    "newInvoice": "New Invoice",
+    "open": "Open",
+    "paid": "Paid",
+    "overdue": "Overdue"
   }
 }

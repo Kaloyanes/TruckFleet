@@ -33,12 +33,12 @@ export default function InfoCard({
 	});
 
 	return (
-		<Card className="min-h-28 flex-1">
-			<CardHeader>
+		<Card className="min-h-40 flex-1">
+			<CardHeader className="p-5">
 				<CardTitle>
 					<NumberFlow
 						value={count}
-						className="~text-xl/4xl font-semibold"
+						className="font-semibold text-xl/4xl"
 						format={{
 							style: "currency",
 							currency: "EUR",
@@ -46,7 +46,10 @@ export default function InfoCard({
 						}}
 					/>
 				</CardTitle>
-				<CardDescription>{t(description as any)}</CardDescription>
+				<h2 className="font-semibold">{t(description as any)}</h2>
+				<CardDescription className="font-semibold">
+					{invoicesCount} {t("invoices")}
+				</CardDescription>
 			</CardHeader>
 		</Card>
 	);

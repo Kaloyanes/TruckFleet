@@ -1,3 +1,32 @@
+import { Button } from "@/components/ui/button";
+import { InputWithIcon } from "@/components/ui/input-with-icon";
+import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
+
 export default function InvoicesPage() {
-	return <div className=" flex flex-col pt-2"></div>;
+	return (
+		<div className="mx-5 mt-2 flex flex-col pt-4">
+			<div className="flex w-full items-center justify-between">
+				<div className="relative flex-1 ">
+					<InputWithIcon
+						icon={<IconSearch size={18} className="text-muted-foreground" />}
+						position="leading"
+						inputProps={{
+							placeholder: "Search",
+						}}
+					/>
+					<Button
+						size={"icon"}
+						className="absolute top-[0px] right-0 hover:translate-y-0 "
+						variant={"ghost"}
+					>
+						<IconFilter size={18} className="text-muted-foreground" />
+					</Button>
+				</div>
+				<div className="flex-[3]" />
+				<Button variant={"outline"} size={"icon"}>
+					<IconPlus />
+				</Button>
+			</div>
+		</div>
+	);
 }
