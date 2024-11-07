@@ -1,6 +1,4 @@
 "use client";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -8,9 +6,11 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { forwardRef } from "react";
+import { cn } from "@/lib/utils";
+import { IconCalendar } from "@tabler/icons-react";
+import { format } from "date-fns";
 import { useTranslations } from "next-intl";
-import { Calendar } from "lucide-react";
+import { forwardRef } from "react";
 
 export const DatePicker = forwardRef<
 	HTMLDivElement,
@@ -31,7 +31,7 @@ export const DatePicker = forwardRef<
 						!date && "text-muted-foreground",
 					)}
 				>
-					<Calendar className="mr-2 h-4 w-4" />
+					<IconCalendar className="mr-2 h-4 w-4" />
 					{date ? format(date, "PPP") : <span>{t("pickDate")}</span>}
 				</Button>
 			</PopoverTrigger>
