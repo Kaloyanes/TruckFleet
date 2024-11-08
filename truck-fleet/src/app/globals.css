@@ -135,6 +135,8 @@
 @layer base {
   * {
     @apply border-border;
+    scrollbar-width: 5px;
+    scrollbar-color: hsl(var(--muted)) transparent;
   }
   body {
     @apply bg-background text-foreground;

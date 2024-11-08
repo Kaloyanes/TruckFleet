@@ -23,6 +23,7 @@ export default function InfoCard({
 	const locale = useLocale();
 	const t = useTranslations("InvoicesPage");
 	const [count, setCount] = useState(amount);
+	const [invoices, setInvoicesCount] = useState(0);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -31,6 +32,12 @@ export default function InfoCard({
 
 		return () => clearInterval(interval);
 	});
+
+	useEffect(() => {
+		setTimeout(() => {
+			setInvoicesCount(invoicesCount);
+		}, 200);
+	}, [invoicesCount]);
 
 	return (
 		<Card className="min-h-40 flex-1">
@@ -47,8 +54,13 @@ export default function InfoCard({
 					/>
 				</CardTitle>
 				<h2 className="font-semibold">{t(description as any)}</h2>
-				<CardDescription className="font-semibold">
-					{invoicesCount} {t("invoices")}
+				<CardDescription className="font-semibold text-xl/4xl">
+					<NumberFlow
+						defaultValue={0}
+						value={invoices}
+						className="font-semibold text-xl/4xl"
+					/>{" "}
+					{t("invoices")}
 				</CardDescription>
 			</CardHeader>
 		</Card>

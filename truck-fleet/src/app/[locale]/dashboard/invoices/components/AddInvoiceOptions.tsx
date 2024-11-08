@@ -1,56 +1,40 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
+	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuPortal,
-	DropdownMenuSeparator,
 	DropdownMenuSub,
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
 	Tooltip,
 	TooltipContent,
+	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { dropdownMenuParentVariants } from "@/lib/dropdownMenuVariants";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import {
+	IconCalculator,
 	IconCalendar,
-	IconCurrencyDollar,
+	IconCurrency,
 	IconDotsVertical,
-	IconMail,
-	IconMessage,
-	IconPlus,
-	IconSearch,
-	IconUserPlus,
 } from "@tabler/icons-react";
 import { code, codes } from "currency-codes-ts";
-import type {
-	CurrencyCode,
-	CurrencyCodeRecord,
-} from "currency-codes-ts/dist/types";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { InputWithIcon } from "@/components/ui/input-with-icon";
+import type { CurrencyCode } from "currency-codes-ts/dist/types";
+import { format } from "date-fns";
 import { motion } from "framer-motion";
-import {
-	dropdownMenuParentVariants,
-	dropdownMenuVariants,
-} from "@/lib/dropdownMenuVariants";
+import { useMemo, useState } from "react";
 
 // Add debounce utility
-const debounce = (fn: Function, delay: number) => {
-	let timeoutId: NodeJS.Timeout;
-	return (...args: any[]) => {
-		clearTimeout(timeoutId);
-		timeoutId = setTimeout(() => fn(...args), delay);
-	};
-};
 
 const AnimatedScrollView = motion.create(ScrollArea);
+const AnimatedInput = motion.create(Input);
+const AnimatedDropdownMenuSubContent = motion.create(DropdownMenuSubContent);
 
 export default function AddInvoiceOptions() {
 	const currenciesCodes = codes();
@@ -69,9 +53,17 @@ export default function AddInvoiceOptions() {
 					if (a.countries.length < b.countries.length) return 1;
 					if (a.code > b.code) return 1;
 					if (a.code < b.code) return -1;
+					return 0;
 				}),
 		[currenciesCodes],
 	);
+
+	const date = new Date();
+	const dateFormats = [
+		format(date, "dd/MM/yyyy"),
+		format(date, "MM/dd/yyyy"),
+		format(date, "yyyy/MM/dd"),
+	];
 
 	const [searchCurrency, setSearchCurrency] = useState("");
 
@@ -92,41 +84,36 @@ export default function AddInvoiceOptions() {
 		[currencies, searchCurrency],
 	);
 
-	const handleSearch = useCallback(
-		debounce((value: string) => setSearchCurrency(value), 300),
-		[],
-	);
+	const [checkedDateFormat, setCheckedDateFormat] = useState(dateFormats[0]);
+	const [checkedCurrency, setCheckedCurrency] = useState(filteredCurrencies[0]);
 
 	const actions = [
-		{
-			label: "Date Format",
-			icon: IconCalendar,
-			items: ["MM/DD/YYYY", "DD/MM/YYYY", "YYYY/MM/DD"],
-		},
 		{
 			label: "Sales Tax",
 			icon: IconCalendar,
 			items: ["Yes", "No"],
 		},
 		{
-			label: "Currency",
-			icon: IconCurrencyDollar,
-			items: [...currencies],
+			label: "VAT",
+			icon: IconCalculator,
+			items: ["Yes", "No"],
 		},
 	];
 
 	return (
 		<DropdownMenu>
-			<Tooltip>
-				<TooltipTrigger asChild>
+			<TooltipProvider key={"optionsTooltip"}>
+				<Tooltip defaultOpen={false}>
 					<DropdownMenuTrigger asChild>
-						<Button variant={"ghost"} size={"icon"}>
-							<IconDotsVertical size={20} />
-						</Button>
+						<TooltipTrigger asChild>
+							<Button variant={"ghost"} size={"icon"}>
+								<IconDotsVertical size={20} />
+							</Button>
+						</TooltipTrigger>
 					</DropdownMenuTrigger>
-				</TooltipTrigger>
-				<TooltipContent>Options</TooltipContent>
-			</Tooltip>
+					<TooltipContent>Options</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
 			<DropdownMenuContent className="*:gap-2 *:font-semibold *:text-sm">
 				<motion.div
 					className=""
@@ -134,98 +121,70 @@ export default function AddInvoiceOptions() {
 					initial="hidden"
 					animate="visible"
 				>
-					{actions.map((action) => (
-						<motion.div key={action.label} variants={dropdownMenuVariants}>
-							<DropdownMenuSub key={action.label}>
-								<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
-									<action.icon size={18} />
-									<span>{action.label}</span>
-								</DropdownMenuSubTrigger>
-								<DropdownMenuPortal>
-									<DropdownMenuSubContent className="min-w-64 *:gap-2">
-										{action.label.toLowerCase() === "currency" && (
-											<div className="pb-2">
-												<InputWithIcon
-													position="leading"
-													icon={<IconSearch size={18} />}
-													inputProps={{
-														placeholder: "Search currency",
-														onInput: (e) => {
-															e.stopPropagation();
-															handleSearch(e.currentTarget.value);
-														},
-														onKeyDown: (e) => e.stopPropagation(),
-													}}
-												/>
-											</div>
-										)}
-
-										<AnimatedScrollView
-											variants={dropdownMenuParentVariants}
-											initial={
-												action.label.toLowerCase() === "currency"
-													? "visible"
-													: "hidden"
+					{/* Date Formats */}
+					<DropdownMenuSub>
+						<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
+							<IconCalendar size={18} />
+							<span>Date Format</span>
+						</DropdownMenuSubTrigger>
+						<DropdownMenuPortal>
+							<DropdownMenuSubContent className="min-w-64 *:gap-2">
+								{dateFormats.map((item) => (
+									<DropdownMenuCheckboxItem
+										key={item?.toString()}
+										onClick={(e) => {
+											e.preventDefault();
+											setCheckedDateFormat(item);
+										}}
+										onCheckedChange={(checked) => {
+											if (checked) {
+												setCheckedDateFormat(item);
 											}
-											animate="visible"
-											className="max-h-64 overflow-y-scroll "
+										}}
+										checked={checkedDateFormat === item}
+									>
+										{item as string}
+									</DropdownMenuCheckboxItem>
+								))}
+							</DropdownMenuSubContent>
+						</DropdownMenuPortal>
+					</DropdownMenuSub>
+
+					{/* Currency */}
+					<DropdownMenuSub>
+						<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
+							<IconCurrency size={18} />
+							<span>Currency</span>
+						</DropdownMenuSubTrigger>
+						<DropdownMenuPortal>
+							<DropdownMenuSubContent className="min-w-64 *:gap-2">
+								<Input
+									type="text"
+									placeholder="Search currency"
+									className="w-full border-none"
+									value={searchCurrency}
+									onKeyDown={(e) => e.stopPropagation()}
+									onChange={(e) => setSearchCurrency(e.target.value)}
+								/>
+								<ScrollArea className="max-h-48 overflow-y-auto">
+									{filteredCurrencies.map((currency) => (
+										<DropdownMenuCheckboxItem
+											key={currency?.code}
+											onClick={(e) => {
+												e.preventDefault();
+												setCheckedCurrency(currency);
+
+												setSearchCurrency("");
+											}}
+											checked={checkedCurrency?.code === currency?.code}
 										>
-											<ScrollBar />
-											{(action.label.toLowerCase() === "currency"
-												? filteredCurrencies
-												: action.items
-											).map((item) => {
-												if (!item) return null;
-
-												if (
-													typeof item === "object" &&
-													item !== null &&
-													"code" in item
-												) {
-													const currency = item as CurrencyCodeRecord;
-													if (
-														searchCurrency &&
-														!currency.code
-															.toLowerCase()
-															.includes(searchCurrency.toLowerCase()) &&
-														!currency.currency
-															.toLowerCase()
-															.includes(searchCurrency.toLowerCase())
-													) {
-														return null;
-													}
-
-													return (
-														<motion.div
-															variants={dropdownMenuVariants}
-															key={currency.code}
-														>
-															<DropdownMenuItem>
-																<span>
-																	{currency.code} - {currency.currency}
-																</span>
-															</DropdownMenuItem>
-														</motion.div>
-													);
-												}
-
-												return (
-													<motion.div
-														variants={dropdownMenuVariants}
-														key={item}
-													>
-														<DropdownMenuItem key={item}>
-															<span>{item}</span>
-														</DropdownMenuItem>
-													</motion.div>
-												);
-											})}
-										</AnimatedScrollView>
-									</DropdownMenuSubContent>
-								</DropdownMenuPortal>
-							</DropdownMenuSub>
-						</motion.div>
-					))}
+											{currency?.currency} ({currency?.code})
+										</DropdownMenuCheckboxItem>
+									))}
+								</ScrollArea>
+							</DropdownMenuSubContent>
+						</DropdownMenuPortal>
+					</DropdownMenuSub>
 				</motion.div>
 			</DropdownMenuContent>
 		</DropdownMenu>
