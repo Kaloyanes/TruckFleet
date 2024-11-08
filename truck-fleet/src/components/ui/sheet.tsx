@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { Button } from "./button";
 import { IconX } from "@tabler/icons-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -84,16 +85,21 @@ const SheetCloseButton = ({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-	<SheetClose asChild>
-		<Button
-			variant={"ghost"}
-			size={"icon"}
-			className={cn("absolute top-10 right-5", className)}
-		>
-			<IconX size={20} />
-			<span className="sr-only">Close</span>
-		</Button>
-	</SheetClose>
+	<Tooltip>
+		<TooltipTrigger asChild>
+			<SheetClose asChild>
+				<Button
+					variant={"ghost"}
+					size={"icon"}
+					className={cn("absolute top-10 right-5", className)}
+				>
+					<IconX size={20} />
+					<span className="sr-only">Close</span>
+				</Button>
+			</SheetClose>
+		</TooltipTrigger>
+		<TooltipContent>Close</TooltipContent>
+	</Tooltip>
 );
 
 const SheetHeader = ({
