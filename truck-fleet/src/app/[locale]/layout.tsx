@@ -5,19 +5,25 @@ import { locales } from "@/lib/i18n";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
+import { Manrope, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
 import "../globals.css";
 
-const poppins = Plus_Jakarta_Sans({
-	preload: true,
-	weight: ["400", "500", "600", "700", "800"],
-	subsets: ["cyrillic-ext", "latin"],
-});
+// const jakarta = Plus_Jakarta_Sans({
+// 	preload: true,
+// 	weight: ["400", "500", "600", "700", "800"],
+// 	subsets: ["cyrillic-ext", "latin"],
+// });
 
-const noto = Manrope({
+const manrope = Manrope({
 	preload: true,
 	weight: ["400", "500", "600", "700", "800"],
 	subsets: ["cyrillic", "latin"],
+});
+
+const roboto_mono = Roboto_Mono({
+	subsets: ["latin"],
+	display: "swap",
+	variable: "--font-roboto-mono",
 });
 
 export function generateStaticParams() {
@@ -65,7 +71,7 @@ export default async function RootLayout({
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body
-				className={noto.className}
+				className={manrope.className}
 				// className={params.locale === "en" ? poppins.className : noto.className}
 			>
 				<MotionConfigProvider
