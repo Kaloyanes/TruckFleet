@@ -5,6 +5,7 @@ import {
 	SheetClose,
 	SheetCloseButton,
 	SheetContent,
+	SheetFooter,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
@@ -87,6 +88,7 @@ export default function AddOrdersSheet() {
 
 	const [values, setValues] = useState<Order | null>(order ?? null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (driverRef && truckRef && companyRef) {
 			setValues({
@@ -424,7 +426,7 @@ export default function AddOrdersSheet() {
 				<TooltipContent>{t("title")}</TooltipContent>
 			</Tooltip>
 			<SheetContent
-				className="overflow-y-scroll overflow-x-hidden "
+				className="overflow-x-hidden overflow-y-scroll "
 				showCloseButton={false}
 			>
 				{!driverLoading && !companiesLoading && !truckLoading && (
@@ -462,7 +464,7 @@ export default function AddOrdersSheet() {
 									});
 								}
 							}}
-							className="w-full p-2 flex flex-col gap-6"
+							className="flex w-full flex-col gap-6 p-2"
 							fieldConfig={{
 								documents: {
 									fieldType: "file",
@@ -514,20 +516,26 @@ export default function AddOrdersSheet() {
 								},
 							}}
 						>
-							<div className="flex sticky bottom-0 justify-center items-center gap-4 z-[99999999]">
+							<SheetFooter className="sticky bottom-0 z-[99999999] flex items-center justify-end gap-2">
 								<SheetClose asChild>
-									<Button type="button" className="min-w-32" variant="outline">
+									<Button
+										size={"sm"}
+										type="button"
+										className="min-w-20 max-w-32"
+										variant="outline"
+									>
 										{t("cancel")}
 									</Button>
 								</SheetClose>
 								<Button
+									size={"sm"}
 									onClick={() => addOrder(values)}
-									className="min-w-32"
+									className="min-w-20 max-w-32"
 									type="submit"
 								>
 									{order ? t("edit") : t("add")}
 								</Button>
-							</div>
+							</SheetFooter>
 						</AutoForm>
 					</>
 				)}
