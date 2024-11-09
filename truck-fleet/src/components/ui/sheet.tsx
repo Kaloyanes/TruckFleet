@@ -39,9 +39,9 @@ const sheetVariants = cva(
 				top: "inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top motion-preset-blur-lg",
 				bottom:
 					"inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom motion-preset-blur-lg",
-				left: "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-lg motion-preset-blur-lg",
+				left: "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-xl motion-preset-blur-lg",
 				right:
-					"inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right motion-preset-blur-lg sm:max-w-lg",
+					"inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right motion-preset-blur-lg sm:max-w-xl",
 			},
 		},
 		defaultVariants: {
@@ -135,7 +135,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SheetPrimitive.Title
 		ref={ref}
-		className={cn("text-lg font-semibold text-foreground", className)}
+		className={cn("font-semibold text-foreground text-lg", className)}
 		{...props}
 	/>
 ));
@@ -147,7 +147,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SheetPrimitive.Description
 		ref={ref}
-		className={cn("text-sm text-muted-foreground", className)}
+		className={cn("text-muted-foreground text-sm", className)}
 		{...props}
 	/>
 ));
