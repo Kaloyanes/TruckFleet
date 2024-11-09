@@ -7,7 +7,7 @@ export default function InvoicesPage() {
 	return (
 		<div className="mx-5 mt-2 flex flex-col pt-4">
 			<div className="flex w-full items-center justify-between">
-				<div className="relative flex-1 ">
+				<div className="relative max-w-80 flex-[1]">
 					<InputWithIcon
 						icon={<IconSearch size={18} className="text-muted-foreground" />}
 						position="leading"
@@ -23,10 +23,7 @@ export default function InvoicesPage() {
 						<IconFilter size={18} className="text-muted-foreground" />
 					</Button>
 				</div>
-				<div className="flex-[3]" />
-				{/* <Button variant={"outline"} size={"icon"}>
-					<IconPlus />
-				</Button> */}
+
 				<AddInvoice />
 			</div>
 		</div>

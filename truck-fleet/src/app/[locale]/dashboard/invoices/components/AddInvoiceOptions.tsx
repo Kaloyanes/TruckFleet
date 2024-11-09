@@ -16,12 +16,18 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { dropdownMenuParentVariants } from "@/lib/dropdownMenuVariants";
+import {
+	dropdownMenuParentVariants,
+	dropdownMenuVariants,
+} from "@/lib/dropdownMenuVariants";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import {
 	IconCalculator,
 	IconCalendar,
 	IconCurrency,
+	IconDecimal,
+	IconDiscount,
+	IconDiscount2,
 	IconDotsVertical,
 } from "@tabler/icons-react";
 import { code, codes } from "currency-codes-ts";
@@ -87,16 +93,39 @@ export default function AddInvoiceOptions() {
 	const [checkedDateFormat, setCheckedDateFormat] = useState(dateFormats[0]);
 	const [checkedCurrency, setCheckedCurrency] = useState(filteredCurrencies[0]);
 
+	const [salesTax, setSalesTax] = useState(false);
+	const [vat, setVat] = useState(false);
+	const [discount, setDiscount] = useState(false);
+	const [decimals, setDecimals] = useState(false);
+
 	const actions = [
 		{
 			label: "Sales Tax",
 			icon: IconCalendar,
-			items: ["Yes", "No"],
+			items: ["yes", "no"],
+			value: salesTax,
+			setValue: setSalesTax,
 		},
 		{
 			label: "VAT",
 			icon: IconCalculator,
-			items: ["Yes", "No"],
+			items: ["yes", "no"],
+			value: vat,
+			setValue: setVat,
+		},
+		{
+			label: "Discount",
+			icon: IconDiscount2,
+			items: ["yes", "no"],
+			value: discount,
+			setValue: setDiscount,
+		},
+		{
+			label: "Decimals",
+			icon: IconDecimal,
+			items: ["yes", "no"],
+			value: decimals,
+			setValue: setDecimals,
 		},
 	];
 
@@ -121,70 +150,98 @@ export default function AddInvoiceOptions() {
 					initial="hidden"
 					animate="visible"
 				>
+					{actions.map((action) => (
+						<motion.div key={action.label} variants={dropdownMenuVariants}>
+							<DropdownMenuSub key={action.label}>
+								<DropdownMenuSubTrigger className="gap-2">
+									<action.icon size={18} />
+									<span>{action.label}</span>
+								</DropdownMenuSubTrigger>
+								<DropdownMenuPortal>
+									<AnimatedDropdownMenuSubContent className="min-w-64 *:gap-2">
+										{action.items.map((item) => (
+											<DropdownMenuCheckboxItem
+												onClick={(e) => {
+													e.preventDefault();
+													action.setValue(item === "yes");
+												}}
+												checked={item === "yes" ? action.value : !action.value}
+												key={item}
+												className="capitalize"
+											>
+												{item}
+											</DropdownMenuCheckboxItem>
+										))}
+									</AnimatedDropdownMenuSubContent>
+								</DropdownMenuPortal>
+							</DropdownMenuSub>
+						</motion.div>
+					))}
 					{/* Date Formats */}
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
-							<IconCalendar size={18} />
-							<span>Date Format</span>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuPortal>
-							<DropdownMenuSubContent className="min-w-64 *:gap-2">
-								{dateFormats.map((item) => (
-									<DropdownMenuCheckboxItem
-										key={item?.toString()}
-										onClick={(e) => {
-											e.preventDefault();
-											setCheckedDateFormat(item);
-										}}
-										onCheckedChange={(checked) => {
-											if (checked) {
-												setCheckedDateFormat(item);
-											}
-										}}
-										checked={checkedDateFormat === item}
-									>
-										{item as string}
-									</DropdownMenuCheckboxItem>
-								))}
-							</DropdownMenuSubContent>
-						</DropdownMenuPortal>
-					</DropdownMenuSub>
-
-					{/* Currency */}
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
-							<IconCurrency size={18} />
-							<span>Currency</span>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuPortal>
-							<DropdownMenuSubContent className="min-w-64 *:gap-2">
-								<Input
-									type="text"
-									placeholder="Search currency"
-									className="w-full border-none"
-									value={searchCurrency}
-									onKeyDown={(e) => e.stopPropagation()}
-									onChange={(e) => setSearchCurrency(e.target.value)}
-								/>
-								<ScrollArea className="max-h-48 overflow-y-auto">
-									{filteredCurrencies.map((currency) => (
+					<motion.div variants={dropdownMenuVariants}>
+						<DropdownMenuSub>
+							<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
+								<IconCalendar size={18} />
+								<span>Date Format</span>
+							</DropdownMenuSubTrigger>
+							<DropdownMenuPortal>
+								<DropdownMenuSubContent className="min-w-64 *:gap-2">
+									{dateFormats.map((item) => (
 										<DropdownMenuCheckboxItem
-											key={currency?.code}
+											key={item?.toString()}
 											onClick={(e) => {
 												e.preventDefault();
-												setCheckedCurrency(currency);
-
-												setSearchCurrency("");
+												setCheckedDateFormat(item);
 											}}
-											checked={checkedCurrency?.code === currency?.code}
+											onCheckedChange={(checked) => {
+												if (checked) {
+													setCheckedDateFormat(item);
+												}
+											}}
+											checked={checkedDateFormat === item}
 										>
-											{currency?.currency} ({currency?.code})
+											{item as string}
 										</DropdownMenuCheckboxItem>
 									))}
-								</ScrollArea>
-							</DropdownMenuSubContent>
-						</DropdownMenuPortal>
-					</DropdownMenuSub>
+								</DropdownMenuSubContent>
+							</DropdownMenuPortal>
+						</DropdownMenuSub>
+					</motion.div>
+					{/* Currency */}
+					<motion.div variants={dropdownMenuVariants}>
+						<DropdownMenuSub>
+							<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
+								<IconCurrency size={18} />
+								<span>Currency</span>
+							</DropdownMenuSubTrigger>
+							<DropdownMenuPortal>
+								<DropdownMenuSubContent className="min-w-64 *:gap-2">
+									<Input
+										type="text"
+										placeholder="Search currency"
+										className="w-full border-none"
+										value={searchCurrency}
+										onKeyDown={(e) => e.stopPropagation()}
+										onChange={(e) => setSearchCurrency(e.target.value)}
+									/>
+									<ScrollArea className="max-h-80 overflow-y-auto">
+										{filteredCurrencies.map((currency) => (
+											<DropdownMenuCheckboxItem
+												key={currency?.code}
+												onClick={(e) => {
+													e.preventDefault();
+													setCheckedCurrency(currency);
+												}}
+												checked={checkedCurrency?.code === currency?.code}
+											>
+												{currency?.currency} ({currency?.code})
+											</DropdownMenuCheckboxItem>
+										))}
+									</ScrollArea>
+								</DropdownMenuSubContent>
+							</DropdownMenuPortal>
+						</DropdownMenuSub>
+					</motion.div>
 				</motion.div>
 			</DropdownMenuContent>
 		</DropdownMenu>
