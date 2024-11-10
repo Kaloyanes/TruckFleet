@@ -6,7 +6,6 @@ import {
 	SheetClose,
 	SheetCloseButton,
 	SheetContent,
-	SheetDescription,
 	SheetFooter,
 	SheetHeader,
 	SheetTitle,
@@ -17,16 +16,21 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { IconDotsVertical, IconPlus } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useState } from "react";
 import AddInvoiceOptions from "./AddInvoiceOptions";
-import Image from "next/image";
+import { DatePickerInvoice } from "./DatePickerInvoice";
+import InvoiceInput from "./InvoiceInput";
 
 export function AddInvoice() {
 	const [open, setOpen] = useState(false);
 
 	const t = useTranslations("InvoicesPage");
+
+	const [issueDate, setIssueDate] = useState(new Date());
+	const [dueDate, setDueDate] = useState(new Date());
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -48,7 +52,7 @@ export function AddInvoice() {
 				</SheetHeader>
 				{/* Add your invoice form content here */}
 				<div className="my-3 h-[90%] rounded-lg bg-accent p-6">
-					<div className="flex flex-col gap-3">
+					<div className="flex flex-col gap-10">
 						<div className="flex flex-row items-center justify-between">
 							<Image
 								className="aspect-square rounded-lg object-cover"
@@ -59,35 +63,49 @@ export function AddInvoice() {
 							/>
 						</div>
 						<div className="flex flex-row items-center justify-between font-mono text-sm">
-							<div className="flex gap-1">
-								<h1 className="font-semibold text-muted-foreground">
+							<div className="flex flex-1 items-center gap-1">
+								<h1 className="w-fit whitespace-nowrap font-semibold text-muted-foreground">
 									Invoice No:
 								</h1>
-								<h3>INV-0001</h3>
+								<InvoiceInput
+									initialValue={"INV-0001"}
+									onSave={(value) => console.log(value)}
+								/>
 							</div>
-							<div className="flex gap-1 ">
+							<div className="flex flex-1 items-center gap-1">
 								<h1 className="font-semibold text-muted-foreground">
 									Issue Date:
 								</h1>
-								<h3>09/11/2024</h3>
+								<DatePickerInvoice date={issueDate} setDate={setIssueDate} />
 							</div>
-							<div className="flex gap-1">
+							<div className="flex flex-1 items-center gap-1">
 								<h1 className="font-semibold text-muted-foreground">
 									Due Date:
 								</h1>
-								<h3>09/11/2024</h3>
+								<DatePickerInvoice date={dueDate} setDate={setDueDate} />
+							</div>
+						</div>
+						<div className="flex flex-row items-center justify-between font-mono text-sm gap-2">
+							<div className="flex-1">
+								<h1 className="font-semibold text-muted-foreground">From:</h1>
+								<InvoiceInput
+									initialValue={"Kala"}
+									onSave={(value) => console.log(value)}
+									multiline
+								/>
+							</div>
+							<div className="flex-1">
+								<h1 className="font-semibold text-muted-foreground">To:</h1>
+								<InvoiceInput
+									initialValue={"Client"}
+									onSave={(value) => console.log(value)}
+									multiline
+								/>
 							</div>
 						</div>
 					</div>
 				</div>
-				{/* <SheetFooter className="flex justify-end">
-					<Button variant="outline" size="sm" onClick={() => setOpen(false)}>
-						Cancel
-					</Button>
-					<Button variant="default" size="sm">
-						Save
-					</Button>
-				</SheetFooter> */}
+
 				<SheetFooter className="z-[99999999] flex items-center justify-end gap-2">
 					<SheetClose asChild>
 						<Button
@@ -96,8 +114,8 @@ export function AddInvoice() {
 							variant="outline"
 							size={"sm"}
 						>
-							{/* {t("cancel")} */}
-							Cancel
+							{t("cancel")}
+							{/* Cancel */}
 						</Button>
 					</SheetClose>
 					<Button
@@ -106,7 +124,8 @@ export function AddInvoice() {
 						className="min-w-20 max-w-32"
 						type="submit"
 					>
-						Save
+						{/* Save */}
+						{t("createInvoice")}
 					</Button>
 				</SheetFooter>
 			</SheetContent>

@@ -26,9 +26,9 @@ import {
 	IconCalendar,
 	IconCurrency,
 	IconDecimal,
-	IconDiscount,
 	IconDiscount2,
 	IconDotsVertical,
+	IconNumber,
 } from "@tabler/icons-react";
 import { code, codes } from "currency-codes-ts";
 import type { CurrencyCode } from "currency-codes-ts/dist/types";
@@ -95,6 +95,7 @@ export default function AddInvoiceOptions() {
 
 	const [salesTax, setSalesTax] = useState(false);
 	const [vat, setVat] = useState(false);
+	const [vatNumbers, setVatNumbers] = useState(false);
 	const [discount, setDiscount] = useState(false);
 	const [decimals, setDecimals] = useState(false);
 
@@ -112,6 +113,13 @@ export default function AddInvoiceOptions() {
 			items: ["yes", "no"],
 			value: vat,
 			setValue: setVat,
+		},
+		{
+			label: "VAT Numbers",
+			icon: IconNumber,
+			items: ["yes", "no"],
+			value: vatNumbers,
+			setValue: setVatNumbers,
 		},
 		{
 			label: "Discount",

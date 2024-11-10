@@ -210,6 +210,26 @@
   },
   "InvoicesPage": {
     "invoices": "Фактури",
-    "newInvoice": "Нова фактура"
+    "newInvoice": "Нова фактура",
+    "createInvoice": "Създай фактура",
+    "cancel": "Отказ",
+    "open": "Отворени",
+    "paid": "Платени",
+    "overdue": "Просрочени",
+    "pickDate": "Изберете дата"
+  },
+  "Calendar": {
+    "January": "Януари",
+    "February": "Февруари",
+    "March": "Март",
+    "April": "Април",
+    "May": "Май",
+    "June": "Юни",
+    "July": "Юли",
+    "August": "Август",
+    "September": "Септември",
+    "October": "Октомври",
+    "November": "Ноември",
+    "December": "Декември"
   }
 }
