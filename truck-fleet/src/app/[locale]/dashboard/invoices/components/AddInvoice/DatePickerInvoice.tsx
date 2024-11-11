@@ -4,6 +4,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
 import { format, formatDate } from "date-fns";
 import { bg } from "date-fns/locale";
 import { useLocale } from "next-intl";
@@ -15,23 +16,22 @@ export const DatePickerInvoice = forwardRef<
 		date: Date;
 		setDate: (date: Date) => void;
 		formatOption?: string;
+		startDate?: Date;
 	}
->(function DatePickerCmp({ date, setDate, formatOption }, ref) {
+>(function DatePickerCmp({ date, setDate, formatOption, startDate }, ref) {
 	const locale = useLocale();
+	const optionsStore = useInvoiceOptionsStore();
+
 	return (
 		<Popover>
 			<PopoverTrigger>
 				<h3>
-					{date
-						? format(
-								date,
-								formatOption !== undefined ? formatOption : "dd/MM/yyyy",
-							)
-						: "Pick a date"}
+					{date ? format(date, optionsStore.options.dateFormat) : "Pick a date"}
 				</h3>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0" ref={ref}>
 				<Calendar
+					fromDate={startDate}
 					formatters={{
 						formatCaption: (date) => {
 							return (

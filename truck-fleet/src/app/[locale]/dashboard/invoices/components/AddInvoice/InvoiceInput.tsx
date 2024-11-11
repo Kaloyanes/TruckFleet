@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface InvoiceInputProps {
 	initialValue?: string | number;
@@ -14,6 +14,11 @@ export default function InvoiceInput({
 	multiline = false,
 }: InvoiceInputProps) {
 	const [value, setValue] = useState(String(initialValue));
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <it starts a recursion>
+	useEffect(() => {
+		onSave?.(value);
+	}, [value]);
 
 	const handleBlur = () => {
 		onSave?.(value);

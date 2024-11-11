@@ -35,14 +35,24 @@ import type { CurrencyCode } from "currency-codes-ts/dist/types";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-
-// Add debounce utility
+import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
 
 const AnimatedScrollView = motion.create(ScrollArea);
 const AnimatedInput = motion.create(Input);
 const AnimatedDropdownMenuSubContent = motion.create(DropdownMenuSubContent);
 
 export default function AddInvoiceOptions() {
+	const {
+		options,
+		setDateFormat,
+		setCurrency,
+		setSalesTax,
+		setVat,
+		setVatNumbers,
+		setDiscount,
+		setDecimals,
+	} = useInvoiceOptionsStore();
+
 	const currenciesCodes = codes();
 
 	const currencies = useMemo(
@@ -66,9 +76,21 @@ export default function AddInvoiceOptions() {
 
 	const date = new Date();
 	const dateFormats = [
-		format(date, "dd/MM/yyyy"),
-		format(date, "MM/dd/yyyy"),
-		format(date, "yyyy/MM/dd"),
+		{
+			label: format(date, "dd/MM/yyyy"),
+			value: "dd/MM/yyyy",
+		},
+
+		// format(date, "MM/dd/yyyy"),
+		{
+			label: format(date, "MM/dd/yyyy"),
+			value: "MM/dd/yyyy",
+		},
+		// format(date, "yyyy/MM/dd"),
+		{
+			label: format(date, "yyyy/MM/dd"),
+			value: "yyyy/MM/dd",
+		},
 	];
 
 	const [searchCurrency, setSearchCurrency] = useState("");
@@ -90,49 +112,40 @@ export default function AddInvoiceOptions() {
 		[currencies, searchCurrency],
 	);
 
-	const [checkedDateFormat, setCheckedDateFormat] = useState(dateFormats[0]);
-	const [checkedCurrency, setCheckedCurrency] = useState(filteredCurrencies[0]);
-
-	const [salesTax, setSalesTax] = useState(false);
-	const [vat, setVat] = useState(false);
-	const [vatNumbers, setVatNumbers] = useState(false);
-	const [discount, setDiscount] = useState(false);
-	const [decimals, setDecimals] = useState(false);
-
 	const actions = [
 		{
 			label: "Sales Tax",
 			icon: IconCalendar,
 			items: ["yes", "no"],
-			value: salesTax,
+			value: options.salesTax,
 			setValue: setSalesTax,
 		},
 		{
 			label: "VAT",
 			icon: IconCalculator,
 			items: ["yes", "no"],
-			value: vat,
+			value: options.vat,
 			setValue: setVat,
 		},
 		{
 			label: "VAT Numbers",
 			icon: IconNumber,
 			items: ["yes", "no"],
-			value: vatNumbers,
+			value: options.vatNumbers,
 			setValue: setVatNumbers,
 		},
 		{
 			label: "Discount",
 			icon: IconDiscount2,
 			items: ["yes", "no"],
-			value: discount,
+			value: options.discount,
 			setValue: setDiscount,
 		},
 		{
 			label: "Decimals",
 			icon: IconDecimal,
 			items: ["yes", "no"],
-			value: decimals,
+			value: options.decimals,
 			setValue: setDecimals,
 		},
 	];
@@ -199,16 +212,16 @@ export default function AddInvoiceOptions() {
 											key={item?.toString()}
 											onClick={(e) => {
 												e.preventDefault();
-												setCheckedDateFormat(item);
+												setDateFormat(item.value);
 											}}
 											onCheckedChange={(checked) => {
 												if (checked) {
-													setCheckedDateFormat(item);
+													setDateFormat(item.value);
 												}
 											}}
-											checked={checkedDateFormat === item}
+											checked={options.dateFormat === item.value}
 										>
-											{item as string}
+											{item.label}
 										</DropdownMenuCheckboxItem>
 									))}
 								</DropdownMenuSubContent>
@@ -238,9 +251,9 @@ export default function AddInvoiceOptions() {
 												key={currency?.code}
 												onClick={(e) => {
 													e.preventDefault();
-													setCheckedCurrency(currency);
+													setCurrency(currency);
 												}}
-												checked={checkedCurrency?.code === currency?.code}
+												checked={options.currency?.code === currency?.code}
 											>
 												{currency?.currency} ({currency?.code})
 											</DropdownMenuCheckboxItem>
