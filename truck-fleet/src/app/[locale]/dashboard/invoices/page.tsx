@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { InputWithIcon } from "@/components/ui/input-with-icon";
 import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
-import { AddInvoice } from "./components/AddInvoice";
+import { AddInvoice } from "./components/AddInvoice/AddInvoice";
 
 export default function InvoicesPage() {
 	return (
