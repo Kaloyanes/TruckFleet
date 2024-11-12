@@ -7,6 +7,7 @@ interface InvoiceInputProps {
 	initialValue?: string | number;
 	onSave?: (value: string) => void;
 	multiline?: boolean;
+	rows?: number;
 	className?: string;
 	trailingSymbol?: string;
 }
@@ -15,6 +16,7 @@ export default function InvoiceInput({
 	initialValue = "",
 	onSave,
 	multiline = false,
+	rows = 5,
 	className,
 	trailingSymbol,
 }: InvoiceInputProps) {
@@ -40,7 +42,7 @@ export default function InvoiceInput({
 				)}
 				autoComplete="off"
 				value={value}
-				rows={5}
+				rows={rows}
 				onInput={(e) => setValue(e.currentTarget.value)}
 				onBlur={handleBlur}
 			/>

@@ -26,7 +26,7 @@ import InvoiceInput from "./InvoiceInput";
 import InvoicePicture from "./InvoicePicture";
 import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
 import NumberFlow from "@number-flow/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import FormattedNumberInput from "./FormattedNumberInput";
 import { useInvoiceValuesStore } from "@/stores/InvoiceValuesStore";
@@ -111,6 +111,7 @@ export function AddInvoice() {
 									initialValue={invoice.from}
 									onSave={(value) => invoice.setFrom(value)}
 									multiline
+									rows={6}
 								/>
 							</div>
 							<div className="flex-1">
@@ -119,6 +120,7 @@ export function AddInvoice() {
 									initialValue={"Client"}
 									onSave={(value) => console.log(value)}
 									multiline
+									rows={6}
 								/>
 							</div>
 						</div>
@@ -129,37 +131,36 @@ export function AddInvoice() {
 						className="flex flex-col gap-4 pt-4"
 						transition={{ duration: 0.2 }}
 					>
-						<motion.h1 layout className="font-semibold text-muted-foreground">
-							Items:
-						</motion.h1>
-
-						<AnimatePresence mode="popLayout">
+						<motion.div
+							layout // Add layout prop to the container
+							className="flex flex-col gap-2"
+							transition={{ delayChildren: 0.2, staggerChildren: 0.1 }}
+						>
+							{/* Header */}
 							<motion.div
-								layout // Add layout prop to the container
-								className="flex flex-col gap-2"
-								transition={{ delayChildren: 0.2, staggerChildren: 0.1 }}
+								layout
+								className="grid gap-2 pr-4 font-mono font-semibold text-muted-foreground text-sm"
+								style={{
+									gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
+								}}
 							>
-								{/* Header */}
-								<motion.div
-									layout
-									className="grid gap-2 pr-4 font-mono font-semibold text-muted-foreground text-sm"
-									style={{
-										gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
-									}}
-								>
-									<div className="col-span-5">Description</div>
-									<div className="col-span-2">Quantity</div>
-									<div className="col-span-4">Price</div>
-									<div className="col-span-3 flex justify-end">Final</div>
-								</motion.div>
+								<div className="col-span-5">Description</div>
+								<div className="col-span-2">Quantity</div>
+								<div className="col-span-4">Price</div>
+								<div className="col-span-3 flex justify-end">Final</div>
+							</motion.div>
 
-								{/* Items Container */}
-								<motion.div
-									layout
-									className="flex flex-col gap-2"
-									transition={{ delayChildren: 0.2, staggerChildren: 0.1 }}
-								>
-									<AnimatePresence mode="popLayout">
+							{/* Items Container */}
+							<LayoutGroup>
+								<AnimatePresence mode="sync">
+									<motion.div
+										layout
+										className="flex flex-col gap-2"
+										transition={{ delayChildren: 0.2, staggerChildren: 0.1 }}
+										style={{
+											height: "auto",
+										}}
+									>
 										{invoice.items.map((item, index) => (
 											<motion.div
 												key={item.id}
@@ -170,6 +171,11 @@ export function AddInvoice() {
 													filter: "blur(10px)",
 												}}
 												animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+												exit={{
+													opacity: 0,
+													y: 20,
+													filter: "blur(10px)",
+												}}
 												className="group relative grid gap-2 rounded-md py-2 pr-4 font-mono text-sm hover:bg-accent/50"
 												style={{
 													gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
@@ -243,31 +249,31 @@ export function AddInvoice() {
 												)}
 											</motion.div>
 										))}
-									</AnimatePresence>
 
-									{/* Add Item Button */}
-									<motion.div layout className="flex justify-start pt-2">
-										<Button
-											variant="ghost"
-											size="sm"
-											onClick={() => {
-												invoice.addItem({
-													id: uuidv4(),
-													description: "New Item",
-													quantity: 0,
-													price: 0,
-													total: 0,
-												});
-											}}
-											className="gap-2 px-0 hover:bg-transparent"
-										>
-											<IconPlus size={16} />
-											Add Item
-										</Button>
+										{/* Add Item Button */}
+										<motion.div layout className="flex justify-start pt-2">
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() => {
+													invoice.addItem({
+														id: uuidv4(),
+														description: "New Item",
+														quantity: 0,
+														price: 0,
+														total: 0,
+													});
+												}}
+												className="gap-2 px-0 hover:bg-transparent"
+											>
+												<IconPlus size={16} />
+												Add Item
+											</Button>
+										</motion.div>
 									</motion.div>
-								</motion.div>
-							</motion.div>
-						</AnimatePresence>
+								</AnimatePresence>
+							</LayoutGroup>
+						</motion.div>
 					</motion.div>
 					{/* Totals */}
 					<motion.div layout layoutId="totals" className="flex flex-row pt-4">
@@ -397,7 +403,7 @@ export function AddInvoice() {
 					</motion.div>
 
 					{/* BANK DETAILS AND Notes */}
-					<motion.div layout className="flex gap-4 pt-4">
+					<motion.div layout className="flex pt-4">
 						<div className="space-y-2 flex-1">
 							<h1 className="font-semibold text-muted-foreground">
 								Bank Details:
