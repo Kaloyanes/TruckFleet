@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { v4 as uuidv4 } from "uuid";
 
 interface InvoiceItem {
 	id: string;
@@ -10,7 +11,7 @@ interface InvoiceItem {
 	total: number;
 }
 
-interface InvoiceValues {
+interface InvoiceValuesStore {
 	invoiceNumber: string;
 	issueDate: Date;
 	dueDate: Date;
@@ -18,87 +19,77 @@ interface InvoiceValues {
 	to: string;
 	items: InvoiceItem[];
 	logo?: string;
-}
+	vat?: number;
+	bankDetails: string;
+	note: string;
 
-interface InvoiceValuesStore {
-	values: InvoiceValues;
 	setInvoiceNumber: (value: string) => void;
 	setIssueDate: (date: Date) => void;
 	setDueDate: (date: Date) => void;
 	setFrom: (value: string) => void;
 	setTo: (value: string) => void;
 	setLogo: (value: string) => void;
+	setVat: (value: number) => void;
+	setBankDetails: (value: string) => void;
+	setNote: (value: string) => void;
 	addItem: (item: InvoiceItem) => void;
 	updateItem: (id: string, item: Partial<InvoiceItem>) => void;
 	removeItem: (id: string) => void;
 	reset: () => void;
 }
 
-const defaultValues: InvoiceValues = {
+const defaultValues = {
 	invoiceNumber: "INV-0001",
 	issueDate: new Date(),
 	dueDate: new Date(),
 	from: "",
 	to: "",
-	items: [],
+	items: [
+		{ id: uuidv4(), description: "New Item", quantity: 0, price: 0, total: 0 },
+	] as InvoiceItem[],
 	logo: undefined,
+	vat: undefined,
+	bankDetails: "",
+	note: "",
 };
 
 export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 	persist(
-		(set, get) => ({
-			values: { ...defaultValues },
-			setInvoiceNumber: (invoiceNumber) =>
-				set((state) => ({
-					values: { ...state.values, invoiceNumber },
-				})),
-			setIssueDate: (issueDate) =>
-				set((state) => ({
-					values: { ...state.values, issueDate },
-				})),
-			setDueDate: (dueDate) =>
-				set((state) => ({
-					values: { ...state.values, dueDate },
-				})),
-			setFrom: (from) =>
-				set((state) => ({
-					values: { ...state.values, from },
-				})),
-			setTo: (to) =>
-				set((state) => ({
-					values: { ...state.values, to },
-				})),
-			setLogo: (logo) =>
-				set((state) => ({
-					values: { ...state.values, logo },
-				})),
+		(set) => ({
+			...defaultValues,
+			setInvoiceNumber: (invoiceNumber) => set({ invoiceNumber }),
+			setIssueDate: (issueDate) => set({ issueDate }),
+			setDueDate: (dueDate) => set({ dueDate }),
+			setFrom: (from) => set({ from }),
+			setTo: (to) => set({ to }),
+			setLogo: (logo) => set({ logo }),
+			setVat: (vat) => set({ vat }),
+			setBankDetails: (bankDetails) => set({ bankDetails }),
+			setNote: (note) => set({ note }),
 			addItem: (item) =>
 				set((state) => ({
-					values: {
-						...state.values,
-						items: [...state.values.items, item],
-					},
+					items: [...state.items, item],
 				})),
 			updateItem: (id, updatedItem) =>
 				set((state) => ({
-					values: {
-						...state.values,
-						items: state.values.items.map((item) =>
-							item.id === id ? { ...item, ...updatedItem } : item,
-						),
-					},
+					items: state.items.map((item) =>
+						item.id === id ? { ...item, ...updatedItem } : item,
+					),
 				})),
 			removeItem: (id) =>
 				set((state) => ({
-					values: {
-						...state.values,
-						items: state.values.items.filter((item) => item.id !== id),
-					},
+					items: state.items.filter((item) => item.id !== id),
 				})),
-			reset: () => set({ values: defaultValues }),
+			reset: () => set(defaultValues),
 		}),
 		{
 			name: "invoice-values",
+			partialize: (state) => ({
+				vat: state.vat,
+				logo: state.logo,
+				from: state.from,
+				bankDetails: state.bankDetails,
+			}),
 		},
 	),
 );

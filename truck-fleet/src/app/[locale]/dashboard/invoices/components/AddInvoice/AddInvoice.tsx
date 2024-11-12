@@ -26,12 +26,13 @@ import InvoiceInput from "./InvoiceInput";
 import InvoicePicture from "./InvoicePicture";
 import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
 import NumberFlow from "@number-flow/react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import FormattedNumberInput from "./FormattedNumberInput";
 import { useInvoiceValuesStore } from "@/stores/InvoiceValuesStore";
 import { v4 as uuidv4 } from "uuid";
 import { dropdownMenuVariants } from "@/lib/dropdownMenuVariants";
+import { Separator } from "@/components/ui/separator";
 
 export function AddInvoice() {
 	const [open, setOpen] = useState(false);
@@ -39,7 +40,15 @@ export function AddInvoice() {
 	const t = useTranslations("InvoicesPage");
 
 	const invoiceOptions = useInvoiceOptionsStore();
-	const invoiceValues = useInvoiceValuesStore();
+	const invoice = useInvoiceValuesStore();
+
+	const sum = invoice.items
+		.map((item) => item.price * item.quantity)
+		.reduce((a, b) => a + b, 0);
+
+	const vat = invoiceOptions.options.vat
+		? (sum * (Number.isNaN(invoice.vat) ? 0 : (invoice.vat ?? 0))) / 100
+		: 0;
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -60,17 +69,18 @@ export function AddInvoice() {
 					<SheetCloseButton className="static" />
 				</SheetHeader>
 				{/* Add your invoice form content here */}
-				<div className="my-3 h-[90%] rounded-lg bg-accent p-6">
-					<div className="flex flex-col gap-10">
+				<div className="my-3 h-[90%] overflow-x-hidden overflow-y-scroll rounded-lg bg-accent p-6">
+					<div className="space-y-10">
 						<InvoicePicture />
+						{/* Date and invoice number */}
 						<div className="flex flex-row items-center justify-between font-mono text-sm">
 							<div className="flex flex-1 items-center gap-1">
 								<h1 className="w-fit whitespace-nowrap font-semibold text-muted-foreground">
 									Invoice No:
 								</h1>
 								<InvoiceInput
-									initialValue={invoiceValues.values.invoiceNumber}
-									onSave={invoiceValues.setInvoiceNumber}
+									initialValue={invoice.invoiceNumber}
+									onSave={invoice.setInvoiceNumber}
 								/>
 							</div>
 							<div className="flex flex-1 items-center gap-1">
@@ -78,8 +88,8 @@ export function AddInvoice() {
 									Issue Date:
 								</h1>
 								<DatePickerInvoice
-									date={invoiceValues.values.issueDate}
-									setDate={invoiceValues.setIssueDate}
+									date={invoice.issueDate}
+									setDate={invoice.setIssueDate}
 								/>
 							</div>
 							<div className="flex flex-1 items-center gap-1">
@@ -87,18 +97,19 @@ export function AddInvoice() {
 									Due Date:
 								</h1>
 								<DatePickerInvoice
-									date={invoiceValues.values.dueDate}
-									setDate={invoiceValues.setDueDate}
-									startDate={invoiceValues.values.issueDate}
+									date={invoice.dueDate}
+									setDate={invoice.setDueDate}
+									startDate={invoice.issueDate}
 								/>
 							</div>
 						</div>
+						{/* From To Info */}
 						<div className="flex flex-row items-center justify-between gap-2 font-mono text-sm">
 							<div className="flex-1">
 								<h1 className="font-semibold text-muted-foreground">From:</h1>
 								<InvoiceInput
-									initialValue={"Kala"}
-									onSave={(value) => console.log(value)}
+									initialValue={invoice.from}
+									onSave={(value) => invoice.setFrom(value)}
 									multiline
 								/>
 							</div>
@@ -112,18 +123,25 @@ export function AddInvoice() {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col gap-4">
-						{/* <h1 className="font-semibold text-muted-foreground">Items:</h1> */}
-						<motion.div
-							layout
-							className="flex flex-col gap-2"
-							transition={{ duration: 0.2 }}
-						>
-							{/* Add item button */}
+					{/* Items */}
+					<motion.div
+						layout
+						className="flex flex-col gap-4 pt-4"
+						transition={{ duration: 0.2 }}
+					>
+						<motion.h1 layout className="font-semibold text-muted-foreground">
+							Items:
+						</motion.h1>
 
-							{/* Items list */}
-							<div className="flex flex-col gap-2">
-								<div
+						<AnimatePresence mode="popLayout">
+							<motion.div
+								layout // Add layout prop to the container
+								className="flex flex-col gap-2"
+								transition={{ delayChildren: 0.2, staggerChildren: 0.1 }}
+							>
+								{/* Header */}
+								<motion.div
+									layout
 									className="grid gap-2 pr-4 font-mono font-semibold text-muted-foreground text-sm"
 									style={{
 										gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
@@ -131,157 +149,274 @@ export function AddInvoice() {
 								>
 									<div className="col-span-5">Description</div>
 									<div className="col-span-2">Quantity</div>
-									<div className="col-span-2">Price</div>
-									{invoiceOptions.options.vat && (
-										<div className="col-span-2">VAT</div>
-									)}
-									<div
-										className={cn(
-											invoiceOptions.options.vat ? "col-span-3" : "col-span-5",
-											"flex justify-end",
-										)}
-									>
-										Final
-									</div>
-								</div>
+									<div className="col-span-4">Price</div>
+									<div className="col-span-3 flex justify-end">Final</div>
+								</motion.div>
 
-								<motion.div layout className="space-y-2 ">
-									{/* Sample item */}
-
-									{invoiceValues.values.items.map((item, index) => (
-										<motion.div
-											key={item.id}
-											layoutId={item.id}
-											layout
-											// initial={{ opacity: 0, y: 20 }}
-											// animate={{ opacity: 1, y: 0 }}
-											// exit={{ opacity: 0, y: -20 }}
-											variants={dropdownMenuVariants}
-											initial="hidden"
-											animate="visible"
-											exit="exit"
-											className="group relative grid gap-2 rounded-md py-2 pr-4 font-mono text-sm"
-											style={{
-												gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
-											}}
-										>
-											<div className="col-span-5">
-												<InvoiceInput
-													initialValue={item.description}
-													onSave={(value) =>
-														invoiceValues.updateItem(item.id, {
-															...item,
-															description: value,
-														})
-													}
-												/>
-											</div>
-											<div className="col-span-2 flex items-center justify-center gap-2">
-												<InvoiceInput
-													initialValue={item.quantity.toString()}
-													onSave={(value) =>
-														invoiceValues.updateItem(item.id, {
-															...item,
-															quantity: Number(value),
-														})
-													}
-												/>
-											</div>
-											<div className="col-span-2 flex justify-center">
-												<FormattedNumberInput
-													value={item.price}
-													onChange={(value) =>
-														invoiceValues.updateItem(item.id, {
-															...item,
-															price: value,
-														})
-													}
-													className="w-full"
-												/>
-											</div>
-											{invoiceOptions.options.vat && (
-												<div className="col-span-2">
+								{/* Items Container */}
+								<motion.div
+									layout
+									className="flex flex-col gap-2"
+									transition={{ delayChildren: 0.2, staggerChildren: 0.1 }}
+								>
+									<AnimatePresence mode="popLayout">
+										{invoice.items.map((item, index) => (
+											<motion.div
+												key={item.id}
+												layout
+												initial={{
+													opacity: 0,
+													y: 20,
+													filter: "blur(10px)",
+												}}
+												animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+												className="group relative grid gap-2 rounded-md py-2 pr-4 font-mono text-sm hover:bg-accent/50"
+												style={{
+													gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
+												}}
+											>
+												<div className="col-span-5">
 													<InvoiceInput
-														initialValue={`${item.vat}%`}
+														initialValue={item.description}
 														onSave={(value) =>
-															invoiceValues.updateItem(item.id, {
+															invoice.updateItem(item.id, {
 																...item,
-																vat: Number(value.replace("%", "")),
+																description: value,
 															})
 														}
 													/>
 												</div>
-											)}
-											<div
-												className={cn(
-													invoiceOptions.options.vat
-														? "col-span-3"
-														: "col-span-5",
-													"flex w-full justify-end",
+												<div className="col-span-2 flex items-center justify-center gap-2">
+													<InvoiceInput
+														initialValue={item.quantity.toString()}
+														onSave={(value) =>
+															invoice.updateItem(item.id, {
+																...item,
+																quantity: Number(value),
+															})
+														}
+													/>
+												</div>
+												<div className="col-span-4 flex justify-center">
+													<FormattedNumberInput
+														value={item.price}
+														onChange={(value) =>
+															invoice.updateItem(item.id, {
+																...item,
+																price: value,
+															})
+														}
+														className="w-full"
+													/>
+												</div>
+												<div className="col-span-3 flex w-full justify-end overflow-hidden">
+													<NumberFlow
+														value={item.price * item.quantity}
+														className="font-semibold text-sm"
+														format={{
+															currency: invoiceOptions.options.currency?.code,
+															currencyDisplay: "symbol",
+															style: "currency",
+															roundingMode: "ceil",
+															roundingIncrement: invoiceOptions.options.decimals
+																? 1
+																: 100,
+															trailingZeroDisplay: invoiceOptions.options
+																.decimals
+																? "auto"
+																: "stripIfInteger",
+														}}
+													/>
+												</div>
+
+												{index !== 0 && (
+													<Button
+														variant="ghost"
+														size="icon"
+														onClick={() => {
+															invoice.removeItem(item.id);
+														}}
+														className="-right-5 absolute size-8 gap-2 text-destructive opacity-0 transition-all hover:text-destructive group-hover:opacity-100"
+													>
+														<IconMinus size={15} />
+													</Button>
 												)}
-											>
-												<NumberFlow
-													value={
-														item.price * item.quantity +
-														(invoiceOptions.options.vat
-															? item.price *
-																item.quantity *
-																((item.vat ?? 0) / 100)
-															: 0)
-													}
-													className="font-semibold text-sm"
-													format={{
-														currency: invoiceOptions.options.currency?.code,
-														currencyDisplay: "symbol",
-														style: "currency",
-														roundingMode: "ceil",
-														roundingIncrement: invoiceOptions.options.decimals
-															? 1
-															: 100,
-														trailingZeroDisplay: invoiceOptions.options.decimals
-															? "auto"
-															: "stripIfInteger",
-													}}
-												/>
-											</div>
+											</motion.div>
+										))}
+									</AnimatePresence>
 
-											{index !== 0 && (
-												<Button
-													variant="ghost"
-													size="sm"
-													onClick={() => {
-														invoiceValues.removeItem(item.id);
-													}}
-													className="-right-6 absolute w-fit gap-2 opacity-0 transition-opacity group-hover:opacity-100"
-												>
-													<IconMinus size={15} />
-												</Button>
-											)}
-										</motion.div>
-									))}
-
-									<Button
-										variant="ghost"
-										size="sm"
-										onClick={() => {
-											invoiceValues.addItem({
-												id: uuidv4(),
-												description: "New Item",
-												quantity: 1,
-												price: 0,
-												vat: 0,
-												total: 0,
-											});
-										}}
-										className="w-fit gap-2 px-0"
-									>
-										<IconPlus size={16} />
-										Add Item
-									</Button>
+									{/* Add Item Button */}
+									<motion.div layout className="flex justify-start pt-2">
+										<Button
+											variant="ghost"
+											size="sm"
+											onClick={() => {
+												invoice.addItem({
+													id: uuidv4(),
+													description: "New Item",
+													quantity: 0,
+													price: 0,
+													total: 0,
+												});
+											}}
+											className="gap-2 px-0 hover:bg-transparent"
+										>
+											<IconPlus size={16} />
+											Add Item
+										</Button>
+									</motion.div>
 								</motion.div>
+							</motion.div>
+						</AnimatePresence>
+					</motion.div>
+					{/* Totals */}
+					<motion.div layout layoutId="totals" className="flex flex-row pt-4">
+						<div className="flex-1" />
+						<div className="flex-1 space-y-2 font-semibold">
+							<motion.div layout className="flex w-full justify-between">
+								<h1 className="w-full text-muted-foreground">Subtotal:</h1>
+								<div className="text-right">
+									<NumberFlow
+										value={sum}
+										className="w-full"
+										format={{
+											currency: invoiceOptions.options.currency?.code,
+											currencyDisplay: "symbol",
+											style: "currency",
+											roundingMode: "ceil",
+											roundingIncrement: invoiceOptions.options.decimals
+												? 1
+												: 100,
+											trailingZeroDisplay: invoiceOptions.options.decimals
+												? "auto"
+												: "stripIfInteger",
+										}}
+									/>
+								</div>
+							</motion.div>
+							<div className="min-h-0.5">
+								<AnimatePresence mode="sync" initial={false}>
+									{invoiceOptions.options.vat && (
+										<motion.div
+											key="vat-container"
+											variants={{
+												hidden: {
+													opacity: 0,
+													y: 25,
+													filter: "blur(10px)",
+													scale: 0.8,
+													height: 0,
+												},
+												visible: {
+													opacity: 1,
+													y: 0,
+													filter: "blur(0px)",
+													scale: 1,
+													height: "auto",
+												},
+												exit: {
+													opacity: 0,
+													y: 25,
+													filter: "blur(10px)",
+													scale: 0.8,
+													height: 0,
+												},
+											}}
+											initial="hidden"
+											animate="visible"
+											exit="exit"
+											className="overflow-hidden"
+											layout
+										>
+											<motion.div>
+												<div className="flex w-full justify-between py-1">
+													<h1 className="flex w-full items-center text-muted-foreground">
+														VAT{" "}
+														<InvoiceInput
+															initialValue={"20"}
+															className="w-12 text-base"
+															trailingSymbol="%"
+															onSave={(value) =>
+																invoice.setVat(Number.parseInt(value))
+															}
+														/>
+														:
+													</h1>
+													<div className="text-right">
+														<NumberFlow
+															value={vat}
+															className="w-full"
+															format={{
+																currency: invoiceOptions.options.currency?.code,
+																currencyDisplay: "symbol",
+																style: "currency",
+																roundingMode: "ceil",
+																roundingIncrement: invoiceOptions.options
+																	.decimals
+																	? 1
+																	: 100,
+																trailingZeroDisplay: invoiceOptions.options
+																	.decimals
+																	? "auto"
+																	: "stripIfInteger",
+															}}
+														/>
+													</div>
+												</div>
+											</motion.div>
+										</motion.div>
+									)}
+								</AnimatePresence>
 							</div>
-						</motion.div>
-					</div>
+
+							<motion.div layout className="pb-2">
+								<Separator />
+							</motion.div>
+							<motion.div layout className="flex w-full justify-between">
+								<h1 className="w-full text-muted-foreground">Total:</h1>
+								<div className="text-right">
+									<NumberFlow
+										value={sum + vat}
+										className="w-full"
+										format={{
+											currency: invoiceOptions.options.currency?.code,
+											currencyDisplay: "symbol",
+											style: "currency",
+											roundingMode: "ceil",
+											roundingIncrement: invoiceOptions.options.decimals
+												? 1
+												: 100,
+											trailingZeroDisplay: invoiceOptions.options.decimals
+												? "auto"
+												: "stripIfInteger",
+										}}
+									/>
+								</div>
+							</motion.div>
+						</div>
+					</motion.div>
+
+					{/* BANK DETAILS AND Notes */}
+					<motion.div layout className="flex gap-4 pt-4">
+						<div className="space-y-2 flex-1">
+							<h1 className="font-semibold text-muted-foreground">
+								Bank Details:
+							</h1>
+							<InvoiceInput
+								initialValue={invoice.bankDetails}
+								onSave={(value) => invoice.setBankDetails(value)}
+								multiline
+							/>
+						</div>
+						<div className="space-y-2 flex-1">
+							<h1 className="font-semibold text-muted-foreground">Notes:</h1>
+							<InvoiceInput
+								initialValue={invoice.note}
+								onSave={(value) => invoice.setNote(value)}
+								multiline
+							/>
+						</div>
+					</motion.div>
 				</div>
 
 				<SheetFooter className="z-[99999999] flex items-center justify-end gap-2">
@@ -299,7 +434,7 @@ export function AddInvoice() {
 					<Button
 						size={"sm"}
 						onClick={() => {
-							console.log(invoiceValues.values);
+							console.log(invoice);
 						}}
 						className="min-w-20 max-w-32"
 						type="submit"
