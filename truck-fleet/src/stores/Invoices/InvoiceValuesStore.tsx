@@ -23,6 +23,7 @@ interface InvoiceValuesStore {
 	bankDetails: string;
 	note: string;
 	discount?: number;
+	dealDetails: string;
 
 	setInvoiceNumber: (value: string) => void;
 	setIssueDate: (date: Date) => void;
@@ -34,6 +35,7 @@ interface InvoiceValuesStore {
 	setBankDetails: (value: string) => void;
 	setNote: (value: string) => void;
 	setDiscount: (value: number) => void;
+	setDealDetails: (value: string) => void;
 	addItem: (item: InvoiceItem) => void;
 	updateItem: (id: string, item: Partial<InvoiceItem>) => void;
 	removeItem: (id: string) => void;
@@ -54,6 +56,7 @@ const defaultValues = {
 	bankDetails: "",
 	note: "",
 	discount: 0,
+	dealDetails: "",
 };
 
 export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
@@ -70,6 +73,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 			setVat: (vat) => set({ vat }),
 			setBankDetails: (bankDetails) => set({ bankDetails }),
 			setNote: (note) => set({ note }),
+			setDealDetails: (dealDetails) => set({ dealDetails }),
 			addItem: (item) =>
 				set((state) => ({
 					items: [...state.items, item],

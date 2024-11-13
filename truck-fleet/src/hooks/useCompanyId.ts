@@ -1,29 +1,30 @@
-import { auth, db } from "@/firebase/firebase";
-import type { User } from "firebase/auth";
-import { doc, type DocumentReference } from "firebase/firestore";
+import { auth } from "@/lib/firebase";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import useProfileDoc from "./useProfileDoc";
 
 export default function useCompanyId() {
   const [user] = useAuthState(auth);
   const [companyId, setCompanyId] = useState<string | null>(null);
-  const [companyRef, setCompanyRef] = useState<DocumentReference | null>(null);
-
-  const userRef = user ? doc(db, "users", user.uid) : null;
-  const [docValue] = useDocumentData(userRef);
+  const { profile, loading: profileLoading } = useProfileDoc();
 
   useEffect(() => {
-    if (docValue) {
-      if (docValue.type === "company") {
-        setCompanyId(docValue.id);
-        setCompanyRef(doc(db, "users", docValue.id));
-      } else {
-        setCompanyId(docValue.companyId);
-        setCompanyRef(doc(db, "users", docValue.companyId));
-      }
-    }
-  }, [docValue]);
+    if (!profile || !user) return;
 
-  return { companyId, companyRef };
+    if (profile.type === "company") {
+      setCompanyId(user.uid);
+    } else if (profile.companyId) {
+      setCompanyId(profile.companyId);
+    } else {
+      setCompanyId(null);
+    }
+  }, [profile, user]);
+
+  return {
+    companyId,
+    isLoading: profileLoading,
+    error:
+      !companyId && !profileLoading ? new Error("No company ID found") : null,
+    debug: { profile, user },
+  };
 }
