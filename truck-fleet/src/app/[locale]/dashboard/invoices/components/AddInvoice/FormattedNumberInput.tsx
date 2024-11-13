@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
-import { useState, useEffect } from "react";
+import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
+import { useEffect, useState } from "react";
 
 interface FormattedNumberInputProps {
 	value?: number;

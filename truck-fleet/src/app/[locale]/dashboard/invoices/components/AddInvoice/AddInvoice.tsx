@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
 	Sheet,
 	SheetClose,
@@ -16,23 +17,19 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
+import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
+import NumberFlow, { type Format } from "@number-flow/react";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import AddInvoiceOptions from "./AddInvoiceOptions";
 import { DatePickerInvoice } from "./DatePickerInvoice";
+import FormattedNumberInput from "./FormattedNumberInput";
 import InvoiceInput from "./InvoiceInput";
 import InvoicePicture from "./InvoicePicture";
-import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
-import NumberFlow from "@number-flow/react";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import FormattedNumberInput from "./FormattedNumberInput";
-import { useInvoiceValuesStore } from "@/stores/InvoiceValuesStore";
-import { v4 as uuidv4 } from "uuid";
-import { dropdownMenuVariants } from "@/lib/dropdownMenuVariants";
-import { Separator } from "@/components/ui/separator";
 
 export function AddInvoice() {
 	const [open, setOpen] = useState(false);
@@ -49,6 +46,21 @@ export function AddInvoice() {
 	const vat = invoiceOptions.options.vat
 		? (sum * (Number.isNaN(invoice.vat) ? 0 : (invoice.vat ?? 0))) / 100
 		: 0;
+
+	const discount = invoiceOptions.options.discount
+		? (invoice.discount ?? 0)
+		: 0;
+
+	const currencyFormat: Partial<Format> = {
+		currency: invoiceOptions.options.currency.code,
+		currencyDisplay: "symbol",
+		style: "currency",
+		roundingMode: "ceil",
+		roundingIncrement: invoiceOptions.options.decimals ? 1 : 100,
+		trailingZeroDisplay: invoiceOptions.options.decimals
+			? "auto"
+			: "stripIfInteger",
+	};
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -225,19 +237,8 @@ export function AddInvoice() {
 													<NumberFlow
 														value={item.price * item.quantity}
 														className="font-semibold text-sm"
-														format={{
-															currency: invoiceOptions.options.currency?.code,
-															currencyDisplay: "symbol",
-															style: "currency",
-															roundingMode: "ceil",
-															roundingIncrement: invoiceOptions.options.decimals
-																? 1
-																: 100,
-															trailingZeroDisplay: invoiceOptions.options
-																.decimals
-																? "auto"
-																: "stripIfInteger",
-														}}
+														format={currencyFormat as any}
+														isolate={false}
 													/>
 												</div>
 
@@ -248,7 +249,7 @@ export function AddInvoice() {
 														onClick={() => {
 															invoice.removeItem(item.id);
 														}}
-														className="-right-5 absolute size-8 gap-2 text-destructive opacity-0 transition-all hover:text-destructive group-hover:opacity-100"
+														className="-right-5 absolute size-8 gap-2 text-foreground opacity-0 transition-all group-hover:opacity-100"
 													>
 														<IconMinus size={15} />
 													</Button>
@@ -291,18 +292,8 @@ export function AddInvoice() {
 									<NumberFlow
 										value={sum}
 										className="w-full"
-										format={{
-											currency: invoiceOptions.options.currency?.code,
-											currencyDisplay: "symbol",
-											style: "currency",
-											roundingMode: "ceil",
-											roundingIncrement: invoiceOptions.options.decimals
-												? 1
-												: 100,
-											trailingZeroDisplay: invoiceOptions.options.decimals
-												? "auto"
-												: "stripIfInteger",
-										}}
+										format={currencyFormat}
+										isolate={false}
 									/>
 								</div>
 							</motion.div>
@@ -358,20 +349,60 @@ export function AddInvoice() {
 														<NumberFlow
 															value={vat}
 															className="w-full"
-															format={{
-																currency: invoiceOptions.options.currency?.code,
-																currencyDisplay: "symbol",
-																style: "currency",
-																roundingMode: "ceil",
-																roundingIncrement: invoiceOptions.options
-																	.decimals
-																	? 1
-																	: 100,
-																trailingZeroDisplay: invoiceOptions.options
-																	.decimals
-																	? "auto"
-																	: "stripIfInteger",
-															}}
+															format={currencyFormat}
+															isolate={false}
+														/>
+													</div>
+												</div>
+											</motion.div>
+										</motion.div>
+									)}
+								</AnimatePresence>
+							</div>
+							<div className="min-h-0.5">
+								<AnimatePresence mode="sync" initial={false}>
+									{invoiceOptions.options.discount && (
+										<motion.div
+											key="discount-container"
+											variants={{
+												hidden: {
+													opacity: 0,
+													y: 25,
+													filter: "blur(10px)",
+													scale: 0.8,
+													height: 0,
+												},
+												visible: {
+													opacity: 1,
+													y: 0,
+													filter: "blur(0px)",
+													scale: 1,
+													height: "auto",
+												},
+												exit: {
+													opacity: 0,
+													y: 25,
+													filter: "blur(10px)",
+													scale: 0.8,
+													height: 0,
+												},
+											}}
+											initial="hidden"
+											animate="visible"
+											exit="exit"
+											className="overflow-hidden"
+											layout
+										>
+											<motion.div>
+												<div className="flex w-full justify-between py-1">
+													<h1 className="flex w-full items-center text-muted-foreground">
+														Discount :
+													</h1>
+													<div className="text-right">
+														<FormattedNumberInput
+															value={invoice.discount}
+															className="w-full text-right text-base"
+															onChange={invoice.setDiscount}
 														/>
 													</div>
 												</div>
@@ -388,20 +419,10 @@ export function AddInvoice() {
 								<h1 className="w-full text-muted-foreground">Total:</h1>
 								<div className="text-right">
 									<NumberFlow
-										value={sum + vat}
+										value={sum + vat - discount}
 										className="w-full"
-										format={{
-											currency: invoiceOptions.options.currency?.code,
-											currencyDisplay: "symbol",
-											style: "currency",
-											roundingMode: "ceil",
-											roundingIncrement: invoiceOptions.options.decimals
-												? 1
-												: 100,
-											trailingZeroDisplay: invoiceOptions.options.decimals
-												? "auto"
-												: "stripIfInteger",
-										}}
+										format={currencyFormat}
+										isolate={false}
 									/>
 								</div>
 							</motion.div>
@@ -440,7 +461,6 @@ export function AddInvoice() {
 							size={"sm"}
 						>
 							{t("cancel")}
-							{/* Cancel */}
 						</Button>
 					</SheetClose>
 					<Button

@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 type InvoiceOptions = {
 	dateFormat: string;
 	currency: {
 		code: string;
 		currency: string;
-	} | null;
+	};
 	salesTax: boolean;
 	vat: boolean;
 	vatNumbers: boolean;
@@ -17,18 +17,22 @@ type InvoiceOptions = {
 type InvoiceOptionsStore = {
 	options: InvoiceOptions;
 	setDateFormat: (format: string) => void;
-	setCurrency: (currency: { code: string; currency: string } | null) => void;
+	setCurrency: (currency: { code: string; currency: string }) => void;
 	setSalesTax: (enabled: boolean) => void;
 	setVat: (enabled: boolean) => void;
 	setVatNumbers: (enabled: boolean) => void;
 	setDiscount: (enabled: boolean) => void;
 	setDecimals: (enabled: boolean) => void;
 	resetOptions: () => void;
+	update: (update: Partial<InvoiceOptions>) => void;
 };
 
 const defaultOptions: InvoiceOptions = {
 	dateFormat: "dd/MM/yyyy",
-	currency: null,
+	currency: {
+		code: "USD",
+		currency: "US Dollar",
+	},
 	salesTax: false,
 	vat: false,
 	vatNumbers: false,
@@ -39,7 +43,9 @@ const defaultOptions: InvoiceOptions = {
 export const useInvoiceOptionsStore = create<InvoiceOptionsStore>()(
 	persist<InvoiceOptionsStore>(
 		(set, get) => ({
-			options: { ...defaultOptions },
+			options: defaultOptions,
+			update: (update) =>
+				set((state) => ({ options: { ...state.options, ...update } })),
 			setDateFormat: (format) =>
 				set((state) => ({
 					options: { ...state.options, dateFormat: format },

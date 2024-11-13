@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -8,22 +8,21 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context";
-import { Button } from "@/components/ui/button";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase/firebase";
 import { useToast } from "@/components/ui/use-toast";
+import { db } from "@/firebase/firebase";
+import { useDriverOptionsStore } from "@/stores/Drivers/DriverOptionsStore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useTranslations } from "next-intl";
 
 export default function RemoveDriverConfirmationDialog() {
-	const { confirm, setConfirm, driver } = useRemoveDriverContext();
+	const { confirm, setConfirm, selectedDriver } = useDriverOptionsStore();
 	const { toast } = useToast();
 	const t = useTranslations("RemoveDriverConfirmationDialog");
 
 	async function removeDriver() {
-		if (!driver) return;
+		if (!selectedDriver) return;
 
-		await updateDoc(doc(db, "users", driver.id), {
+		await updateDoc(doc(db, "users", selectedDriver.id), {
 			companyId: "",
 		});
 
@@ -42,7 +41,7 @@ export default function RemoveDriverConfirmationDialog() {
 				</DialogHeader>
 				<DialogDescription>
 					{t("description", {
-						name: driver?.name || "Driver",
+						name: selectedDriver?.name || "Driver",
 					})}
 				</DialogDescription>
 				<DialogFooter>

@@ -30,7 +30,7 @@ export default function LetterPullup({
 	};
 
 	return (
-		<div className="flex justify-center">
+		<div className="flex">
 			{letters.map((letter, i) => (
 				<motion.h1
 					key={i}

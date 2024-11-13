@@ -8,8 +8,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { useOrderIdContext } from "@/context/orders/order-selected-context";
 import type { Order } from "@/models/orders";
+import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import {
 	type ColumnDef,
@@ -32,7 +32,7 @@ export default function OrderDataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
-	const { order: id, setOrder: setId } = useOrderIdContext();
+	const { setOrder } = useOrderOptionsStore();
 	const t = useTranslations("OrderList");
 
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -58,9 +58,9 @@ export default function OrderDataTable<TData, TValue>({
 		enableMultiRowSelection: false,
 		enableRowSelection(row) {
 			if (!row.getIsSelected()) {
-				setId(row.original as Order);
+				setOrder(row.original as Order);
 			} else {
-				setId(null);
+				setOrder(null);
 			}
 			// setId((row.original as any).id);
 

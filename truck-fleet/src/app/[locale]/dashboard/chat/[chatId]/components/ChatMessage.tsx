@@ -1,15 +1,3 @@
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
-import { useCopyToClipboard } from "react-use";
-import { deleteDoc, doc } from "firebase/firestore";
-import { useParams } from "next/navigation";
-import { motion } from "framer-motion";
-import {
-	IconClipboard,
-	IconDownload,
-	IconEdit,
-	IconTrash,
-} from "@tabler/icons-react";
 import {
 	ContextMenu,
 	ContextMenuContent,
@@ -18,7 +6,6 @@ import {
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { useToast } from "@/components/ui/use-toast";
-import { useChatEditContext } from "@/context/chat/chat-edit-context";
 import { db } from "@/firebase/firebase";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import {
@@ -27,13 +14,25 @@ import {
 } from "@/lib/dropdownMenuVariants";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/models/message";
-import TextMessage from "./messages/TextMessage";
-import ImageMessage from "./messages/ImageMessage";
-import { useDeleteMessage } from "@/context/chat/delete-message-context";
+import { useChatOptionsStore } from "@/stores/Chats/ChatOptionsStore";
+import {
+	IconClipboard,
+	IconDownload,
+	IconEdit,
+	IconTrash,
+} from "@tabler/icons-react";
+import { deleteDoc, doc } from "firebase/firestore";
+import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useCopyToClipboard } from "react-use";
 import AudioMessage from "./messages/AudioMessage";
-import LocationMessage from "./messages/LocationMessage";
-import VideoMessage from "./messages/VideoMessage";
 import FileMessage from "./messages/FileMessage";
+import ImageMessage from "./messages/ImageMessage";
+import LocationMessage from "./messages/LocationMessage";
+import TextMessage from "./messages/TextMessage";
+import VideoMessage from "./messages/VideoMessage";
 
 export default function ChatMessage({
 	message,
@@ -44,8 +43,8 @@ export default function ChatMessage({
 	const { toast } = useToast();
 	const [clipboard, setCopyToClipboard] = useCopyToClipboard();
 	const docRef = doc(db, "chats", chatId as string, "messages", message.id);
-	const { setDocRef, setIsEditing, setMessageValue } = useChatEditContext();
-	const { openDeleteDialog } = useDeleteMessage();
+	const { setDocRef, setIsEditing, setMessageValue, openDeleteDialog } =
+		useChatOptionsStore();
 
 	const tGeneral = useTranslations("General");
 	const t = useTranslations("ChatPage");
@@ -129,7 +128,7 @@ export default function ChatMessage({
 		} else if (message.type === "image" || message.type === "video") {
 			baseOptions.push({
 				icon: IconDownload,
-				label: "download_image",
+				label: "download",
 				isSender: false,
 				onPress: downloadImage,
 				danger: false,

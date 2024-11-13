@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -8,15 +9,14 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useDeleteMessage } from "@/context/chat/delete-message-context";
+import { useToast } from "@/components/ui/use-toast";
+import { useChatOptionsStore } from "@/stores/Chats/ChatOptionsStore";
 import { deleteDoc } from "firebase/firestore";
 import { useTranslations } from "next-intl";
-import { useToast } from "@/components/ui/use-toast";
 
 export function DeleteMessageDialog() {
 	const { showDeleteDialog, messageToDelete, closeDeleteDialog } =
-		useDeleteMessage();
+		useChatOptionsStore();
 	const t = useTranslations("ChatPage");
 	const { toast } = useToast();
 

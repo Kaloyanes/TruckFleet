@@ -1,11 +1,10 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { toast, useToast } from "@/components/ui/use-toast";
-import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
-import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context";
 import { auth, db } from "@/firebase/firebase";
 import { Link, useRouter } from "@/lib/navigation";
 import type { Driver } from "@/models/driver";
+import { useDriverOptionsStore } from "@/stores/Drivers/DriverOptionsStore";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import {
 	IconGraphFilled,
@@ -14,16 +13,7 @@ import {
 	IconTrash,
 } from "@tabler/icons-react";
 import type { ColumnDef } from "@tanstack/react-table";
-import {
-	addDoc,
-	collection,
-	getDoc,
-	getDocs,
-	getDocsFromCache,
-	or,
-	query,
-	where,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -39,7 +29,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 			return <span>{t("name")}</span>;
 		},
 		cell: ({ getValue, row }) => {
-			const { view } = useDriverToggleViewContext();
+			const { view } = useDriverOptionsStore();
 			const name = getValue() as string;
 
 			const photoUrl = row.original.photoUrl;
@@ -151,8 +141,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		accessorKey: "actions",
 		header: "",
 		cell: ({ row }) => {
-			const { view } = useDriverToggleViewContext();
-			const { setConfirm, setDriver } = useRemoveDriverContext();
+			const { view, setConfirm, setSelectedDriver } = useDriverOptionsStore();
 			const router = useRouter();
 			const [user, userLoading] = useAuthState(auth);
 
@@ -222,7 +211,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 						size="icon"
 						onClick={() => {
 							setConfirm(true);
-							setDriver(row.original);
+							setSelectedDriver(row.original);
 						}}
 					>
 						<IconTrash />
