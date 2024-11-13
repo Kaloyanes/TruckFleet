@@ -89,7 +89,13 @@ export function AddInvoice() {
 								</h1>
 								<DatePickerInvoice
 									date={invoice.issueDate}
-									setDate={invoice.setIssueDate}
+									setDate={(date) => {
+										invoice.setIssueDate(date);
+
+										if (invoice.dueDate < date) {
+											invoice.setDueDate(date);
+										}
+									}}
 								/>
 							</div>
 							<div className="flex flex-1 items-center gap-1">
