@@ -56,6 +56,8 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 
+const AnimatedSidebarMenuItem = motion.create(SidebarMenuItem);
+
 export default function DashboardSidebar() {
 	const { profile } = useProfileDoc();
 
@@ -286,7 +288,7 @@ export default function DashboardSidebar() {
 								pathName === item.url;
 
 							return (
-								<SidebarMenuItem key={item.title} className="">
+								<AnimatedSidebarMenuItem layout key={item.title} className="">
 									<SidebarMenuButton
 										size={"lg"}
 										isActive={isActive}
@@ -300,7 +302,7 @@ export default function DashboardSidebar() {
 											<span className="truncate">{t(item.title as any)}</span>
 										</Link>
 									</SidebarMenuButton>
-								</SidebarMenuItem>
+								</AnimatedSidebarMenuItem>
 							);
 						})}
 					</SidebarMenu>
