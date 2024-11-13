@@ -1,14 +1,6 @@
 import DeleteOrderConfirmationDialog from "@/app/[locale]/dashboard/orders/components/DeleteOrderConfirmationDialog";
 import OrdersMainContent from "@/app/[locale]/dashboard/orders/components/OrderMainContent";
-import OrderSidebar from "@/app/[locale]/dashboard/orders/components/OrderSidebar";
-import DeleteOrderContextProvider, {
-	DeleteOrderContext,
-} from "@/context/orders/order-delete-context";
-import EditOrderContextProvider from "@/context/orders/order-edit-context";
-import OrderSelectedContextProvider from "@/context/orders/order-selected-context";
-import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
-import { APIProvider } from "@vis.gl/react-google-maps";
-import DashboardSidebar from "@/app/[locale]/dashboard/components/DashboardSidebar";
+import { setRequestLocale } from "next-intl/server";
 
 export default async function OrdersLayout({
 	children,
@@ -20,17 +12,11 @@ export default async function OrdersLayout({
 	setRequestLocale(locale);
 
 	return (
-		<OrderSelectedContextProvider>
-			<EditOrderContextProvider>
-				<DeleteOrderContextProvider>
-					<DeleteOrderConfirmationDialog />
-					<div className={"relative flex flex-1 overflow-hidden"}>
-						<OrdersMainContent>{children}</OrdersMainContent>
+		<div className={"relative flex flex-1 overflow-hidden"}>
+			<DeleteOrderConfirmationDialog />
+			<OrdersMainContent>{children}</OrdersMainContent>
 
-						{/* <OrderSidebar /> */}
-					</div>
-				</DeleteOrderContextProvider>
-			</EditOrderContextProvider>
-		</OrderSelectedContextProvider>
+			{/* <OrderSidebar /> */}
+		</div>
 	);
 }

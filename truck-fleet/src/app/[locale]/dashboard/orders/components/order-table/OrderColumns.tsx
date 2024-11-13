@@ -24,8 +24,6 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
-import { useEditOrderContext } from "@/context/orders/order-edit-context";
 import { companyConverter } from "@/firebase/converters/companyConverter";
 import { driverConverter } from "@/firebase/converters/driverConverter";
 import { truckConverter } from "@/firebase/converters/truckConverter";
@@ -36,6 +34,7 @@ import {
 import { Link } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import type { Order } from "@/models/orders";
+import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import {
 	type Icon,
 	IconCalendarFilled,
@@ -593,8 +592,10 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		accessorKey: "actions",
 		header: "",
 		cell: ({ row }) => {
-			const { setOpen, setOrder } = useEditOrderContext();
-			const { setConfirm, setOrder: setOrderConfirm } = useDeleteOrderContext();
+			// const { setOpen, setOrder } = useEditOrderContext();
+			// const { setConfirm, setOrder: setOrderConfirm } = useDeleteOrderContext();
+			const { setOrder, openEditSheet, openDeleteDialog } =
+				useOrderOptionsStore();
 
 			const t = useTranslations("OrderList");
 
@@ -620,7 +621,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 					icon: IconEdit,
 					onClick: () => {
 						setOrder(row.original);
-						setOpen(true);
+						openEditSheet(true);
 					},
 				},
 				{
@@ -632,8 +633,8 @@ export const OrderColumns: ColumnDef<Order>[] = [
 					label: "delete",
 					icon: IconTrash,
 					onClick: () => {
-						setConfirm(true);
-						setOrderConfirm(row.original);
+						setOrder(row.original);
+						openDeleteDialog(true);
 					},
 				},
 			];

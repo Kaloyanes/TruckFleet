@@ -1,5 +1,9 @@
 "use client";
-import React from "react";
+import { db } from "@/firebase/firebase";
+import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
+import { deleteDoc, doc } from "firebase/firestore";
+import { useTranslations } from "next-intl";
+import { Button } from "../../../../../components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -9,15 +13,10 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "../../../../../components/ui/dialog";
-import { useDeleteOrderContext } from "@/context/orders/order-delete-context";
-import { Button } from "../../../../../components/ui/button";
-import { deleteDoc, doc } from "firebase/firestore";
-import { db } from "@/firebase/firebase";
 import { useToast } from "../../../../../components/ui/use-toast";
-import { useTranslations } from "next-intl";
 
 export default function DeleteOrderConfirmationDialog() {
-	const { confirm, setConfirm, order } = useDeleteOrderContext();
+	const { showDeleteDialog, openDeleteDialog, order } = useOrderOptionsStore();
 	const t = useTranslations("DeleteConfirmationDialog");
 	const { toast } = useToast();
 	if (!order) return <></>;
@@ -27,7 +26,7 @@ export default function DeleteOrderConfirmationDialog() {
 
 		await deleteDoc(doc(db, "orders", order.id));
 
-		setConfirm(false);
+		openDeleteDialog(false);
 		toast({
 			title: t("deletedSuccessfully"),
 			description: t("deletedDescription", { id: order.id }),
@@ -36,7 +35,7 @@ export default function DeleteOrderConfirmationDialog() {
 	}
 
 	return (
-		<Dialog open={confirm} onOpenChange={setConfirm}>
+		<Dialog open={showDeleteDialog} onOpenChange={openDeleteDialog}>
 			<DialogTrigger />
 			<DialogContent>
 				<DialogHeader>
@@ -46,7 +45,7 @@ export default function DeleteOrderConfirmationDialog() {
 				</DialogHeader>
 				<DialogDescription>{t("description")}</DialogDescription>
 				<DialogFooter>
-					<Button variant={"outline"} onClick={() => setConfirm(false)}>
+					<Button variant={"outline"} onClick={() => openDeleteDialog(false)}>
 						{t("cancel")}
 					</Button>
 					<Button variant={"destructive"} onClick={DeleteOrder}>

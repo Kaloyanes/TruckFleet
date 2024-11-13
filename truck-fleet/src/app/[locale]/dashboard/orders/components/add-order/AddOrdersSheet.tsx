@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import AutoForm from "@/components/ui/auto-form";
+import { Button } from "@/components/ui/button";
 import {
 	Sheet,
 	SheetClose,
@@ -10,11 +11,10 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
-import { z } from "zod";
-import AutoForm from "@/components/ui/auto-form";
+import { db, storage } from "@/firebase/firebase";
+import useCompanyId from "@/hooks/useCompanyId";
 import {
+	type DocumentReference,
 	collection,
 	doc,
 	getDoc,
@@ -22,37 +22,32 @@ import {
 	setDoc,
 	updateDoc,
 	where,
-	type DocumentReference,
 } from "firebase/firestore";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useUploadFile } from "react-firebase-hooks/storage";
-import { db, storage } from "@/firebase/firebase";
-import useCompanyId from "@/hooks/useCompanyId";
+import { z } from "zod";
 
-import SelectMenu from "./SelectMenu";
-import { useToast } from "@/components/ui/use-toast";
-import { getDownloadURL, ref } from "firebase/storage";
-import type { Order } from "@/models/orders";
-import { useEditOrderContext } from "@/context/orders/order-edit-context";
-import {
-	Drawer,
-	DrawerContent,
-	DrawerTitle,
-	DrawerTrigger,
-} from "@/components/ui/drawer";
-import { IconPlus } from "@tabler/icons-react";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useToast } from "@/components/ui/use-toast";
+import type { Order } from "@/models/orders";
+import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
+import { IconPlus } from "@tabler/icons-react";
+import { getDownloadURL, ref } from "firebase/storage";
+import SelectMenu from "./SelectMenu";
 
 export default function AddOrdersSheet() {
 	const t = useTranslations("AddOrderSheet");
 	const { companyId } = useCompanyId();
 	const { toast } = useToast();
 
-	const { open, setOpen, order, setOrder } = useEditOrderContext();
+	const { showEditSheet, openEditSheet, order, setOrder } =
+		useOrderOptionsStore();
 
 	const [drivers, driverLoading, driverError] = useCollectionOnce(
 		query(
@@ -191,7 +186,7 @@ export default function AddOrdersSheet() {
 
 	const addOrder = async (values: Order | null) => {
 		if (JSON.stringify(values) === JSON.stringify(order)) {
-			setOpen(false);
+			openEditSheet(false);
 			return;
 		}
 
@@ -265,7 +260,7 @@ export default function AddOrdersSheet() {
 				variant: "success",
 			});
 
-			setOpen(false);
+			openEditSheet(false);
 		} catch (error) {
 			console.error("Error adding order:", error);
 			toast({
@@ -408,7 +403,7 @@ export default function AddOrdersSheet() {
 	}
 
 	return (
-		<Sheet open={open} onOpenChange={setOpen}>
+		<Sheet open={showEditSheet} onOpenChange={openEditSheet}>
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<SheetTrigger asChild>
