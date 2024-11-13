@@ -20,6 +20,7 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
+import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import {
 	IconCalculator,
@@ -35,7 +36,6 @@ import type { CurrencyCode } from "currency-codes-ts/dist/types";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
 
 const AnimatedScrollView = motion.create(ScrollArea);
 const AnimatedInput = motion.create(Input);
@@ -251,9 +251,9 @@ export default function AddInvoiceOptions() {
 												key={currency?.code}
 												onClick={(e) => {
 													e.preventDefault();
-													setCurrency(currency);
+													if (currency !== null) setCurrency(currency);
 												}}
-												checked={options.currency?.code === currency?.code}
+												checked={options.currency.code === currency?.code}
 											>
 												{currency?.currency} ({currency?.code})
 											</DropdownMenuCheckboxItem>

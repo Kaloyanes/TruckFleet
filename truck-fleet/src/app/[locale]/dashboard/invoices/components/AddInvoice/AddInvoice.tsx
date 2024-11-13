@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
 	Sheet,
 	SheetClose,
@@ -16,23 +17,19 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
+import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
+import NumberFlow, { type Format } from "@number-flow/react";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import AddInvoiceOptions from "./AddInvoiceOptions";
 import { DatePickerInvoice } from "./DatePickerInvoice";
+import FormattedNumberInput from "./FormattedNumberInput";
 import InvoiceInput from "./InvoiceInput";
 import InvoicePicture from "./InvoicePicture";
-import { useInvoiceOptionsStore } from "@/stores/InvoiceOptionsStore";
-import NumberFlow from "@number-flow/react";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import FormattedNumberInput from "./FormattedNumberInput";
-import { useInvoiceValuesStore } from "@/stores/InvoiceValuesStore";
-import { v4 as uuidv4 } from "uuid";
-import { dropdownMenuVariants } from "@/lib/dropdownMenuVariants";
-import { Separator } from "@/components/ui/separator";
 
 export function AddInvoice() {
 	const [open, setOpen] = useState(false);
@@ -49,6 +46,17 @@ export function AddInvoice() {
 	const vat = invoiceOptions.options.vat
 		? (sum * (Number.isNaN(invoice.vat) ? 0 : (invoice.vat ?? 0))) / 100
 		: 0;
+
+	const currencyFormat: Partial<Format> = {
+		currency: invoiceOptions.options.currency.code,
+		currencyDisplay: "symbol",
+		style: "currency",
+		roundingMode: "ceil",
+		roundingIncrement: invoiceOptions.options.decimals ? 1 : 100,
+		trailingZeroDisplay: invoiceOptions.options.decimals
+			? "auto"
+			: "stripIfInteger",
+	};
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -219,19 +227,7 @@ export function AddInvoice() {
 													<NumberFlow
 														value={item.price * item.quantity}
 														className="font-semibold text-sm"
-														format={{
-															currency: invoiceOptions.options.currency?.code,
-															currencyDisplay: "symbol",
-															style: "currency",
-															roundingMode: "ceil",
-															roundingIncrement: invoiceOptions.options.decimals
-																? 1
-																: 100,
-															trailingZeroDisplay: invoiceOptions.options
-																.decimals
-																? "auto"
-																: "stripIfInteger",
-														}}
+														format={currencyFormat as any}
 													/>
 												</div>
 
@@ -242,7 +238,7 @@ export function AddInvoice() {
 														onClick={() => {
 															invoice.removeItem(item.id);
 														}}
-														className="-right-5 absolute size-8 gap-2 text-destructive opacity-0 transition-all hover:text-destructive group-hover:opacity-100"
+														className="-right-5 absolute size-8 gap-2 text-foreground opacity-0 transition-all group-hover:opacity-100"
 													>
 														<IconMinus size={15} />
 													</Button>
@@ -285,18 +281,7 @@ export function AddInvoice() {
 									<NumberFlow
 										value={sum}
 										className="w-full"
-										format={{
-											currency: invoiceOptions.options.currency?.code,
-											currencyDisplay: "symbol",
-											style: "currency",
-											roundingMode: "ceil",
-											roundingIncrement: invoiceOptions.options.decimals
-												? 1
-												: 100,
-											trailingZeroDisplay: invoiceOptions.options.decimals
-												? "auto"
-												: "stripIfInteger",
-										}}
+										format={currencyFormat}
 									/>
 								</div>
 							</motion.div>
@@ -352,20 +337,7 @@ export function AddInvoice() {
 														<NumberFlow
 															value={vat}
 															className="w-full"
-															format={{
-																currency: invoiceOptions.options.currency?.code,
-																currencyDisplay: "symbol",
-																style: "currency",
-																roundingMode: "ceil",
-																roundingIncrement: invoiceOptions.options
-																	.decimals
-																	? 1
-																	: 100,
-																trailingZeroDisplay: invoiceOptions.options
-																	.decimals
-																	? "auto"
-																	: "stripIfInteger",
-															}}
+															format={currencyFormat}
 														/>
 													</div>
 												</div>
@@ -384,18 +356,7 @@ export function AddInvoice() {
 									<NumberFlow
 										value={sum + vat}
 										className="w-full"
-										format={{
-											currency: invoiceOptions.options.currency?.code,
-											currencyDisplay: "symbol",
-											style: "currency",
-											roundingMode: "ceil",
-											roundingIncrement: invoiceOptions.options.decimals
-												? 1
-												: 100,
-											trailingZeroDisplay: invoiceOptions.options.decimals
-												? "auto"
-												: "stripIfInteger",
-										}}
+										format={currencyFormat}
 									/>
 								</div>
 							</motion.div>
