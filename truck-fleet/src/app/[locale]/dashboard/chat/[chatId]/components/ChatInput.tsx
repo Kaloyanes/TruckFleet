@@ -1,5 +1,6 @@
 "use client";
 
+import LocationDialog from "@/app/[locale]/dashboard/chat/[chatId]/components/LocationDialog";
 import {
 	type AutosizeTextAreaRef,
 	AutosizeTextarea,
@@ -12,21 +13,20 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/loading-spinner";
-import { useChatEditContext } from "@/context/chat/chat-edit-context";
+import { Progress } from "@/components/ui/progress";
 import { auth, db, storage } from "@/firebase/firebase";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
+import { useChatOptionsStore } from "@/stores/Chats/ChatOptionsStore";
 import {
+	IconFile,
 	IconMap2,
 	IconMicrophone,
-	IconPhoto,
 	IconPlus,
 	IconSend2,
 	IconX,
-	IconVideo,
-	IconFile,
 } from "@tabler/icons-react";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import {
@@ -40,12 +40,9 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useFilePicker } from "use-file-picker";
-import { useDeleteMessage } from "@/context/chat/delete-message-context";
 import { useReactMediaRecorder } from "react-media-recorder";
+import { useFilePicker } from "use-file-picker";
 import { v4 as uuidv4 } from "uuid";
-import LocationDialog from "@/app/[locale]/dashboard/chat/[chatId]/components/LocationDialog";
-import { Progress } from "@/components/ui/progress";
 
 export default function ChatInput() {
 	const [message, setMessage] = useState("");
@@ -59,7 +56,6 @@ export default function ChatInput() {
 	const [uploadProgress, setUploadProgress] = useState<number>(0);
 	const [isUploading, setIsUploading] = useState(false);
 
-	const { openDeleteDialog } = useDeleteMessage();
 	const {
 		docRef,
 		messageValue,
@@ -67,7 +63,7 @@ export default function ChatInput() {
 		setDocRef,
 		setIsEditing,
 		setMessageValue,
-	} = useChatEditContext();
+	} = useChatOptionsStore();
 	const t = useTranslations("ChatPage");
 	const chatId = useParams().chatId;
 
