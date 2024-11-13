@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { v4 as uuidv4 } from "uuid";
 
 interface InvoiceItem {
 	id: string;
@@ -22,6 +22,7 @@ interface InvoiceValuesStore {
 	vat?: number;
 	bankDetails: string;
 	note: string;
+	discount?: number;
 
 	setInvoiceNumber: (value: string) => void;
 	setIssueDate: (date: Date) => void;
@@ -32,6 +33,7 @@ interface InvoiceValuesStore {
 	setVat: (value: number) => void;
 	setBankDetails: (value: string) => void;
 	setNote: (value: string) => void;
+	setDiscount: (value: number) => void;
 	addItem: (item: InvoiceItem) => void;
 	updateItem: (id: string, item: Partial<InvoiceItem>) => void;
 	removeItem: (id: string) => void;
@@ -51,12 +53,14 @@ const defaultValues = {
 	vat: undefined,
 	bankDetails: "",
 	note: "",
+	discount: 0,
 };
 
 export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 	persist(
 		(set) => ({
 			...defaultValues,
+			setDiscount: (discount) => set({ discount }),
 			setInvoiceNumber: (invoiceNumber) => set({ invoiceNumber }),
 			setIssueDate: (issueDate) => set({ issueDate }),
 			setDueDate: (dueDate) => set({ dueDate }),

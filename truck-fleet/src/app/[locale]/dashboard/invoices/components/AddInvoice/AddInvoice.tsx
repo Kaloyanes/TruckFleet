@@ -47,6 +47,10 @@ export function AddInvoice() {
 		? (sum * (Number.isNaN(invoice.vat) ? 0 : (invoice.vat ?? 0))) / 100
 		: 0;
 
+	const discount = invoiceOptions.options.discount
+		? (invoice.discount ?? 0)
+		: 0;
+
 	const currencyFormat: Partial<Format> = {
 		currency: invoiceOptions.options.currency.code,
 		currencyDisplay: "symbol",
@@ -228,6 +232,7 @@ export function AddInvoice() {
 														value={item.price * item.quantity}
 														className="font-semibold text-sm"
 														format={currencyFormat as any}
+														isolate={false}
 													/>
 												</div>
 
@@ -282,6 +287,7 @@ export function AddInvoice() {
 										value={sum}
 										className="w-full"
 										format={currencyFormat}
+										isolate={false}
 									/>
 								</div>
 							</motion.div>
@@ -338,6 +344,59 @@ export function AddInvoice() {
 															value={vat}
 															className="w-full"
 															format={currencyFormat}
+															isolate={false}
+														/>
+													</div>
+												</div>
+											</motion.div>
+										</motion.div>
+									)}
+								</AnimatePresence>
+							</div>
+							<div className="min-h-0.5">
+								<AnimatePresence mode="sync" initial={false}>
+									{invoiceOptions.options.discount && (
+										<motion.div
+											key="discount-container"
+											variants={{
+												hidden: {
+													opacity: 0,
+													y: 25,
+													filter: "blur(10px)",
+													scale: 0.8,
+													height: 0,
+												},
+												visible: {
+													opacity: 1,
+													y: 0,
+													filter: "blur(0px)",
+													scale: 1,
+													height: "auto",
+												},
+												exit: {
+													opacity: 0,
+													y: 25,
+													filter: "blur(10px)",
+													scale: 0.8,
+													height: 0,
+												},
+											}}
+											initial="hidden"
+											animate="visible"
+											exit="exit"
+											className="overflow-hidden"
+											layout
+										>
+											<motion.div>
+												<div className="flex w-full justify-between py-1">
+													<h1 className="flex w-full items-center text-muted-foreground">
+														Discount :
+													</h1>
+													<div className="text-right">
+														<FormattedNumberInput
+															value={invoice.discount}
+															className="w-full text-right text-base"
+															onChange={invoice.setDiscount}
 														/>
 													</div>
 												</div>
@@ -354,9 +413,10 @@ export function AddInvoice() {
 								<h1 className="w-full text-muted-foreground">Total:</h1>
 								<div className="text-right">
 									<NumberFlow
-										value={sum + vat}
+										value={sum + vat - discount}
 										className="w-full"
 										format={currencyFormat}
+										isolate={false}
 									/>
 								</div>
 							</motion.div>
@@ -395,7 +455,6 @@ export function AddInvoice() {
 							size={"sm"}
 						>
 							{t("cancel")}
-							{/* Cancel */}
 						</Button>
 					</SheetClose>
 					<Button
