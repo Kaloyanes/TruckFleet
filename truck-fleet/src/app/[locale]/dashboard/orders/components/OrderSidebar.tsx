@@ -4,21 +4,17 @@ import {
 	SidebarContent,
 	SidebarProvider,
 } from "@/components/ui/sidebar";
-import { OrderSelectedContext } from "@/context/orders/order-selected-context";
+import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useTheme } from "next-themes";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 
 export default function OrderSidebar() {
-	const orderSelectedContext = useContext(OrderSelectedContext);
-	const order = orderSelectedContext?.order;
+	const { order } = useOrderOptionsStore();
 
-	const show = orderSelectedContext?.order !== null;
-
-	const [driver, loading, error] = useDocumentDataOnce(
-		orderSelectedContext?.order?.driver,
-	);
+	const show = order !== null;
+	const [driver, loading, error] = useDocumentDataOnce(order?.driver);
 
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>Error fetching driver {error.message}</div>;
