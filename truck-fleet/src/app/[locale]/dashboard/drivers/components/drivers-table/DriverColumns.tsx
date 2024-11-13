@@ -1,7 +1,7 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { toast, useToast } from "@/components/ui/use-toast";
-import { auth, db } from "@/firebase/firebase";
+import { auth, db } from "@/lib/firebase";
 import { Link, useRouter } from "@/lib/navigation";
 import type { Driver } from "@/models/driver";
 import { useDriverOptionsStore } from "@/stores/Drivers/DriverOptionsStore";

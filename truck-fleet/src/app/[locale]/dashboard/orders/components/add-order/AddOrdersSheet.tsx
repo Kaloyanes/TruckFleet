@@ -11,7 +11,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import { db, storage } from "@/firebase/firebase";
+import { db, storage } from "@/lib/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import {
 	type DocumentReference,

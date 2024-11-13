@@ -237,7 +237,7 @@ export function AddInvoice() {
 													<NumberFlow
 														value={item.price * item.quantity}
 														className="font-semibold text-sm"
-														format={currencyFormat as any}
+														format={currencyFormat}
 														isolate={false}
 													/>
 												</div>

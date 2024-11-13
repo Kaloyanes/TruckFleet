@@ -57,6 +57,9 @@ import Image from "next/image";
 import { useState } from "react";
 
 const AnimatedSidebarMenuItem = motion.create(SidebarMenuItem);
+const AnimatedSidebarMenuButton = motion.create(SidebarMenuButton);
+const AnimatedCollapsible = motion.create(Collapsible);
+const AnimatedCollapsibleTrigger = motion.create(CollapsibleTrigger);
 
 export default function DashboardSidebar() {
 	const { profile } = useProfileDoc();
@@ -174,32 +177,37 @@ export default function DashboardSidebar() {
 								const [isActive, setActive] = useState(isGroupActive);
 
 								return (
-									<Collapsible
+									<AnimatedCollapsible
+										layout
 										key={item.title}
 										asChild
 										className="group/collapsible"
 										defaultOpen={isActive}
 										onOpenChange={(isOpen) => setActive(isOpen)}
 									>
-										<SidebarMenuItem>
-											<CollapsibleTrigger asChild>
-												<SidebarMenuButton
+										<AnimatedSidebarMenuItem layout>
+											<AnimatedCollapsibleTrigger asChild>
+												<AnimatedSidebarMenuButton
+													layout
 													size={"lg"}
 													tooltip={t(item.title as any)}
 													isActive={isGroupActive}
 													className="z-50"
 												>
-													<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+													<motion.div
+														layout
+														className="flex aspect-square size-8 items-center justify-center rounded-lg"
+													>
 														{item.icon && <item.icon className="size-6" />}
-													</div>
-													<span className="truncate">
+													</motion.div>
+													<motion.div layout className="truncate">
 														{t(
 															item.title as "account" | "settings" | "sign out",
 														)}
-													</span>
+													</motion.div>
 													<IconChevronRight className="ml-auto transition-transform duration-300 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
-												</SidebarMenuButton>
-											</CollapsibleTrigger>
+												</AnimatedSidebarMenuButton>
+											</AnimatedCollapsibleTrigger>
 											<CollapsibleContent className="">
 												<AnimatePresence>
 													{isActive && (
@@ -274,8 +282,8 @@ export default function DashboardSidebar() {
 													)}
 												</AnimatePresence>
 											</CollapsibleContent>
-										</SidebarMenuItem>
-									</Collapsible>
+										</AnimatedSidebarMenuItem>
+									</AnimatedCollapsible>
 								);
 							}
 
@@ -288,7 +296,12 @@ export default function DashboardSidebar() {
 								pathName === item.url;
 
 							return (
-								<AnimatedSidebarMenuItem layout key={item.title} className="">
+								<AnimatedSidebarMenuItem
+									layout
+									initial={false}
+									key={item.title}
+									className=""
+								>
 									<SidebarMenuButton
 										size={"lg"}
 										isActive={isActive}
@@ -343,7 +356,7 @@ export default function DashboardSidebar() {
 														height={40 * 2}
 														src={profile?.photoUrl}
 														alt={profile?.name}
-														className="object-cover !rounded-md "
+														className="!rounded-md object-cover "
 													/>
 												</AvatarImage>
 												<AvatarFallback>

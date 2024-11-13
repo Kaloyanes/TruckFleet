@@ -3,7 +3,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { messageConverter } from "@/firebase/converters/messageConverter";
-import { auth, db } from "@/firebase/firebase";
+import { auth, db } from "@/lib/firebase";
 import { collection, doc, orderBy, query } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { useRef } from "react";

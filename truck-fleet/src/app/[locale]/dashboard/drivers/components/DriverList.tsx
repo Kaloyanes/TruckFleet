@@ -1,7 +1,7 @@
 "use client";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { driverConverter } from "@/firebase/converters/driverConverter";
-import { db } from "@/firebase/firebase";
+import { db } from "@/lib/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";

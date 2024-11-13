@@ -13,7 +13,7 @@ import { Button } from "../../../../../components/ui/button";
 import { z } from "zod";
 import AutoForm from "../../../../../components/ui/auto-form";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "@/firebase/firebase";
+import { auth } from "@/lib/firebase";
 import { useToast } from "../../../../../components/ui/use-toast";
 import { useTranslations } from "next-intl";
 

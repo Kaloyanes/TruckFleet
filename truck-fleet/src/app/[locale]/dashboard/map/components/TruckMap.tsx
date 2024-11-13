@@ -2,7 +2,7 @@
 
 import { Spinner } from "@/components/ui/loading-spinner";
 import { orderConverter } from "@/firebase/converters/orderConverter";
-import { db } from "@/firebase/firebase";
+import { db } from "@/lib/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import {
 	AdvancedMarker,

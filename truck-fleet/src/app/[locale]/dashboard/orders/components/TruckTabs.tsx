@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // import { usePathname, useRouter } from "next/navigation";
 
 import AnimatedTabs from "@/components/AnimatedTabs";
-import { db } from "@/firebase/firebase";
+import { db } from "@/lib/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import { usePathname, useRouter } from "@/lib/navigation";
 import { collection, query, where } from "firebase/firestore";

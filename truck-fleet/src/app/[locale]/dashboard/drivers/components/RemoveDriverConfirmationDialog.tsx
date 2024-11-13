@@ -9,7 +9,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { db } from "@/firebase/firebase";
+import { db } from "@/lib/firebase";
 import { useDriverOptionsStore } from "@/stores/Drivers/DriverOptionsStore";
 import { doc, updateDoc } from "firebase/firestore";
 import { useTranslations } from "next-intl";

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { Progress } from "@/components/ui/progress";
-import { auth, db, storage } from "@/firebase/firebase";
+import { auth, db, storage } from "@/lib/firebase";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,

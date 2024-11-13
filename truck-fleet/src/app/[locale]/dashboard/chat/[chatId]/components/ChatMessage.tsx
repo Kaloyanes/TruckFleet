@@ -6,7 +6,7 @@ import {
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { useToast } from "@/components/ui/use-toast";
-import { db } from "@/firebase/firebase";
+import { db } from "@/lib/firebase";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import {
 	dropdownMenuParentVariants,
