@@ -8,8 +8,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { useDriverFilterInputContext } from "@/context/drivers/driver-filter-input-context";
-import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
+import { useDriverOptionsStore } from "@/stores/Drivers/DriverOptionsStore";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import {
 	type ColumnDef,
@@ -32,7 +31,7 @@ export default function DriverDataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
-	const { view, setView } = useDriverToggleViewContext();
+	const { view } = useDriverOptionsStore();
 
 	const t = useTranslations("OrderList");
 	const t2 = useTranslations("EmployeePage");
@@ -62,7 +61,7 @@ export default function DriverDataTable<TData, TValue>({
 		columnResizeMode: "onChange",
 	});
 
-	const { search } = useDriverFilterInputContext();
+	const { search } = useDriverOptionsStore();
 
 	useEffect(() => {
 		table.setGlobalFilter(search);

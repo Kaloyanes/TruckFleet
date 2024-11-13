@@ -1,12 +1,11 @@
 "use client";
-import React from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { IconLayout2, IconLayoutList } from "@tabler/icons-react";
-import { useDriverToggleViewContext } from "@/context/drivers/driver-toggle-view-context";
 import { Spinner } from "@/components/ui/loading-spinner";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useDriverOptionsStore } from "@/stores/Drivers/DriverOptionsStore";
+import { IconLayout2, IconLayoutList } from "@tabler/icons-react";
 
 export default function ToggleView() {
-	const { view, setView } = useDriverToggleViewContext();
+	const { view, setView } = useDriverOptionsStore();
 
 	if (typeof window === "undefined") return <Spinner />;
 
@@ -18,8 +17,7 @@ export default function ToggleView() {
 			value={view}
 			onValueChange={(newView) => {
 				if (newView) {
-					setView(newView);
-					localStorage.setItem("driver-view", newView);
+					setView(newView as "grid" | "list");
 				}
 			}}
 		>
