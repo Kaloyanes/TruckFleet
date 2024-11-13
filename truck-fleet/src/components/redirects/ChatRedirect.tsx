@@ -1,5 +1,5 @@
 "use client";
-import { auth, db } from "@/firebase/firebase";
+import { auth, db } from "@/lib/firebase";
 import { redirect } from "@/lib/navigation";
 import { doc } from "firebase/firestore";
 import { notFound, useParams } from "next/navigation";

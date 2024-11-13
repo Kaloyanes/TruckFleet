@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/firebase/firebase";
+import { auth } from "@/lib/firebase";
 import { redirect } from "@/lib/navigation";
 import { useSearchParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
