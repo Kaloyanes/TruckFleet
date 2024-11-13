@@ -19,7 +19,7 @@ export default function DriversLayout({
 		<div className={"relative flex flex-1 overflow-hidden"}>
 			<RemoveDriverConfirmationDialog />
 			<Card className="relative w-full flex-1 rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300">
-				<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b bg-sidebar p-4">
+				<CardHeader className="sticky top-0 mb-0 flex flex-row items-center justify-between border-b bg-sidebar">
 					<div className="flex flex-col gap-4">
 						<BackButton />
 						<DriverFilter />

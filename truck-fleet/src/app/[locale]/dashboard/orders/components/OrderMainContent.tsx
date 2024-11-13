@@ -17,7 +17,7 @@ export default function OrdersMainContent({
 		<Card
 			className={`relative w-full flex-1 overflow-hidden rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300 ${order?.id ? "rounded-r-none border-r-0" : "rounded-r-lg "} `}
 		>
-			<CardHeader className="sticky top-0 flex flex-row items-center justify-between border-b bg-sidebar ">
+			<CardHeader className="sticky top-0 mb-0d flex flex-row items-center justify-between border-b bg-sidebar ">
 				<div>
 					<TimeTitle />
 					<TruckTabs />

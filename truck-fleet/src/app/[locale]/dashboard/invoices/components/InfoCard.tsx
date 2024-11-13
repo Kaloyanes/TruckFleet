@@ -41,7 +41,7 @@ export default function InfoCard({
 
 	return (
 		<Card className="min-h-40 flex-1">
-			<CardHeader className="p-5">
+			<CardHeader className=" border-none mb-0">
 				<CardTitle>
 					<NumberFlow
 						value={count}
