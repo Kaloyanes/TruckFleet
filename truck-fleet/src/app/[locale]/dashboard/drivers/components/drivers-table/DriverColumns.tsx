@@ -1,7 +1,6 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { toast, useToast } from "@/components/ui/use-toast";
-import { useRemoveDriverContext } from "@/context/drivers/remove-driver-context";
 import { auth, db } from "@/firebase/firebase";
 import { Link, useRouter } from "@/lib/navigation";
 import type { Driver } from "@/models/driver";
@@ -142,8 +141,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 		accessorKey: "actions",
 		header: "",
 		cell: ({ row }) => {
-			const { view } = useDriverOptionsStore();
-			const { setConfirm, setDriver } = useRemoveDriverContext();
+			const { view, setConfirm, setSelectedDriver } = useDriverOptionsStore();
 			const router = useRouter();
 			const [user, userLoading] = useAuthState(auth);
 
@@ -213,7 +211,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 						size="icon"
 						onClick={() => {
 							setConfirm(true);
-							setDriver(row.original);
+							setSelectedDriver(row.original);
 						}}
 					>
 						<IconTrash />
