@@ -1,4 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 
 export default function AccountPage() {
 	return (
@@ -7,9 +10,7 @@ export default function AccountPage() {
 				<CardTitle>Account</CardTitle>
 			</CardHeader>
 
-			<CardContent>
-				<h1>KFOASKFo</h1>
-			</CardContent>
+			<CardContent />
 		</Card>
 	);
 }
