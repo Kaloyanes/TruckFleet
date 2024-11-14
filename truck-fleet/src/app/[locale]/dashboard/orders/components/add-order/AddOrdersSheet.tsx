@@ -11,8 +11,8 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import { db, storage } from "@/lib/firebase";
 import useCompanyId from "@/hooks/useCompanyId";
+import { db, storage } from "@/lib/firebase";
 import {
 	type DocumentReference,
 	collection,
@@ -57,7 +57,9 @@ export default function AddOrdersSheet() {
 		),
 	);
 	const [companies, companiesLoading, companiesError] = useCollectionOnce(
-		query(collection(db, "companies")),
+		companyId
+			? query(collection(db, "companies", companyId, "customers"))
+			: null,
 	);
 	const [trucks, truckLoading, truckError] = useCollectionOnce(
 		query(collection(db, "trucks"), where("companyId", "==", companyId)),
