@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 import InfoCard from "./components/InfoCard";
 
-export default async function InvoicesLayout({
+export default function InvoicesLayout({
 	children,
 	params: { locale },
 }: {

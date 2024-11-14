@@ -114,25 +114,11 @@ export default function AddInvoiceOptions() {
 
 	const actions = [
 		{
-			label: "Sales Tax",
-			icon: IconCalendar,
-			items: ["yes", "no"],
-			value: options.salesTax,
-			setValue: setSalesTax,
-		},
-		{
 			label: "VAT",
 			icon: IconCalculator,
 			items: ["yes", "no"],
 			value: options.vat,
 			setValue: setVat,
-		},
-		{
-			label: "VAT Numbers",
-			icon: IconNumber,
-			items: ["yes", "no"],
-			value: options.vatNumbers,
-			setValue: setVatNumbers,
 		},
 		{
 			label: "Discount",
@@ -246,18 +232,22 @@ export default function AddInvoiceOptions() {
 										onChange={(e) => setSearchCurrency(e.target.value)}
 									/>
 									<ScrollArea className="max-h-80 overflow-y-auto">
-										{filteredCurrencies.map((currency) => (
-											<DropdownMenuCheckboxItem
-												key={currency?.code}
-												onClick={(e) => {
-													e.preventDefault();
-													if (currency !== null) setCurrency(currency);
-												}}
-												checked={options.currency.code === currency?.code}
-											>
-												{currency?.currency} ({currency?.code})
-											</DropdownMenuCheckboxItem>
-										))}
+										{filteredCurrencies.map((currency) => {
+											if (!currency) return null;
+
+											return (
+												<DropdownMenuCheckboxItem
+													key={currency.code}
+													onClick={(e) => {
+														e.preventDefault();
+														if (currency !== null) setCurrency(currency);
+													}}
+													checked={options.currency.code === currency?.code}
+												>
+													{currency?.currency} ({currency?.code})
+												</DropdownMenuCheckboxItem>
+											);
+										})}
 									</ScrollArea>
 								</DropdownMenuSubContent>
 							</DropdownMenuPortal>

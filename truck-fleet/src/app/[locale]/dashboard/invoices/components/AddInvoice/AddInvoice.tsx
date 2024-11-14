@@ -206,6 +206,7 @@ export function AddInvoice() {
 													y: 20,
 													filter: "blur(10px)",
 												}}
+												transition={{ duration: 0.2, type: "tween" }}
 												className="group relative grid gap-2 rounded-md py-2 pr-4 font-mono text-sm hover:bg-accent/50"
 												style={{
 													gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
@@ -258,6 +259,7 @@ export function AddInvoice() {
 
 												{index !== 0 && (
 													<Button
+														type="button"
 														variant="ghost"
 														size="icon"
 														onClick={() => {
