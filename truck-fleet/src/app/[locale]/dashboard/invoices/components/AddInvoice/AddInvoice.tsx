@@ -17,13 +17,14 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import useCompanyId from "@/hooks/useCompanyId";
 import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
 import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
 import NumberFlow, { type Format } from "@number-flow/react";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import AddInvoiceOptions from "./AddInvoiceOptions";
 import { DatePickerInvoice } from "./DatePickerInvoice";
@@ -33,11 +34,16 @@ import InvoicePicture from "./InvoicePicture";
 
 export function AddInvoice() {
 	const [open, setOpen] = useState(false);
+	const { companyId } = useCompanyId();
 
 	const t = useTranslations("InvoicesPage");
 
 	const invoiceOptions = useInvoiceOptionsStore();
 	const invoice = useInvoiceValuesStore();
+	useEffect(() => {
+		if (!companyId) return;
+		invoice.load(companyId);
+	}, [companyId, invoice.load]);
 
 	const sum = invoice.items
 		.map((item) => item.price * item.quantity)
@@ -62,12 +68,18 @@ export function AddInvoice() {
 			: "stripIfInteger",
 	};
 
+	// if (invoice.isLoading) return <div>Loading...</div>;
+
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
 			<Tooltip delayDuration={300}>
 				<TooltipTrigger asChild>
 					<SheetTrigger asChild>
-						<Button variant={"outline"} size={"icon"}>
+						<Button
+							variant={"outline"}
+							disabled={invoice.isLoading}
+							size={"icon"}
+						>
 							<IconPlus />
 						</Button>
 					</SheetTrigger>
@@ -135,7 +147,7 @@ export function AddInvoice() {
 							<div className="flex-1">
 								<h1 className="font-semibold text-muted-foreground">To:</h1>
 								<InvoiceInput
-									initialValue={"Client"}
+									customerButton
 									onSave={(value) => console.log(value)}
 									multiline
 									rows={6}
@@ -201,6 +213,7 @@ export function AddInvoice() {
 											>
 												<div className="col-span-5">
 													<InvoiceInput
+														className="w-full"
 														initialValue={item.description}
 														onSave={(value) =>
 															invoice.updateItem(item.id, {
@@ -211,14 +224,15 @@ export function AddInvoice() {
 													/>
 												</div>
 												<div className="col-span-2 flex items-center justify-center gap-2">
-													<InvoiceInput
-														initialValue={item.quantity.toString()}
-														onSave={(value) =>
+													<FormattedNumberInput
+														value={item.quantity}
+														onChange={(value) =>
 															invoice.updateItem(item.id, {
 																...item,
-																quantity: Number(value),
+																quantity: value,
 															})
 														}
+														className="w-full"
 													/>
 												</div>
 												<div className="col-span-4 flex justify-center">
@@ -238,7 +252,7 @@ export function AddInvoice() {
 														value={item.price * item.quantity}
 														className="font-semibold text-sm"
 														format={currencyFormat}
-														isolate={false}
+														continuous={true}
 													/>
 												</div>
 
@@ -265,7 +279,7 @@ export function AddInvoice() {
 												onClick={() => {
 													invoice.addItem({
 														id: uuidv4(),
-														description: "New Item",
+														description: "",
 														quantity: 0,
 														price: 0,
 														total: 0,
@@ -293,7 +307,7 @@ export function AddInvoice() {
 										value={sum}
 										className="w-full"
 										format={currencyFormat}
-										isolate={false}
+										continuous={true}
 									/>
 								</div>
 							</motion.div>
@@ -350,7 +364,7 @@ export function AddInvoice() {
 															value={vat}
 															className="w-full"
 															format={currencyFormat}
-															isolate={false}
+															continuous={true}
 														/>
 													</div>
 												</div>
@@ -422,7 +436,7 @@ export function AddInvoice() {
 										value={sum + vat - discount}
 										className="w-full"
 										format={currencyFormat}
-										isolate={false}
+										continuous={true}
 									/>
 								</div>
 							</motion.div>

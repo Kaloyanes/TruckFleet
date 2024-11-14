@@ -24,6 +24,7 @@ export default function FormattedNumberInput({
 	}, [value]);
 
 	const formatNumber = (num: string): string => {
+		if (num === "0") return "";
 		const parts = num.split(".");
 		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -48,6 +49,7 @@ export default function FormattedNumberInput({
 			const numberValue = numeric.endsWith(".")
 				? Number(`${numeric}0`)
 				: Number(numeric);
+
 			onChange?.(numeric === "" ? 0 : numberValue);
 		}
 	};
@@ -59,6 +61,8 @@ export default function FormattedNumberInput({
 			onChange={handleChange}
 			className={cn(
 				"flex h-6 w-full min-w-0 flex-shrink border-0 border-transparent border-b border-none bg-transparent p-0 px-1 font-mono transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
+				displayValue.length < 1 ? "!w-full bg-dot-white" : "",
+
 				className,
 			)}
 			inputMode="decimal"
