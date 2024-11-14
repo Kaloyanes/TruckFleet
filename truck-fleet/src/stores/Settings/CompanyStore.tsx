@@ -83,7 +83,7 @@ export const useCompanyStore = create<CompanyState>((set, get) => ({
 	load: async (userId: string) => {
 		set({ isLoading: true });
 		try {
-			const docRef = doc(db, "users", userId);
+			const docRef = doc(db, "companies", userId);
 			const docSnap = await getDoc(docRef);
 			console.log("Loading company data for:", userId);
 
@@ -120,7 +120,7 @@ export const useCompanyStore = create<CompanyState>((set, get) => ({
 		} = state;
 
 		try {
-			const docRef = doc(db, "users", userId);
+			const docRef = doc(db, "companies", userId);
 			await setDoc(docRef, data, { merge: true });
 			console.log("Saved company data:", data);
 			set({ hasEdited: false, originalData: { ...data } });
