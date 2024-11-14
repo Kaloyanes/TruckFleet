@@ -1,3 +1,5 @@
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -24,6 +26,7 @@ interface InvoiceValuesStore {
 	note: string;
 	discount?: number;
 	dealDetails: string;
+	isLoading: boolean;
 
 	setInvoiceNumber: (value: string) => void;
 	setIssueDate: (date: Date) => void;
@@ -40,6 +43,7 @@ interface InvoiceValuesStore {
 	updateItem: (id: string, item: Partial<InvoiceItem>) => void;
 	removeItem: (id: string) => void;
 	reset: () => void;
+	load: (companyId: string) => Promise<void>;
 }
 
 const defaultValues = {
@@ -49,7 +53,7 @@ const defaultValues = {
 	from: "",
 	to: "",
 	items: [
-		{ id: uuidv4(), description: "New Item", quantity: 0, price: 0, total: 0 },
+		{ id: uuidv4(), description: "", quantity: 0, price: 0, total: 0 },
 	] as InvoiceItem[],
 	logo: undefined,
 	vat: undefined,
@@ -63,6 +67,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 	persist(
 		(set) => ({
 			...defaultValues,
+			isLoading: true,
 			setDiscount: (discount) => set({ discount }),
 			setInvoiceNumber: (invoiceNumber) => set({ invoiceNumber }),
 			setIssueDate: (issueDate) => set({ issueDate }),
@@ -89,15 +94,26 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 					items: state.items.filter((item) => item.id !== id),
 				})),
 			reset: () => set(defaultValues),
+			load: async (companyId) => {
+				set({ isLoading: true });
+				// Load data
+				const docRef = doc(db, "companies", companyId);
+				const docSnap = await getDoc(docRef);
+
+				if (docSnap.exists()) {
+					const profile = docSnap.data();
+					set({
+						from: `${profile.name}\n${profile.address}\n${profile.country}\n${profile.phone}\n${profile.ownerEmail}\n${profile.vatNumber}`,
+						bankDetails: `${profile.bank}\n${profile.iban}\n${profile.bankCode}`,
+					});
+				}
+
+				set({ isLoading: false });
+			},
 		}),
 		{
 			name: "invoice-values",
-			partialize: (state) => ({
-				vat: state.vat,
-				logo: state.logo,
-				from: state.from,
-				bankDetails: state.bankDetails,
-			}),
+			partialize: (state) => ({}),
 		},
 	),
 );

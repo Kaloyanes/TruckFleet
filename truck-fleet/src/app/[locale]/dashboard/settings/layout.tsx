@@ -1,5 +1,6 @@
 import AnimatedTabs from "@/components/AnimatedTabs";
 import LetterPullup from "@/components/ui/letter-pullup";
+import SaveButton from "./components/SaveButton";
 // import SaveButton from "./components/SaveButton";
 
 export default function SettingsLayout({
@@ -32,7 +33,7 @@ export default function SettingsLayout({
 						<AnimatedTabs tabs={tabs} />
 					</div>
 				</div>
-				{/* <SaveButton /> */}
+				<SaveButton />
 			</div>
 			<section className="w-full px-14 pb-6">{children}</section>
 		</div>
