@@ -20,15 +20,16 @@ export default function CompanyPage() {
 				{ label: "Email", value: values.ownerEmail },
 				{ label: "Phone", value: values.phone },
 				{ label: "Address", value: values.address },
+				{ label: "Country", value: values.country },
 			],
 		},
 		{
 			label: "Invoice",
 			fields: [
-				{ label: "IBAN", value: values.name },
-				{ label: "Bank", value: values.name },
-				{ label: "Bank Code", value: values.name },
-				{ label: "VAT Number", value: values.name },
+				{ label: "IBAN", value: values.iban },
+				{ label: "Bank", value: values.bank },
+				{ label: "Bank Code", value: values.bankCode },
+				{ label: "VAT Number", value: values.vatNumber },
 			],
 		},
 	];
@@ -71,7 +72,7 @@ export default function CompanyPage() {
 														? word.toLowerCase()
 														: word.charAt(0).toUpperCase() + word.slice(1),
 												)
-												.join(""),
+												.join("") as any,
 											e.target.value,
 										)
 									}
