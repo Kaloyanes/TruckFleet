@@ -1,11 +1,13 @@
-import { auth } from "@/lib/firebase";
-import { useState, useEffect } from "react";
+import { auth, db } from "@/lib/firebase";
+import { DocumentReference, doc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useProfileDoc from "./useProfileDoc";
 
 export default function useCompanyId() {
   const [user] = useAuthState(auth);
   const [companyId, setCompanyId] = useState<string | null>(null);
+  const [companyRef, setCompanyRef] = useState<DocumentReference | null>(null);
   const { profile, loading: profileLoading } = useProfileDoc();
 
   useEffect(() => {
@@ -18,6 +20,10 @@ export default function useCompanyId() {
     } else {
       setCompanyId(null);
     }
+
+    if (companyId) {
+      setCompanyRef(doc(db, "companies", companyId));
+    }
   }, [profile, user]);
 
   return {
@@ -26,5 +32,6 @@ export default function useCompanyId() {
     error:
       !companyId && !profileLoading ? new Error("No company ID found") : null,
     debug: { profile, user },
+    companyRef: companyRef,
   };
 }
