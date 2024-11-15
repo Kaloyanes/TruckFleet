@@ -1,13 +1,12 @@
+import { Button } from "@/components/ui/button";
+import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
 import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
-import NumberFlow, { type Format } from "@number-flow/react";
+import NumberFlow from "@number-flow/react";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
-import React from "react";
-import { Button } from "@/components/ui/button";
+import { v4 as uuidv4 } from "uuid";
 import FormattedNumberInput from "../FormattedNumberInput";
 import InvoiceInput from "../InvoiceInput";
-import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
-import { v4 as uuidv4 } from "uuid";
 
 export default function InvoiceItems() {
 	const invoice = useInvoiceValuesStore();
@@ -82,7 +81,7 @@ export default function InvoiceItems() {
 													description: value,
 												})
 											}
-											tabIndex={3 + index}
+											tabIndex={20 + index * 3}
 										/>
 									</div>
 									<div className="col-span-2 flex items-center justify-center gap-2">
@@ -95,7 +94,7 @@ export default function InvoiceItems() {
 												})
 											}
 											className="w-full"
-											tabIndex={4 + index}
+											tabIndex={21 + index * 3}
 										/>
 									</div>
 									<div className="col-span-4 flex justify-center">
@@ -107,8 +106,8 @@ export default function InvoiceItems() {
 													price: value,
 												})
 											}
-											tabIndex={5 + index}
 											className="w-full"
+											tabIndex={22 + index * 3}
 										/>
 									</div>
 									<div className="col-span-3 flex w-full justify-end overflow-hidden">
@@ -124,10 +123,11 @@ export default function InvoiceItems() {
 										<Button
 											variant="ghost"
 											size="icon"
+											tabIndex={invoice.tabIndex++}
 											onClick={() => {
 												invoice.removeItem(item.id);
 											}}
-											className="-right-5 absolute size-8 gap-2 text-foreground opacity-0 transition-all group-hover:opacity-100"
+											className="-right-5 absolute size-8 gap-2 text-foreground opacity-25 transition-all group-hover:opacity-100 focus:opacity-100"
 										>
 											<IconMinus size={15} />
 										</Button>
@@ -140,6 +140,7 @@ export default function InvoiceItems() {
 								<Button
 									variant="ghost"
 									size="sm"
+									tabIndex={90} // Changed from 100 to come before totals
 									onClick={() => {
 										invoice.addItem({
 											id: uuidv4(),

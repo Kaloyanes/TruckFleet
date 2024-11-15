@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
 	Sheet,
 	SheetClose,
@@ -20,21 +19,15 @@ import {
 import useCompanyId from "@/hooks/useCompanyId";
 import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
 import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
-import NumberFlow, { type Format } from "@number-flow/react";
-import { IconMinus, IconPlus } from "@tabler/icons-react";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { IconPlus } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import AddInvoiceOptions from "./AddInvoiceOptions";
-import { DatePickerInvoice } from "./DatePickerInvoice";
-import FormattedNumberInput from "./FormattedNumberInput";
-import InvoiceInput from "./InvoiceInput";
-import InvoicePicture from "./sections/InvoicePicture";
+import InvoiceBankDetails from "./sections/InvoiceBankDetails";
 import InvoiceDetails from "./sections/InvoiceDetails";
 import InvoiceItems from "./sections/InvoiceItems";
 import InvoiceTotals from "./sections/InvoiceTotals";
-import InvoiceBankDetails from "./sections/InvoiceBankDetails";
 
 export function AddInvoice() {
 	const [open, setOpen] = useState(false);
@@ -44,21 +37,11 @@ export function AddInvoice() {
 
 	const invoiceOptions = useInvoiceOptionsStore();
 	const invoice = useInvoiceValuesStore();
+
 	useEffect(() => {
 		if (!companyId) return;
 		invoice.load(companyId);
 	}, [companyId, invoice.load]);
-
-	const currencyFormat: Partial<Format> = {
-		currency: invoiceOptions.options.currency.code,
-		currencyDisplay: "symbol",
-		style: "currency",
-		roundingMode: "ceil",
-		roundingIncrement: invoiceOptions.options.decimals ? 1 : 100,
-		trailingZeroDisplay: invoiceOptions.options.decimals
-			? "auto"
-			: "stripIfInteger",
-	};
 
 	// if (invoice.isLoading) return <div>Loading...</div>;
 
@@ -80,14 +63,18 @@ export function AddInvoice() {
 			</Tooltip>
 
 			<SheetContent
+				tabIndex={-50}
 				autoFocus={false}
 				className="!max-w-2xl "
 				showCloseButton={false}
 			>
-				<SheetHeader className="flex flex-row items-center gap-2">
+				<SheetHeader
+					tabIndex={-51}
+					className="flex flex-row items-center gap-2"
+				>
 					<SheetTitle className="w-full flex-1">{t("newInvoice")}</SheetTitle>
 					<AddInvoiceOptions />
-					<SheetCloseButton className="static" />
+					<SheetCloseButton tabIndex={-3} className="static" />
 				</SheetHeader>
 
 				<div className="my-3 h-[90%] overflow-x-hidden overflow-y-scroll rounded-lg bg-accent p-6">

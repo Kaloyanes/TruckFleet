@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -31,4 +31,27 @@ export function debounce<T extends (...args: any[]) => any>(
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn(...args), delay);
   };
+}
+
+export function focusNextElement(e: React.KeyboardEvent, tabIndex: number) {
+  if (e.key !== "Tab") return;
+  e.preventDefault();
+
+  let i = 1;
+  let nextTabIndex = tabIndex + i;
+  let nextElement = document.querySelector(
+    `[tabindex="${nextTabIndex}"]`,
+  ) as HTMLElement;
+
+  while (nextElement === null || nextElement === undefined) {
+    i++;
+    nextTabIndex = tabIndex + i;
+    nextElement = document.querySelector(
+      `[tabindex="${nextTabIndex}"]`,
+    ) as HTMLElement;
+  }
+
+  if (nextElement) {
+    nextElement.focus();
+  }
 }

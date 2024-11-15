@@ -29,7 +29,6 @@ import {
 	IconDecimal,
 	IconDiscount2,
 	IconDotsVertical,
-	IconNumber,
 } from "@tabler/icons-react";
 import { code, codes } from "currency-codes-ts";
 import type { CurrencyCode } from "currency-codes-ts/dist/types";
@@ -142,7 +141,7 @@ export default function AddInvoiceOptions() {
 				<Tooltip defaultOpen={false}>
 					<DropdownMenuTrigger asChild>
 						<TooltipTrigger asChild>
-							<Button variant={"ghost"} size={"icon"}>
+							<Button variant={"ghost"} size={"icon"} tabIndex={-2}>
 								<IconDotsVertical size={20} />
 							</Button>
 						</TooltipTrigger>

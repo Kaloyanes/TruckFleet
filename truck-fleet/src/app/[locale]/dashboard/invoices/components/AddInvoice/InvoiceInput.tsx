@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import { cn, focusNextElement } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 interface InvoiceInputProps {
@@ -38,20 +38,6 @@ export default function InvoiceInput({
 		onSave?.(value + (trailingSymbol ?? ""));
 	};
 
-	const onKeyDown = (e: React.KeyboardEvent) => {
-		if (e.key === "Tab") {
-			e.preventDefault();
-
-			const nextTabIndex = tabIndex + 1;
-			const nextElement = document.querySelector(
-				`[tabindex="${nextTabIndex}"]`,
-			) as HTMLElement;
-			if (nextElement) {
-				nextElement.focus();
-			}
-		}
-	};
-
 	if (multiline) {
 		return (
 			<div className="relative">
@@ -67,7 +53,13 @@ export default function InvoiceInput({
 					onInput={(e) => setValue(e.currentTarget.value)}
 					onBlur={handleBlur}
 					tabIndex={customerButton ? -1 : tabIndex}
-					onKeyDown={onKeyDown}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' || e.key === 'Tab') {
+							e.preventDefault();
+							const nextElement = document.querySelector(`[tabindex="${tabIndex + 1}"]`) as HTMLElement;
+							nextElement?.focus();
+						}
+					}}
 				/>
 				{customerButton && value.length < 1 && (
 					<Button
@@ -76,6 +68,13 @@ export default function InvoiceInput({
 						// size={"sm"}
 						onClick={() => console.log("customer")}
 						tabIndex={tabIndex}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter' || e.key === 'Tab') {
+								e.preventDefault();
+								const nextElement = document.querySelector(`[tabindex="${tabIndex + 1}"]`) as HTMLElement;
+								nextElement?.focus();
+							}
+						}}
 					>
 						Select Customer
 					</Button>
@@ -98,7 +97,13 @@ export default function InvoiceInput({
 				onInput={(e) => setValue(e.currentTarget.value)}
 				onBlur={handleBlur}
 				tabIndex={tabIndex}
-				onKeyDown={onKeyDown}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter' || e.key === 'Tab') {
+						e.preventDefault();
+						const nextElement = document.querySelector(`[tabindex="${tabIndex + 1}"]`) as HTMLElement;
+						nextElement?.focus();
+					}
+				}}
 			/>
 			{trailingSymbol && (
 				<span className="text-muted-foreground">{trailingSymbol}</span>

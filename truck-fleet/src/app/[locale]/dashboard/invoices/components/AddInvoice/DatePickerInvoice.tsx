@@ -4,6 +4,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { focusNextElement } from "@/lib/utils";
 import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
 import { format, formatDate } from "date-fns";
 import { bg } from "date-fns/locale";
@@ -17,14 +18,21 @@ export const DatePickerInvoice = forwardRef<
 		setDate: (date: Date) => void;
 		formatOption?: string;
 		startDate?: Date;
+		tabIndex?: number;
 	}
->(function DatePickerCmp({ date, setDate, formatOption, startDate }, ref) {
+>(function DatePickerCmp(
+	{ date, setDate, formatOption, startDate, tabIndex = 0 },
+	ref,
+) {
 	const locale = useLocale();
 	const optionsStore = useInvoiceOptionsStore();
 
 	return (
 		<Popover>
-			<PopoverTrigger>
+			<PopoverTrigger
+				tabIndex={tabIndex}
+				onKeyDown={(e) => focusNextElement(e, tabIndex)}
+			>
 				<h3>
 					{date ? format(date, optionsStore.options.dateFormat) : "Pick a date"}
 				</h3>

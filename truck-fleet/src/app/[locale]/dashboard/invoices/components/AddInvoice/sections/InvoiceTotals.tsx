@@ -1,10 +1,8 @@
 import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
 import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
-import NumberFlow, { type Format } from "@number-flow/react";
+import NumberFlow from "@number-flow/react";
 import { Separator } from "@radix-ui/react-select";
-import { sum } from "firebase/firestore";
-import { motion, AnimatePresence } from "framer-motion";
-import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import FormattedNumberInput from "../FormattedNumberInput";
 import InvoiceInput from "../InvoiceInput";
 
@@ -84,6 +82,7 @@ export default function InvoiceTotals() {
 												onSave={(value) =>
 													invoice.setVat(Number.parseInt(value))
 												}
+												tabIndex={100} // VAT input
 											/>
 											:
 										</h1>
@@ -145,6 +144,7 @@ export default function InvoiceTotals() {
 												value={invoice.discount}
 												className="w-full text-right text-base"
 												onChange={invoice.setDiscount}
+												tabIndex={101} // Discount input
 											/>
 										</div>
 									</div>
