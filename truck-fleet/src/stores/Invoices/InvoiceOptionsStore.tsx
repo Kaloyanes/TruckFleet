@@ -1,3 +1,4 @@
+import type { Format } from "@number-flow/react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -16,6 +17,7 @@ type InvoiceOptions = {
 
 type InvoiceOptionsStore = {
 	options: InvoiceOptions;
+	getCurrencyFormat: () => Partial<Format>;
 	setDateFormat: (format: string) => void;
 	setCurrency: (currency: { code: string; currency: string }) => void;
 	setSalesTax: (enabled: boolean) => void;
@@ -44,6 +46,14 @@ export const useInvoiceOptionsStore = create<InvoiceOptionsStore>()(
 	persist<InvoiceOptionsStore>(
 		(set, get) => ({
 			options: defaultOptions,
+			getCurrencyFormat: () => ({
+				currency: get().options.currency.code,
+				currencyDisplay: "symbol",
+				style: "currency",
+				roundingMode: "ceil",
+				roundingIncrement: get().options.decimals ? 1 : 100,
+				trailingZeroDisplay: get().options.decimals ? "auto" : "stripIfInteger",
+			}),
 			update: (update) =>
 				set((state) => ({ options: { ...state.options, ...update } })),
 			setDateFormat: (format) =>
