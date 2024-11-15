@@ -8,6 +8,7 @@ interface FormattedNumberInputProps {
 	onChange?: (value: number) => void;
 	className?: string;
 	decimals?: boolean;
+	tabIndex?: number;
 }
 
 export default function FormattedNumberInput({
@@ -15,6 +16,7 @@ export default function FormattedNumberInput({
 	onChange,
 	className,
 	decimals = false,
+	tabIndex = 0,
 }: FormattedNumberInputProps) {
 	const [displayValue, setDisplayValue] = useState("");
 	const invoiceOptions = useInvoiceOptionsStore();
@@ -54,6 +56,20 @@ export default function FormattedNumberInput({
 		}
 	};
 
+	const onKeyDown = (e: React.KeyboardEvent) => {
+		if (e.key === "Tab") {
+			e.preventDefault();
+
+			const nextTabIndex = tabIndex + 1;
+			const nextElement = document.querySelector(
+				`[tabindex="${nextTabIndex}"]`,
+			) as HTMLElement;
+			if (nextElement) {
+				nextElement.focus();
+			}
+		}
+	};
+
 	return (
 		<Input
 			type="text"
@@ -66,6 +82,8 @@ export default function FormattedNumberInput({
 				className,
 			)}
 			inputMode="decimal"
+			tabIndex={tabIndex}
+			onKeyDown={onKeyDown}
 		/>
 	);
 }

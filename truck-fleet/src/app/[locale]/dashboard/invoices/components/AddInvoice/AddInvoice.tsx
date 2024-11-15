@@ -34,6 +34,7 @@ import InvoicePicture from "./sections/InvoicePicture";
 import InvoiceDetails from "./sections/InvoiceDetails";
 import InvoiceItems from "./sections/InvoiceItems";
 import InvoiceTotals from "./sections/InvoiceTotals";
+import InvoiceBankDetails from "./sections/InvoiceBankDetails";
 
 export function AddInvoice() {
 	const [open, setOpen] = useState(false);
@@ -77,6 +78,7 @@ export function AddInvoice() {
 				</TooltipTrigger>
 				<TooltipContent>{t("newInvoice")}</TooltipContent>
 			</Tooltip>
+
 			<SheetContent
 				autoFocus={false}
 				className="!max-w-2xl "
@@ -87,7 +89,7 @@ export function AddInvoice() {
 					<AddInvoiceOptions />
 					<SheetCloseButton className="static" />
 				</SheetHeader>
-				{/* Add your invoice form content here */}
+
 				<div className="my-3 h-[90%] overflow-x-hidden overflow-y-scroll rounded-lg bg-accent p-6">
 					<InvoiceDetails />
 					{/* Items */}
@@ -95,6 +97,7 @@ export function AddInvoice() {
 					{/* Totals */}
 					<InvoiceTotals />
 					{/* BANK DETAILS AND Notes */}
+					<InvoiceBankDetails />
 				</div>
 
 				<SheetFooter className="z-[99999999] flex items-center justify-end gap-2">

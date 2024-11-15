@@ -12,6 +12,7 @@ interface InvoiceInputProps {
 	className?: string;
 	trailingSymbol?: string;
 	customerButton?: boolean;
+	tabIndex?: number;
 }
 
 export default function InvoiceInput({
@@ -22,6 +23,7 @@ export default function InvoiceInput({
 	className,
 	trailingSymbol,
 	customerButton = false,
+	tabIndex = 0,
 }: InvoiceInputProps) {
 	const [value, setValue] = useState(
 		String(initialValue).replace(trailingSymbol ?? "", ""),
@@ -34,6 +36,20 @@ export default function InvoiceInput({
 
 	const handleBlur = () => {
 		onSave?.(value + (trailingSymbol ?? ""));
+	};
+
+	const onKeyDown = (e: React.KeyboardEvent) => {
+		if (e.key === "Tab") {
+			e.preventDefault();
+
+			const nextTabIndex = tabIndex + 1;
+			const nextElement = document.querySelector(
+				`[tabindex="${nextTabIndex}"]`,
+			) as HTMLElement;
+			if (nextElement) {
+				nextElement.focus();
+			}
+		}
 	};
 
 	if (multiline) {
@@ -50,13 +66,16 @@ export default function InvoiceInput({
 					rows={rows}
 					onInput={(e) => setValue(e.currentTarget.value)}
 					onBlur={handleBlur}
+					tabIndex={customerButton ? -1 : tabIndex}
+					onKeyDown={onKeyDown}
 				/>
 				{customerButton && value.length < 1 && (
 					<Button
-						className="absolute -top-2 -left-4 z-100"
+						className="-top-2 -left-4 absolute z-100"
 						variant={"linkHover2"}
 						// size={"sm"}
 						onClick={() => console.log("customer")}
+						tabIndex={tabIndex}
 					>
 						Select Customer
 					</Button>
@@ -78,6 +97,8 @@ export default function InvoiceInput({
 				value={value}
 				onInput={(e) => setValue(e.currentTarget.value)}
 				onBlur={handleBlur}
+				tabIndex={tabIndex}
+				onKeyDown={onKeyDown}
 			/>
 			{trailingSymbol && (
 				<span className="text-muted-foreground">{trailingSymbol}</span>

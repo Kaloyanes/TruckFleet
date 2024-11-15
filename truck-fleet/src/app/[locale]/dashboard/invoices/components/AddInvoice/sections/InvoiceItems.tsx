@@ -82,6 +82,7 @@ export default function InvoiceItems() {
 													description: value,
 												})
 											}
+											tabIndex={3 + index}
 										/>
 									</div>
 									<div className="col-span-2 flex items-center justify-center gap-2">
@@ -94,6 +95,7 @@ export default function InvoiceItems() {
 												})
 											}
 											className="w-full"
+											tabIndex={4 + index}
 										/>
 									</div>
 									<div className="col-span-4 flex justify-center">
@@ -105,6 +107,7 @@ export default function InvoiceItems() {
 													price: value,
 												})
 											}
+											tabIndex={5 + index}
 											className="w-full"
 										/>
 									</div>

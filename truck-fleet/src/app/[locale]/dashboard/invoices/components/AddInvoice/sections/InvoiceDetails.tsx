@@ -19,6 +19,7 @@ export default function InvoiceDetails() {
 					<InvoiceInput
 						initialValue={invoice.invoiceNumber}
 						onSave={invoice.setInvoiceNumber}
+						tabIndex={0}
 					/>
 				</div>
 				<div className="flex flex-1 items-center gap-1">
@@ -52,6 +53,8 @@ export default function InvoiceDetails() {
 						onSave={(value) => invoice.setFrom(value)}
 						multiline
 						rows={6}
+						// biome-ignore lint/a11y/noPositiveTabindex: <explanation>
+						tabIndex={1}
 					/>
 				</div>
 				<div className="flex-1">
@@ -61,6 +64,7 @@ export default function InvoiceDetails() {
 						onSave={(value) => console.log(value)}
 						multiline
 						rows={6}
+						tabIndex={2}
 					/>
 				</div>
 			</div>
