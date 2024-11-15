@@ -10,7 +10,7 @@ export default function InvoiceBankDetails() {
 			<div className="space-y-2 flex-1">
 				<h1 className="font-semibold text-muted-foreground">Bank Details:</h1>
 				<InvoiceInput
-					tabIndex={110} // Changed from 300
+					tabIndex={110}
 					initialValue={invoice.bankDetails}
 					onSave={(value) => invoice.setBankDetails(value)}
 					multiline
@@ -19,7 +19,7 @@ export default function InvoiceBankDetails() {
 			<div className="space-y-2 flex-1">
 				<h1 className="font-semibold text-muted-foreground">Notes:</h1>
 				<InvoiceInput
-					tabIndex={111} // Changed from 301
+					tabIndex={111}
 					initialValue={invoice.note}
 					onSave={(value) => invoice.setNote(value)}
 					multiline

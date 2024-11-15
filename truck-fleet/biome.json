@@ -13,6 +13,9 @@
       },
       "nursery": {
         "useSortedClasses": "info"
+      },
+      "a11y": {
+        "noPositiveTabindex": "off"
       }
     },
     "ignore": [

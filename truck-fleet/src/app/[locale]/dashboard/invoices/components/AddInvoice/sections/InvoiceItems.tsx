@@ -140,7 +140,7 @@ export default function InvoiceItems() {
 								<Button
 									variant="ghost"
 									size="sm"
-									tabIndex={90} // Changed from 100 to come before totals
+									tabIndex={90}
 									onClick={() => {
 										invoice.addItem({
 											id: uuidv4(),

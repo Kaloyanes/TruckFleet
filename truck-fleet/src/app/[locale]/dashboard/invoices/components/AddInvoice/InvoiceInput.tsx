@@ -54,9 +54,11 @@ export default function InvoiceInput({
 					onBlur={handleBlur}
 					tabIndex={customerButton ? -1 : tabIndex}
 					onKeyDown={(e) => {
-						if (e.key === 'Enter' || e.key === 'Tab') {
+						if (e.key === "Enter" || e.key === "Tab") {
 							e.preventDefault();
-							const nextElement = document.querySelector(`[tabindex="${tabIndex + 1}"]`) as HTMLElement;
+							const nextElement = document.querySelector(
+								`[tabindex="${tabIndex + 1}"]`,
+							) as HTMLElement;
 							nextElement?.focus();
 						}
 					}}
@@ -69,9 +71,11 @@ export default function InvoiceInput({
 						onClick={() => console.log("customer")}
 						tabIndex={tabIndex}
 						onKeyDown={(e) => {
-							if (e.key === 'Enter' || e.key === 'Tab') {
+							if (e.key === "Enter" || e.key === "Tab") {
 								e.preventDefault();
-								const nextElement = document.querySelector(`[tabindex="${tabIndex + 1}"]`) as HTMLElement;
+								const nextElement = document.querySelector(
+									`[tabindex="${tabIndex + 1}"]`,
+								) as HTMLElement;
 								nextElement?.focus();
 							}
 						}}
@@ -88,7 +92,7 @@ export default function InvoiceInput({
 			<Input
 				className={cn(
 					"h-6 min-w-0 border-0 border-transparent border-b border-none bg-transparent p-0 px-1 font-mono transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
-					value.length < 1 ? "bg-dot-white !w-full" : "",
+					value.length < 1 ? "!w-full bg-dot-white" : "",
 					className,
 				)}
 				style={{ width: `${value.length + 1}ch` }}
@@ -98,9 +102,11 @@ export default function InvoiceInput({
 				onBlur={handleBlur}
 				tabIndex={tabIndex}
 				onKeyDown={(e) => {
-					if (e.key === 'Enter' || e.key === 'Tab') {
+					if (e.key === "Enter" || e.key === "Tab") {
 						e.preventDefault();
-						const nextElement = document.querySelector(`[tabindex="${tabIndex + 1}"]`) as HTMLElement;
+						const nextElement = document.querySelector(
+							`[tabindex="${tabIndex + 1}"]`,
+						) as HTMLElement;
 						nextElement?.focus();
 					}
 				}}

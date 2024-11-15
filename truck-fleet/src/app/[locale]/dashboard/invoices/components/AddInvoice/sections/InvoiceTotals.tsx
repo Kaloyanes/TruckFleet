@@ -144,7 +144,7 @@ export default function InvoiceTotals() {
 												value={invoice.discount}
 												className="w-full text-right text-base"
 												onChange={invoice.setDiscount}
-												tabIndex={101} // Discount input
+												tabIndex={101}
 											/>
 										</div>
 									</div>

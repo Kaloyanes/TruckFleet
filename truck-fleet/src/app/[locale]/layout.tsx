@@ -12,12 +12,14 @@ import "../globals.css";
 // 	preload: true,
 // 	weight: ["400", "500", "600", "700", "800"],
 // 	subsets: ["cyrillic-ext", "latin"],
+// 	display: "optional",
 // });
 
 const manrope = Manrope({
 	preload: true,
 	weight: ["400", "500", "600", "700", "800"],
 	subsets: ["cyrillic", "latin"],
+	display: "swap",
 });
 
 const roboto_mono = Roboto_Mono({
