@@ -51,7 +51,7 @@ export default function InvoiceDetails() {
 					<h1 className="font-semibold text-muted-foreground">From:</h1>
 					<InvoiceInput
 						initialValue={invoice.from}
-						onSave={(value) => invoice.setFrom(value)}
+						onSave={invoice.setFrom}
 						multiline
 						rows={6}
 						tabIndex={4}
@@ -61,7 +61,8 @@ export default function InvoiceDetails() {
 					<h1 className="font-semibold text-muted-foreground">To:</h1>
 					<InvoiceInput
 						customerButton
-						onSave={(value) => console.log(value)}
+						initialValue={invoice.to}
+						onSave={invoice.setTo}
 						multiline
 						rows={6}
 						tabIndex={5}

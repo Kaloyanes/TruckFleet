@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import SelectCustomerComboBox from "./SelectCustomerComboBox";
 
 interface InvoiceInputProps {
 	initialValue?: string | number;
@@ -64,24 +65,7 @@ export default function InvoiceInput({
 					}}
 				/>
 				{customerButton && value.length < 1 && (
-					<Button
-						className="-top-2 -left-4 absolute z-100"
-						variant={"linkHover2"}
-						// size={"sm"}
-						onClick={() => console.log("customer")}
-						tabIndex={tabIndex}
-						onKeyDown={(e) => {
-							if (e.key === "Enter" || e.key === "Tab") {
-								e.preventDefault();
-								const nextElement = document.querySelector(
-									`[tabindex="${tabIndex + 1}"]`,
-								) as HTMLElement;
-								nextElement?.focus();
-							}
-						}}
-					>
-						Select Customer
-					</Button>
+					<SelectCustomerComboBox tabIndex={tabIndex} />
 				)}
 			</div>
 		);
