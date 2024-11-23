@@ -64,7 +64,11 @@ interface InvoiceValuesStore {
 	removeItem: (id: string) => void;
 	reset: () => void;
 	load: (companyId: string) => Promise<void>;
-	createInvoice: (companyId: string | null) => Promise<void>;
+	createInvoice: (
+		companyId: string | null,
+		currencyCode: string,
+		dateFormat: string,
+	) => Promise<void>;
 	setSelectedCustomer: (customer: Customer) => void;
 }
 
@@ -189,7 +193,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 								(doc) => doc.data().invoiceNumber,
 							);
 
-							const prompt = `Generate a new invoice number based on the last 3 invoices: ${lastInvoiceNumbers.join(", ")}.`;
+							const prompt = `Generate a new invoice number based on the last invoices: ${lastInvoiceNumbers.join(", ")}.`;
 							console.log(prompt);
 
 							const { object } = await generateObject({
@@ -218,7 +222,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 
 				set({ isLoading: false, openSheet: false });
 			},
-			createInvoice: async (companyId) => {
+			createInvoice: async (companyId, currencyCode, dateFormat) => {
 				if (!companyId) return;
 
 				const state = get();
@@ -244,6 +248,8 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 							(item.price * item.quantity * (state.vat ?? 0)) / 100,
 						0,
 					),
+					currencyCode,
+					dateFormat,
 				};
 
 				const invoicesRef = collection(db, `companies/${companyId}/invoices`);

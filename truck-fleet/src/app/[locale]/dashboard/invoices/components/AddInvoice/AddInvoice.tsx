@@ -32,32 +32,29 @@ import InvoiceTotals from "./sections/InvoiceTotals";
 
 export function AddInvoice() {
 	const { companyId } = useCompanyId();
-	const initialLoadDone = useRef(false);
-
 	const t = useTranslations("InvoicesPage");
-
 	const invoiceOptions = useInvoiceOptionsStore();
-	const invoice = useInvoiceValuesStore();
+	const { load, openSheet, open, isLoading, createInvoice } =
+		useInvoiceValuesStore();
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		if (!companyId || initialLoadDone.current) return;
-		initialLoadDone.current = true;
-		invoice.load(companyId);
-	}, [companyId]);
+		let mounted = true;
 
-	// if (invoice.isLoading) return <div>Loading...</div>;
+		if (companyId && mounted) {
+			load(companyId);
+		}
+
+		return () => {
+			mounted = false;
+		};
+	}, [companyId, load]);
 
 	return (
-		<Sheet open={invoice.openSheet} onOpenChange={invoice.open}>
+		<Sheet open={openSheet} onOpenChange={open}>
 			<Tooltip delayDuration={300}>
 				<TooltipTrigger asChild>
 					<SheetTrigger asChild>
-						<Button
-							variant={"outline"}
-							disabled={invoice.isLoading}
-							size={"icon"}
-						>
+						<Button variant={"outline"} disabled={isLoading} size={"icon"}>
 							<IconPlus />
 						</Button>
 					</SheetTrigger>
@@ -103,7 +100,13 @@ export function AddInvoice() {
 					</SheetClose>
 					<Button
 						size={"sm"}
-						onClick={() => invoice.createInvoice(companyId)}
+						onClick={() =>
+							createInvoice(
+								companyId,
+								invoiceOptions.options.currency.code,
+								invoiceOptions.options.dateFormat,
+							)
+						}
 						className="min-w-20 max-w-32"
 						type="submit"
 					>

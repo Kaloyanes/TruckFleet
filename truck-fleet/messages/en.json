@@ -214,7 +214,8 @@
     "paid": "Paid",
     "overdue": "Overdue",
     "cancel": "Cancel",
-    "createInvoice": "Create Invoice"
+    "createInvoice": "Create Invoice",
+    "noResultsFound": "No results found"
   },
   "Calendar": {
     "January": "January",

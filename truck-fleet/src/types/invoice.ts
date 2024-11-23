@@ -22,4 +22,6 @@ export type Invoice = {
   createdAt: Date;
   status: "pending" | "paid" | "overdue" | "cancelled";
   total: number;
+  currencyCode: string;
+  dateFormat: string;
 };

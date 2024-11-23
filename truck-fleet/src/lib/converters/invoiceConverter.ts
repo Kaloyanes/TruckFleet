@@ -32,6 +32,8 @@ export const invoiceConverter: FirestoreDataConverter<Invoice> = {
       createdAt: (data.createdAt as Timestamp).toDate(),
       status: data.status,
       total: data.total,
+      currencyCode: data.currencyCode,
+      dateFormat: data.dateFormat,
     };
   },
 };

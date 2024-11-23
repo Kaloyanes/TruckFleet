@@ -4,6 +4,9 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
+import NumberFlow from "@number-flow/react";
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
 
 export const columns: ColumnDef<Invoice>[] = [
 	{
@@ -24,18 +27,16 @@ export const columns: ColumnDef<Invoice>[] = [
 		accessorKey: "status",
 		header: "Status",
 		cell: ({ getValue }) => {
-			return <span className="text-sm">{getValue() as string}</span>;
+			return <span className="text-sm capitalize">{getValue() as string}</span>;
 		},
 	},
 	{
-		accessorKey: "dueDate",
+		accessorFn: (row) => [row.dueDate, row.dateFormat],
 		header: "Due Date",
 		cell: ({ getValue }) => {
-			return (
-				<span className="text-sm">
-					{(getValue() as Date).toLocaleDateString()}
-				</span>
-			);
+			const [dueDate, dateFormat] = getValue() as [Date, string];
+
+			return <span className="text-sm">{format(dueDate, dateFormat)}</span>;
 		},
 	},
 	{
@@ -48,10 +49,26 @@ export const columns: ColumnDef<Invoice>[] = [
 		},
 	},
 	{
-		accessorKey: "total",
+		accessorFn: (row) => [row.total, row.currencyCode],
 		header: "Amount",
 		cell: ({ getValue }) => {
-			return <span className="text-sm">{getValue() as string}</span>;
+			const [value, currencyCode] = getValue() as [number, string];
+
+			const [amount, setAmount] = useState(0);
+
+			useEffect(() => {
+				setAmount(value);
+			}, [value]);
+
+			return (
+				<NumberFlow
+					value={amount}
+					format={{
+						style: "currency",
+						currency: currencyCode,
+					}}
+				/>
+			);
 		},
 	},
 	{
@@ -59,10 +76,11 @@ export const columns: ColumnDef<Invoice>[] = [
 		header: "Actions",
 		cell: () => {
 			return (
-				<div className="flex items-center space-x-2">
-					<Button variant="ghost">View</Button>
-					<Button variant="ghost">Edit</Button>
-				</div>
+				// <div className="flex items-center space-x-2">
+				// 	<Button variant="ghost">View</Button>
+				// 	<Button variant="ghost">Edit</Button>
+				// </div>
+				<></>
 			);
 		},
 	},
