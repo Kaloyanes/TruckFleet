@@ -1,4 +1,4 @@
-import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
+import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import { DatePickerInvoice } from "../DatePickerInvoice";
 import InvoiceInput from "../InvoiceInput";
 import InvoicePicture from "./InvoicePicture";

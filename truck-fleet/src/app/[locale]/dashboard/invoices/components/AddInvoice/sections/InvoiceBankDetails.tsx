@@ -1,4 +1,4 @@
-import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
+import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import { motion } from "framer-motion";
 import InvoiceInput from "../InvoiceInput";
 

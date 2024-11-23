@@ -30,6 +30,11 @@ export default function InvoiceInput({
 		String(initialValue).replace(trailingSymbol ?? "", ""),
 	);
 
+	// Add effect to sync with initialValue changes
+	useEffect(() => {
+		setValue(String(initialValue).replace(trailingSymbol ?? "", ""));
+	}, [initialValue, trailingSymbol]);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <It creates a recursion>
 	useEffect(() => {
 		onSave?.(value + (trailingSymbol ?? ""));

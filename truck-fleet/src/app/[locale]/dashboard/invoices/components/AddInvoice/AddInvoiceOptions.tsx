@@ -20,7 +20,7 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
-import { useInvoiceOptionsStore } from "@/stores/Invoices/InvoiceOptionsStore";
+import { useInvoiceOptionsStore } from "@/stores/Invoices/AddInvoiceOptionsStore";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import {
 	IconCalculator,

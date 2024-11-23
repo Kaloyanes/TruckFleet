@@ -1,4 +1,4 @@
-import type { Customer } from "@/models/customer";
+import type { Customer } from "@/types/customer";
 import type { FirestoreDataConverter } from "firebase/firestore";
 
 export const customerConverter: FirestoreDataConverter<Customer> = {
@@ -6,7 +6,7 @@ export const customerConverter: FirestoreDataConverter<Customer> = {
     return {
       name: customer.name,
       address: customer.address,
-      phone: customer.phone,
+      phone: customer.phone ?? undefined,
       email: customer.email,
     };
   },
@@ -16,7 +16,7 @@ export const customerConverter: FirestoreDataConverter<Customer> = {
       id: snapshot.id,
       name: data.name,
       address: data.address,
-      phone: data.phone,
+      phone: data.phone ?? undefined,
       email: data.email,
     };
   },

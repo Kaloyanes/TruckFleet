@@ -14,12 +14,13 @@ import {
 } from "@/components/ui/command";
 import { motion } from "framer-motion";
 import { Combo } from "next/font/google";
-import { useInvoiceValuesStore } from "@/stores/Invoices/InvoiceValuesStore";
+import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { useTranslations } from "next-intl";
 
 interface InvoiceInputProps {
 	tabIndex?: number;
@@ -79,40 +80,24 @@ export default function SelectCustomerComboBox({
 
 function ComboBox({ setOpen }: { setOpen: (open: boolean) => void }) {
 	const { customers, setSelectedCustomer } = useInvoiceValuesStore();
+	const t = useTranslations("InvoicesPage");
 
 	return (
 		<Command>
 			<CommandInput />
-			<CommandList className="w-[--radix-popper-anchor-width]">
+			<CommandList className="w-full">
 				<CommandEmpty>
 					<motion.div
-						initial={{ opacity: 0, scale: 0.7, y: -10 }}
-						animate={{ opacity: 1, scale: 1, y: 0 }}
-						transition={{ duration: 0.6, type: "spring", bounce: 0.5 }}
-						className="gap-4 flex flex-col px-6 w-full"
+						initial={{ opacity: 0, scale: 0.7, filter: "blur(10px)" }}
+						animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+						className="flex w-full flex-col gap-4 px-6"
 					>
-						{/* <h1>{t("noResultsFound")}</h1>
-						<Button>{addText}</Button> */}
+						<h1>{t("noResultsFound")}</h1>
+						{/* <Button>{addText}</Button> */}
 						<Button>Create new customer</Button>
 					</motion.div>
 				</CommandEmpty>
-				<CommandGroup>
-					{/* {values?.docs.map((driver) => {
-						const driverData = driver.data();
-						return (
-							<CommandItem
-								key={driver.id}
-								value={driverData.name}
-								onSelect={(value) => {
-									setRef(driver?.ref ?? null);
-									setSelectedValue(value);
-									setOpen(false);
-								}}
-							>
-								{driverData[field]}
-							</CommandItem>
-						);
-					})} */}
+				<CommandGroup className="w-full">
 					{customers.map((customer) => (
 						<CommandItem
 							key={customer.id}
