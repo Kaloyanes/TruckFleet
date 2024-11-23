@@ -1,7 +1,17 @@
 import { customerConverter } from "@/lib/converters/customerConverter";
 import { db, storage } from "@/lib/firebase";
-import type { Customer } from "@/models/customer";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import type { Customer } from "@/types/customer";
+import type { Invoice, InvoiceItem } from "@/types/invoice";
+import {
+	addDoc,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	limit,
+	orderBy,
+	query,
+} from "firebase/firestore";
 import {
 	type StorageReference,
 	deleteObject,
@@ -10,19 +20,15 @@ import {
 	uploadBytes,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { custom } from "zod";
+import { custom, z } from "zod";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-interface InvoiceItem {
-	id: string;
-	description: string;
-	quantity: number;
-	price: number;
-}
+import { generateObject } from "ai";
+import { myGemini, myOpenAi } from "@/lib/ai";
+import { openai } from "@ai-sdk/openai";
 
 interface InvoiceValuesStore {
-	invoiceNumber: string;
+	invoiceNumber: string | undefined;
 	issueDate: Date;
 	dueDate: Date;
 	from: string;
@@ -63,16 +69,14 @@ interface InvoiceValuesStore {
 }
 
 const defaultValues = {
-	invoiceNumber: "INV-0001",
+	invoiceNumber: undefined,
 	issueDate: new Date(),
 	dueDate: new Date(),
-	from: "",
 	to: "",
 	items: [
 		{ id: uuidv4(), description: "", quantity: 0, price: 0 },
 	] as InvoiceItem[],
 	vat: undefined,
-	bankDetails: "",
 	note: "",
 	discount: 0,
 	dealDetails: "",
@@ -88,6 +92,8 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 			tabIndex: 0,
 			customers: [],
 			selectedCustomer: null,
+			from: "",
+			bankDetails: "",
 
 			open: (shouldOpen: boolean) => set({ openSheet: shouldOpen }),
 			setDiscount: (discount) => set({ discount }),
@@ -132,7 +138,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 				set((state) => ({
 					items: state.items.filter((item) => item.id !== id),
 				})),
-			reset: () => set({ ...defaultValues, openSheet: true }),
+			reset: () => set({ ...defaultValues, openSheet: false }),
 			load: async (companyId) => {
 				set({ isLoading: true });
 				// Load data
@@ -163,6 +169,48 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 					});
 				}
 
+				if (get().invoiceNumber === "INV-0001" || !get().invoiceNumber) {
+					// Get last 3 invoices
+					try {
+						const invoicesRef = collection(
+							db,
+							`companies/${companyId}/invoices`,
+						);
+						const lastInvoicesSnapshot = await getDocs(
+							query(invoicesRef, orderBy("createdAt", "desc"), limit(3)),
+						);
+
+						if (lastInvoicesSnapshot.docs.length === 0) {
+							set({
+								invoiceNumber: "INV-0001",
+							});
+						} else {
+							const lastInvoiceNumbers = lastInvoicesSnapshot.docs.map(
+								(doc) => doc.data().invoiceNumber,
+							);
+
+							const prompt = `Generate a new invoice number based on the last 3 invoices: ${lastInvoiceNumbers.join(", ")}.`;
+							console.log(prompt);
+
+							const { object } = await generateObject({
+								model: myGemini("gemini-1.5-flash-8b"),
+								schema: z.object({
+									name: z.string(),
+								}),
+								prompt,
+							});
+
+							console.log({ object });
+
+							set({
+								invoiceNumber: object.name,
+							});
+						}
+					} catch (error) {
+						console.log(error);
+					}
+				}
+
 				if (customersSnap.docs.length > 0) {
 					const customers = customersSnap.docs.map((doc) => doc.data());
 					set({ customers });
@@ -174,21 +222,28 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 				if (!companyId) return;
 
 				const state = get();
-				const invoiceData = {
+				const invoiceData: Partial<Invoice> = {
 					invoiceNumber: state.invoiceNumber,
 					issueDate: state.issueDate,
 					dueDate: state.dueDate,
-					from: state.from,
-					to: state.to,
+					from: state.from.replaceAll("\n", "|"),
+					to: state.to.replaceAll("\n", "|"),
 					items: state.items,
-					logo: state.logo?.link, // Only store the URL
+					logo: state.logo?.link ?? "", // Only store the URL
 					vat: state.vat,
-					bankDetails: state.bankDetails,
-					note: state.note,
+					bankDetails: state.bankDetails.replaceAll("\n", "|"),
+					note: state.note.replaceAll("\n", "|"),
 					discount: state.discount,
 					dealDetails: state.dealDetails,
 					createdAt: new Date(),
 					status: "pending",
+					total: state.items.reduce(
+						(acc, item) =>
+							acc +
+							item.price * item.quantity +
+							(item.price * item.quantity * (state.vat ?? 0)) / 100,
+						0,
+					),
 				};
 
 				const invoicesRef = collection(db, `companies/${companyId}/invoices`);
@@ -209,6 +264,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 			name: "invoice-values",
 			partialize: (state) => ({
 				logo: state.logo,
+				invoiceNumber: state.invoiceNumber,
 			}),
 		},
 	),
