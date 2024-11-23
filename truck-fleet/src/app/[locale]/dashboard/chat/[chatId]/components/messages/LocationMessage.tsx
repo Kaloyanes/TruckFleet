@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { Message } from "@/models/message";
+import type { Message } from "@/types/message";
 import {
 	Map as GoogleMap,
 	Marker,

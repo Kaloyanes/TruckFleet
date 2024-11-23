@@ -1,4 +1,4 @@
-import type { Order } from "@/models/orders";
+import type { Order } from "@/types/orders";
 import {
   type FirestoreDataConverter,
   type DocumentData,

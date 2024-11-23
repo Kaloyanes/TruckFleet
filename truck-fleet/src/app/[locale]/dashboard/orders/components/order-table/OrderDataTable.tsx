@@ -8,7 +8,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { Order } from "@/models/orders";
+import type { Order } from "@/types/orders";
 import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import {

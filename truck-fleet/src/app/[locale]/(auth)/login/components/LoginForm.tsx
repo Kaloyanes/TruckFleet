@@ -83,8 +83,8 @@ export default function LoginForm() {
 								<Button
 									size={"icon"}
 									onClick={() => setShowPassword(!showPassword)}
-									className="absolute right-0 top-[22px] hover:translate-y-0 "
-									variant={"outline"}
+									className="absolute right-0 bottom-0 hover:translate-y-0 "
+									variant={"ghost"}
 								>
 									{showPassword ? <EyeOff /> : <EyeIcon />}
 								</Button>

@@ -1,4 +1,4 @@
-import type { Message } from "@/models/message";
+import type { Message } from "@/types/message";
 import { type FirestoreDataConverter, Timestamp } from "firebase/firestore";
 
 export const messageConverter: FirestoreDataConverter<Message> = {

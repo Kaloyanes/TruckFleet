@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Message } from "@/models/message";
+import type { Message } from "@/types/message";
 import { useTranslations } from "next-intl";
 import { CustomAudioPlayer } from "../CustomAudioPlayer";
 import { Card } from "@/components/ui/card";

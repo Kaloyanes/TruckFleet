@@ -1,4 +1,4 @@
-import type { Truck } from "@/models/truck";
+import type { Truck } from "@/types/truck";
 import { type FirestoreDataConverter, Timestamp } from "firebase/firestore";
 
 export const truckConverter: FirestoreDataConverter<Truck> = {

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Message } from "@/models/message";
+import type { Message } from "@/types/message";
 import { Dialog, DialogClose } from "@/components/ui/dialog";
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { IconX } from "@tabler/icons-react";

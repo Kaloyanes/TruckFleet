@@ -33,7 +33,7 @@ import {
 } from "@/lib/dropdownMenuVariants";
 import { Link } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
-import type { Order } from "@/models/orders";
+import type { Order } from "@/types/orders";
 import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import {
 	type Icon,

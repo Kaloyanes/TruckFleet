@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "@/lib/firebase";
-import type { Order } from "@/models/orders";
+import type { Order } from "@/types/orders";
 import { orderConverter } from "@/firebase/converters/orderConverter";
 import { OrderColumns } from "./order-table/OrderColumns";
 import OrderDataTable from "./order-table/OrderDataTable";

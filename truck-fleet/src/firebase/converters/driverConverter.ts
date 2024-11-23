@@ -1,4 +1,4 @@
-import type { Driver } from "@/models/driver";
+import type { Driver } from "@/types/driver";
 import { type FirestoreDataConverter, Timestamp } from "firebase/firestore";
 
 export const driverConverter: FirestoreDataConverter<Driver> = {

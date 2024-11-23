@@ -13,7 +13,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
 import { cn } from "@/lib/utils";
-import type { Message } from "@/models/message";
+import type { Message } from "@/types/message";
 import { useChatOptionsStore } from "@/stores/Chats/ChatOptionsStore";
 import {
 	IconClipboard,

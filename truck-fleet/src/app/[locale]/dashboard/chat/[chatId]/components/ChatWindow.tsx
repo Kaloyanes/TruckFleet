@@ -6,7 +6,7 @@ import { messageConverter } from "@/firebase/converters/messageConverter";
 import { auth, db } from "@/lib/firebase";
 import { collection, doc, orderBy, query } from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
 	useCollectionData,
@@ -14,9 +14,9 @@ import {
 } from "react-firebase-hooks/firestore";
 import Image from "next/image";
 import ChatMessage from "./ChatMessage";
-import type { Message } from "@/models/message";
+import type { Message } from "@/types/message";
 import useProfileDoc from "@/hooks/useProfileDoc";
-import type { Chat } from "@/models/chat";
+import type { Chat } from "@/types/chat";
 import { chatConverter } from "@/firebase/converters/chatConverter";
 import {
 	DropdownMenu,
@@ -30,10 +30,11 @@ import { IconDots, IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
 export default function ChatWindow() {
-	const bottomRef = useRef<HTMLDivElement>(null);
-	const scrollAreaRef = useRef<HTMLDivElement>(null);
 	const chatId = useParams().chatId as string;
 	const [user, userLoading] = useAuthState(auth);
+
+	const scrollAreaRef = useRef<HTMLDivElement>(null);
+	const messagesContainerRef = useRef<HTMLDivElement>(null);
 
 	// Get chat document with participant info
 	const [chatDoc, chatLoading, chatError] = useDocumentData(
@@ -54,15 +55,19 @@ export default function ChatWindow() {
 		).withConverter(messageConverter),
 	);
 
-	function scrollToBottom() {
-		setTimeout(() => {
-			if (bottomRef.current) {
-				bottomRef.current.scrollIntoView({
-					behavior: "auto",
-				});
-			}
-		}, 70);
-	}
+	const scrollToBottom = useCallback(() => {
+		requestAnimationFrame(() => {
+			const viewport = document.querySelector("[data-chat-container]");
+			if (!viewport) return;
+
+			viewport.scrollTop = viewport.scrollHeight;
+		});
+	}, []);
+
+	// Add effect to scroll when messages change
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages, scrollToBottom]);
 
 	if (userLoading || messagesLoading || chatLoading || profileLoading) {
 		return <Spinner />;
@@ -137,18 +142,14 @@ export default function ChatWindow() {
 			</div>
 
 			<ScrollArea
-				className="h-screen pt-20"
 				ref={scrollAreaRef}
-				onLoad={scrollToBottom}
+				data-chat-container
+				className="h-screen pt-20"
 			>
 				<div className="space-y-4 px-4 pb-14">
 					{messages.map((message: Message, index: number) => {
 						return (
-							<div
-								className="scroll-me-14"
-								key={message.id}
-								ref={index === messages.length - 1 ? bottomRef : undefined}
-							>
+							<div key={message.id}>
 								<ChatMessage
 									message={message}
 									userId={user?.uid ?? ""}

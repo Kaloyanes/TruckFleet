@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { Message } from "@/models/message";
+import type { Message } from "@/types/message";
 import { format } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import {

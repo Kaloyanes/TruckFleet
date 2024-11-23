@@ -1,4 +1,4 @@
-import type { Company } from "@/models/company";
+import type { Company } from "@/types/company";
 import type {
   DocumentData,
   FirestoreDataConverter,
