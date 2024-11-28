@@ -29,9 +29,9 @@ import { useTranslations } from "next-intl";
 
 interface SelectDriverMenuProps {
 	selectedValue: string;
-	setValue: React.Dispatch<React.SetStateAction<string>>;
 	values: QuerySnapshot<DocumentData, DocumentData> | undefined;
-	setRef: React.Dispatch<React.SetStateAction<DocumentReference | null>>;
+	setValue: (value: string) => void;
+	setRef: (ref: DocumentReference | null) => void;
 	selectText: string;
 	filterText: string;
 	addText: string;
@@ -111,8 +111,8 @@ function DriverList({
 }: {
 	setOpen: (open: boolean) => void;
 	values: QuerySnapshot<DocumentData, DocumentData> | undefined;
-	setRef: React.Dispatch<React.SetStateAction<DocumentReference | null>>;
-	setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
+	setSelectedValue: (value: string) => void;
+	setRef: (ref: DocumentReference | null) => void;
 	filterText: string;
 	field: string;
 	addText: string;

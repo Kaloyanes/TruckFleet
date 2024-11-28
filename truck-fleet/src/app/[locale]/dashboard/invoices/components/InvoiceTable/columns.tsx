@@ -7,6 +7,19 @@ import type { Invoice } from "@/types/invoice";
 import NumberFlow from "@number-flow/react";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import {
+	DropdownMenu,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+	DropdownMenuContent,
+} from "@/components/ui/dropdown-menu";
+import {
+	IconDotsVertical,
+	IconDownload,
+	IconEdit,
+	IconTrash,
+} from "@tabler/icons-react";
+import { redirect, useRouter } from "@/lib/navigation";
 
 export const columns: ColumnDef<Invoice>[] = [
 	{
@@ -75,12 +88,35 @@ export const columns: ColumnDef<Invoice>[] = [
 		accessorKey: "actions",
 		header: "Actions",
 		cell: () => {
+			const router = useRouter();
+
 			return (
-				// <div className="flex items-center space-x-2">
-				// 	<Button variant="ghost">View</Button>
-				// 	<Button variant="ghost">Edit</Button>
-				// </div>
-				<></>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button variant="outline" size={"icon"}>
+							<IconDotsVertical />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent>
+						<DropdownMenuItem
+							onClick={(e) => {
+								router.push("/dashboard/invoices/1/download");
+							}}
+							className="flex flex-row gap-2"
+						>
+							<IconDownload />
+							Download
+						</DropdownMenuItem>
+						<DropdownMenuItem className="flex flex-row gap-2">
+							<IconEdit />
+							Edit
+						</DropdownMenuItem>
+						<DropdownMenuItem className="flex flex-row gap-2">
+							<IconTrash />
+							Delete
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
 			);
 		},
 	},

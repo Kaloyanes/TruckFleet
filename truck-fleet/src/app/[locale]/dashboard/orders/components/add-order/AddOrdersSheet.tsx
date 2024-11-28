@@ -27,7 +27,6 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useUploadFile } from "react-firebase-hooks/storage";
-import { z } from "zod";
 
 import {
 	Tooltip,
@@ -40,6 +39,10 @@ import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import { IconPlus } from "@tabler/icons-react";
 import { getDownloadURL, ref } from "firebase/storage";
 import SelectMenu from "./SelectMenu";
+import {
+	createSheetFormSchema,
+	useAddOrderStore,
+} from "@/stores/Orders/AddOrderStore";
 
 export default function AddOrdersSheet() {
 	const t = useTranslations("AddOrderSheet");
@@ -50,11 +53,13 @@ export default function AddOrdersSheet() {
 		useOrderOptionsStore();
 
 	const [drivers, driverLoading, driverError] = useCollectionOnce(
-		query(
-			collection(db, "users"),
-			where("companyId", "==", companyId),
-			where("type", "==", "driver"),
-		),
+		companyId
+			? query(
+					collection(db, "users"),
+					where("companyId", "==", companyId),
+					where("type", "==", "driver"),
+				)
+			: null,
 	);
 	const [companies, companiesLoading, companiesError] = useCollectionOnce(
 		companyId
@@ -74,320 +79,33 @@ export default function AddOrdersSheet() {
 		console.error(driverError, companiesError, truckError);
 	}
 
-	const [driverName, setDriverName] = useState("");
-	const [driverRef, setDriverRef] = useState<DocumentReference | null>(null);
+	const {
+		driverName,
+		driverRef,
+		licensePlate,
+		truckRef,
+		companyName,
+		companyRef,
+		values,
+		initialValues,
+		setDriverName,
+		setDriverRef,
+		setTruckName,
+		setTruckRef,
+		setCompanyName,
+		setCompanyRef,
+		setValues,
+		populateData,
+		addOrder,
+	} = useAddOrderStore();
 
-	const [licensePlate, setTruckPlate] = useState("");
-	const [truckRef, setTruckRef] = useState<DocumentReference | null>(null);
-
-	const [companyName, setCompanyName] = useState("");
-	const [companyRef, setCompanyRef] = useState<DocumentReference | null>(null);
-
-	const [values, setValues] = useState<Order | null>(order ?? null);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		if (driverRef && truckRef && companyRef) {
-			setValues({
-				...values,
-				driver: driverRef,
-				truck: truckRef,
-				licensePlate: licensePlate,
-				company: {
-					ref: companyRef,
-					name: companyName,
-					worker: values?.company?.worker ?? "",
-				},
-			} as any);
-		}
-	}, [driverRef, truckRef, companyRef, companyName, licensePlate]);
-
-	const sheetFormSchema = z.object({
-		status: z
-			.enum(["Pick Up", "In Delivery", "Delivered"])
-			.default("Pick Up")
-			.describe(t("status")),
-		driver: z.any().refine((data) => data != null, "Driver is required"),
-		truck: z.any().refine((data) => data != null, "Truck is required"),
-		company: z
-			.object({
-				name: z.string().min(1),
-				worker: z.string().min(1).describe(t("worker")),
-			})
-			.describe(t("company")),
-		palletes: z
-			.array(
-				z.object({
-					width: z.coerce.number().default(1).describe(t("width")),
-					length: z.coerce.number().default(1).describe(t("length")),
-					height: z.coerce.number().default(1).describe(t("height")),
-					weight: z.coerce.number().default(1).describe(t("weight")),
-				}),
-			)
-			.describe(t("palletes"))
-			.nonempty("Palletes must have at least one item")
-			.default([
-				{
-					width: 1,
-					length: 1,
-					height: 1,
-					weight: 1,
-				},
-			]),
-		pickUps: z
-			.array(
-				z.object({
-					address: z.string().describe(t("address")),
-					start: z.coerce.date().describe(t("start")),
-					end: z.coerce.date().describe(t("end")),
-				}),
-			)
-			.describe(t("pickUps"))
-			.nonempty("Pickups must have at least one item")
-			.default([
-				(order?.pickUps as {
-					address: string;
-					start: Date;
-					end: Date;
-				}[] as any) ?? {
-					address: "",
-					start: new Date(),
-					end: new Date(),
-				},
-			]),
-		deliveries: z
-			.array(
-				z.object({
-					address: z.string().describe(t("address")),
-					start: z.coerce.date().describe(t("start")),
-					end: z.coerce.date().describe(t("end")),
-				}),
-			)
-			.describe(t("deliveries"))
-			.nonempty("Deliveries must have at least one item")
-			.default(
-				(order?.deliveries as {
-					address: string;
-					start: Date;
-					end: Date;
-				}[] as any) ?? {
-					address: "",
-					start: new Date(),
-					end: new Date(),
-				},
-			),
-		documents: z
-			.custom((data) => {
-				if (data instanceof File) return data as File;
-
-				return data;
-			})
-			.describe(t("documents")),
-		note: z.string().optional().describe(t("note")),
-	});
-
-	const addOrder = async (values: Order | null) => {
-		if (JSON.stringify(values) === JSON.stringify(order)) {
-			openEditSheet(false);
-			return;
-		}
-
-		if (!values || !companyRef || !driverRef || !truckRef) {
-			// TODO: Add translations
-			toast({
-				title: "Error",
-				description: "Some required fields are missing.",
-				variant: "destructive",
-			});
-			console.error(values, companyId, companyRef, driverRef, truckRef);
-			return;
-		}
-
-		const currentDate = new Date();
-		const numbers = licensePlate.match(/\d+/g)?.join("") ?? "";
-		const id = `${currentDate.getFullYear()}${currentDate.getMonth()}${currentDate.getDate()}${numbers}${
-			orders?.docs.length ?? 0
-		}`;
-
-		try {
-			if (
-				values.documents !== undefined &&
-				(values.documents instanceof File || values.documents instanceof Blob)
-			) {
-				const document = values.documents as File;
-				const fileRef = ref(
-					storage,
-					`orders/${companyId}/${id}/${document.name}`,
-				);
-
-				await uploadFile(fileRef, document, {
-					contentType: document.type,
-				});
-
-				const downloadUrl = await getDownloadURL(fileRef);
-				values.documents = {
-					name: document.name,
-					url: downloadUrl,
-				};
-			} else {
-				values.documents = order?.documents;
-			}
-
-			values.createdAt = new Date();
-			console.log(order?.id);
-
-			const docId = `companies/${companyId}/orders/${order?.id ?? id}`;
-			try {
-				console.log(values);
-
-				if (order) {
-					await updateDoc(doc(db, docId), { ...values });
-				} else {
-					await setDoc(doc(db, docId), {
-						...values,
-					});
-				}
-			} catch (error) {
-				console.error("Error adding order:", error);
-				toast({
-					title: "Error",
-					description: "An error occurred while adding the order.",
-					variant: "destructive",
-				});
-				return;
-			}
-
-			toast({
-				title: t("success"),
-				description: order
-					? t("orderEditedSuccessfully")
-					: t("orderAddedSuccessfully"),
-				variant: "success",
-			});
-
-			openEditSheet(false);
-		} catch (error) {
-			console.error("Error adding order:", error);
-			toast({
-				title: "Error",
-				description: "An error occurred while adding the order.",
-				variant: "destructive",
-			});
-		}
-	};
+		if (companyId) populateData(order, companyId);
+	}, [order, companyId, populateData]);
 
 	useEffect(() => {
 		console.log(truckRef);
 	}, [truckRef]);
-
-	const [initialValues, setInitialValues] = useState<{
-		status: "Picking Up" | "In Delivery" | "Delivered";
-		driver: DocumentReference | undefined;
-		truck: DocumentReference | undefined;
-		companyId: string;
-		company: {
-			name: string;
-			worker: string;
-		};
-		palletes: {
-			height: number;
-			length: number;
-			weight: number;
-			width: number;
-		}[];
-		pickUps: {
-			address: string;
-			start: Date;
-			end: Date;
-		}[];
-		deliveries: {
-			address: string;
-			start: Date;
-			end: Date;
-		}[];
-		documents: File | { name: string; url: string } | undefined;
-		note: string;
-	} | null>(null);
-
-	useEffect(() => {
-		async function populateData() {
-			if (!order) {
-				setDriverRef(null);
-				setDriverName("");
-
-				setTruckRef(null);
-				setTruckPlate("");
-
-				setCompanyRef(null);
-				setCompanyName("");
-
-				setValues(null);
-				setInitialValues(null);
-				return;
-			}
-
-			if (order) {
-				setValues(order);
-			}
-
-			if (order?.driver) {
-				const driverData = await getDoc(order.driver);
-				setDriverRef(order.driver);
-				setDriverName(driverData.data()?.name);
-			}
-
-			if (order?.truck) {
-				const truckData = await getDoc(order.truck);
-				setTruckRef(order.truck);
-				setTruckPlate(truckData.data()?.licensePlate);
-			}
-
-			if (order?.company?.ref) {
-				setCompanyRef(order.company.ref);
-				setCompanyName(order.company.name);
-			}
-
-			setValues({
-				status: order?.status ?? "Pick Up",
-				company: order?.company,
-				// driver: order?.driver,
-				palletes: order?.palletes.map((pallete) => ({
-					width: pallete.width,
-					length: pallete.length,
-					height: pallete.height,
-					weight: pallete.weight,
-				})),
-				pickUps: order?.pickUps.map((pickup) => ({
-					address: pickup.address,
-					start: pickup.start,
-					end: pickup.end,
-				})) ?? [
-					{
-						address: "",
-						start: new Date(),
-						end: new Date(),
-					},
-				],
-				deliveries: order?.deliveries.map((delivery) => ({
-					address: delivery.address,
-					start: delivery.start,
-					end: delivery.end,
-				})) ?? [
-					{
-						address: "",
-						start: new Date(),
-						end: new Date(),
-					},
-				],
-				note: order?.note ?? "",
-				licensePlate: order?.licensePlate ?? "",
-				truck: order?.truck ?? null,
-				driver: order?.driver ?? null,
-			} as any);
-		}
-
-		populateData();
-	}, [order]);
 
 	function getDocumentDescription() {
 		// return order
@@ -439,7 +157,7 @@ export default function AddOrdersSheet() {
 						</SheetHeader>
 						<AutoForm
 							values={initialValues as any}
-							formSchema={sheetFormSchema}
+							formSchema={createSheetFormSchema(t as any)}
 							onValuesChange={(formValues) => {
 								console.log(formValues, driverRef, truckRef, companyRef);
 								if (driverRef && truckRef && companyRef) {
@@ -471,7 +189,7 @@ export default function AddOrdersSheet() {
 									description: getDocumentDescription(),
 								},
 								driver: {
-									renderParent: ({ children }) => (
+									renderParent: ({ children }: any) => (
 										<SelectMenu
 											selectedValue={driverName}
 											setValue={setDriverName}
@@ -485,10 +203,10 @@ export default function AddOrdersSheet() {
 									),
 								},
 								truck: {
-									renderParent: ({ children }) => (
+									renderParent: ({ children }: any) => (
 										<SelectMenu
 											selectedValue={licensePlate}
-											setValue={setTruckPlate}
+											setValue={setTruckName}
 											values={trucks}
 											setRef={setTruckRef}
 											selectText={t("selectTruck")}
@@ -529,7 +247,17 @@ export default function AddOrdersSheet() {
 								</SheetClose>
 								<Button
 									size={"sm"}
-									onClick={() => addOrder(values)}
+									onClick={() =>
+										addOrder(
+											values,
+											companyId,
+											orders,
+											order,
+											uploadFile,
+											toast,
+											openEditSheet,
+										)
+									}
 									className="min-w-20 max-w-32"
 									type="submit"
 								>

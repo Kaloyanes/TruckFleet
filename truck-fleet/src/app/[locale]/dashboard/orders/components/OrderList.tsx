@@ -21,12 +21,13 @@ import OrderDataTable from "./order-table/OrderDataTable";
 export default function OrderList({ truckId }: { truckId: string }) {
 	const { companyId } = useCompanyId();
 	const [orders, loading, error] = useCollectionData(
-		query(
-			collection(db, "orders"),
-			where("companyId", "==", companyId),
-			where("licensePlate", "==", truckId),
-			orderBy("createdAt", "desc"),
-		).withConverter(orderConverter),
+		companyId
+			? query(
+					collection(db, `companies/${companyId}/orders`),
+					where("licensePlate", "==", truckId),
+					orderBy("createdAt", "desc"),
+				).withConverter(orderConverter)
+			: null,
 	);
 
 	if (loading) return <div className="w-full" />;
