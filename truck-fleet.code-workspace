@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "truck-fleet"
+		},
+		{
+			"path": "truck_fleet_mobile"
+		}
+	],
+  "settings": {
+    "typescript.tsdk": "node_modules\\typescript\\lib"
+  }
+}
