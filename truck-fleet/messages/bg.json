@@ -4,7 +4,8 @@
     "welcome": "Добре дошли в Truck Fleet"
   },
   "General": {
-    "copiedToClipboard": "Копирано в клипборда"
+    "copiedToClipboard": "Копирано в клипборда",
+    "close": "Затвори"
   },
   "TimeTitle": {
     "monday": "понеделник",
