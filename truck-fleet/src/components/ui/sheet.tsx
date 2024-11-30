@@ -7,6 +7,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
 import { Button } from "./button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
+import { useTranslations } from "next-intl";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -83,23 +84,26 @@ SheetContent.displayName = SheetPrimitive.Content.displayName;
 const SheetCloseButton = ({
 	className,
 	...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-	<Tooltip>
-		<TooltipTrigger asChild>
-			<SheetClose asChild>
-				<Button
-					variant={"ghost"}
-					size={"icon"}
-					className={cn("absolute top-10 right-5", className)}
-				>
-					<IconX size={20} />
-					<span className="sr-only">Close</span>
-				</Button>
-			</SheetClose>
-		</TooltipTrigger>
-		<TooltipContent>Close</TooltipContent>
-	</Tooltip>
-);
+}: React.HTMLAttributes<HTMLDivElement>) => {
+	const t = useTranslations("General");
+	return (
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<SheetClose asChild>
+					<Button
+						variant={"ghost"}
+						size={"icon"}
+						className={cn("absolute top-10 right-5", className)}
+					>
+						<IconX size={20} />
+						<span className="sr-only">Close</span>
+					</Button>
+				</SheetClose>
+			</TooltipTrigger>
+			<TooltipContent>{t("close")}</TooltipContent>
+		</Tooltip>
+	);
+};
 
 const SheetHeader = ({
 	className,

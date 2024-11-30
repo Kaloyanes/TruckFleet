@@ -4,7 +4,8 @@
     "welcome": "Welcome to Truck Fleet"
   },
   "General": {
-    "copiedToClipboard": "Copied to clipboard"
+    "copiedToClipboard": "Copied to clipboard",
+    "close": "Close"
   },
   "TimeTitle": {
     "monday": "Monday",
