@@ -168,7 +168,8 @@
     "speditor": "Speditor",
     "drivers": "Drivers",
     "speditors": "Speditors",
-    "inviteCode": "Invite Code: {code}"
+    "inviteCode": "Invite Code: {code}",
+    "ceos": "CEO"
   },
   "EmployeeList": {
     "name": "Name",

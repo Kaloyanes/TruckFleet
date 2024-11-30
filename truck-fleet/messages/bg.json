@@ -168,7 +168,8 @@
     "speditor": "Спедитор",
     "drivers": "Шофьори",
     "speditors": "Спедитори",
-    "inviteCode": "Код за покана: {code}"
+    "inviteCode": "Код за покана: {code}",
+    "ceos": "Собственик"
   },
   "EmployeeList": {
     "name": "Име",
