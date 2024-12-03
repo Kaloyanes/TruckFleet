@@ -20,6 +20,10 @@ import {
 	IconTrash,
 } from "@tabler/icons-react";
 import { redirect, useRouter } from "@/lib/navigation";
+import { pdf, PDFDownloadLink, usePDF } from "@react-pdf/renderer";
+import Link from "next/link";
+import useCompanyId from "@/hooks/useCompanyId";
+import InvoiceTemplate from "../../download/components/InvoiceTemplate";
 
 export const columns: ColumnDef<Invoice>[] = [
 	{
@@ -87,8 +91,11 @@ export const columns: ColumnDef<Invoice>[] = [
 	{
 		accessorKey: "actions",
 		header: "Actions",
-		cell: () => {
-			const router = useRouter();
+		cell: ({ row }) => {
+			const invoiceData = row.original;
+			const { companyId } = useCompanyId();
+
+			if (!companyId) return null;
 
 			return (
 				<DropdownMenu>
@@ -98,15 +105,17 @@ export const columns: ColumnDef<Invoice>[] = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent>
-						<DropdownMenuItem
-							onClick={(e) => {
-								router.push("/dashboard/invoices/1/download");
+						<Link
+							href={{
+								pathname: "/dashboard/invoices/download",
+								query: { id: invoiceData.id, companyId },
 							}}
-							className="flex flex-row gap-2"
 						>
-							<IconDownload />
-							Download
-						</DropdownMenuItem>
+							<DropdownMenuItem className="flex flex-row gap-2">
+								<IconDownload />
+								Download PDF
+							</DropdownMenuItem>
+						</Link>
 						<DropdownMenuItem className="flex flex-row gap-2">
 							<IconEdit />
 							Edit
