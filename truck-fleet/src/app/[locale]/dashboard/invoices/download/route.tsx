@@ -10,6 +10,8 @@ import ReactPDF, {
 	renderToStream,
 } from "@react-pdf/renderer";
 import { MyDocument } from "./components/InvoiceTemplate";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 export async function GET(request: NextRequest) {
 	const params = request.nextUrl.searchParams;
@@ -25,8 +27,13 @@ export async function GET(request: NextRequest) {
 			invoiceConverter,
 		),
 	);
+
+	const t = await getTranslations();
+
 	const invoice = docData.data() as Invoice;
-	const blob = await pdf(<MyDocument invoice={invoice} />).toBlob();
+	const blob = await pdf(
+		<MyDocument invoice={invoice} t={t as any} />,
+	).toBlob();
 
 	if (!blob) {
 		return new NextResponse("Error", {

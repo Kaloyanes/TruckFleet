@@ -6,15 +6,21 @@ import {
 	Document,
 	StyleSheet,
 	Image,
+	Font,
 } from "@react-pdf/renderer";
 import type { Invoice } from "@/types/invoice";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
+import { convert } from "@/lib/utils";
+Font.register({
+	family: "Manrope",
+	src: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
+});
 
 const styles = StyleSheet.create({
 	page: {
 		padding: 20,
-		fontFamily: "Helvetica",
+		fontFamily: "Manrope",
 	},
 	header: {
 		flexDirection: "row",
@@ -78,16 +84,19 @@ const styles = StyleSheet.create({
 		flex: 2,
 		fontSize: 12,
 		textAlign: "center",
+		textTransform: "capitalize",
 	},
 	priceCol: {
 		flex: 4,
 		fontSize: 12,
 		textAlign: "right",
+		textTransform: "capitalize",
 	},
 	totalCol: {
 		flex: 3,
 		fontSize: 12,
 		textAlign: "right",
+		textTransform: "capitalize",
 	},
 	totalsSection: {
 		// marginLeft: "55.35%",
@@ -119,7 +128,10 @@ const styles = StyleSheet.create({
 	},
 });
 
-export const MyDocument = ({ invoice }: { invoice: Invoice }) => {
+export const MyDocument = ({
+	invoice,
+	t,
+}: { invoice: Invoice; t: (key: string) => string }) => {
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat("en-US", {
 			style: "currency",
@@ -181,50 +193,131 @@ export const MyDocument = ({ invoice }: { invoice: Invoice }) => {
 				{/* Items Table */}
 				<View style={styles.itemsTable}>
 					<View style={styles.itemsHeader}>
-						<Text style={styles.descriptionCol}>Description</Text>
-						<Text style={styles.quantityCol}>Quantity</Text>
-						<Text style={styles.priceCol}>Price</Text>
-						<Text style={styles.totalCol}>Total</Text>
+						<Text style={[styles.descriptionCol, styles.label]}>
+							Description
+						</Text>
+						<Text style={[styles.quantityCol, styles.label]}>Quantity</Text>
+						<Text style={[styles.priceCol, styles.label]}>Price</Text>
+						<Text style={[styles.totalCol, styles.label]}>Total</Text>
 					</View>
 
 					{invoice.items.map((item, index) => (
 						<View key={item.id} style={styles.itemRow}>
 							<Text style={styles.descriptionCol}>{item.description}</Text>
-							<Text style={styles.quantityCol}>{item.quantity}</Text>
-							<Text style={styles.priceCol}>{formatCurrency(item.price)}</Text>
-							<Text style={styles.totalCol}>
-								{formatCurrency(item.price * item.quantity)}
-							</Text>
+							<View
+								style={[
+									styles.quantityCol,
+									{ display: "flex", flexDirection: "column", gap: 10 },
+								]}
+							>
+								<Text style={styles.quantityCol}>{item.quantity}</Text>
+								<Text
+									style={[styles.quantityCol, { textTransform: "capitalize" }]}
+								>
+									{convert(item.quantity, t)}
+								</Text>
+							</View>
+							<View
+								style={[
+									styles.priceCol,
+									{ display: "flex", flexDirection: "column", gap: 10 },
+								]}
+							>
+								<Text style={styles.priceCol}>
+									{formatCurrency(item.price)}
+								</Text>
+								<Text style={styles.priceCol}>{convert(item.price, t)}</Text>
+							</View>
+							<View
+								style={[
+									styles.totalCol,
+									{ display: "flex", flexDirection: "column", gap: 10 },
+								]}
+							>
+								<Text style={styles.totalCol}>
+									{formatCurrency(item.price * item.quantity)}
+								</Text>
+								<Text style={styles.totalCol}>
+									{convert(item.price * item.quantity, t)}
+								</Text>
+							</View>
 						</View>
 					))}
 				</View>
 
 				{/* Totals */}
 				<View style={styles.footer}>
-					{/* TODO: FIX THE ORDER TO BE WIDTH OF 50% */}
 					<View style={styles.footerSection} />
 					<View style={[styles.totalsSection, styles.footerSection]}>
 						<View style={styles.totalRow}>
 							<Text style={styles.label}>Subtotal:</Text>
-							<Text style={styles.value}>{formatCurrency(subtotal)}</Text>
+							<View
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									gap: 10,
+									alignItems: "flex-end",
+								}}
+							>
+								<Text style={styles.value}>{formatCurrency(subtotal)}</Text>
+								<Text style={[styles.value, { textTransform: "capitalize" }]}>
+									{convert(subtotal, t)}
+								</Text>
+							</View>
 						</View>
 						{invoice.vat && invoice.vat > 0 && (
 							<View style={styles.totalRow}>
 								<Text style={styles.label}>VAT ({invoice.vat}%):</Text>
-								<Text style={styles.value}>{formatCurrency(vatAmount)}</Text>
+								<View
+									style={{
+										display: "flex",
+										flexDirection: "column",
+										gap: 10,
+										alignItems: "flex-end",
+									}}
+								>
+									<Text style={styles.value}>{formatCurrency(vatAmount)}</Text>
+									<Text style={[styles.value, { textTransform: "capitalize" }]}>
+										{convert(vatAmount, t)}
+									</Text>
+								</View>
 							</View>
 						)}
 						{invoice.discount && invoice.discount > 0 && (
 							<View style={styles.totalRow}>
 								<Text style={styles.label}>Discount:</Text>
-								<Text style={styles.value}>
-									-{formatCurrency(invoice.discount)}
-								</Text>
+								<View
+									style={{
+										display: "flex",
+										flexDirection: "column",
+										gap: 10,
+										alignItems: "flex-end",
+									}}
+								>
+									<Text style={styles.value}>
+										-{formatCurrency(invoice.discount)}
+									</Text>
+									<Text style={[styles.value, { textTransform: "capitalize" }]}>
+										{convert(invoice.discount, t)}
+									</Text>
+								</View>
 							</View>
 						)}
 						<View style={[styles.totalRow, styles.finalTotal]}>
 							<Text style={styles.label}>Total:</Text>
-							<Text style={styles.value}>{formatCurrency(total)}</Text>
+							<View
+								style={{
+									display: "flex",
+									flexDirection: "column",
+									gap: 10,
+									alignItems: "flex-end",
+								}}
+							>
+								<Text style={styles.value}>{formatCurrency(total)}</Text>
+								<Text style={[styles.value, { textTransform: "capitalize" }]}>
+									{convert(total, t)}
+								</Text>
+							</View>
 						</View>
 					</View>
 				</View>
