@@ -5,13 +5,17 @@ import { IconPackages } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 // fkoskfo
-export default function Login({
-	params: { locale },
-}: { params: { locale: string } }) {
-	setRequestLocale(locale);
+export default function Login(props: { params: Promise<{ locale: string }> }) {
+    const params = use(props.params);
 
-	const t = useTranslations("LoginPage");
-	return (
+    const {
+        locale
+    } = params;
+
+    setRequestLocale(locale);
+
+    const t = useTranslations("LoginPage");
+    return (
 		<>
 			<div className="absolute top-5 right-5 z-50">
 				<ThemeToggle />

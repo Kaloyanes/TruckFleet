@@ -9,16 +9,25 @@ export const metadata: Metadata = {
 	description: "Login page for the app.",
 };
 
-export default async function LoginLayout({
-	children,
-	params: { locale },
-}: Readonly<{
-	children: React.ReactNode;
-	params: { locale: string };
-}>) {
-	setRequestLocale(locale);
+export default async function LoginLayout(
+    props: Readonly<{
+        children: React.ReactNode;
+        params: { locale: string };
+    }>
+) {
+    const params = await props.params;
 
-	return (
+    const {
+        locale
+    } = params;
+
+    const {
+        children
+    } = props;
+
+    setRequestLocale(locale);
+
+    return (
 		<>
 			<Suspense fallback={<Spinner />}>
 				<LoginRedirect />

@@ -12,7 +12,7 @@ const nextConfig = {
     }],
 
   },
-  transpilePackages: ['@react-pdf/renderer'],
+  serverExternalPackages: ['@react-pdf/renderer'],
   async headers() {
     return [
       {

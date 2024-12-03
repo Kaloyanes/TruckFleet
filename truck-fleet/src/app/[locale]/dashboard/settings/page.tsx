@@ -2,12 +2,16 @@ import LocaleSwitcher from "@/app/[locale]/dashboard/settings/components/LocaleS
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { setRequestLocale } from "next-intl/server";
 
-export default async function SettingsPage({
-	params: { locale },
-}: { params: { locale: string } }) {
-	setRequestLocale(locale);
+export default async function SettingsPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
 
-	return (
+    const {
+        locale
+    } = params;
+
+    setRequestLocale(locale);
+
+    return (
 		<div className="flex flex-col gap-4 ">
 			<LocaleSwitcher />
 			<ThemeToggle />

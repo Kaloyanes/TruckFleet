@@ -1,18 +1,28 @@
-"use client";
+"use client";;
+import { use } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 import InfoCard from "./components/InfoCard";
 
-export default function InvoicesLayout({
-	children,
-	params: { locale },
-}: {
-	children: React.ReactNode;
-	params: { locale: string };
-}) {
-	const t = useTranslations("InvoicesPage");
+export default function InvoicesLayout(
+    props: {
+        children: React.ReactNode;
+        params: Promise<{ locale: string }>;
+    }
+) {
+    const params = use(props.params);
 
-	return (
+    const {
+        locale
+    } = params;
+
+    const {
+        children
+    } = props;
+
+    const t = useTranslations("InvoicesPage");
+
+    return (
 		<div
 			className={
 				"relative mt-5 w-full flex-1 overflow-hidden rounded-none border-0 border-border border-l bg-background backdrop-saturate-150 transition-all duration-300"

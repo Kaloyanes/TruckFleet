@@ -1,9 +1,13 @@
 import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 
-export default async function OrdersPage({
-	params: { locale },
-}: { params: { locale: string } }) {
-	setRequestLocale(locale);
+export default async function OrdersPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
 
-	return <></>;
+    const {
+        locale
+    } = params;
+
+    setRequestLocale(locale);
+
+    return <></>;
 }

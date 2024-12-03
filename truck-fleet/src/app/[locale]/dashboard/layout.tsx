@@ -4,23 +4,32 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { setRequestLocale } from "next-intl/server";
 import { cookies } from "next/headers";
 
-export default async function DashboardLayout({
-	children,
-	params: { locale },
-}: {
-	children: React.ReactNode;
-	params: { locale: string };
-}) {
-	setRequestLocale(locale);
+export default async function DashboardLayout(
+    props: {
+        children: React.ReactNode;
+        params: Promise<{ locale: string }>;
+    }
+) {
+    const params = await props.params;
 
-	const sidebarState = cookies().get("sidebar:state");
+    const {
+        locale
+    } = params;
 
-	let defaultOpen = true;
-	if (sidebarState) {
+    const {
+        children
+    } = props;
+
+    setRequestLocale(locale);
+
+    const sidebarState = (await cookies()).get("sidebar:state");
+
+    let defaultOpen = true;
+    if (sidebarState) {
 		defaultOpen = sidebarState.value !== "true";
 	}
 
-	return (
+    return (
 		<>
 			<AuthRedirect />
 			<SidebarProvider

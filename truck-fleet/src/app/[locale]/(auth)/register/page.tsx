@@ -1,9 +1,13 @@
 import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
 
-export default async function RegisterPage({
-	params: { locale },
-}: { params: { locale: string } }) {
-	setRequestLocale(locale);
+export default async function RegisterPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
 
-	return <h1>Welcome to Registerpage!</h1>;
+    const {
+        locale
+    } = params;
+
+    setRequestLocale(locale);
+
+    return <h1>Welcome to Registerpage!</h1>;
 }

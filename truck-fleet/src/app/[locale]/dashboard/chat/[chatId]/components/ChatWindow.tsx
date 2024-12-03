@@ -118,7 +118,7 @@ export default function ChatWindow() {
 								return (
 									<>
 										{action.danger && actions.length > 1 && (
-											<DropdownMenuSeparator />
+											<DropdownMenuSeparator key={index} />
 										)}
 										<DropdownMenuItem
 											key={index}

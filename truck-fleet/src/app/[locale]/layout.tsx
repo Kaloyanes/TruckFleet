@@ -55,18 +55,23 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function RootLayout({
-	children,
-	params,
-}: Readonly<{
-	children: React.ReactNode;
-	params: { locale: string };
-}>) {
-	setRequestLocale(params.locale);
+export default async function RootLayout(
+    props0: Readonly<{
+        children: React.ReactNode;
+        params: { locale: string };
+    }>
+) {
+    const params = await props0.params;
 
-	const messages = await getMessages();
+    const {
+        children
+    } = props0;
 
-	return (
+    setRequestLocale(params.locale);
+
+    const messages = await getMessages();
+
+    return (
 		<html lang={params.locale} suppressHydrationWarning>
 			<head>
 				<meta charSet="utf-8" />

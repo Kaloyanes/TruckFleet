@@ -1,11 +1,17 @@
 import SignOutButton from "@/app/[locale]/dashboard/components/SignOutButton";
 import { setRequestLocale } from "next-intl/server";
 
-export default async function DashboardPage({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
+export default async function DashboardPage(
+  props: {
+    params: Promise<{ locale: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
   setRequestLocale(locale);
   return (
     <>

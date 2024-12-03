@@ -151,7 +151,6 @@ export default function AddInvoiceOptions() {
 			</TooltipProvider>
 			<DropdownMenuContent className="*:gap-2 *:font-semibold *:text-sm">
 				<motion.div
-					className=""
 					variants={dropdownMenuParentVariants}
 					initial="hidden"
 					animate="visible"

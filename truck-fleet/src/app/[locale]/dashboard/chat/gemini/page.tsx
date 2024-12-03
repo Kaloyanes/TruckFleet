@@ -1,9 +1,13 @@
 import { setRequestLocale } from "next-intl/server";
 
-export default function GeminiPage({
-	params: { locale },
-}: { params: { locale: string } }) {
-	setRequestLocale(locale);
+export default async function GeminiPage(props: { params: Promise<{ locale: string }> }) {
+    const params = await props.params;
 
-	return <h1>Welcome to Geminipage!</h1>;
+    const {
+        locale
+    } = params;
+
+    setRequestLocale(locale);
+
+    return <h1>Welcome to Geminipage!</h1>;
 }

@@ -1,21 +1,31 @@
+import { use } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import LetterPullup from "@/components/ui/letter-pullup";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import ChatUsers from "./components/ChatUsers";
 
-export default function ChatLayout({
-	params: { locale },
-	children,
-}: {
-	params: { locale: string };
-	children: React.ReactNode;
-}) {
-	setRequestLocale(locale);
+export default function ChatLayout(
+    props: {
+        params: Promise<{ locale: string }>;
+        children: React.ReactNode;
+    }
+) {
+    const params = use(props.params);
 
-	const t = useTranslations();
+    const {
+        locale
+    } = params;
 
-	return (
+    const {
+        children
+    } = props;
+
+    setRequestLocale(locale);
+
+    const t = useTranslations();
+
+    return (
 		<div className="relative flex max-h-screen flex-1 overflow-hidden">
 			<Card className="!bg-sidebar relative max-h-screen w-full flex-[0.2] flex-shrink-0 rounded-none border-0 border-border border-l pl-3  backdrop-saturate-150 transition-all duration-300">
 				<CardHeader className="flex px-0">
