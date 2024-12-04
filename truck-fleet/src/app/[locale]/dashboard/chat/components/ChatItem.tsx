@@ -1,7 +1,7 @@
 "use client";
 import { Spinner } from "@/components/ui/loading-spinner";
 import useProfileDoc from "@/hooks/useProfileDoc";
-import { Link } from "@/lib/navigation";
+import { Link } from "@/i18n/routing";
 import type { Chat } from "@/types/chat";
 import Image from "next/image";
 import { useParams } from "next/navigation";

@@ -19,11 +19,8 @@ import {
 	IconEdit,
 	IconTrash,
 } from "@tabler/icons-react";
-import { redirect, useRouter } from "@/lib/navigation";
-import { pdf, PDFDownloadLink, usePDF } from "@react-pdf/renderer";
 import Link from "next/link";
 import useCompanyId from "@/hooks/useCompanyId";
-import InvoiceTemplate from "../../download/components/InvoiceTemplate";
 
 export const columns: ColumnDef<Invoice>[] = [
 	{

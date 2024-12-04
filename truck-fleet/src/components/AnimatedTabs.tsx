@@ -1,7 +1,7 @@
 "use client";
 
 import AnimatedBackground from "@/components/ui/animated-background";
-import { Link, usePathname } from "@/lib/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 
 interface AnimatedTabsProps {
 	tabs: { label: string; value: string }[];

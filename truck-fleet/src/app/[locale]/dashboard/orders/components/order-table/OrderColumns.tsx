@@ -31,7 +31,7 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
-import { Link } from "@/lib/navigation";
+import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import type { Order } from "@/types/orders";
 import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";

@@ -1,8 +1,7 @@
 "use client";
 import { auth, db } from "@/lib/firebase";
-import { redirect } from "@/lib/navigation";
 import { doc } from "firebase/firestore";
-import { notFound, useParams } from "next/navigation";
+import { notFound, redirect, useParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 
@@ -25,7 +24,6 @@ export default function ChatRedirect() {
 
 	if (!chatData?.participants.includes(user?.uid)) {
 		redirect("/dashboard/chat");
-		return;
 	}
 
 	return <></>;

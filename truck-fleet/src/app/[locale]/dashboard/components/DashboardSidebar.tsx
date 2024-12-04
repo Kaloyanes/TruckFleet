@@ -32,7 +32,7 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
-import { Link, usePathname } from "@/lib/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import {
 	IconBell,

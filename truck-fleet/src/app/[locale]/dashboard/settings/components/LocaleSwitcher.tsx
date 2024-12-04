@@ -2,11 +2,10 @@
 import { useTranslations } from "next-intl";
 import { Button } from "../../../../../components/ui/button";
 
-import { locales } from "@/lib/i18n";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { IconLanguage } from "@tabler/icons-react";
-import { usePathname } from "@/lib/navigation";
+import { redirect, routing, usePathname } from "@/i18n/routing";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -31,12 +30,15 @@ export default function LocaleSwitcher() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-32">
-				{locales.map((locale: string) => (
+				{routing.locales.map((locale: string) => (
 					<DropdownMenuItem
 						key={locale}
 						onClick={() => {
 							startTransition(() => {
-								router.replace(`/${locale}${pathname}`);
+								redirect({
+									href: pathname,
+									locale,
+								});
 							});
 						}}
 					>

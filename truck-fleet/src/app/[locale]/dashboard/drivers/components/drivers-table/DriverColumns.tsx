@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { toast, useToast } from "@/components/ui/use-toast";
 import { auth, db } from "@/lib/firebase";
-import { Link, useRouter } from "@/lib/navigation";
+import { Link, useRouter } from "@/i18n/routing";
 import type { Driver } from "@/types/driver";
 import { useDriverOptionsStore } from "@/stores/Drivers/DriverOptionsStore";
 import { AvatarFallback } from "@radix-ui/react-avatar";

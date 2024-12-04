@@ -1,12 +1,13 @@
 import { Toaster } from "@/components/ui/toaster";
 import MotionConfigProvider from "@/context/motion-config-provider";
 import { ThemeProvider } from "@/context/theme-provider";
-import { locales } from "@/lib/i18n";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { Manrope, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
 import "../globals.css";
+import { routing } from "@/i18n/routing";
+import { notFound } from "next/navigation";
 
 // const jakarta = Plus_Jakarta_Sans({
 // 	preload: true,
@@ -29,7 +30,12 @@ const roboto_mono = Roboto_Mono({
 });
 
 export function generateStaticParams() {
-	return locales.map((locale) => ({ locale }));
+	try {
+		return routing.locales.map((locale: string) => ({ locale }));
+	} catch (err) {
+		console.error("Error in getStaticProps:", err);
+		throw err;
+	}
 }
 
 export const metadata: Metadata = {
@@ -55,24 +61,24 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function RootLayout(
-    props0: Readonly<{
-        children: React.ReactNode;
-        params: { locale: string };
-    }>
-) {
-    const params = await props0.params;
+export default async function RootLayout({
+	children,
+	params: { locale },
+}: {
+	children: React.ReactNode;
+	params: { locale: string };
+}) {
+	// Ensure that the incoming `locale` is valid
+	if (!routing.locales.includes(locale as any)) {
+		notFound();
+	}
 
-    const {
-        children
-    } = props0;
+	// Providing all messages to the client
+	// side is the easiest way to get started
+	const messages = await getMessages();
 
-    setRequestLocale(params.locale);
-
-    const messages = await getMessages();
-
-    return (
-		<html lang={params.locale} suppressHydrationWarning>
+	return (
+		<html lang={locale} suppressHydrationWarning>
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />

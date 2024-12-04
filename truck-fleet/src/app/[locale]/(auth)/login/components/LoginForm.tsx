@@ -10,7 +10,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useToast } from "../../../../../components/ui/use-toast";
 import type { FirebaseError } from "firebase/app";
-import { redirect } from "@/lib/navigation";
+import { redirect } from "@/i18n/routing";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 

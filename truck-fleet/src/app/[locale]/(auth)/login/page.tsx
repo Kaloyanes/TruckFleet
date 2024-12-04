@@ -3,19 +3,11 @@ import LoginForm from "@/app/[locale]/(auth)/login/components/LoginForm";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { IconPackages } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
-// fkoskfo
-export default function Login(props: { params: Promise<{ locale: string }> }) {
-    const params = use(props.params);
+import { setRequestLocale } from "next-intl/server";
+export default function Login() {
+	const t = useTranslations("LoginPage");
 
-    const {
-        locale
-    } = params;
-
-    setRequestLocale(locale);
-
-    const t = useTranslations("LoginPage");
-    return (
+	return (
 		<>
 			<div className="absolute top-5 right-5 z-50">
 				<ThemeToggle />

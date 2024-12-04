@@ -1,4 +1,4 @@
-import { Link } from "@/lib/navigation";
+import { Link } from "@/i18n/routing";
 
 export default function NotFound() {
 	return (

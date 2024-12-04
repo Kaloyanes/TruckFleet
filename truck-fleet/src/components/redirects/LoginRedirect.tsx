@@ -1,32 +1,27 @@
 "use client";
 import { auth } from "@/lib/firebase";
-import { redirect } from "@/lib/navigation";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Spinner } from "../ui/loading-spinner";
+import { useEffect } from "react";
 
 export default function AuthRedirect() {
 	const [user, loading] = useAuthState(auth);
 
 	const searchParams = useSearchParams();
 
-	if (!loading) {
-		if (user) {
-			const redirectTo = searchParams.get("redirect");
-			if (redirectTo) {
-				redirect(redirectTo);
-				return;
-			}
+	useEffect(() => {
+		if (!loading) {
+			if (user) {
+				const redirectTo = searchParams.get("redirect");
+				if (redirectTo) {
+					redirect(redirectTo);
+				}
 
-			redirect("/dashboard");
+				redirect("/dashboard");
+			}
 		}
-	} else if (loading) {
-		return (
-			<div className="z-100 flex h-screen w-screen items-center justify-center">
-				<Spinner />
-			</div>
-		);
-	}
+	});
 
 	return <></>;
 }

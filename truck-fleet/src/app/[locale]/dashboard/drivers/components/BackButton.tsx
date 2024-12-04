@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import LetterPullup from "@/components/ui/letter-pullup";
-import { usePathname, useRouter } from "@/lib/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
