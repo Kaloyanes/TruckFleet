@@ -33,7 +33,7 @@ export default function AnimatedHover({
 	return (
 		<HoverCard openDelay={150} closeDelay={150}>
 			<HoverCardTrigger>{children}</HoverCardTrigger>
-			<HoverCardContent sideOffset={10} className="w-[20vw] p-6">
+			<HoverCardContent sideOffset={10} className="w-[25vw] p-6">
 				<motion.div
 					variants={dropdownMenuParentVariants}
 					initial="hidden"

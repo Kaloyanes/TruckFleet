@@ -30,6 +30,7 @@ export default function TimeTitle() {
 							style: "decimal",
 							unit: "hour",
 							maximumFractionDigits: 0,
+							minimumIntegerDigits: 2,
 						}}
 					/>
 					:
@@ -39,6 +40,7 @@ export default function TimeTitle() {
 							style: "decimal",
 							unit: "minute",
 							maximumFractionDigits: 0,
+							minimumIntegerDigits: 2,
 						}}
 					/>
 					:
@@ -48,6 +50,7 @@ export default function TimeTitle() {
 							style: "decimal",
 							unit: "second",
 							maximumFractionDigits: 0,
+							minimumIntegerDigits: 2,
 						}}
 					/>
 				</div>
