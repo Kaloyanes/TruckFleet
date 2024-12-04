@@ -1,3 +1,5 @@
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import { DatePickerInvoice } from "../DatePickerInvoice";
 import InvoiceInput from "../InvoiceInput";
@@ -20,6 +22,11 @@ export default function InvoiceDetails() {
 						onSave={invoice.setInvoiceNumber}
 						tabIndex={1}
 					/>
+					{invoice.errors?.invoiceNumber && (
+						<span className="ml-2 text-sm text-destructive">
+							{invoice.errors.invoiceNumber}
+						</span>
+					)}
 				</div>
 				<div className="flex flex-1 items-center gap-1">
 					<h1 className="font-semibold text-muted-foreground">Issue Date:</h1>
@@ -56,6 +63,11 @@ export default function InvoiceDetails() {
 						rows={6}
 						tabIndex={4}
 					/>
+					{invoice.errors?.from && (
+						<span className="ml-2 text-sm text-destructive">
+							{invoice.errors.from}
+						</span>
+					)}
 				</div>
 				<div className="flex-1">
 					<h1 className="font-semibold text-muted-foreground">To:</h1>
@@ -67,6 +79,11 @@ export default function InvoiceDetails() {
 						rows={6}
 						tabIndex={5}
 					/>
+					{invoice.errors?.to && (
+						<span className="ml-2 text-sm text-destructive">
+							{invoice.errors.to}
+						</span>
+					)}
 				</div>
 			</div>
 		</div>

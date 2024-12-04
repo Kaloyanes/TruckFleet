@@ -2,7 +2,7 @@ import { useInvoiceOptionsStore } from "@/stores/Invoices/AddInvoiceOptionsStore
 import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import NumberFlow from "@number-flow/react";
 import { Separator } from "@radix-ui/react-select";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import FormattedNumberInput from "../FormattedNumberInput";
 import InvoiceInput from "../InvoiceInput";
 

@@ -8,7 +8,7 @@ import type { AutoFormInputComponentProps } from "../types";
 import { IconTrash } from "@tabler/icons-react";
 import { Button } from "../../button";
 import { FileUpload } from "../../file-upload";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 export default function AutoFormFile({
 	label,
 	isRequired,

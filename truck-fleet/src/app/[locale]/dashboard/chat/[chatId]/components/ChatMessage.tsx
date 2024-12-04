@@ -22,7 +22,7 @@ import {
 	IconTrash,
 } from "@tabler/icons-react";
 import { deleteDoc, doc } from "firebase/firestore";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";

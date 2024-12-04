@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionConfig, type MotionConfigProps } from "framer-motion";
+import { MotionConfig, type MotionConfigProps } from "motion/react";
 import type React from "react";
 
 export default function MotionConfigProvider({

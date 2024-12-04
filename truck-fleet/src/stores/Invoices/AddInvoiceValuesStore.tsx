@@ -26,6 +26,8 @@ import { persist } from "zustand/middleware";
 import { generateObject } from "ai";
 import { myGemini, myOpenAi } from "@/lib/ai";
 import { openai } from "@ai-sdk/openai";
+import { invoiceSchema } from "@/lib/validators/invoiceValidator";
+import type { ZodError } from "zod";
 
 interface InvoiceValuesStore {
 	invoiceNumber: string | undefined;
@@ -45,6 +47,7 @@ interface InvoiceValuesStore {
 	openSheet: boolean;
 	customers: Customer[];
 	selectedCustomer: Customer | null;
+	errors: { [key: string]: string } | null;
 
 	open: (shouldOpen: boolean) => void;
 	setInvoiceNumber: (value: string) => void;
@@ -70,6 +73,7 @@ interface InvoiceValuesStore {
 		dateFormat: string,
 	) => Promise<void>;
 	setSelectedCustomer: (customer: Customer) => void;
+	validateForm: () => boolean;
 }
 
 const defaultValues = {
@@ -98,6 +102,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 			selectedCustomer: null,
 			from: "",
 			bankDetails: "",
+			errors: null,
 
 			open: (shouldOpen: boolean) => set({ openSheet: shouldOpen }),
 			setDiscount: (discount) => set({ discount }),
@@ -222,10 +227,46 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 
 				set({ isLoading: false, openSheet: false });
 			},
+			validateForm: () => {
+				const state = get();
+				try {
+					invoiceSchema.parse({
+						invoiceNumber: state.invoiceNumber,
+						issueDate: state.issueDate,
+						dueDate: state.dueDate,
+						from: state.from,
+						to: state.to,
+						items: state.items,
+						bankDetails: state.bankDetails,
+						vat: state.vat,
+						note: state.note,
+						discount: state.discount,
+						dealDetails: state.dealDetails,
+					});
+					set({ errors: null });
+					return true;
+				} catch (error) {
+					const zodError = error as ZodError;
+					const errors = zodError.errors.reduce(
+						(acc, curr) => {
+							acc[curr.path.join(".")] = curr.message;
+							return acc;
+						},
+						{} as { [key: string]: string },
+					);
+					set({ errors });
+					return false;
+				}
+			},
 			createInvoice: async (companyId, currencyCode, dateFormat) => {
 				if (!companyId) return;
 
 				const state = get();
+
+				if (!state.validateForm()) {
+					return;
+				}
+
 				const invoiceData: Partial<Invoice> = {
 					invoiceNumber: state.invoiceNumber,
 					issueDate: state.issueDate,

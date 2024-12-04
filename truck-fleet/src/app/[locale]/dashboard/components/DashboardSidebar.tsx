@@ -40,6 +40,7 @@ import {
 	IconChevronRight,
 	IconChevronUp,
 	IconFileText,
+	IconHeartHandshake,
 	IconLayoutSidebar,
 	IconLogout,
 	IconMap2,
@@ -50,8 +51,9 @@ import {
 	IconTruck,
 	IconUser,
 	IconUsersGroup,
+	IconWorldDollar,
 } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
@@ -97,6 +99,11 @@ export default function DashboardSidebar() {
 					title: "trucks",
 					url: "/dashboard/trucks",
 					icon: IconTruck,
+				},
+				{
+					title: "clients",
+					url: "/dashboard/clients",
+					icon: IconWorldDollar,
 				},
 			],
 		},

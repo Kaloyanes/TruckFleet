@@ -33,7 +33,7 @@ import {
 import { code, codes } from "currency-codes-ts";
 import type { CurrencyCode } from "currency-codes-ts/dist/types";
 import { format } from "date-fns";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 
 const AnimatedScrollView = motion.create(ScrollArea);

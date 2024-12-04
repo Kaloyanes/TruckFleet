@@ -3,7 +3,7 @@ import { Spinner } from "@/components/ui/loading-spinner";
 import { chatConverter } from "@/firebase/converters/chatConverter";
 import { auth, db } from "@/lib/firebase";
 import { collection, orderBy, query, where } from "firebase/firestore";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useMemo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {

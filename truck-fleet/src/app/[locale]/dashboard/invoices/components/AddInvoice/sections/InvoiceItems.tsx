@@ -3,7 +3,7 @@ import { useInvoiceOptionsStore } from "@/stores/Invoices/AddInvoiceOptionsStore
 import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import NumberFlow from "@number-flow/react";
 import { IconMinus, IconPlus } from "@tabler/icons-react";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { v4 as uuidv4 } from "uuid";
 import FormattedNumberInput from "../FormattedNumberInput";
 import InvoiceInput from "../InvoiceInput";
@@ -49,6 +49,11 @@ export default function InvoiceItems() {
 							}}
 							onSubmit={(e) => e.preventDefault()}
 						>
+							{invoice.errors?.items && (
+								<span className="text-sm text-destructive">
+									{invoice.errors.items}
+								</span>
+							)}
 							{invoice.items.map((item, index) => (
 								<motion.form
 									onSubmit={(e) => e.preventDefault()}
@@ -66,7 +71,11 @@ export default function InvoiceItems() {
 										filter: "blur(10px)",
 									}}
 									transition={{ duration: 0.2, type: "tween" }}
-									className="group relative grid gap-2 rounded-md py-2 pr-4 font-mono text-sm hover:bg-accent/50"
+									className={`group relative grid gap-2 rounded-md py-2 pr-4 font-mono text-sm ${
+										invoice.errors?.[`items.${index}`]
+											? "border-destructive"
+											: ""
+									} hover:bg-accent/50`}
 									style={{
 										gridTemplateColumns: "repeat(14, minmax(0, 1fr))",
 									}}
@@ -82,6 +91,7 @@ export default function InvoiceItems() {
 												})
 											}
 											tabIndex={20 + index * 3}
+											error={invoice.errors?.[`items.${index}.description`]}
 										/>
 									</div>
 									<div className="col-span-2 flex items-center justify-center gap-2">
@@ -95,6 +105,7 @@ export default function InvoiceItems() {
 											}
 											className="w-full"
 											tabIndex={21 + index * 3}
+											error={invoice.errors?.[`items.${index}.quantity`]}
 										/>
 									</div>
 									<div className="col-span-4 flex justify-center">
@@ -108,6 +119,7 @@ export default function InvoiceItems() {
 											}
 											className="w-full"
 											tabIndex={22 + index * 3}
+											error={invoice.errors?.[`items.${index}.price`]}
 										/>
 									</div>
 									<div className="col-span-3 flex w-full justify-end overflow-hidden">

@@ -4,7 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import useCompanyId from "@/hooks/useCompanyId";
 import { useCompanyStore } from "@/stores/Settings/CompanyStore";
 import { IconDeviceFloppy } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 
 export default function SaveButton() {
 	const { save, hasEdited } = useCompanyStore();

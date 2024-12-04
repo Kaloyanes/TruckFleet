@@ -9,6 +9,7 @@ interface FormattedNumberInputProps {
 	className?: string;
 	decimals?: boolean;
 	tabIndex?: number;
+	error?: string;
 }
 
 export default function FormattedNumberInput({
@@ -17,6 +18,7 @@ export default function FormattedNumberInput({
 	className,
 	decimals = false,
 	tabIndex = 0,
+	error,
 }: FormattedNumberInputProps) {
 	const [displayValue, setDisplayValue] = useState("");
 	const invoiceOptions = useInvoiceOptionsStore();
@@ -71,19 +73,24 @@ export default function FormattedNumberInput({
 	};
 
 	return (
-		<Input
-			type="text"
-			value={displayValue}
-			onChange={handleChange}
-			className={cn(
-				"flex h-6 w-full min-w-0 flex-shrink border-0 border-transparent border-b border-none bg-transparent p-0 px-1 font-mono transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
-				displayValue.length < 1 ? "!w-full bg-dot-white" : "",
-
-				className,
+		<div className="relative">
+			<Input
+				type="text"
+				value={displayValue}
+				onChange={handleChange}
+				className={cn(
+					"flex h-6 w-full min-w-0 flex-shrink border-0 border-transparent border-b border-none bg-transparent p-0 px-1 font-mono transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
+					displayValue.length < 1 ? "!w-full bg-dot-white" : "",
+					className,
+					error ? "border-destructive" : "",
+				)}
+				inputMode="decimal"
+				tabIndex={tabIndex}
+				onKeyDown={onKeyDown}
+			/>
+			{error && (
+				<span className="text-xs text-destructive w-full">{error}</span>
 			)}
-			inputMode="decimal"
-			tabIndex={tabIndex}
-			onKeyDown={onKeyDown}
-		/>
+		</div>
 	);
 }

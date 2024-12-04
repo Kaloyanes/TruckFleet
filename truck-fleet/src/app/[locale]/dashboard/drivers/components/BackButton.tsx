@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import LetterPullup from "@/components/ui/letter-pullup";
 import { usePathname, useRouter } from "@/lib/navigation";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 

@@ -54,7 +54,7 @@ import {
 } from "@tabler/icons-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { DocumentReference } from "firebase/firestore";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";

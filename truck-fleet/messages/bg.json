@@ -40,7 +40,8 @@
     "settings": "Настройки",
     "sign out": "Изход",
     "collapse": "Свий",
-    "invoices": "Фактури"
+    "invoices": "Фактури",
+    "clients": "Клиенти"
   },
   "LocaleSwitcher": {
     "bg": "Български",

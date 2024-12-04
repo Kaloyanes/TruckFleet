@@ -12,7 +12,7 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Combo } from "next/font/google";
 import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import {

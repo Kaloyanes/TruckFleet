@@ -35,7 +35,7 @@ import {
 	uploadBytes,
 	uploadBytesResumable,
 } from "firebase/storage";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";

@@ -40,7 +40,8 @@
     "account": "Account",
     "sign out": "Sign Out",
     "collapse": "Collapse",
-    "invoices": "Invoices"
+    "invoices": "Invoices",
+    "clients": "Clients"
   },
   "LocaleSwitcher": {
     "bg": "Bulgarian",

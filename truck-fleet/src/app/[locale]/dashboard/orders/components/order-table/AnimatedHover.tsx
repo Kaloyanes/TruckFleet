@@ -9,7 +9,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
 import type { Icon, IconProps } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
 
