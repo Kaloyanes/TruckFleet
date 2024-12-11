@@ -223,6 +223,7 @@
     "saveChanges": "Save Changes"
   },
   "InvoiceList": {
+    "invoices": "{invoices, plural, =0 {No Invoices Yet} =1 {Invoice} other {Invoices}}",
     "invoiceNumber": "Invoice Number",
     "status": "Status",
     "dueDate": "Due Date",
@@ -234,7 +235,10 @@
     "delete": "Delete",
     "pending": "Pending",
     "paid": "Paid",
-    "download_pdf": "Download PDF"
+    "overdue": "Overdue",
+    "download_pdf": "Download PDF",
+    "mark_as_paid": "Paid",
+    "mark_as_unpaid": "Unpaid"
   },
   "Calendar": {
     "January": "January",

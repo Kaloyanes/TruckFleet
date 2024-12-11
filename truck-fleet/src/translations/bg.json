@@ -97,7 +97,7 @@
     "companyDetails": "Детайли за компанията",
     "phone": "Телефон",
     "worker": "Работник",
-    "licensePlate": "Регистрационен номер",
+    "licensePlate": "Регистр��ционен номер",
     "model": "Модел",
     "capacity": "Капацитет",
     "email": "Имейл"
@@ -285,6 +285,7 @@
     "currency": "Валута"
   },
   "InvoiceList": {
+    "invoices": "{invoices, plural, =0 {Няма Фактури} =1 {Фактура} other {Фактури}}",
     "invoiceNumber": "Номер на фактура",
     "status": "Статус",
     "dueDate": "Краен срок",
@@ -296,7 +297,10 @@
     "delete": "Изтриване",
     "pending": "В изчакване",
     "paid": "Платена",
-    "download_pdf": "Изтегли PDF"
+    "overdue": "Просрочена",
+    "download_pdf": "Изтегли PDF",
+    "mark_as_paid": "Платена",
+    "mark_as_unpaid": "В изчакване"
   },
   "DeleteInvoiceDialog": {
     "title": "Сигурни ли сте, че искате да изтриете фактура {invoiceNumber}?",
