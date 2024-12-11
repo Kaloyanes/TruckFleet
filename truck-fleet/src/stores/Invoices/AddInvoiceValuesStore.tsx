@@ -11,6 +11,7 @@ import {
 	limit,
 	orderBy,
 	query,
+	updateDoc,
 } from "firebase/firestore";
 import {
 	type StorageReference,
@@ -26,8 +27,10 @@ import { persist } from "zustand/middleware";
 import { generateObject } from "ai";
 import { myGemini, myOpenAi } from "@/lib/ai";
 import { openai } from "@ai-sdk/openai";
-import { invoiceSchema } from "@/lib/validators/invoiceValidator";
+import { createInvoiceSchema } from "@/lib/validators/invoiceValidator";
 import type { ZodError } from "zod";
+import { invoiceConverter } from "@/lib/converters/invoiceConverter";
+import { useInvoiceOptionsStore } from "./AddInvoiceOptionsStore";
 
 interface InvoiceValuesStore {
 	invoiceNumber: string | undefined;
@@ -37,19 +40,21 @@ interface InvoiceValuesStore {
 	to: string;
 	items: InvoiceItem[];
 	logo?: { link: string; ref: StorageReference };
-	vat: number | undefined;
+	vat: number | null;
 	bankDetails: string;
 	note: string;
 	discount: number | undefined;
 	dealDetails: string;
 	isLoading: boolean;
 	tabIndex: number;
-	openSheet: boolean;
+	open: boolean;
 	customers: Customer[];
 	selectedCustomer: Customer | null;
 	errors: { [key: string]: string } | null;
+	isEditing: boolean;
+	editId: string | null;
 
-	open: (shouldOpen: boolean) => void;
+	openSheet: (shouldOpen: boolean) => void;
 	setInvoiceNumber: (value: string) => void;
 	setIssueDate: (date: Date) => void;
 	setDueDate: (date: Date) => void;
@@ -71,40 +76,71 @@ interface InvoiceValuesStore {
 		companyId: string | null,
 		currencyCode: string,
 		dateFormat: string,
+		invoiceId?: string,
 	) => Promise<void>;
 	setSelectedCustomer: (customer: Customer) => void;
-	validateForm: () => boolean;
+	validateForm: (companyId: string) => boolean;
+	loadInvoiceData: (companyId: string, editId: string) => void;
+	startEditing: (companyId: string, invoiceId: string) => Promise<void>;
 }
 
-const defaultValues = {
-	invoiceNumber: undefined,
+let defaultValues: {
+	issueDate: Date;
+	dueDate: Date;
+	from: string;
+	to: string;
+	items: InvoiceItem[];
+	logo?: { link: string; ref: StorageReference };
+	vat: number | null;
+	bankDetails: string;
+	note: string;
+	discount: number | undefined;
+	dealDetails: string;
+	isEditing: boolean;
+	editId: string | null;
+} = {
 	issueDate: new Date(),
 	dueDate: new Date(),
 	to: "",
 	items: [
 		{ id: uuidv4(), description: "", quantity: 0, price: 0 },
 	] as InvoiceItem[],
-	vat: undefined,
+	vat: null,
 	note: "",
 	discount: 0,
 	dealDetails: "",
+	isEditing: false,
+	editId: null,
+	from: "",
+	bankDetails: "",
 };
 
 export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 	persist(
 		(set, get) => ({
 			...defaultValues,
+			invoiceNumber: undefined,
 			logo: undefined,
 			isLoading: true,
-			openSheet: false,
+			open: false,
 			tabIndex: 0,
 			customers: [],
 			selectedCustomer: null,
 			from: "",
 			bankDetails: "",
 			errors: null,
+			isEditing: false,
+			editId: null,
 
-			open: (shouldOpen: boolean) => set({ openSheet: shouldOpen }),
+			openSheet: (shouldOpen: boolean) => {
+				set({ open: shouldOpen });
+
+				if (get().isEditing) {
+					set({ isEditing: false });
+					set({ editId: null });
+					get().reset();
+				}
+			},
 			setDiscount: (discount) => set({ discount }),
 			setInvoiceNumber: (invoiceNumber) => set({ invoiceNumber }),
 			setIssueDate: (issueDate) => set({ issueDate }),
@@ -147,17 +183,57 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 				set((state) => ({
 					items: state.items.filter((item) => item.id !== id),
 				})),
-			reset: () => set({ ...defaultValues, openSheet: false }),
+			reset: () => {
+				set({
+					...defaultValues,
+					open: false,
+					errors: null,
+					customers: [],
+					selectedCustomer: null,
+					isEditing: false,
+					editId: null,
+				});
+
+				// Reset options store as well
+				useInvoiceOptionsStore.getState().resetOptions();
+			},
+			loadInvoiceData: async (companyId, editId) => {
+				const invoicesRef = collection(db, `companies/${companyId}/invoices`);
+				const docSnap = await getDoc(
+					doc(invoicesRef, editId).withConverter(invoiceConverter),
+				);
+
+				if (docSnap.exists()) {
+					const data = docSnap.data() as Invoice;
+					set({
+						invoiceNumber: data.invoiceNumber,
+						issueDate: data.issueDate,
+						dueDate: data.dueDate,
+						from: data.from.replaceAll("|", "\n"),
+						to: data.to.replaceAll("|", "\n"),
+						items: data.items,
+						vat: data.vat ?? null, // Ensure proper VAT handling
+						bankDetails: data.bankDetails.replaceAll("|", "\n"),
+						note: data.note.replaceAll("|", "\n"),
+						discount: data.discount,
+						dealDetails: data.dealDetails,
+					});
+
+					// Update options store with actual VAT value
+					const optionsStore = useInvoiceOptionsStore.getState();
+					optionsStore.update({
+						vat: data.vat !== null && data.vat > 0,
+						discount: data.discount !== undefined && data.discount > 0,
+					});
+				}
+				set({ isLoading: false });
+			},
 			load: async (companyId) => {
 				set({ isLoading: true });
-				// Load data
+
+				// Load company data
 				const docRef = doc(db, "companies", companyId);
-				const customers = collection(
-					db,
-					`companies/${companyId}/customers`,
-				).withConverter(customerConverter);
 				const docSnap = await getDoc(docRef);
-				const customersSnap = await getDocs(customers);
 
 				if (docSnap.exists()) {
 					const profile = docSnap.data() as {
@@ -172,14 +248,23 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 						bankCode: string;
 					};
 
+					const newFrom = `${profile.name}\n${profile.address}\n${profile.country}\n${profile.phone}\n${profile.ownerEmail}\n${profile.vatNumber}`;
+					const newBankDetails = `${profile.bank}\n${profile.iban}\n${profile.bankCode}`;
+
+					// Update both state and defaults
 					set({
-						from: `${profile.name}\n${profile.address}\n${profile.country}\n${profile.phone}\n${profile.ownerEmail}\n${profile.vatNumber}`,
-						bankDetails: `${profile.bank}\n${profile.iban}\n${profile.bankCode}`,
+						from: newFrom,
+						bankDetails: newBankDetails,
 					});
+
+					defaultValues = {
+						...defaultValues,
+						from: newFrom,
+						bankDetails: newBankDetails,
+					};
 				}
 
-				if (get().invoiceNumber === "INV-0001" || !get().invoiceNumber) {
-					// Get last 3 invoices
+				if (!get().invoiceNumber) {
 					try {
 						const invoicesRef = collection(
 							db,
@@ -190,9 +275,8 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 						);
 
 						if (lastInvoicesSnapshot.docs.length === 0) {
-							set({
-								invoiceNumber: "INV-0001",
-							});
+							const newInvoiceNumber = "INV-0001";
+							set({ invoiceNumber: newInvoiceNumber });
 						} else {
 							const lastInvoiceNumbers = lastInvoicesSnapshot.docs.map(
 								(doc) => doc.data().invoiceNumber,
@@ -216,21 +300,27 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 							});
 						}
 					} catch (error) {
-						console.log(error);
+						const newInvoiceNumber = "INV-0001";
+						set({ invoiceNumber: newInvoiceNumber });
 					}
 				}
 
+				// Load customers
+				const customersRef = collection(
+					db,
+					`companies/${companyId}/customers`,
+				).withConverter(customerConverter);
+				const customersSnap = await getDocs(customersRef);
 				if (customersSnap.docs.length > 0) {
-					const customers = customersSnap.docs.map((doc) => doc.data());
-					set({ customers });
+					set({ customers: customersSnap.docs.map((doc) => doc.data()) });
 				}
 
-				set({ isLoading: false, openSheet: false });
+				set({ isLoading: false });
 			},
-			validateForm: () => {
+			validateForm: (companyId: string) => {
 				const state = get();
 				try {
-					invoiceSchema.parse({
+					createInvoiceSchema(companyId).parse({
 						invoiceNumber: state.invoiceNumber,
 						issueDate: state.issueDate,
 						dueDate: state.dueDate,
@@ -238,7 +328,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 						to: state.to,
 						items: state.items,
 						bankDetails: state.bankDetails,
-						vat: state.vat,
+						vat: state.vat ?? null,
 						note: state.note,
 						discount: state.discount,
 						dealDetails: state.dealDetails,
@@ -247,13 +337,16 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 					return true;
 				} catch (error) {
 					const zodError = error as ZodError;
-					const errors = zodError.errors.reduce(
-						(acc, curr) => {
-							acc[curr.path.join(".")] = curr.message;
-							return acc;
-						},
-						{} as { [key: string]: string },
-					);
+					const errors =
+						zodError.errors?.reduce(
+							(acc, curr) => {
+								acc[curr.path.join(".")] = curr.message;
+								return acc;
+							},
+							{} as { [key: string]: string },
+						) || {};
+
+					console.log({ ...errors });
 					set({ errors });
 					return false;
 				}
@@ -263,7 +356,8 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 
 				const state = get();
 
-				if (!state.validateForm()) {
+				if (!state.validateForm(companyId)) {
+					console.log("Validation failed");
 					return;
 				}
 
@@ -275,29 +369,33 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 					to: state.to.replaceAll("\n", "|"),
 					items: state.items,
 					logo: state.logo?.link ?? "", // Only store the URL
-					vat: state.vat,
+					vat: state.vat ?? null, // Ensure VAT is explicitly null when not set
 					bankDetails: state.bankDetails.replaceAll("\n", "|"),
 					note: state.note.replaceAll("\n", "|"),
 					discount: state.discount,
 					dealDetails: state.dealDetails,
 					createdAt: new Date(),
 					status: "pending",
-					total: state.items.reduce(
-						(acc, item) =>
-							acc +
-							item.price * item.quantity +
-							(item.price * item.quantity * (state.vat ?? 0)) / 100,
-						0,
-					),
+					total: state.items.reduce((acc, item) => {
+						const itemTotal = item.price * item.quantity;
+						const vatAmount = state.vat ? (itemTotal * state.vat) / 100 : 0;
+						return acc + itemTotal + vatAmount;
+					}, 0),
 					currencyCode,
 					dateFormat,
 				};
 
 				const invoicesRef = collection(db, `companies/${companyId}/invoices`);
-				await addDoc(invoicesRef, invoiceData);
+
+				if (state.isEditing && state.editId) {
+					await updateDoc(doc(invoicesRef, state.editId), invoiceData);
+				} else {
+					await addDoc(invoicesRef, invoiceData);
+				}
 
 				// Reset the store after successful creation
 				get().reset();
+				set({ invoiceNumber: undefined });
 			},
 			setSelectedCustomer: (customer) => {
 				console.log({ customer });
@@ -306,12 +404,19 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 					to: `${customer.name}\n${customer.address}\n${customer.email}\n${customer.phone}`,
 				});
 			},
+			startEditing: async (companyId: string, invoiceId: string) => {
+				set({ isEditing: true, editId: invoiceId });
+				await get().loadInvoiceData(companyId, invoiceId);
+				set({ open: true });
+			},
 		}),
 		{
 			name: "invoice-values",
 			partialize: (state) => ({
 				logo: state.logo,
 				invoiceNumber: state.invoiceNumber,
+				from: state.from,
+				bankDetails: state.bankDetails,
 			}),
 		},
 	),

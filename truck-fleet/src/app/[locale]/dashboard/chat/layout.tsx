@@ -5,31 +5,25 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import ChatUsers from "./components/ChatUsers";
 
-export default function ChatLayout(
-    props: {
-        params: Promise<{ locale: string }>;
-        children: React.ReactNode;
-    }
-) {
-    const params = use(props.params);
+export default function ChatLayout(props: {
+	params: Promise<{ locale: string }>;
+	children: React.ReactNode;
+}) {
+	const params = use(props.params);
 
-    const {
-        locale
-    } = params;
+	const { locale } = params;
 
-    const {
-        children
-    } = props;
+	const { children } = props;
 
-    setRequestLocale(locale);
+	setRequestLocale(locale);
 
-    const t = useTranslations();
+	const t = useTranslations();
 
-    return (
+	return (
 		<div className="relative flex max-h-screen flex-1 overflow-hidden">
-			<Card className="!bg-sidebar relative max-h-screen w-full flex-[0.2] flex-shrink-0 rounded-none border-0 border-border border-l pl-3  backdrop-saturate-150 transition-all duration-300">
+			<Card className="!bg-sidebar relative max-h-screen w-full flex-[0.2] flex-shrink-0 rounded-none border-0 border-border border-l  backdrop-saturate-150 transition-all duration-300">
 				<CardHeader className="flex px-0">
-					<CardTitle className="flex items-center gap-2">
+					<CardTitle className="flex items-center gap-2 pl-4">
 						<LetterPullup words={t("SidebarLink.chat")} delay={0.1} />
 					</CardTitle>
 				</CardHeader>

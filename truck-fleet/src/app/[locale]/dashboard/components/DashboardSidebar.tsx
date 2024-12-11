@@ -200,6 +200,10 @@ export default function DashboardSidebar() {
 													tooltip={t(item.title as any)}
 													isActive={isGroupActive}
 													className="z-50"
+													transition={{
+														type: "tween",
+														duration: 0.3,
+													}}
 												>
 													<motion.div
 														layout

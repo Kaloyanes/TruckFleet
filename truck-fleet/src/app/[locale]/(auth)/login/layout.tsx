@@ -16,9 +16,6 @@ export default async function LoginLayout(
 	}>,
 ) {
 	const { children } = await props;
-	const locale = useLocale();
-
-	setRequestLocale(locale);
 
 	return (
 		<>

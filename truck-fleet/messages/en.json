@@ -218,7 +218,20 @@
     "overdue": "Overdue",
     "cancel": "Cancel",
     "createInvoice": "Create Invoice",
-    "noResultsFound": "No results found"
+    "noResultsFound": "No results found",
+    "editInvoice": "Edit Invoice",
+    "saveChanges": "Save Changes"
+  },
+  "InvoiceList": {
+    "invoiceNumber": "Invoice Number",
+    "status": "Status",
+    "dueDate": "Due Date",
+    "to": "To",
+    "amount": "Amount",
+    "actions": "Actions",
+    "details": "Details",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "Calendar": {
     "January": "January",
@@ -266,5 +279,18 @@
     "hundred": "hundred",
     "thousand": "thousand",
     "million": "million"
+  },
+  "InvoiceOptions": {
+    "options": "Options",
+    "vat": "VAT",
+    "discount": "Discount",
+    "decimals": "Decimals",
+    "dealDetails": "Deal Details",
+    "numberInWords": "Number in Words",
+    "yes": "Yes",
+    "no": "No",
+    "dateFormat": "Date Format",
+    "searchCurrency": "Search currency",
+    "currency": "Currency"
   }
 }

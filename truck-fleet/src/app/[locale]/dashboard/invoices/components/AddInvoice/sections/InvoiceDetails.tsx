@@ -21,6 +21,7 @@ export default function InvoiceDetails() {
 						initialValue={invoice.invoiceNumber}
 						onSave={invoice.setInvoiceNumber}
 						tabIndex={1}
+						error={invoice.errors?.invoiceNumber}
 					/>
 					{invoice.errors?.invoiceNumber && (
 						<span className="ml-2 text-sm text-destructive">

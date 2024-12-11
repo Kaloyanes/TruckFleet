@@ -2,7 +2,7 @@ import type { Format } from "@number-flow/react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type InvoiceOptions = {
+export type InvoiceOptions = {
 	dateFormat: string;
 	currency: {
 		code: string;
@@ -13,6 +13,8 @@ type InvoiceOptions = {
 	vatNumbers: boolean;
 	discount: boolean;
 	decimals: boolean;
+	showDealDetails: boolean;
+	showNumberInWords: boolean;
 };
 
 type InvoiceOptionsStore = {
@@ -40,6 +42,8 @@ const defaultOptions: InvoiceOptions = {
 	vatNumbers: false,
 	discount: false,
 	decimals: false,
+	showDealDetails: false,
+	showNumberInWords: true,
 };
 
 export const useInvoiceOptionsStore = create<InvoiceOptionsStore>()(

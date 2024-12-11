@@ -47,7 +47,7 @@ export default function ChatUsers() {
 	}
 
 	return (
-		<ScrollArea className="h-[calc(100vh-130px)] w-full">
+		<ScrollArea className="h-[calc(100vh-130px)] w-full pl-3">
 			{chats.map((chat, index) => (
 				<motion.div
 					key={chat.id}

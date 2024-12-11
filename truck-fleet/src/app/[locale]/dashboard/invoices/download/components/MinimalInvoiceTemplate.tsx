@@ -12,8 +12,23 @@ import type { Invoice } from "@/types/invoice";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { convert } from "@/lib/utils";
+import type { InvoiceOptions } from "@/stores/Invoices/AddInvoiceOptionsStore";
 Font.register({
 	family: "Manrope",
+	src: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
+});
+
+Font.register({
+	family: "Manrope",
+	fonts: [
+		{
+			src: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
+		},
+		{
+			src: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
+			fontWeight: 700,
+		},
+	],
 	src: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
 });
 
@@ -30,6 +45,7 @@ const styles = StyleSheet.create({
 	logo: {
 		width: 75,
 		height: 75,
+		borderRadius: 8,
 	},
 	invoiceInfo: {
 		flexDirection: "row",
@@ -71,10 +87,12 @@ const styles = StyleSheet.create({
 	},
 	itemsTable: {
 		marginBottom: 30,
+		flex: 1,
 	},
 	itemRow: {
 		flexDirection: "row",
-		paddingVertical: 8,
+		padding: 8,
+		backgroundColor: "#f5f5f5",
 	},
 	descriptionCol: {
 		flex: 5,
@@ -126,12 +144,21 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		whiteSpace: "pre-wrap",
 	},
+	dealDetails: {
+		fontSize: 12,
+		marginTop: 20,
+		// padding: 10,
+		paddingBottom: 20,
+	},
 });
 
-export const MyDocument = ({
+export const MinimalInvoiceTemplate = ({
 	invoice,
 	t,
-}: { invoice: Invoice; t: (key: string) => string }) => {
+}: {
+	invoice: Invoice;
+	t: (key: string) => string;
+}) => {
 	const formatCurrency = (amount: number) => {
 		return new Intl.NumberFormat("en-US", {
 			style: "currency",
@@ -190,6 +217,14 @@ export const MyDocument = ({
 					</View>
 				</View>
 
+				{/* Deal Details */}
+				{invoice.dealDetails && (
+					<View style={styles.dealDetails}>
+						<Text style={styles.label}>Deal Details:</Text>
+						<Text style={styles.value}>{invoice.dealDetails}</Text>
+					</View>
+				)}
+
 				{/* Items Table */}
 				<View style={styles.itemsTable}>
 					<View style={styles.itemsHeader}>
@@ -201,48 +236,41 @@ export const MyDocument = ({
 						<Text style={[styles.totalCol, styles.label]}>Total</Text>
 					</View>
 
-					{invoice.items.map((item, index) => (
-						<View key={item.id} style={styles.itemRow}>
-							<Text style={styles.descriptionCol}>{item.description}</Text>
-							<View
-								style={[
-									styles.quantityCol,
-									{ display: "flex", flexDirection: "column", gap: 10 },
-								]}
-							>
-								<Text style={styles.quantityCol}>{item.quantity}</Text>
-								<Text
-									style={[styles.quantityCol, { textTransform: "capitalize" }]}
+					<View style={{ overflow: "hidden", borderRadius: 8 }}>
+						{invoice.items.map((item, index) => (
+							<View key={item.id} style={styles.itemRow}>
+								<Text style={styles.descriptionCol}>{item.description}</Text>
+								<View
+									style={[
+										styles.quantityCol,
+										{ display: "flex", flexDirection: "column", gap: 10 },
+									]}
 								>
-									{convert(item.quantity, t)}
-								</Text>
+									<Text style={styles.quantityCol}>{item.quantity}</Text>
+								</View>
+								<View
+									style={[
+										styles.priceCol,
+										{ display: "flex", flexDirection: "column", gap: 10 },
+									]}
+								>
+									<Text style={styles.priceCol}>
+										{formatCurrency(item.price)}
+									</Text>
+								</View>
+								<View
+									style={[
+										styles.totalCol,
+										{ display: "flex", flexDirection: "column", gap: 10 },
+									]}
+								>
+									<Text style={[styles.totalCol, { fontWeight: "bold" }]}>
+										{formatCurrency(item.price * item.quantity)}
+									</Text>
+								</View>
 							</View>
-							<View
-								style={[
-									styles.priceCol,
-									{ display: "flex", flexDirection: "column", gap: 10 },
-								]}
-							>
-								<Text style={styles.priceCol}>
-									{formatCurrency(item.price)}
-								</Text>
-								<Text style={styles.priceCol}>{convert(item.price, t)}</Text>
-							</View>
-							<View
-								style={[
-									styles.totalCol,
-									{ display: "flex", flexDirection: "column", gap: 10 },
-								]}
-							>
-								<Text style={styles.totalCol}>
-									{formatCurrency(item.price * item.quantity)}
-								</Text>
-								<Text style={styles.totalCol}>
-									{convert(item.price * item.quantity, t)}
-								</Text>
-							</View>
-						</View>
-					))}
+						))}
+					</View>
 				</View>
 
 				{/* Totals */}
@@ -260,9 +288,6 @@ export const MyDocument = ({
 								}}
 							>
 								<Text style={styles.value}>{formatCurrency(subtotal)}</Text>
-								<Text style={[styles.value, { textTransform: "capitalize" }]}>
-									{convert(subtotal, t)}
-								</Text>
 							</View>
 						</View>
 						{invoice.vat && invoice.vat > 0 && (
@@ -277,9 +302,6 @@ export const MyDocument = ({
 									}}
 								>
 									<Text style={styles.value}>{formatCurrency(vatAmount)}</Text>
-									<Text style={[styles.value, { textTransform: "capitalize" }]}>
-										{convert(vatAmount, t)}
-									</Text>
 								</View>
 							</View>
 						)}
@@ -297,14 +319,11 @@ export const MyDocument = ({
 									<Text style={styles.value}>
 										-{formatCurrency(invoice.discount)}
 									</Text>
-									<Text style={[styles.value, { textTransform: "capitalize" }]}>
-										{convert(invoice.discount, t)}
-									</Text>
 								</View>
 							</View>
 						)}
 						<View style={[styles.totalRow, styles.finalTotal]}>
-							<Text style={styles.label}>Total:</Text>
+							<Text style={[styles.label, { fontSize: 15 }]}>Total:</Text>
 							<View
 								style={{
 									display: "flex",
@@ -313,8 +332,17 @@ export const MyDocument = ({
 									alignItems: "flex-end",
 								}}
 							>
-								<Text style={styles.value}>{formatCurrency(total)}</Text>
-								<Text style={[styles.value, { textTransform: "capitalize" }]}>
+								<Text
+									style={[styles.value, { fontSize: 25, fontWeight: "bold" }]}
+								>
+									{formatCurrency(total)}
+								</Text>
+								<Text
+									style={[
+										styles.value,
+										{ textTransform: "capitalize", fontWeight: "extrabold" },
+									]}
+								>
 									{convert(total, t)}
 								</Text>
 							</View>

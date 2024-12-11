@@ -2,15 +2,17 @@
 import { Button } from "@/components/ui/button";
 import { InputWithIcon } from "@/components/ui/input-with-icon";
 import { IconFilter, IconPlus, IconSearch } from "@tabler/icons-react";
-import { AddInvoice } from "./components/AddInvoice/AddInvoice";
 import { InvoiceTable } from "./components/InvoiceTable/InvoiceTable";
 import { useInvoicesStore } from "@/stores/Invoices/InvoicesStore";
 import { useEffect } from "react";
 import useCompanyId from "@/hooks/useCompanyId";
+import { AddInvoice } from "./components/AddInvoice/AddInvoice";
 
 export default function InvoicesPage() {
-	const { invoices, loadInvoices, isLoading } = useInvoicesStore();
+	const { invoices, loadInvoices, isLoading, setFilteringText } =
+		useInvoicesStore();
 	const { companyId } = useCompanyId();
+
 	useEffect(() => {
 		if (companyId) loadInvoices(companyId);
 	}, [loadInvoices, companyId]);
@@ -26,6 +28,7 @@ export default function InvoicesPage() {
 						position="leading"
 						inputProps={{
 							placeholder: "Search",
+							onInput: (e) => setFilteringText(e.currentTarget.value),
 						}}
 					/>
 					<Button

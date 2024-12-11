@@ -6,6 +6,7 @@ import {
 	useReactTable,
 	getPaginationRowModel,
 	getSortedRowModel,
+	getFilteredRowModel,
 	type SortingState,
 } from "@tanstack/react-table";
 import {
@@ -18,8 +19,9 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { columns } from "./columns";
+import { InvoiceColumns } from "./InvoiceColumns";
 import type { Invoice } from "@/types/invoice";
+import { useInvoicesStore } from "@/stores/Invoices/InvoicesStore";
 
 interface InvoiceTableProps {
 	data: Invoice[];
@@ -27,16 +29,26 @@ interface InvoiceTableProps {
 
 export function InvoiceTable({ data }: InvoiceTableProps) {
 	const [sorting, setSorting] = useState<SortingState>([]);
+	const { filteringText } = useInvoicesStore();
 
 	const table = useReactTable({
 		data,
-		columns,
+		columns: InvoiceColumns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
 		onSortingChange: setSorting,
 		state: {
 			sorting,
+			globalFilter: filteringText,
+		},
+		globalFilterFn: (row, columnId, filterValue) => {
+			const value = row.getValue(columnId);
+			if (typeof value === "string") {
+				return value.toLowerCase().includes(filterValue.toLowerCase());
+			}
+			return false;
 		},
 	});
 
@@ -77,7 +89,7 @@ export function InvoiceTable({ data }: InvoiceTableProps) {
 						) : (
 							<TableRow>
 								<TableCell
-									colSpan={columns.length}
+									colSpan={InvoiceColumns.length}
 									className="h-24 text-center"
 								>
 									No results.

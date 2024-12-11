@@ -14,7 +14,7 @@ export type Invoice = {
   to: string;
   items: InvoiceItem[];
   logo?: string;
-  vat?: number;
+  vat: number | null;
   bankDetails: string;
   note: string;
   discount?: number;

@@ -206,7 +206,7 @@
     "file": "Файл"
   },
   "LocationDialog": {
-    "title": "Изпра��ане на местоположение",
+    "title": "Изпращане на местоположение",
     "latitude": "Географска ширина",
     "longitude": "Географска дължина",
     "send": "Изпрати местоположение"
@@ -220,7 +220,9 @@
     "paid": "Платени",
     "overdue": "Просрочени",
     "pickDate": "Изберете дата",
-    "noResultsFound": "Няма намерени резултати"
+    "noResultsFound": "Няма намерени резултати",
+    "editInvoice": "Редактиране на фактура",
+    "saveChanges": "Запази промените"
   },
   "Calendar": {
     "January": "Януари",
@@ -268,5 +270,29 @@
     "hundred": "сто",
     "thousand": "хиляди",
     "million": "милиона"
+  },
+  "InvoiceOptions": {
+    "options": "Опции",
+    "vat": "ДДС",
+    "discount": "Отстъпка",
+    "decimals": "Десетични",
+    "dealDetails": "Детайли за Сделката",
+    "numberInWords": "Число с Думи",
+    "yes": "Да",
+    "no": "Не",
+    "dateFormat": "Формат на Датата",
+    "searchCurrency": "Търси валута",
+    "currency": "Валута"
+  },
+  "InvoiceList": {
+    "invoiceNumber": "Номер на фактура",
+    "status": "Статус",
+    "dueDate": "Краен срок",
+    "to": "До",
+    "amount": "Сума",
+    "actions": "Действия",
+    "details": "Детайли",
+    "edit": "Редактиране",
+    "delete": "Изтриване"
   }
 }

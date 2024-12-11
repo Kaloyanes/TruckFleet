@@ -9,14 +9,16 @@ import ReactPDF, {
 	renderToBuffer,
 	renderToStream,
 } from "@react-pdf/renderer";
-import { MyDocument } from "./components/InvoiceTemplate";
+import { MinimalInvoiceTemplate } from "./components/MinimalInvoiceTemplate";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { useInvoiceOptionsStore } from "@/stores/Invoices/AddInvoiceOptionsStore";
 
 export async function GET(request: NextRequest) {
 	const params = request.nextUrl.searchParams;
 	const id = params.get("id");
 	const companyId = params.get("companyId");
+	const template = params.get("template") ?? "minimal";
 
 	if (!id || !companyId) {
 		return Response.error();
@@ -32,7 +34,7 @@ export async function GET(request: NextRequest) {
 
 	const invoice = docData.data() as Invoice;
 	const blob = await pdf(
-		<MyDocument invoice={invoice} t={t as any} />,
+		<MinimalInvoiceTemplate invoice={invoice} t={t as any} />,
 	).toBlob();
 
 	if (!blob) {
@@ -44,7 +46,7 @@ export async function GET(request: NextRequest) {
 	return new NextResponse(blob, {
 		headers: {
 			"Content-Type": "application/pdf",
-			// "Content-Disposition": `attachment; filename=invoice-${id}.pdf`,
+			"Content-Disposition": `attachment; filename=${invoice.invoiceNumber}.pdf`,
 		},
 	});
 }

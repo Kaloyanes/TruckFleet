@@ -29,12 +29,14 @@ import InvoiceBankDetails from "./sections/InvoiceBankDetails";
 import InvoiceDetails from "./sections/InvoiceDetails";
 import InvoiceItems from "./sections/InvoiceItems";
 import InvoiceTotals from "./sections/InvoiceTotals";
+import { useSearchParam } from "react-use";
+import { useSearchParams } from "next/navigation";
 
 export function AddInvoice() {
 	const { companyId } = useCompanyId();
 	const t = useTranslations("InvoicesPage");
 	const invoiceOptions = useInvoiceOptionsStore();
-	const { load, openSheet, open, isLoading, createInvoice } =
+	const { load, open, openSheet, isLoading, createInvoice, isEditing } =
 		useInvoiceValuesStore();
 
 	useEffect(() => {
@@ -50,7 +52,7 @@ export function AddInvoice() {
 	}, [companyId, load]);
 
 	return (
-		<Sheet open={openSheet} onOpenChange={open}>
+		<Sheet open={open} onOpenChange={openSheet}>
 			<Tooltip delayDuration={300}>
 				<TooltipTrigger asChild>
 					<SheetTrigger asChild>
@@ -72,7 +74,9 @@ export function AddInvoice() {
 					tabIndex={-51}
 					className="flex flex-row items-center gap-2"
 				>
-					<SheetTitle className="w-full flex-1">{t("newInvoice")}</SheetTitle>
+					<SheetTitle className="w-full flex-1">
+						{isEditing ? t("editInvoice") : t("newInvoice")}
+					</SheetTitle>
 					<AddInvoiceOptions />
 					<SheetCloseButton tabIndex={-3} className="static" />
 				</SheetHeader>
@@ -107,11 +111,10 @@ export function AddInvoice() {
 								invoiceOptions.options.dateFormat,
 							)
 						}
-						className="min-w-20 max-w-32"
+						className="min-w-20 max-w-48"
 						type="submit"
 					>
-						{/* Save */}
-						{t("createInvoice")}
+						{isEditing ? t("saveChanges") : t("createInvoice")}
 					</Button>
 				</SheetFooter>
 			</SheetContent>

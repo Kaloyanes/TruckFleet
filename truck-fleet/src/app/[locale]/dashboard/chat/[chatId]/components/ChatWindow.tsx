@@ -91,7 +91,7 @@ export default function ChatWindow() {
 
 	return (
 		<>
-			<div className="absolute top-0 z-50 flex h-16 w-full items-center justify-between border-sidebar-border border-b bg-sidebar px-4">
+			<div className="absolute top-0 z-50 flex h-16 w-full items-center justify-between border-sidebar-border border-b bg-sidebar px-3">
 				<div className="flex w-full items-center gap-3">
 					<div className="relative">
 						<Image
@@ -146,7 +146,7 @@ export default function ChatWindow() {
 				data-chat-container
 				className="h-screen pt-20"
 			>
-				<div className="space-y-4 px-4 pb-14">
+				<div className="space-y-4 pb-14 px-2">
 					{messages.map((message: Message, index: number) => {
 						return (
 							<div key={message.id}>

@@ -23,7 +23,9 @@ interface InvoicesStore {
 	hasMore: boolean;
 	lastDoc: QueryDocumentSnapshot | null;
 	unsubscribe: Unsubscribe | null;
+	filteringText: string;
 
+	setFilteringText: (text: string) => void;
 	loadInvoices: (
 		companyId: string,
 		status?: Invoice["status"],
@@ -46,6 +48,11 @@ export const useInvoicesStore = create<InvoicesStore>((set, get) => ({
 	hasMore: true,
 	lastDoc: null,
 	unsubscribe: null,
+	filteringText: "",
+
+	setFilteringText: (text: string) => {
+		set({ filteringText: text });
+	},
 
 	loadInvoices: async (companyId, status) => {
 		// Cleanup existing subscription if any

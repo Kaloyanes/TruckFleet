@@ -43,7 +43,7 @@ export default function ForgotPasswordDialog() {
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger className="place-self-end">
+			<DialogTrigger asChild className="place-self-end">
 				<Button type="button" variant={"link"}>
 					{t("forgot_password_q")}
 				</Button>

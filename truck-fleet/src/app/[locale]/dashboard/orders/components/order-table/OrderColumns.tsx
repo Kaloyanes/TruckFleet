@@ -38,6 +38,7 @@ import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import {
 	type Icon,
 	IconCalendarFilled,
+	IconDotsVertical,
 	IconEdit,
 	IconFilter,
 	IconListDetails,
@@ -643,7 +644,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				<DropdownMenu>
 					<DropdownMenuTrigger>
 						<Button size={"icon"} variant={"outline"}>
-							<IconMenu2 />
+							<IconDotsVertical />
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent className="w-[150px]" align="end">
@@ -654,7 +655,10 @@ export const OrderColumns: ColumnDef<Order>[] = [
 						>
 							{actions.map((action, index) => {
 								return (
-									<motion.div key={index} variants={dropdownMenuVariants}>
+									<motion.div
+										key={action.label}
+										variants={dropdownMenuVariants}
+									>
 										{action.type === "label" && (
 											<DropdownMenuLabel>
 												{t(action.label as any)}
