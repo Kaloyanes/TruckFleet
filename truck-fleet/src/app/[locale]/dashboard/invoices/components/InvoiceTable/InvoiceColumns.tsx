@@ -61,7 +61,7 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 		cell: ({ getValue }) => {
 			const t = useTranslations("InvoiceList");
 			const status = getValue() as string;
-			return <span className="text-sm capitalize">{t(status)}</span>;
+			return <span className="text-sm capitalize">{t(status as any)}</span>;
 		},
 	},
 	{
