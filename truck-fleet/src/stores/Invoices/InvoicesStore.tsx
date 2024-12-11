@@ -14,6 +14,7 @@ import {
 	type QueryDocumentSnapshot,
 	onSnapshot,
 	type Unsubscribe,
+	deleteDoc,
 } from "firebase/firestore";
 import { create } from "zustand";
 
@@ -24,8 +25,13 @@ interface InvoicesStore {
 	lastDoc: QueryDocumentSnapshot | null;
 	unsubscribe: Unsubscribe | null;
 	filteringText: string;
+	openDeleteDialog: boolean;
+	selectedInvoice: Invoice | null;
 
+	setInvoice: (invoice: Invoice) => void;
+	setDialogVisibility: (value: boolean) => void;
 	setFilteringText: (text: string) => void;
+	deleteInvoice: (companyId: string) => Promise<void>;
 	loadInvoices: (
 		companyId: string,
 		status?: Invoice["status"],
@@ -49,11 +55,32 @@ export const useInvoicesStore = create<InvoicesStore>((set, get) => ({
 	lastDoc: null,
 	unsubscribe: null,
 	filteringText: "",
+	openDeleteDialog: false,
+	selectedInvoice: null,
 
+	setDialogVisibility: (value: boolean) => {
+		set({ openDeleteDialog: value });
+	},
+	setInvoice: (invoice: Invoice) => {
+		set({ selectedInvoice: invoice });
+	},
+	deleteInvoice: async (companyId: string) => {
+		const { selectedInvoice } = get();
+
+		if (!selectedInvoice) return;
+
+		const invoiceRef = doc(
+			db,
+			`companies/${companyId}/invoices/${selectedInvoice.id}`,
+		);
+
+		await deleteDoc(invoiceRef);
+
+		set({ openDeleteDialog: false, selectedInvoice: null });
+	},
 	setFilteringText: (text: string) => {
 		set({ filteringText: text });
 	},
-
 	loadInvoices: async (companyId, status) => {
 		// Cleanup existing subscription if any
 		const unsubscribed = get().unsubscribe;

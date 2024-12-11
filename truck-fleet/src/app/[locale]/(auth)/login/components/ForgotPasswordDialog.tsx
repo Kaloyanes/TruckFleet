@@ -55,7 +55,7 @@ export default function ForgotPasswordDialog() {
 				{/* <Input type="email" placeholder="Email" minLength={1} /> */}
 				<AutoForm formSchema={schema} onSubmit={sendResetEmail}>
 					<DialogFooter className="gap-2 flex-row justify-end">
-						<DialogClose className="">
+						<DialogClose asChild className="">
 							<Button type="button" variant="secondary" className="w-32">
 								{t("cancel")}
 							</Button>

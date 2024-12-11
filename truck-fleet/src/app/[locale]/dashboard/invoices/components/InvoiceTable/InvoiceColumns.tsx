@@ -34,6 +34,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/dropdownMenuVariants";
 import { useTranslations } from "next-intl";
+import { useInvoicesStore } from "@/stores/Invoices/InvoicesStore";
 
 export const InvoiceColumns: ColumnDef<Invoice>[] = [
 	{
@@ -58,7 +59,9 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 			return <span>{t("status")}</span>;
 		},
 		cell: ({ getValue }) => {
-			return <span className="text-sm capitalize">{getValue() as string}</span>;
+			const t = useTranslations("InvoiceList");
+			const status = getValue() as string;
+			return <span className="text-sm capitalize">{t(status)}</span>;
 		},
 	},
 	{
@@ -119,8 +122,7 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 		cell: ({ row }) => {
 			const invoiceData = row.original;
 			const { companyId } = useCompanyId();
-			const { setInvoice, openEditSheet, openDeleteDialog } =
-				useInvoiceValuesStore();
+			const { setDialogVisibility, setInvoice } = useInvoicesStore();
 			const t = useTranslations("InvoiceList");
 
 			const actions = [
@@ -159,8 +161,8 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 					label: t("delete"),
 					icon: IconTrash,
 					onClick: () => {
+						setDialogVisibility(true);
 						setInvoice(invoiceData);
-						openDeleteDialog(true);
 					},
 				},
 			];

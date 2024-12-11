@@ -231,7 +231,9 @@
     "actions": "Actions",
     "details": "Details",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "pending": "Pending",
+    "paid": "Paid"
   },
   "Calendar": {
     "January": "January",
@@ -292,5 +294,12 @@
     "dateFormat": "Date Format",
     "searchCurrency": "Search currency",
     "currency": "Currency"
+  },
+  "DeleteInvoiceDialog": {
+    "title": "Are you sure you want to delete invoice {invoiceNumber}?",
+    "description": "You can't undo this action.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "toastTitle": "Invoice deleted"
   }
 }

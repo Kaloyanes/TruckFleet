@@ -34,12 +34,7 @@ export default function LocaleSwitcher() {
 					<DropdownMenuItem
 						key={locale}
 						onClick={() => {
-							startTransition(() => {
-								redirect({
-									href: pathname,
-									locale,
-								});
-							});
+							router.replace(`/${locale}${pathname}`);
 						}}
 					>
 						{t(locale as "bg" | "en")}
