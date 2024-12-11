@@ -105,6 +105,7 @@ export function InvoiceTable({ data }: InvoiceTableProps) {
 					size="sm"
 					onClick={() => table.previousPage()}
 					disabled={!table.getCanPreviousPage()}
+					className="min-w-24"
 				>
 					Previous
 				</Button>
@@ -113,6 +114,7 @@ export function InvoiceTable({ data }: InvoiceTableProps) {
 					size="sm"
 					onClick={() => table.nextPage()}
 					disabled={!table.getCanNextPage()}
+					className="min-w-24"
 				>
 					Next
 				</Button>
