@@ -20,8 +20,7 @@ import {
 	IconDownload,
 	IconEdit,
 	IconTrash,
-	IconMenu2,
-	IconListDetails,
+	IconCreditCard,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import useCompanyId from "@/hooks/useCompanyId";
@@ -122,9 +121,23 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 		cell: ({ row }) => {
 			const invoiceData = row.original;
 			const { companyId } = useCompanyId();
-			const { setDialogVisibility, setInvoice } = useInvoicesStore();
+			const { setDialogVisibility, setInvoice, updateInvoiceStatus } =
+				useInvoicesStore();
 			const t = useTranslations("InvoiceList");
 			const router = useRouter();
+			const dateNow = new Date(Date.now());
+
+			// biome-ignore lint/correctness/useExhaustiveDependencies: <It will create infinite rerendering>
+			useEffect(() => {
+				if (
+					dateNow > invoiceData.dueDate &&
+					companyId &&
+					invoiceData.status !== "paid" &&
+					invoiceData.status !== "overdue"
+				) {
+					updateInvoiceStatus(companyId, invoiceData.id, "overdue");
+				}
+			}, [companyId, invoiceData.dueDate, invoiceData.id, updateInvoiceStatus]);
 
 			const actions = [
 				{
@@ -134,15 +147,41 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 				{
 					type: "seperator",
 				},
+				...(invoiceData.status === "pending" || invoiceData.status === "overdue"
+					? [
+							{
+								type: "button",
+								label: t("mark_as_paid"),
+								icon: IconCreditCard,
+								onClick: () => {
+									if (companyId)
+										updateInvoiceStatus(companyId, invoiceData.id, "paid");
+								},
+							},
+						]
+					: []),
+				...(invoiceData.status === "paid"
+					? [
+							{
+								type: "button",
+								label: t("mark_as_unpaid"),
+								icon: IconCreditCard,
+								onClick: () => {
+									if (companyId)
+										updateInvoiceStatus(
+											companyId,
+											invoiceData.id,
+											dateNow > invoiceData.dueDate ? "overdue" : "pending",
+										);
+								},
+							},
+						]
+					: []),
 				{
 					type: "button",
 					label: t("download_pdf"),
 					icon: IconDownload,
 					onClick: () => {
-						// row.toggleSelected(!row.getIsSelected());
-						// router.push("/dashboard/invoices/download", {
-						// 	query: { id: invoiceData.id, companyId: companyId },
-						// });
 						router.push({
 							pathname: "/dashboard/invoices/download",
 							query: { id: invoiceData.id, companyId: companyId },
@@ -177,7 +216,7 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 
 			return (
 				<DropdownMenu>
-					<DropdownMenuTrigger>
+					<DropdownMenuTrigger asChild>
 						<Button size="icon" variant="outline">
 							<IconDotsVertical />
 						</Button>
