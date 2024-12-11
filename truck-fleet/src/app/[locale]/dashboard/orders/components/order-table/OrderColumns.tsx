@@ -296,7 +296,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 					icon: IconPhone,
 					value: driver.phone,
 					onClick() {
-						handleCopy(driver.phone);
+						if (driver.phone) handleCopy(driver.phone);
 					},
 				},
 			];

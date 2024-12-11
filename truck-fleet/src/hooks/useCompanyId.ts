@@ -24,7 +24,7 @@ export default function useCompanyId() {
     if (companyId) {
       setCompanyRef(doc(db, "companies", companyId));
     }
-  }, [profile, user]);
+  }, [profile, user, companyId]);
 
   return {
     companyId,

@@ -83,7 +83,13 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
 		if (parsedValues.success) {
 			onParsedValuesChange?.(parsedValues.data);
 		}
-	}, [valuesString]);
+	}, [
+		valuesString,
+		formSchema,
+		onParsedValuesChange,
+		onValuesChangeProp,
+		values,
+	]);
 
 	const renderChildren =
 		typeof children === "function"

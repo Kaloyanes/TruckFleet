@@ -20,6 +20,7 @@ export default function SignOutPage() {
 		});
 	}
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		signOutFromAccount();
 	}, []);

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import NumberFlow from "@number-flow/react";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { format } from "date-fns";
 import {
 	DropdownMenu,
@@ -188,28 +188,32 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 							initial="hidden"
 							animate="visible"
 						>
-							{actions.map((action) => (
-								<motion.div key={action.icon} variants={dropdownMenuVariants}>
-									{action.type === "label" && (
-										<DropdownMenuLabel>{action.label}</DropdownMenuLabel>
-									)}
-									{action.type === "seperator" && <DropdownMenuSeparator />}
-									{action.type === "button" && (
-										<DropdownMenuItem
-											onClick={action.onClick}
-											className={cn(
-												"flex justify-between gap-2",
-												action.danger
-													? "border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
-													: "",
-											)}
-										>
-											{action.label}
-											{action.icon && <action.icon />}
-										</DropdownMenuItem>
-									)}
-								</motion.div>
-							))}
+							{actions.map((action) => {
+								const id = useId();
+
+								return (
+									<motion.div key={id} variants={dropdownMenuVariants}>
+										{action.type === "label" && (
+											<DropdownMenuLabel>{action.label}</DropdownMenuLabel>
+										)}
+										{action.type === "seperator" && <DropdownMenuSeparator />}
+										{action.type === "button" && (
+											<DropdownMenuItem
+												onClick={action.onClick}
+												className={cn(
+													"flex justify-between gap-2",
+													action.danger
+														? "border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+														: "",
+												)}
+											>
+												{action.label}
+												{action.icon && <action.icon />}
+											</DropdownMenuItem>
+										)}
+									</motion.div>
+								);
+							})}
 						</motion.div>
 					</DropdownMenuContent>
 				</DropdownMenu>

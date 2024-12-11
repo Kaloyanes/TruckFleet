@@ -31,7 +31,7 @@ export default function TypingAnimation({
 		return () => {
 			clearInterval(typingEffect);
 		};
-	}, [duration, i]);
+	}, [duration, i, text.length, text.substring]);
 
 	return (
 		<h1
