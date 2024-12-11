@@ -15,8 +15,6 @@ export default function InvoicesLayout(props: {
 
 	const { children } = props;
 
-	const t = useTranslations("InvoicesPage");
-
 	return (
 		<>
 			<DeleteInvoiceDialog />
@@ -26,9 +24,9 @@ export default function InvoicesLayout(props: {
 				}
 			>
 				<div className="mx-5 flex items-center gap-4">
-					<InfoCard amount={250000} description={"open"} invoicesCount={5} />
-					<InfoCard amount={1500} description={"overdue"} invoicesCount={5} />
-					<InfoCard amount={250000} description={"paid"} invoicesCount={5} />
+					<InfoCard amount={0} description={"pending"} invoicesCount={5} />
+					<InfoCard amount={0} description={"overdue"} invoicesCount={5} />
+					<InfoCard amount={0} description={"paid"} invoicesCount={5} />
 
 					<Card className="min-h-40 flex-1">
 						<CardHeader>
