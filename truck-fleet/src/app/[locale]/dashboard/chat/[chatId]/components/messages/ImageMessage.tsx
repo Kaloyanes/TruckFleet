@@ -4,7 +4,7 @@ import { Dialog, DialogClose } from "@/components/ui/dialog";
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { IconX } from "@tabler/icons-react";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 
 interface ImageMessageProps {
 	message: Message;

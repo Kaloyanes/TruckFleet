@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
-import { db, storage } from "@/lib/firebase";
+import { db, storage } from "@/lib/Firebase";
 import type { DocumentReference } from "firebase/firestore";
 import type { Order } from "@/types/orders";
 import { z } from "zod";

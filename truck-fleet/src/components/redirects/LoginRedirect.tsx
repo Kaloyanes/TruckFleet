@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/Firebase";
 import { redirect, useSearchParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Spinner } from "../ui/loading-spinner";

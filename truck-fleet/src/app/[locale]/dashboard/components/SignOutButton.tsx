@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/Firebase";
 import { signOut } from "firebase/auth";
 import { Button } from "../../../../components/ui/button";
 import { useToast } from "../../../../components/ui/use-toast";

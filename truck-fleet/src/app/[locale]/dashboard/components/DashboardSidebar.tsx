@@ -31,9 +31,9 @@ import useProfileDoc from "@/hooks/useProfileDoc";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
-} from "@/lib/dropdownMenuVariants";
+} from "@/lib/DropdownMenuVariants";
 import { Link, usePathname } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 import {
 	IconBell,
 	IconChartPie,

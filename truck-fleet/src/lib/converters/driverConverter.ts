@@ -1,7 +1,7 @@
 import type { Driver } from "@/types/driver";
 import { type FirestoreDataConverter, Timestamp } from "firebase/firestore";
 
-export const driverConverter: FirestoreDataConverter<Driver> = {
+export const DriverConverter: FirestoreDataConverter<Driver> = {
   toFirestore(driver: Driver) {
     return {
       companyId: driver.companyId,
@@ -22,6 +22,7 @@ export const driverConverter: FirestoreDataConverter<Driver> = {
       phone: data.phone,
       photoUrl: data.photoUrl,
       type: data.type,
+      address: data.address,
     };
   },
 };

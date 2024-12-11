@@ -1,5 +1,5 @@
-import { customerConverter } from "@/lib/converters/customerConverter";
-import { db, storage } from "@/lib/firebase";
+import { CustomerConverter } from "@/lib/converters/CustomerConverter";
+import { db, storage } from "@/lib/Firebase";
 import type { Customer } from "@/types/customer";
 import type { Invoice, InvoiceItem } from "@/types/invoice";
 import {
@@ -25,11 +25,11 @@ import { custom, z } from "zod";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { generateObject } from "ai";
-import { myGemini, myOpenAi } from "@/lib/ai";
+import { myGemini, myOpenAi } from "@/lib/AI";
 import { openai } from "@ai-sdk/openai";
-import { createInvoiceSchema } from "@/lib/validators/invoiceValidator";
+import { createInvoiceSchema } from "@/lib/validators/InvoiceValidator";
 import type { ZodError } from "zod";
-import { invoiceConverter } from "@/lib/converters/invoiceConverter";
+import { InvoiceConverter } from "@/lib/converters/InvoiceConverter";
 import { useInvoiceOptionsStore } from "./AddInvoiceOptionsStore";
 
 interface InvoiceValuesStore {
@@ -200,7 +200,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 			loadInvoiceData: async (companyId, editId) => {
 				const invoicesRef = collection(db, `companies/${companyId}/invoices`);
 				const docSnap = await getDoc(
-					doc(invoicesRef, editId).withConverter(invoiceConverter),
+					doc(invoicesRef, editId).withConverter(InvoiceConverter),
 				);
 
 				if (docSnap.exists()) {
@@ -309,7 +309,7 @@ export const useInvoiceValuesStore = create<InvoiceValuesStore>()(
 				const customersRef = collection(
 					db,
 					`companies/${companyId}/customers`,
-				).withConverter(customerConverter);
+				).withConverter(CustomerConverter);
 				const customersSnap = await getDocs(customersRef);
 				if (customersSnap.docs.length > 0) {
 					set({ customers: customersSnap.docs.map((doc) => doc.data()) });

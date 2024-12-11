@@ -2,8 +2,7 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/loading-spinner";
-import { messageConverter } from "@/firebase/converters/messageConverter";
-import { auth, db } from "@/lib/firebase";
+import { auth, db } from "@/lib/Firebase";
 import { collection, doc, orderBy, query } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
@@ -17,7 +16,6 @@ import ChatMessage from "./ChatMessage";
 import type { Message } from "@/types/message";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import type { Chat } from "@/types/chat";
-import { chatConverter } from "@/firebase/converters/chatConverter";
 import {
 	DropdownMenu,
 	DropdownMenuItem,
@@ -27,7 +25,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { IconDots, IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
+import { ChatConverter } from "@/lib/converters/ChatConverter";
+import { MessageConverter } from "@/lib/converters/MessageConverter";
 
 export default function ChatWindow() {
 	const chatId = useParams().chatId as string;
@@ -38,7 +38,7 @@ export default function ChatWindow() {
 
 	// Get chat document with participant info
 	const [chatDoc, chatLoading, chatError] = useDocumentData(
-		doc(db, "chats", chatId).withConverter(chatConverter),
+		doc(db, "chats", chatId).withConverter(ChatConverter),
 	);
 
 	// Get the other participant's profile
@@ -52,7 +52,7 @@ export default function ChatWindow() {
 		query(
 			collection(db, "chats", chatId, "messages"),
 			orderBy("createdAt"),
-		).withConverter(messageConverter),
+		).withConverter(MessageConverter),
 	);
 
 	const scrollToBottom = useCallback(() => {
@@ -67,7 +67,7 @@ export default function ChatWindow() {
 	// Add effect to scroll when messages change
 	useEffect(() => {
 		scrollToBottom();
-	}, [messages, scrollToBottom]);
+	}, [scrollToBottom]);
 
 	if (userLoading || messagesLoading || chatLoading || profileLoading) {
 		return <Spinner />;

@@ -1,6 +1,6 @@
 "use client";
 import { useToast } from "@/components/ui/use-toast";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/Firebase";
 import { signOut } from "firebase/auth";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";

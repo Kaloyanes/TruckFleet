@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { Progress } from "@/components/ui/progress";
-import { auth, db, storage } from "@/lib/firebase";
+import { auth, db, storage } from "@/lib/Firebase";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
-} from "@/lib/dropdownMenuVariants";
+} from "@/lib/DropdownMenuVariants";
 import { useChatOptionsStore } from "@/stores/Chats/ChatOptionsStore";
 import {
 	IconFile,

@@ -5,7 +5,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
-export const orderConverter: FirestoreDataConverter<Order> = {
+export const OrderConverter: FirestoreDataConverter<Order> = {
   toFirestore(order: Order): DocumentData {
     const {
       status,

@@ -295,7 +295,8 @@
     "edit": "Редактиране",
     "delete": "Изтриване",
     "pending": "В изчакване",
-    "paid": "Платена"
+    "paid": "Платена",
+    "download_pdf": "Изтегли PDF"
   },
   "DeleteInvoiceDialog": {
     "title": "Сигурни ли сте, че искате да изтриете фактура {invoiceNumber}?",

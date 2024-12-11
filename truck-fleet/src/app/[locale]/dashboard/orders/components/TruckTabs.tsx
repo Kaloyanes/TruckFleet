@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import AnimatedTabs from "@/components/AnimatedTabs";
 import useCompanyId from "@/hooks/useCompanyId";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { collection, query } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";

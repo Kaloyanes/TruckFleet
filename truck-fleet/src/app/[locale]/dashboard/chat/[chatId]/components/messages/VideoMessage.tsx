@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 import type { Message } from "@/types/message";
 import { format } from "date-fns";
 import { useEffect, useRef, useState } from "react";

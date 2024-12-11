@@ -1,7 +1,7 @@
 "use client";
 import { useToast } from "@/components/ui/use-toast";
 import useCompanyId from "@/hooks/useCompanyId";
-import { generateCompanyCode } from "@/lib/generateCompanyCode";
+import { generateCompanyCode } from "@/lib/GenerateCompanyCode";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";

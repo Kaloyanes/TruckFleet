@@ -1,7 +1,7 @@
 import type { Truck } from "@/types/truck";
 import { type FirestoreDataConverter, Timestamp } from "firebase/firestore";
 
-export const truckConverter: FirestoreDataConverter<Truck> = {
+export const TruckConverter: FirestoreDataConverter<Truck> = {
   toFirestore(truck: Truck) {
     return {
       capacity: truck.capacity,

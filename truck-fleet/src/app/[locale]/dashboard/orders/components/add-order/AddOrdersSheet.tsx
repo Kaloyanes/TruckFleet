@@ -12,7 +12,7 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet";
 import useCompanyId from "@/hooks/useCompanyId";
-import { db, storage } from "@/lib/firebase";
+import { db, storage } from "@/lib/Firebase";
 import {
 	type DocumentReference,
 	collection,

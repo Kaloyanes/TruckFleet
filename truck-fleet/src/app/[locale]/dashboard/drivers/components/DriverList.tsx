@@ -1,12 +1,12 @@
 "use client";
 import { Spinner } from "@/components/ui/loading-spinner";
-import { driverConverter } from "@/firebase/converters/driverConverter";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { DriverColumns } from "./drivers-table/DriverColumns";
 import DriverDataTable from "./drivers-table/DriverDataTable";
+import { DriverConverter } from "@/lib/converters/DriverConverter";
 
 export default function DriverList() {
 	const { companyId } = useCompanyId();
@@ -16,7 +16,7 @@ export default function DriverList() {
 			collection(db, "users"),
 			orderBy("type"),
 			where("companyId", "==", companyId),
-		).withConverter(driverConverter),
+		).withConverter(DriverConverter),
 	);
 
 	if (loading) return <Spinner />;

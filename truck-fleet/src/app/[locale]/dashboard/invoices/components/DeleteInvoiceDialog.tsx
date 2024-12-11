@@ -38,7 +38,7 @@ export default function DeleteInvoiceDialog() {
 					</DialogTitle>
 					<DialogDescription>{t("description")}</DialogDescription>
 				</DialogHeader>
-				<DialogFooter className="gap-2 flex-row justify-end">
+				<DialogFooter className="flex-row justify-end gap-2">
 					<DialogClose asChild className="">
 						<Button type="button" variant="ghost" className="w-32">
 							{t("cancel")}

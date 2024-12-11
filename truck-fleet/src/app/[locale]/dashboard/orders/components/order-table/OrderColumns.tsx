@@ -24,15 +24,12 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import { companyConverter } from "@/firebase/converters/companyConverter";
-import { driverConverter } from "@/firebase/converters/driverConverter";
-import { truckConverter } from "@/firebase/converters/truckConverter";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
-} from "@/lib/dropdownMenuVariants";
+} from "@/lib/DropdownMenuVariants";
 import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 import type { Order } from "@/types/orders";
 import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import {
@@ -62,6 +59,9 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useCopyToClipboard } from "react-use";
 import AnimatedHover from "./AnimatedHover";
 import Locations from "./Locations";
+import { DriverConverter } from "@/lib/converters/DriverConverter";
+import { TruckConverter } from "@/lib/converters/TruckConverter";
+import { CompanyConverter } from "@/lib/converters/CompanyConverter";
 
 export const OrderColumns: ColumnDef<Order>[] = [
 	{
@@ -244,7 +244,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 			const driverRef = getValue() as DocumentReference;
 
 			const [driver] = useDocumentData(
-				driverRef.withConverter(driverConverter),
+				driverRef.withConverter(DriverConverter),
 			);
 
 			const t = useTranslations();
@@ -327,7 +327,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		},
 		cell: ({ getValue }) => {
 			const truckRef = getValue() as DocumentReference;
-			const [truck] = useDocumentData(truckRef.withConverter(truckConverter));
+			const [truck] = useDocumentData(truckRef.withConverter(TruckConverter));
 
 			const t = useTranslations("OrderList");
 
@@ -383,8 +383,8 @@ export const OrderColumns: ColumnDef<Order>[] = [
 	{
 		accessorKey: "company",
 		header(props) {
-			const t = useTranslations("OrderList");
-			return <span>{t("company")}</span>;
+			const t = useTranslations();
+			return <span>{t("OrderList.company")}</span>;
 		},
 		cell: ({ getValue }) => {
 			const companyInfo = getValue() as {
@@ -394,7 +394,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 			};
 
 			const [company] = useDocumentData(
-				companyInfo.ref.withConverter(companyConverter),
+				companyInfo.ref.withConverter(CompanyConverter),
 			);
 
 			const { toast } = useToast();

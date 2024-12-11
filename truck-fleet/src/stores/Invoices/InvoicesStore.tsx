@@ -1,5 +1,5 @@
-import { invoiceConverter } from "@/lib/converters/invoiceConverter";
-import { db } from "@/lib/firebase";
+import { InvoiceConverter } from "@/lib/converters/InvoiceConverter";
+import { db } from "@/lib/Firebase";
 import type { Invoice } from "@/types/invoice";
 import {
 	collection,
@@ -101,7 +101,7 @@ export const useInvoicesStore = create<InvoicesStore>((set, get) => ({
 			: query(invoicesRef, orderBy("createdAt", "desc"), limit(10));
 
 		const unsubscribe = onSnapshot(
-			q.withConverter(invoiceConverter),
+			q.withConverter(InvoiceConverter),
 			(snapshot) => {
 				const invoices = snapshot.docs.map((doc) => doc.data());
 				set({

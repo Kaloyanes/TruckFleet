@@ -9,7 +9,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useTheme } from "next-themes";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 
 interface LocationMessageProps {
 	message: Message;

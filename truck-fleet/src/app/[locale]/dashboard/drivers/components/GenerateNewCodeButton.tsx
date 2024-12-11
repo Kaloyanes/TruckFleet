@@ -1,5 +1,5 @@
 "use client";
-import { generateCompanyCode } from "@/lib/generateCompanyCode";
+import { generateCompanyCode } from "@/lib/GenerateCompanyCode";
 import type { DocumentReference } from "firebase/firestore";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";

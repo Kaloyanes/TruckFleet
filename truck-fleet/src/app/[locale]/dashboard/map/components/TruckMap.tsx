@@ -1,8 +1,7 @@
 "use client";
 
 import { Spinner } from "@/components/ui/loading-spinner";
-import { orderConverter } from "@/firebase/converters/orderConverter";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import {
 	AdvancedMarker,
@@ -14,6 +13,7 @@ import { collection, orderBy, query, where } from "firebase/firestore";
 import { useTheme } from "next-themes";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import TruckDirections from "./TruckDirections";
+import { OrderConverter } from "@/lib/converters/OrderConverter";
 
 export default function TruckMap() {
 	const { companyId } = useCompanyId();
@@ -22,7 +22,7 @@ export default function TruckMap() {
 			collection(db, "orders"),
 			where("companyId", "==", companyId),
 			orderBy("createdAt", "desc"),
-		).withConverter(orderConverter),
+		).withConverter(OrderConverter),
 	);
 
 	const [users, loadingUsers, errorUsers] = useCollectionData(

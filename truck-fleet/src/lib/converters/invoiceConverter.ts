@@ -6,7 +6,7 @@ import type {
 } from "firebase/firestore";
 import type { Timestamp } from "firebase/firestore";
 
-export const invoiceConverter: FirestoreDataConverter<Invoice> = {
+export const InvoiceConverter: FirestoreDataConverter<Invoice> = {
   toFirestore: (invoice: Invoice) => {
     return invoice;
   },

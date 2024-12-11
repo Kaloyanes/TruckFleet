@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
-import MotionConfigProvider from "@/context/motion-config-provider";
-import { ThemeProvider } from "@/context/theme-provider";
+import MotionConfigProvider from "@/context/MotionConfigProvider";
+import { ThemeProvider } from "@/context/ThemeProvider";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -74,9 +74,11 @@ export default async function RootLayout({
 		notFound();
 	}
 
+	setRequestLocale(locale);
+
 	// Providing all messages to the client
 	// side is the easiest way to get started
-	const messages = await getMessages();
+	const messages = await getMessages({ locale });
 
 	return (
 		<html lang={locale} suppressHydrationWarning>

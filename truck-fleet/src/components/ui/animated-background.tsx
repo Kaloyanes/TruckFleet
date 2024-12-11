@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 import { AnimatePresence, type Transition, motion } from "motion/react";
 import {
 	Children,

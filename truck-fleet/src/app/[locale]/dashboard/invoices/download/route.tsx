@@ -1,5 +1,5 @@
-import { invoiceConverter } from "@/lib/converters/invoiceConverter";
-import { db } from "@/lib/firebase";
+import { InvoiceConverter } from "@/lib/converters/InvoiceConverter";
+import { db } from "@/lib/Firebase";
 import type { Invoice } from "@/types/invoice";
 import { doc, getDoc } from "firebase/firestore";
 import { type NextRequest, NextResponse } from "next/server";
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 
 	const docData = await getDoc(
 		doc(db, `companies/${companyId}/invoices/${id}`).withConverter(
-			invoiceConverter,
+			InvoiceConverter,
 		),
 	);
 

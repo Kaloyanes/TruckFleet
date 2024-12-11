@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 import { useInvoiceOptionsStore } from "@/stores/Invoices/AddInvoiceOptionsStore";
 import { useEffect, useState } from "react";
 

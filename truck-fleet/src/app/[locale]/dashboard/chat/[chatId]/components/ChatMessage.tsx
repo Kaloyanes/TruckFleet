@@ -6,13 +6,13 @@ import {
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { useToast } from "@/components/ui/use-toast";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import useProfileDoc from "@/hooks/useProfileDoc";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
-} from "@/lib/dropdownMenuVariants";
-import { cn } from "@/lib/utils";
+} from "@/lib/DropdownMenuVariants";
+import { cn } from "@/lib/Utils";
 import type { Message } from "@/types/message";
 import { useChatOptionsStore } from "@/stores/Chats/ChatOptionsStore";
 import {

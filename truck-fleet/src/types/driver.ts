@@ -1,9 +1,7 @@
-export type Driver = {
-  id: string;
+import type { Customer } from "./customer";
+
+export type Driver = Customer & {
   companyId: string;
-  name: string;
-  email: string;
-  phone: string;
   photoUrl: string;
   type: "driver";
 };

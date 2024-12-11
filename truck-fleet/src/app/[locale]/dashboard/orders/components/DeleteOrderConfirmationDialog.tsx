@@ -1,5 +1,5 @@
 "use client";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useTranslations } from "next-intl";

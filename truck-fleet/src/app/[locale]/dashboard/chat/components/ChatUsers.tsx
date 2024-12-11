@@ -1,7 +1,6 @@
 "use client";
 import { Spinner } from "@/components/ui/loading-spinner";
-import { chatConverter } from "@/firebase/converters/chatConverter";
-import { auth, db } from "@/lib/firebase";
+import { auth, db } from "@/lib/Firebase";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { motion } from "motion/react";
 import { useMemo } from "react";
@@ -12,6 +11,7 @@ import {
 } from "react-firebase-hooks/firestore";
 import ChatItem from "./ChatItem";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ChatConverter } from "@/lib/converters/ChatConverter";
 
 export default function ChatUsers() {
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
@@ -24,7 +24,7 @@ export default function ChatUsers() {
 			collection(db, "chats"),
 			where("participants", "array-contains", user.uid),
 			orderBy("lastMessageAt", "desc"),
-		).withConverter(chatConverter);
+		).withConverter(ChatConverter);
 	}, [user?.uid]);
 
 	const [snapshot, chatLoading, error] = useCollection(chatQuery, {

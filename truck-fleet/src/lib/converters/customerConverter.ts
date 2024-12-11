@@ -1,7 +1,7 @@
 import type { Customer } from "@/types/customer";
 import type { FirestoreDataConverter } from "firebase/firestore";
 
-export const customerConverter: FirestoreDataConverter<Customer> = {
+export const CustomerConverter: FirestoreDataConverter<Customer> = {
   toFirestore: (customer: Customer) => {
     return {
       name: customer.name,

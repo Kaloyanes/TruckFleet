@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
-} from "@/lib/dropdownMenuVariants";
+} from "@/lib/DropdownMenuVariants";
 import type { Icon, IconProps } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { useTranslations } from "next-intl";

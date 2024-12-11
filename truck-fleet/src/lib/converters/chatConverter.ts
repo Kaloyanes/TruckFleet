@@ -6,7 +6,7 @@ import type {
   SnapshotOptions,
 } from "firebase/firestore";
 
-export const chatConverter: FirestoreDataConverter<Chat> = {
+export const ChatConverter: FirestoreDataConverter<Chat> = {
   toFirestore(chat: Chat): DocumentData {
     return {
       id: chat.id,

@@ -1,6 +1,6 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { z } from "zod";
-import { db } from "../firebase";
+import { db } from "../Firebase";
 
 export const invoiceItemSchema = z.object({
   id: z.string(),

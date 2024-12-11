@@ -25,16 +25,16 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import useCompanyId from "@/hooks/useCompanyId";
-import { useRouter } from "@/i18n/routing";
 import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/Utils";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
-} from "@/lib/dropdownMenuVariants";
+} from "@/lib/DropdownMenuVariants";
 import { useTranslations } from "next-intl";
 import { useInvoicesStore } from "@/stores/Invoices/InvoicesStore";
+import { useRouter } from "@/i18n/routing";
 
 export const InvoiceColumns: ColumnDef<Invoice>[] = [
 	{
@@ -124,6 +124,7 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 			const { companyId } = useCompanyId();
 			const { setDialogVisibility, setInvoice } = useInvoicesStore();
 			const t = useTranslations("InvoiceList");
+			const router = useRouter();
 
 			const actions = [
 				{
@@ -135,10 +136,17 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 				},
 				{
 					type: "button",
-					label: t("details"),
-					icon: IconListDetails,
+					label: t("download_pdf"),
+					icon: IconDownload,
 					onClick: () => {
-						row.toggleSelected(!row.getIsSelected());
+						// row.toggleSelected(!row.getIsSelected());
+						// router.push("/dashboard/invoices/download", {
+						// 	query: { id: invoiceData.id, companyId: companyId },
+						// });
+						router.push({
+							pathname: "/dashboard/invoices/download",
+							query: { id: invoiceData.id, companyId: companyId },
+						});
 					},
 				},
 				{
@@ -181,7 +189,7 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 							animate="visible"
 						>
 							{actions.map((action) => (
-								<motion.div key={action.label} variants={dropdownMenuVariants}>
+								<motion.div key={action.icon} variants={dropdownMenuVariants}>
 									{action.type === "label" && (
 										<DropdownMenuLabel>{action.label}</DropdownMenuLabel>
 									)}

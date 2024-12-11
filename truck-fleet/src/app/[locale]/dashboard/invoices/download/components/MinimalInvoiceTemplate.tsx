@@ -11,7 +11,7 @@ import {
 import type { Invoice } from "@/types/invoice";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
-import { convert } from "@/lib/utils";
+import { convert } from "@/lib/Utils";
 import type { InvoiceOptions } from "@/stores/Invoices/AddInvoiceOptionsStore";
 Font.register({
 	family: "Manrope",

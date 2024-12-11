@@ -4,7 +4,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { focusNextElement } from "@/lib/utils";
+import { focusNextElement } from "@/lib/Utils";
 import { useInvoiceOptionsStore } from "@/stores/Invoices/AddInvoiceOptionsStore";
 import { format, formatDate } from "date-fns";
 import { bg } from "date-fns/locale";

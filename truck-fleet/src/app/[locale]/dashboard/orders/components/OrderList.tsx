@@ -12,11 +12,11 @@ import {
 	where,
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/Firebase";
 import type { Order } from "@/types/orders";
-import { orderConverter } from "@/firebase/converters/orderConverter";
 import { OrderColumns } from "./order-table/OrderColumns";
 import OrderDataTable from "./order-table/OrderDataTable";
+import { OrderConverter } from "@/lib/converters/OrderConverter";
 
 export default function OrderList({ truckId }: { truckId: string }) {
 	const { companyId } = useCompanyId();
@@ -26,7 +26,7 @@ export default function OrderList({ truckId }: { truckId: string }) {
 					collection(db, `companies/${companyId}/orders`),
 					where("licensePlate", "==", truckId),
 					orderBy("createdAt", "desc"),
-				).withConverter(orderConverter)
+				).withConverter(OrderConverter)
 			: null,
 	);
 

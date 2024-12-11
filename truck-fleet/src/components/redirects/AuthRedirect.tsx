@@ -1,5 +1,5 @@
 "use client";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/Firebase";
 import { usePathname } from "@/i18n/routing";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Spinner } from "../ui/loading-spinner";

@@ -6,7 +6,7 @@ import type {
   SnapshotOptions,
 } from "firebase/firestore";
 
-export const companyConverter: FirestoreDataConverter<Company> = {
+export const CompanyConverter: FirestoreDataConverter<Company> = {
   toFirestore(company: Company): DocumentData {
     return {
       name: company.name,

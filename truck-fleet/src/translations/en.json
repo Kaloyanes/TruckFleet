@@ -233,7 +233,8 @@
     "edit": "Edit",
     "delete": "Delete",
     "pending": "Pending",
-    "paid": "Paid"
+    "paid": "Paid",
+    "download_pdf": "Download PDF"
   },
   "Calendar": {
     "January": "January",

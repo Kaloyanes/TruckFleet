@@ -9,6 +9,10 @@
     "https://cdn.jsdelivr.net/npm/@inlang/plugin-next-intl@latest/dist/index.js"
   ],
   "plugin.inlang.nextIntl": {
-    "pathPattern": "./messages/{languageTag}.json"
+    "pathPattern": "./src/translations/{languageTag}.json",
+    "variableReferencePattern": [
+      "{{",
+      "}}"
+    ]
   }
 }

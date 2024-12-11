@@ -1,5 +1,5 @@
-import { auth, db } from "@/lib/firebase";
-import { DocumentReference, doc } from "firebase/firestore";
+import { auth, db } from "@/lib/Firebase";
+import { type DocumentReference, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useProfileDoc from "./useProfileDoc";
