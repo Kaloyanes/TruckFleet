@@ -13,6 +13,8 @@ import { MinimalInvoiceTemplate } from "./components/MinimalInvoiceTemplate";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { useInvoiceOptionsStore } from "@/stores/Invoices/AddInvoiceOptionsStore";
+import DetailedInvoiceTemplate from "./components/DetailedInvoiceTemplate";
+import ColoredInvoiceTemplate from "./components/ColoredInvoiceTemplate";
 
 export async function GET(request: NextRequest) {
 	const params = request.nextUrl.searchParams;
@@ -33,9 +35,21 @@ export async function GET(request: NextRequest) {
 	const t = await getTranslations();
 
 	const invoice = docData.data() as Invoice;
-	const blob = await pdf(
-		<MinimalInvoiceTemplate invoice={invoice} t={t as any} />,
-	).toBlob();
+
+	const invoiceComponent = () => {
+		switch (template) {
+			case "detailed":
+				return <DetailedInvoiceTemplate invoice={invoice} t={t as any} />;
+			case "colored":
+				return <ColoredInvoiceTemplate invoice={invoice} />;
+			default:
+				return <MinimalInvoiceTemplate invoice={invoice} t={t as any} />;
+		}
+	};
+
+	console.log(invoiceComponent());
+
+	const blob = await pdf(invoiceComponent()).toBlob();
 
 	if (!blob) {
 		return new NextResponse("Error", {
@@ -46,7 +60,7 @@ export async function GET(request: NextRequest) {
 	return new NextResponse(blob, {
 		headers: {
 			"Content-Type": "application/pdf",
-			"Content-Disposition": `attachment; filename=${invoice.invoiceNumber}.pdf`,
+			// "Content-Disposition": `attachment; filename=${invoice.invoiceNumber}.pdf`,
 		},
 	});
 }

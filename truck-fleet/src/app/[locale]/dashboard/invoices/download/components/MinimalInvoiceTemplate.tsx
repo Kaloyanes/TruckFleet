@@ -13,10 +13,10 @@ import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { convert } from "@/lib/Utils";
 import type { InvoiceOptions } from "@/stores/Invoices/AddInvoiceOptionsStore";
-Font.register({
-	family: "Manrope",
-	src: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
-});
+// Font.register({
+// 	family: "Manrope",
+// 	src: "https://fonts.gstatic.com/s/manrope/v15/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F87jxeN7B.ttf",
+// });
 
 Font.register({
 	family: "Manrope",

@@ -22,7 +22,6 @@ import {
 	IconTrash,
 	IconCreditCard,
 } from "@tabler/icons-react";
-import Link from "next/link";
 import useCompanyId from "@/hooks/useCompanyId";
 import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import { motion } from "motion/react";
@@ -184,7 +183,11 @@ export const InvoiceColumns: ColumnDef<Invoice>[] = [
 					onClick: () => {
 						router.push({
 							pathname: "/dashboard/invoices/download",
-							query: { id: invoiceData.id, companyId: companyId },
+							query: {
+								id: invoiceData.id,
+								companyId: companyId,
+								template: "detailed",
+							},
 						});
 					},
 				},
