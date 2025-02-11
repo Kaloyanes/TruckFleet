@@ -97,7 +97,7 @@
     "companyDetails": "Детайли за компанията",
     "phone": "Телефон",
     "worker": "Работник",
-    "licensePlate": "Регистр��ционен номер",
+    "licensePlate": "Регистрационен номер",
     "model": "Модел",
     "capacity": "Капацитет",
     "email": "Имейл"
@@ -308,5 +308,13 @@
     "cancel": "Отказ",
     "delete": "Изтриване",
     "toastTitle": "Фактурата е изтрита"
+  },
+  "TruckList": {
+    "licensePlate": "Регистрационен номер",
+    "model": "Модел",
+    "capacity": "Капацитет",
+    "status": "Статус",
+    "year": "Година",
+    "createdAt": "Създадено на"
   }
 }

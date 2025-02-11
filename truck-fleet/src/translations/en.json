@@ -306,5 +306,13 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "toastTitle": "Invoice deleted"
+  },
+  "TruckList": {
+    "licensePlate": "License Plate",
+    "model": "Model",
+    "capacity": "Capacity",
+    "status": "Status",
+    "year": "Year",
+    "createdAt": "Created At"
   }
 }

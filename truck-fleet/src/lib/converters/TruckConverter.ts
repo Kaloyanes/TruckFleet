@@ -4,6 +4,7 @@ import { type FirestoreDataConverter, Timestamp } from "firebase/firestore";
 export const TruckConverter: FirestoreDataConverter<Truck> = {
   toFirestore(truck: Truck) {
     return {
+      id: truck.id,
       capacity: truck.capacity,
       licensePlate: truck.licensePlate,
       model: truck.model,

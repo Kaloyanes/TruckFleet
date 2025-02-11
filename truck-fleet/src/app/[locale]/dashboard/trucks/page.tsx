@@ -1,13 +1,26 @@
-import { setRequestLocale, unstable_setRequestLocale } from "next-intl/server";
+"use client";
+import React, { useEffect } from "react";
+import { useTruckStore } from "@/stores/Trucks/TrucksStore";
+import useCompanyId from "@/hooks/useCompanyId";
+import TruckDataTable from "./components/trucks-table/TruckDataTable";
+import { TruckColumns } from "./components/trucks-table/TruckColumns";
 
-export default async function TruckPage(props: { params: Promise<{ locale: string }> }) {
-    const params = await props.params;
+export default function TrucksPage() {
+	const { trucks, loadTrucks } = useTruckStore();
+	const companyId = useCompanyId();
 
-    const {
-        locale
-    } = params;
+	useEffect(() => {
+		let unsubscribe: () => void = () => {};
+		if (companyId.companyId) {
+			unsubscribe = loadTrucks(companyId.companyId);
+		}
+		return () => unsubscribe();
+	}, [loadTrucks, companyId]);
 
-    setRequestLocale(locale);
-
-    return <h1>Welcome to page!</h1>;
+	return (
+		<div className="">
+			{/* Render the trucks in a table similar to drivers */}
+			<TruckDataTable columns={TruckColumns} data={trucks} />
+		</div>
+	);
 }
