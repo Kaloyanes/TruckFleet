@@ -308,11 +308,38 @@
     "toastTitle": "Invoice deleted"
   },
   "TruckList": {
+    "trucks": "Trucks",
     "licensePlate": "License Plate",
     "model": "Model",
     "capacity": "Capacity",
     "status": "Status",
     "year": "Year",
-    "createdAt": "Created At"
+    "createdAt": "Created At",
+    "confirmDeletionTitle": "Delete Truck: {licensePlate}",
+    "confirmDeletionDescription": "Are you sure you want to delete this truck? This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete Truck"
+  },
+  "AddTruckSheet": {
+    "editTruckTitle": "Edit Truck",
+    "addTruckTitle": "Add New Truck",
+    "editTruckDescription": "Update truck details below",
+    "addTruckDescription": "Fill in the details below to add a new truck",
+    "editTooltip": "Edit Truck",
+    "addTooltip": "Add New Truck",
+    "licensePlate": "License Plate",
+    "model": "Model",
+    "capacity": "Capacity (kg)",
+    "status": "Status",
+    "selectStatus": "Select status",
+    "onRoute": "On Route",
+    "available": "Available",
+    "inRepair": "In Repair",
+    "year": "Year",
+    "cancel": "Cancel",
+    "updateTruck": "Update Truck",
+    "addTruck": "Add Truck",
+    "truckUpdatedSuccess": "Truck updated successfully",
+    "truckCreatedSuccess": "Truck created successfully"
   }
 }

@@ -310,11 +310,38 @@
     "toastTitle": "Фактурата е изтрита"
   },
   "TruckList": {
+    "trucks": "Камиони",
     "licensePlate": "Регистрационен номер",
     "model": "Модел",
     "capacity": "Капацитет",
     "status": "Статус",
     "year": "Година",
-    "createdAt": "Създадено на"
+    "createdAt": "Създадено на",
+    "confirmDeletionTitle": "Изтрий превозно средство: {licensePlate}",
+    "confirmDeletionDescription": "Сигурни ли сте, че искате да изтриете това превозно средство? Това действие не може да бъде отменено.",
+    "cancel": "Отказ",
+    "confirm": "Изтрий превозно средство"
+  },
+  "AddTruckSheet": {
+    "editTruckTitle": "Редактирай камион",
+    "addTruckTitle": "Добави нов камион",
+    "editTruckDescription": "Актуализирайте данните за камиона",
+    "addTruckDescription": "Попълнете детайлите по-долу, за да добавите нов камион",
+    "editTooltip": "Редактирай камион",
+    "addTooltip": "Добави нов камион",
+    "licensePlate": "Регистрационен номер",
+    "model": "Модел",
+    "capacity": "Капацитет (кг)",
+    "status": "Статус",
+    "selectStatus": "Изберете статус",
+    "onRoute": "По път",
+    "available": "Свободен",
+    "inRepair": "В ремонт",
+    "year": "Година",
+    "cancel": "Отказ",
+    "updateTruck": "Актуализирай камион",
+    "addTruck": "Добави камион",
+    "truckUpdatedSuccess": "Камионът беше актуализиран успешно",
+    "truckCreatedSuccess": "Камионът беше добавен успешно"
   }
 }

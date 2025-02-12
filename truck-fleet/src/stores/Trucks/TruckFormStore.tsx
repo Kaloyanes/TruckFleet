@@ -7,7 +7,6 @@ export const truckFormSchema = z.object({
   capacity: z.number().min(1, "Capacity higher than 0"),
   status: z.string().min(1, "Status is required"),
   year: z.number().min(1900, "Year must be after 1900"),
-  createdAt: z.date().nullable(),
 });
 
 interface TruckFormState {

@@ -86,7 +86,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				<div className="flex items-center gap-2">
 					<span>{t("orderId")}</span>
 					<Popover>
-						<PopoverTrigger>
+						<PopoverTrigger asChild>
 							<Button size={"icon"} className="h-8 w-8" variant={"outline"}>
 								<IconFilter size={18} />
 							</Button>
@@ -170,7 +170,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 				<div className="flex items-center gap-2">
 					<span>{t("OrderList.status")}</span>
 					<Popover>
-						<PopoverTrigger>
+						<PopoverTrigger asChild>
 							<Button size={"icon"} className="h-8 w-8" variant={"outline"}>
 								<IconFilter size={18} />
 							</Button>
@@ -642,7 +642,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 
 			return (
 				<DropdownMenu>
-					<DropdownMenuTrigger>
+					<DropdownMenuTrigger asChild>
 						<Button size={"icon"} variant={"outline"}>
 							<IconDotsVertical />
 						</Button>

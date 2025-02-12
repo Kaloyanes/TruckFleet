@@ -95,7 +95,7 @@ export function AddInvoice() {
 					<SheetClose asChild>
 						<Button
 							type="button"
-							className="min-w-20 max-w-32"
+							className="min-w-20 max-w-48"
 							variant="outline"
 							size={"sm"}
 						>
