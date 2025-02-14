@@ -131,12 +131,6 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
         ),
       ),
     ),
-    pageTransitionsTheme: PageTransitionsTheme(
-      builders: {
-        TargetPlatform.android: MyTransition(),
-        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
-      },
-    ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: colorScheme.primary,
       foregroundColor: colorScheme.surface,
@@ -215,10 +209,10 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
       ),
       surfaceTintColor: Colors.transparent,
       indicatorColor: Colors.transparent,
-      height: 80,
+      height: 50,
     ),
     bottomAppBarTheme: const BottomAppBarTheme(
-      height: 80,
+      height: 50,
     ),
     cardTheme: CardTheme(
       color: colorScheme.surface,
@@ -235,32 +229,4 @@ ThemeData theme({ColorScheme colorScheme = darkColorScheme}) {
   );
 
   return theme.copyWith(textTheme: GoogleFonts.plusJakartaSansTextTheme(theme.textTheme));
-}
-
-class MyTransition extends PageTransitionsBuilder {
-  @override
-  Widget buildTransitions<T>(
-    PageRoute<T> route,
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-    Widget child,
-  ) {
-    const begin = Offset(1.0, 0.0);
-    const end = Offset.zero;
-    const enterCurve = Curves.easeInOutCubicEmphasized;
-
-    var longAnimation = CurvedAnimation(
-      parent: animation,
-      curve: enterCurve,
-      reverseCurve: enterCurve.flipped,
-    );
-
-    var enterTween = Tween(begin: begin, end: end);
-
-    return SlideTransition(
-      position: enterTween.animate(longAnimation),
-      child: child,
-    );
-  }
 }

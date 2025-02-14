@@ -52,6 +52,9 @@ class IntroductionView extends GetView<SignUpController> {
 
                   return null;
                 },
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 controller: controller.nameController,
                 decoration: InputDecoration(
                   labelText: "first_and_last_name".tr,
@@ -75,6 +78,7 @@ class IntroductionView extends GetView<SignUpController> {
 
                   return null;
                 },
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 keyboardType: TextInputType.emailAddress,
                 controller: controller.emailController,
                 cursorOpacityAnimates: true,
@@ -85,7 +89,7 @@ class IntroductionView extends GetView<SignUpController> {
                   ),
                 ),
               ),
-              Gap(MediaQuery.sizeOf(context).height * 0.1),
+              Gap(MediaQuery.sizeOf(context).height * 0.2),
             ],
           ),
         ),

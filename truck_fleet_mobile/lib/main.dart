@@ -21,9 +21,7 @@ Future<void> main() async {
   Animate.restartOnHotReload = true;
 
   // GoogleFonts.config.allowRuntimeFetching = false;
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FlutterForegroundTask.initCommunicationPort();
 
@@ -38,15 +36,11 @@ Future<void> main() async {
 
   await GetStorage.init("settings_truck_fleet");
 
-  runApp(
-    App(),
-  );
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  App({
-    super.key,
-  });
+  App({super.key});
 
   final storage = GetStorage("settings_truck_fleet");
 
@@ -62,10 +56,7 @@ class App extends StatelessWidget {
       locale: storage.read("language") == null ? Get.deviceLocale : Locale(storage.read("language")),
       fallbackLocale: const Locale("en"),
       translations: LocalMessages(),
-      supportedLocales: const [
-        Locale("en"),
-        Locale("bg"),
-      ],
+      supportedLocales: const [Locale("en"), Locale("bg")],
       localizationsDelegates: [
         MyCroppyLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -99,16 +90,10 @@ class App extends StatelessWidget {
   void setupInsets(BuildContext context) {
     final isSmall = MediaQuery.sizeOf(context).shortestSide / MediaQuery.devicePixelRatioOf(context) < 600;
 
-    final orientations = [
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ];
+    final orientations = [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown];
 
     if (!isSmall) {
-      orientations.addAll([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
+      orientations.addAll([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     }
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -117,12 +102,14 @@ class App extends StatelessWidget {
     final brightness = Theme.of(context).colorScheme.brightness;
 
     // Set the status bar icon brightness based on the device brightness
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: brightness == Brightness.light ? Brightness.dark : Brightness.light,
-      systemStatusBarContrastEnforced: false,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: brightness == Brightness.light ? Brightness.dark : Brightness.light,
+        systemStatusBarContrastEnforced: false,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
+      ),
+    );
   }
 }

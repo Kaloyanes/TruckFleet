@@ -37,6 +37,7 @@ class PhoneView extends GetView<SignUpController> {
               ),
               const Gap(20),
               TextFormField(
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 controller: controller.phoneController,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {

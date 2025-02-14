@@ -51,6 +51,12 @@ class SignUpController extends GetxController {
     super.onClose();
   }
 
+  @override
+  void onReady() {
+    print("Ready");
+    super.onReady();
+  }
+
   final introductionFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
   final phoneFormKey = GlobalKey<FormState>();

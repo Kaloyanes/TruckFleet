@@ -190,27 +190,34 @@ class OnBoardView extends GetView<OnBoardController> {
                               ),
                         ),
                       )
-                          .animate()
+                          .animate(delay: 400.ms)
+                          .fade(
+                            begin: 0,
+                            end: 1,
+                            duration: Durations.extralong1,
+                            curve: animationCurve,
+                            delay: 200.ms,
+                          )
                           .slideY(
                             begin: 2.5,
                             end: 0,
                             duration: Durations.extralong1,
                             curve: animationCurve,
-                            delay: 150.ms,
+                            // delay: 150.ms,
                           )
                           .scaleXY(
                             begin: 0.6,
                             end: 1,
                             duration: Durations.extralong1,
                             curve: animationCurve,
-                            delay: 150.ms,
+                            // delay: 150.ms,
                           )
                           .blurXY(
                             begin: 5,
                             end: 0,
                             duration: Durations.extralong1,
                             curve: animationCurve,
-                            delay: 150.ms,
+                            // delay: 150.ms,
                           ),
                     ),
                   ],

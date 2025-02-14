@@ -61,6 +61,7 @@ class PasswordView extends GetView<SignUpController> {
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
                       cursorOpacityAnimates: true,
+                      onTapOutside: (_) => FocusScope.of(context).unfocus(),
                     ),
                     Positioned(
                       right: 5,
@@ -103,6 +104,7 @@ class PasswordView extends GetView<SignUpController> {
                       obscureText: !controller.isPasswordVisible.value,
                       keyboardType: TextInputType.visiblePassword,
                       cursorOpacityAnimates: true,
+                      onTapOutside: (_) => FocusScope.of(context).unfocus(),
                     ),
                     Positioned(
                       right: 5,

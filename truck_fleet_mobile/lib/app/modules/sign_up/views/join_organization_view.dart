@@ -52,6 +52,7 @@ class JoinOrganizationView extends GetView<SignUpController> {
                       controller.organizationCodeHasText.value = value.isNotEmpty;
                     },
                     cursorOpacityAnimates: true,
+                    onTapOutside: (_) => FocusScope.of(context).unfocus(),
                   ),
                 ),
                 Obx(
