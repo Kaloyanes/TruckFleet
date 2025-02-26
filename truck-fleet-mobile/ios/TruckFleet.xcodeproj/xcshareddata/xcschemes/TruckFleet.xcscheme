@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "truckfleetmobile.app"
-               BlueprintName = "truckfleetmobile"
-               ReferencedContainer = "container:truckfleetmobile.xcodeproj">
+               BuildableName = "TruckFleet.app"
+               BlueprintName = "TruckFleet"
+               ReferencedContainer = "container:TruckFleet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "truckfleetmobileTests.xctest"
-               BlueprintName = "truckfleetmobileTests"
-               ReferencedContainer = "container:truckfleetmobile.xcodeproj">
+               BuildableName = "TruckFleetTests.xctest"
+               BlueprintName = "TruckFleetTests"
+               ReferencedContainer = "container:TruckFleet.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "truckfleetmobile.app"
-            BlueprintName = "truckfleetmobile"
-            ReferencedContainer = "container:truckfleetmobile.xcodeproj">
+            BuildableName = "TruckFleet.app"
+            BlueprintName = "TruckFleet"
+            ReferencedContainer = "container:TruckFleet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "truckfleetmobile.app"
-            BlueprintName = "truckfleetmobile"
-            ReferencedContainer = "container:truckfleetmobile.xcodeproj">
+            BuildableName = "TruckFleet.app"
+            BlueprintName = "TruckFleet"
+            ReferencedContainer = "container:TruckFleet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,4 +1,4 @@
-package com.anonymous.truckfleetmobile
+package com.truckfleet.mobile
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -239,7 +239,12 @@ const AddTruckSheet = () => {
 								<FormItem>
 									<FormLabel>{t("year")}</FormLabel>{" "}
 									<FormControl>
-										<Input {...field} id="year" type="number" />
+										<Input
+											onChange={(val) => field.onChange(Number(val))}
+											value={field.value}
+											id="year"
+											type="number"
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>

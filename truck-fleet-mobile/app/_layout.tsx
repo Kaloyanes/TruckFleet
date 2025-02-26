@@ -24,6 +24,7 @@ import {
 } from "@expo-google-fonts/playfair-display";
 import i18n from "~/locales/i18n";
 import * as NavigationBar from "expo-navigation-bar";
+// import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -77,9 +78,16 @@ export default function RootLayout() {
 	}
 
 	return (
+		// <GestureHandlerRootView style={{ flex: 1 }}>
 		<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-			<StatusBar style={"auto"} />
-			<Stack>
+			<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+			<Stack initialRouteName="(tabs)">
+				<Stack.Screen
+					name="(tabs)"
+					options={{
+						headerShown: false,
+					}}
+				/>
 				<Stack.Screen
 					name="index"
 					options={{
@@ -89,6 +97,7 @@ export default function RootLayout() {
 			</Stack>
 			<PortalHost />
 		</ThemeProvider>
+		// </GestureHandlerRootView>
 	);
 }
 
