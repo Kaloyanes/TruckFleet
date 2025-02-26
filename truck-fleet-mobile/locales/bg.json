@@ -1,3 +1,13 @@
 {
-  "get_started": "Започни"
+  "get_started": "Започни",
+  "home": "Начало",
+  "messages": "Съобщения",
+  "documents": "Документи",
+  "settings": "Настройки",
+  "truck_tracker": "Проследяване на камиони",
+  "processing": "Обработва се...",
+  "stop_tracking": "Спри проследяването",
+  "start_tracking": "Започни проследяване",
+  "location_service_active": "Проследяването е активно",
+  "tracking_vehicle_location": "Проследяване на местоположението на превозното средство"
 }

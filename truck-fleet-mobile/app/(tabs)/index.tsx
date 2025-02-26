@@ -4,8 +4,13 @@ import { Text } from "~/components/ui/text";
 import { Button } from "~/components/ui/button";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-import firestore, { doc, setDoc } from "@react-native-firebase/firestore";
+import firestore, {
+	doc,
+	serverTimestamp,
+	setDoc,
+} from "@react-native-firebase/firestore";
 import { getApp } from "@react-native-firebase/app";
+import { useTranslation } from "react-i18next";
 
 const LOCATION_TASK_NAME = "background-location-fetch";
 
@@ -28,7 +33,7 @@ TaskManager.defineTask(
 			const dc = doc(getApp().firestore(), "locations/1");
 			await setDoc(dc, {
 				location: locations[0],
-				timestamp: firestore.FieldValue.serverTimestamp(),
+				timestamp: serverTimestamp(),
 			});
 		} catch (err) {
 			console.error("Failed to update location in Firestore:", err);
@@ -40,6 +45,7 @@ export default function Home() {
 	const [status, requestPermissions] = Location.useBackgroundPermissions();
 	const [isServiceRunning, setIsServiceRunning] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const { t } = useTranslation();
 
 	// Check if background service is already running when component mounts
 	useEffect(() => {
@@ -87,13 +93,13 @@ export default function Home() {
 
 			await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
 				accuracy: Location.Accuracy.BestForNavigation,
-				timeInterval: 1000,
 				activityType: Location.ActivityType.AutomotiveNavigation,
 				showsBackgroundLocationIndicator: true,
 				foregroundService: {
-					notificationTitle: "Location tracking active",
-					notificationBody: "Tracking vehicle location",
+					notificationTitle: t("location_service_active"),
+					notificationBody: t("tracking_vehicle_location"),
 				},
+				distanceInterval: 10,
 			});
 
 			console.log("Location service started");
@@ -108,7 +114,7 @@ export default function Home() {
 	return (
 		<View className="flex-1 justify-center items-center bg-background">
 			<Text className="text-foreground text-xl font-bold mb-4">
-				Truck Tracker
+				{t("truck_tracker")}
 			</Text>
 			<Button
 				className="px-4 py-2"
@@ -116,8 +122,11 @@ export default function Home() {
 				disabled={isLoading}
 			>
 				<Text className="text-primary-foreground">
-					{isLoading ? "Processing..." : isServiceRunning ? "Stop" : "Start"}{" "}
-					tracking
+					{isLoading
+						? t("processing")
+						: isServiceRunning
+							? t("stop_tracking")
+							: t("start_tracking")}
 				</Text>
 			</Button>
 		</View>

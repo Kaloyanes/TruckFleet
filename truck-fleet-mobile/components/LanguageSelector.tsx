@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 
 import * as DropdownMenuZ from "zeego/dropdown-menu";
 import * as Haptics from "expo-haptics";
-import { changeLanguage } from "~/locales/i18n";
+import i18n, { changeLanguage } from "~/locales/i18n";
 import { Languages } from "lib/icons/Language";
 
 export default function LanguageSelector() {
@@ -23,14 +23,7 @@ export default function LanguageSelector() {
 	return (
 		<DropdownMenuZ.Root modal>
 			<DropdownMenuZ.Trigger asChild>
-				<Button
-					variant="outline"
-					size={"icon"}
-					style={{ padding: 10 }}
-					onPressOut={() =>
-						Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft)
-					}
-				>
+				<Button variant="outline" size={"icon"} style={{ padding: 10 }}>
 					<Languages
 						className="text-foreground "
 						size={20}
@@ -40,12 +33,13 @@ export default function LanguageSelector() {
 			</DropdownMenuZ.Trigger>
 			<DropdownMenuZ.Content className="w-64 native:w-72">
 				{languages.map((language) => (
-					<DropdownMenuZ.Item
+					<DropdownMenuZ.CheckboxItem
+						value={language.code === i18n.language}
 						key={language.code}
 						onSelect={() => changeLanguage(language.code)}
 					>
 						<DropdownMenuZ.ItemTitle>{language.name}</DropdownMenuZ.ItemTitle>
-					</DropdownMenuZ.Item>
+					</DropdownMenuZ.CheckboxItem>
 				))}
 			</DropdownMenuZ.Content>
 		</DropdownMenuZ.Root>

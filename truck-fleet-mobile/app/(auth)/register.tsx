@@ -15,6 +15,7 @@ import { Button } from "~/components/ui/button";
 import * as Haptics from "expo-haptics";
 import { useRegisterStore } from "~/stores/register-store";
 import { router } from "expo-router";
+import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterPage() {
 	// Using the register store instead of local state
@@ -37,17 +38,12 @@ export default function RegisterPage() {
 	const handleContinue = () => {
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 		let nextIndex = currentIndex;
-		if (currentIndex < data.length - 1) {
-			nextIndex = currentIndex + 1;
-			setCurrentIndex(nextIndex);
-			scrollViewRef.current?.scrollTo({
-				x: nextIndex * screenWidth,
-				animated: true,
-			});
-		} else {
-			router.dismissAll();
-			router.replace("/(tabs)");
-		}
+		nextIndex = currentIndex + 1;
+		setCurrentIndex(nextIndex);
+		scrollViewRef.current?.scrollTo({
+			x: nextIndex * screenWidth,
+			animated: true,
+		});
 	};
 
 	return (
@@ -62,7 +58,7 @@ export default function RegisterPage() {
 				overScrollMode="never"
 				style={{ flex: 1 }}
 			>
-				{data.map((item, index) => (
+				{/* {data.map((item, index) => (
 					<View
 						key={index}
 						className="flex-1 justify-center items-center"
@@ -70,7 +66,27 @@ export default function RegisterPage() {
 					>
 						<Text className="text-6xl !font-base">{item}</Text>
 					</View>
-				))}
+				))} */}
+				<View className="flex-1 justify-center items-center">
+					<Text className="text-6xl !font-base">Last page</Text>
+					<Button
+						onPress={async () => {
+							const f = await ImagePicker.requestCameraPermissionsAsync();
+
+							if (!f.granted) {
+								alert("Permission denied");
+								return;
+							}
+
+							await ImagePicker.launchCameraAsync({
+								allowsEditing: true,
+								aspect: [1, 1],
+							});
+						}}
+					>
+						<Text>Dismiss</Text>
+					</Button>
+				</View>
 			</Animated.ScrollView>
 
 			<Animated.View className="absolute bottom-safe-offset-6 left-1/2 -translate-x-1/2">

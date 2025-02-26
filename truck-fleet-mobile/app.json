@@ -1,24 +1,19 @@
 {
   "expo": {
-    "name": "TruckFleet",
+    "name": "Truck Fleet",
     "slug": "truck-fleet-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/icons/adaptive-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.truckfleet.mobile",
+      "bundleIdentifier": "com.kaloyanes.truckfleetmobile",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "UIBackgroundModes": [
@@ -27,19 +22,27 @@
         ],
         "NSLocationWhenInUseUsageDescription": "We need your location to track the truck position.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to track the truck position."
+      },
+      "icon": {
+        "dark": "./assets/icons/ios-dark.png",
+        "light": "./assets/icons/ios-light.png",
+        "tinted": "./assets/icons/ios-tinted.png"
       }
     },
     "android": {
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/icons/adaptive-icon.png",
+        "backgroundImage": "./assets/icons/adaptive-icon.png",
+        "backgroundColor": "#ffffff",
+        "monochromeImage": "./assets/icons/adaptive-icon.png"
       },
       "permissions": [
         "ACCESS_BACKGROUND_LOCATION",
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
       ],
-      "package": "com.truckfleet.mobile",
+      "package": "com.kaloyanes.truck_fleet_mobile",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
@@ -60,6 +63,9 @@
             "minSdkVersion": 23,
             "buildToolsVersion": "33.0.0",
             "kotlinVersion": "1.6.20"
+          },
+          "ios": {
+            "useFrameworks": "static"
           }
         }
       ],
@@ -77,11 +83,22 @@
       "@react-native-firebase/auth",
       "@react-native-firebase/crashlytics",
       [
-        "expo-build-properties",
+        "expo-splash-screen",
         {
-          "ios": {
-            "useFrameworks": "static"
-          }
+          "backgroundColor": "#09090B",
+          "image": "./assets/icons/splash-icon-dark.png",
+          "dark": {
+            "image": "./assets/icons/splash-icon-light.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to show your photo with the company.",
+          "cameraPermission": "The app accesses your camera to take a photo for your profile."
         }
       ]
     ],

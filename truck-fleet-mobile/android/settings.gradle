@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'TruckFleet'
+rootProject.name = 'Truck Fleet'
 
 dependencyResolutionManagement {
   versionCatalogs {

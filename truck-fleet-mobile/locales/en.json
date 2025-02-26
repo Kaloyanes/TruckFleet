@@ -1,3 +1,13 @@
 {
-  "get_started": "Get Started"
+  "get_started": "Get Started",
+  "home": "Home",
+  "messages": "Messages",
+  "documents": "Documents",
+  "settings": "Settings",
+  "truck_tracker": "Truck Tracker",
+  "processing": "Processing...",
+  "stop_tracking": "Stop tracking",
+  "start_tracking": "Start tracking",
+  "location_service_active": "Location tracking active",
+  "tracking_vehicle_location": "Tracking vehicle location"
 }

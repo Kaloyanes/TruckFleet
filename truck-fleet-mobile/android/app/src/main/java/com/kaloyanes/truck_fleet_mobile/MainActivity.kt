@@ -1,4 +1,4 @@
-package com.truckfleet.mobile
+package com.kaloyanes.truck_fleet_mobile
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

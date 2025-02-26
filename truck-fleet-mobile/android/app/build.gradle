@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.truckfleet.mobile'
+    namespace 'com.kaloyanes.truck_fleet_mobile'
     defaultConfig {
-        applicationId 'com.truckfleet.mobile'
+        applicationId 'com.kaloyanes.truck_fleet_mobile'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -1,7 +1,7 @@
 import { IconArrowLeft, IconPackages } from "@tabler/icons-react-native";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Image, useWindowDimensions, View, Text } from "react-native";
+import { Image, useWindowDimensions, View } from "react-native";
 import Animated, {
 	useSharedValue,
 	withTiming,
@@ -19,6 +19,8 @@ import LanguageSelector from "~/components/LanguageSelector";
 import { Button } from "~/components/ui/button";
 import * as Haptics from "expo-haptics";
 import { ThemeToggle } from "~/components/ThemeToggle";
+import { Text } from "~/components/ui/text";
+import { useRouter } from "expo-router";
 
 export default function Screen() {
 	const { t } = useTranslation();
@@ -44,7 +46,7 @@ export default function Screen() {
 
 	// New animated style for scaling the background image
 	const bgImageStyle = useAnimatedStyle(() => {
-		const radius = interpolate(lowerHeight.value, [0, height * 0.4], [0, 20]);
+		const radius = interpolate(lowerHeight.value, [0, height * 0.4], [0, 40]);
 		return {
 			height: interpolate(
 				lowerHeight.value,
@@ -53,10 +55,12 @@ export default function Screen() {
 			),
 			borderBottomRightRadius: radius,
 			borderBottomLeftRadius: radius,
+			borderCurve: "continuous",
 		};
 	});
 
 	const AnimatedButton = Animated.createAnimatedComponent(Button);
+	const router = useRouter();
 
 	return (
 		<Animated.View className="flex-1 relative">
@@ -107,18 +111,17 @@ export default function Screen() {
 					<Animated.View entering={FadeInDown.springify().delay(200)}>
 						<AnimatedButton
 							style={getStartedButtonStyle}
-							className=" w-[75vw] !h-16"
+							className=" w-[75vw] !h-16 items-center justify-center"
 							onPress={() => {
 								lowerHeight.value = withTiming(height * 0.4, {
 									duration: 600,
 									easing: Easing.out(Easing.bezierFn(0.92, 0, 0.75, 0.44)),
 									reduceMotion: ReduceMotion.System,
 								});
-								Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
 							}}
 						>
 							<Text
-								className="text-xl text-primary-foreground"
+								className="!text-xl text-primary-foreground"
 								style={{
 									fontFamily: "PlayfairDisplay_400Regular",
 								}}
@@ -131,18 +134,26 @@ export default function Screen() {
 			</Animated.View>
 			<Animated.View
 				style={lowerStyle}
-				className="justify-center items-center bg-background overflow-hidden"
+				className="items-center bg-background overflow-hidden flex flex-col justify-evenly"
 			>
+				<View className="flex flex-row items-center justify-center w-full px-4 gap-2">
+					<Text className="text-3xl">Create an</Text>
+					<Text
+						className="text-3xl italic"
+						style={{
+							fontFamily: "PlayfairDisplay_600SemiBold_Italic",
+						}}
+					>
+						account
+					</Text>
+				</View>
 				<Button
 					onPress={() => {
-						lowerHeight.value = withTiming(0, {
-							duration: 300,
-							easing: Easing.inOut(Easing.cubic),
-							reduceMotion: ReduceMotion.System,
-						});
+						router.push("/(auth)/register");
 					}}
+					className=" w-[75vw] !h-12"
 				>
-					<Text className="text-primary-foreground">Reset</Text>
+					<Text className="text-primary-foreground ">Continue with Email</Text>
 				</Button>
 			</Animated.View>
 		</Animated.View>

@@ -17,7 +17,7 @@ interface RegisterStore {
 
 export const useRegisterStore = create<RegisterStore>((set) => ({
 	currentIndex: 0,
-	data: ["a", "b", "c"],
+	data: ["a", "b", "c", "d"],
 	progress: 0,
 	setProgress: (progress: number) => set({ progress }),
 	setCurrentIndex: (index: number) => set({ currentIndex: index }),

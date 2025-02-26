@@ -1,4 +1,4 @@
-package com.truckfleet.mobile
+package com.kaloyanes.truck_fleet_mobile
 
 import android.app.Application
 import android.content.res.Configuration

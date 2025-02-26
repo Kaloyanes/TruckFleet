@@ -19,6 +19,7 @@ import {
 	PlayfairDisplay_400Regular,
 	PlayfairDisplay_400Regular_Italic,
 	PlayfairDisplay_600SemiBold,
+	PlayfairDisplay_600SemiBold_Italic,
 	PlayfairDisplay_800ExtraBold,
 	PlayfairDisplay_800ExtraBold_Italic,
 } from "@expo-google-fonts/playfair-display";
@@ -48,6 +49,7 @@ export default function RootLayout() {
 		PlayfairDisplay_400Regular,
 		PlayfairDisplay_400Regular_Italic,
 		PlayfairDisplay_600SemiBold,
+		PlayfairDisplay_600SemiBold_Italic,
 		PlayfairDisplay_800ExtraBold,
 		PlayfairDisplay_800ExtraBold_Italic,
 	});
@@ -81,17 +83,31 @@ export default function RootLayout() {
 		// <GestureHandlerRootView style={{ flex: 1 }}>
 		<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
 			<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-			<Stack initialRouteName="(tabs)">
+			<Stack initialRouteName="on-board">
 				<Stack.Screen
 					name="(tabs)"
 					options={{
+						title: "Home",
 						headerShown: false,
 					}}
 				/>
 				<Stack.Screen
-					name="index"
+					name="on-board"
 					options={{
 						headerShown: false,
+						title: "",
+					}}
+				/>
+				<Stack.Screen
+					name="(auth)/login"
+					options={{
+						title: "Sign In",
+					}}
+				/>
+				<Stack.Screen
+					name="(auth)/register"
+					options={{
+						title: "Sign Up",
 					}}
 				/>
 			</Stack>
