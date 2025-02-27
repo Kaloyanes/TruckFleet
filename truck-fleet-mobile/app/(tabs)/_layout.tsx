@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions } from "react-native";
+import { View, Text, useWindowDimensions, Platform } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import {
@@ -11,10 +11,6 @@ import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { useTranslation } from "react-i18next";
-
-export const unstable_settings = {
-	initialRouteName: "index",
-};
 
 export default function LayoutTabs() {
 	const { width } = useWindowDimensions();
@@ -30,12 +26,11 @@ export default function LayoutTabs() {
 				headerTransparent: true,
 
 				headerBackground(props) {
+					if (Platform.OS === "android")
+						return <View className="bg-background flex-1" />;
+
 					return (
-						<BlurView
-							intensity={20}
-							tint="systemChromeMaterial"
-							className="flex-1"
-						/>
+						<BlurView intensity={20} tint="prominent" className="flex-1" />
 					);
 				},
 				tabBarStyle: {
@@ -46,15 +41,14 @@ export default function LayoutTabs() {
 				},
 				tabBarHideOnKeyboard: true,
 				tabBarBackground() {
+					if (Platform.OS === "android")
+						return <View className="bg-background flex-1" />;
+
 					return (
-						<BlurView
-							intensity={20}
-							tint="systemChromeMaterial"
-							className="flex-1"
-						/>
+						<BlurView intensity={20} tint="prominent" className="flex-1" />
 					);
 				},
-				animation: "shift",
+				animation: "fade",
 				popToTopOnBlur: true,
 				sceneStyle: {
 					flex: 1,
@@ -64,11 +58,11 @@ export default function LayoutTabs() {
 					animation: "spring",
 					config: {
 						stiffness: 1000,
-						damping: 500,
-						mass: 3,
+						damping: 100,
+						mass: 2,
 						overshootClamping: false,
-						restDisplacementThreshold: 0.01,
-						restSpeedThreshold: 0.01,
+						restDisplacementThreshold: 0.05,
+						restSpeedThreshold: 0.05,
 					},
 				},
 				tabBarPosition: isTablet ? "left" : "bottom",

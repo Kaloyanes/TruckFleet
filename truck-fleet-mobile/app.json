@@ -33,7 +33,7 @@
       "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/adaptive-icon.png",
-        "backgroundImage": "./assets/icons/adaptive-icon.png",
+        // "backgroundImage": "./assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "monochromeImage": "./assets/icons/adaptive-icon.png"
       },
@@ -58,11 +58,11 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
-            "minSdkVersion": 23,
-            "buildToolsVersion": "33.0.0",
-            "kotlinVersion": "1.6.20"
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "minSdkVersion": 24,
+            "buildToolsVersion": "35.0.0",
+            "kotlinVersion": "1.9.25"
           },
           "ios": {
             "useFrameworks": "static"

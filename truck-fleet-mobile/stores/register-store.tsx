@@ -5,10 +5,11 @@ import {
 	withTiming,
 } from "react-native-reanimated";
 import { create } from "zustand";
+import NameStepPage from "~/app/(auth)/(registerSteps)/nameStep";
 
 interface RegisterStore {
 	currentIndex: number;
-	data: string[];
+	data: (() => React.JSX.Element)[];
 	progress: number;
 	setProgress: (progress: number) => void;
 	setCurrentIndex: (index: number) => void;
@@ -17,7 +18,7 @@ interface RegisterStore {
 
 export const useRegisterStore = create<RegisterStore>((set) => ({
 	currentIndex: 0,
-	data: ["a", "b", "c", "d"],
+	data: [NameStepPage, NameStepPage, NameStepPage],
 	progress: 0,
 	setProgress: (progress: number) => set({ progress }),
 	setCurrentIndex: (index: number) => set({ currentIndex: index }),

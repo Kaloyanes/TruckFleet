@@ -9,7 +9,7 @@ import {
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform } from "react-native";
+import { Platform, View, Pressable } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
@@ -25,6 +25,14 @@ import {
 } from "@expo-google-fonts/playfair-display";
 import i18n from "~/locales/i18n";
 import * as NavigationBar from "expo-navigation-bar";
+import LanguageSelector from "~/components/LanguageSelector";
+import { useRegisterStore } from "~/stores/register-store";
+import { Text } from "~/components/ui/text";
+import { Progress } from "~/components/ui/progress";
+import { useTranslation } from "react-i18next";
+import { router, usePathname } from "expo-router";
+import { ChevronLeft } from "lucide-react-native";
+import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 // import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const LIGHT_THEME: Theme = {
@@ -42,6 +50,7 @@ export {
 } from "expo-router";
 
 export default function RootLayout() {
+	const { t } = useTranslation();
 	const hasMounted = React.useRef(false);
 	const { colorScheme, isDarkColorScheme } = useColorScheme();
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
@@ -79,39 +88,88 @@ export default function RootLayout() {
 		return null;
 	}
 
+	const RegisterBackButton = () => {
+		// Use a hook within the component to ensure it has access to the React context
+		const { currentIndex, setCurrentIndex } = useRegisterStore();
+
+		const handleBackPress = () => {
+			impactAsync(ImpactFeedbackStyle.Light);
+			if (currentIndex > 0) {
+				setCurrentIndex(currentIndex - 1);
+			} else {
+				router.back();
+			}
+		};
+
+		return (
+			<Pressable onPress={handleBackPress} className="ml-2 p-2">
+				<ChevronLeft
+					size={24}
+					color={colorScheme === "dark" ? "white" : "black"}
+				/>
+			</Pressable>
+		);
+	};
+
 	return (
 		// <GestureHandlerRootView style={{ flex: 1 }}>
 		<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-			<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-			<Stack initialRouteName="on-board">
-				<Stack.Screen
-					name="(tabs)"
-					options={{
-						title: "Home",
-						headerShown: false,
+			<View className="bg-background flex-1">
+				<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+				<Stack
+					initialRouteName="on-board"
+					screenOptions={{
+						headerLargeTitleStyle: {
+							fontFamily: "PlayfairDisplay_600SemiBold",
+						},
 					}}
-				/>
-				<Stack.Screen
-					name="on-board"
-					options={{
-						headerShown: false,
-						title: "",
-					}}
-				/>
-				<Stack.Screen
-					name="(auth)/login"
-					options={{
-						title: "Sign In",
-					}}
-				/>
-				<Stack.Screen
-					name="(auth)/register"
-					options={{
-						title: "Sign Up",
-					}}
-				/>
-			</Stack>
-			<PortalHost />
+				>
+					<Stack.Screen
+						name="(tabs)"
+						options={{
+							title: t("home"),
+							headerShown: false,
+						}}
+					/>
+					<Stack.Screen
+						name="on-board"
+						options={{
+							headerShown: false,
+							title: "",
+						}}
+					/>
+					<Stack.Screen
+						name="(auth)/login"
+						options={{
+							title: t("sign_in_title"),
+							headerLargeTitle: true,
+							headerShadowVisible: false,
+						}}
+					/>
+					<Stack.Screen
+						name="(auth)/register"
+						options={{
+							headerShadowVisible: false,
+							headerLeft: () => <RegisterBackButton />,
+							headerTitle(props) {
+								const { progress } = useRegisterStore();
+								return (
+									<View className="items-center justify-center flex-1 mr-4">
+										<Progress value={progress} className="w-full" />
+									</View>
+								);
+							},
+							headerRight: () => (
+								<View className="flex flex-row gap-4">
+									<LanguageSelector />
+									<ThemeToggle />
+								</View>
+							),
+						}}
+					/>
+				</Stack>
+				<PortalHost />
+			</View>
 		</ThemeProvider>
 		// </GestureHandlerRootView>
 	);

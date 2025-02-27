@@ -9,5 +9,14 @@
   "stop_tracking": "Stop tracking",
   "start_tracking": "Start tracking",
   "location_service_active": "Location tracking active",
-  "tracking_vehicle_location": "Tracking vehicle location"
+  "tracking_vehicle_location": "Tracking vehicle location",
+  "truck_fleet": "Truck Fleet",
+  "create_account": "Create an",
+  "account": "account",
+  "continue_with_email": "Continue with Email",
+  "already_have_account": "Already have an account?",
+  "sign_in": "Sign in",
+  "continue": "Continue",
+  "finish": "Finish",
+  "sign_in_title": "Sign In"
 }

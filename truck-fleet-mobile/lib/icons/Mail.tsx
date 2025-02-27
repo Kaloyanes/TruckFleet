@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react-native";
+import { IconMail } from "@tabler/icons-react-native";
 import { iconWithClassName } from "./iconWithClassName";
-iconWithClassName(Mail);
-export { Mail };
+iconWithClassName(IconMail);
+export { IconMail };

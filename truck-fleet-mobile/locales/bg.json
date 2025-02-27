@@ -9,5 +9,14 @@
   "stop_tracking": "Спри проследяването",
   "start_tracking": "Започни проследяване",
   "location_service_active": "Проследяването е активно",
-  "tracking_vehicle_location": "Проследяване на местоположението на превозното средство"
+  "tracking_vehicle_location": "Проследяване на местоположението на превозното средство",
+  "truck_fleet": "Камионен Флот",
+  "create_account": "Създай",
+  "account": "акаунт",
+  "continue_with_email": "Продължи с имейл",
+  "already_have_account": "Вече имаш акаунт?",
+  "sign_in": "Вход",
+  "continue": "Продължи",
+  "finish": "Завърши",
+  "sign_in_title": "Вход"
 }

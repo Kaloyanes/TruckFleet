@@ -15,6 +15,7 @@ import Animated, {
 	FadeInDown,
 	FadeIn,
 } from "react-native-reanimated";
+import { IconMail } from "~/lib/icons/Mail";
 import LanguageSelector from "~/components/LanguageSelector";
 import { Button } from "~/components/ui/button";
 import * as Haptics from "expo-haptics";
@@ -22,7 +23,7 @@ import { ThemeToggle } from "~/components/ThemeToggle";
 import { Text } from "~/components/ui/text";
 import { useRouter } from "expo-router";
 
-export default function Screen() {
+export default function OnBoardPage() {
 	const { t } = useTranslation();
 
 	const { width, height } = useWindowDimensions();
@@ -132,29 +133,46 @@ export default function Screen() {
 					</Animated.View>
 				</Animated.View>
 			</Animated.View>
+
 			<Animated.View
 				style={lowerStyle}
 				className="items-center bg-background overflow-hidden flex flex-col justify-evenly"
 			>
 				<View className="flex flex-row items-center justify-center w-full px-4 gap-2">
-					<Text className="text-3xl">Create an</Text>
+					<Text className="text-3xl">{t("create_account")}</Text>
 					<Text
 						className="text-3xl italic"
 						style={{
 							fontFamily: "PlayfairDisplay_600SemiBold_Italic",
 						}}
 					>
-						account
+						{t("account")}
 					</Text>
 				</View>
 				<Button
 					onPress={() => {
 						router.push("/(auth)/register");
 					}}
-					className=" w-[75vw] !h-12"
+					className=" w-[75vw] !h-16 flex-row gap-4 justify-between"
 				>
-					<Text className="text-primary-foreground ">Continue with Email</Text>
+					<IconMail size={24} className="text-primary-foreground" />
+					<Text className="text-primary-foreground !text-xl ">
+						{t("continue_with_email")}
+					</Text>
+					<View className="" />
 				</Button>
+				<View className="flex flex-row items-center justify-center w-full px-4 gap-2">
+					<Text className="text-lg">{t("already_have_account")}</Text>
+					<Button
+						onPress={() => {
+							router.push("/(auth)/login");
+						}}
+						variant={"link"}
+						className="!h-16"
+					>
+						<Text className="!text-lg">{t("sign_in")}</Text>
+					</Button>
+				</View>
 			</Animated.View>
 		</Animated.View>
 	);

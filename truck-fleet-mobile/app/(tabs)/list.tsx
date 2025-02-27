@@ -6,7 +6,7 @@ import { Text } from "~/components/ui/text";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useRouter } from "expo-router";
-export default function list() {
+export default function List() {
 	const headerHeight = useHeaderHeight();
 	const tabHeight = useBottomTabBarHeight();
 	const router = useRouter();

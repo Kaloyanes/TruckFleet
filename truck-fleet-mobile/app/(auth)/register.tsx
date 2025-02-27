@@ -1,101 +1,150 @@
 import {
+	ScrollView,
+	StyleSheet,
 	View,
-	type ScrollView,
-	Dimensions,
-	useAnimatedValue,
+	useWindowDimensions,
+	type NativeSyntheticEvent,
+	type NativeScrollEvent,
 } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import { Text } from "~/components/ui/text";
 import Animated, {
 	FadeInDown,
-	useAnimatedRef,
-	useScrollViewOffset,
+	LinearTransition,
 } from "react-native-reanimated";
 import { Button } from "~/components/ui/button";
-import * as Haptics from "expo-haptics";
 import { useRegisterStore } from "~/stores/register-store";
 import { router } from "expo-router";
-import * as ImagePicker from "expo-image-picker";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
+
+const AnimatedButton = Animated.createAnimatedComponent(Button);
 
 export default function RegisterPage() {
-	// Using the register store instead of local state
+	const { t } = useTranslation();
+	const { width: viewWidth } = useWindowDimensions();
+	const { bottom, top } = useSafeAreaInsets();
 	const { data, currentIndex, setCurrentIndex, setProgress, reset } =
 		useRegisterStore();
-	const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
-	const scrollOffset = useScrollViewOffset(scrollViewRef);
 
-	const screenWidth = Dimensions.get("window").width;
+	const scrollViewRef = useRef<ScrollView>(null);
 
-	useEffect(() => {
-		setProgress(((currentIndex + 1) / data.length) * 100);
-	}, [currentIndex, data.length, setProgress]);
+	const calculateProgress = (
+		event: NativeSyntheticEvent<NativeScrollEvent>,
+	) => {
+		const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+		const currentScrollPosition = contentOffset.x;
+		const maxScrollPosition = contentSize.width - layoutMeasurement.width;
 
-	// Unmount hook: reset the store on unmount
-	useEffect(() => {
-		return () => reset();
-	}, [reset]);
+		// Calculate progress directly on a 1-100 scale
+		let progress = 0; // Default to 1 if there's no scrollable content
 
-	const handleContinue = () => {
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-		let nextIndex = currentIndex;
-		nextIndex = currentIndex + 1;
-		setCurrentIndex(nextIndex);
-		scrollViewRef.current?.scrollTo({
-			x: nextIndex * screenWidth,
-			animated: true,
-		});
+		if (maxScrollPosition > 0) {
+			// Calculate percentage directly (1-100)
+			progress =
+				Math.round((currentScrollPosition / maxScrollPosition) * 99) + 1;
+
+			// Ensure progress is between 1 and 100
+			progress = Math.min(100, Math.max(0, progress));
+		}
+
+		setProgress(progress);
 	};
 
+	const handleContinue = () => {
+		if (currentIndex < data.length - 1) {
+			const nextIndex = currentIndex + 1;
+			setCurrentIndex(nextIndex);
+
+			scrollViewRef.current?.scrollTo({
+				x: viewWidth * nextIndex,
+				animated: true,
+			});
+		} else {
+			router.dismissAll();
+			router.replace("/(tabs)");
+		}
+	};
+
+	const handleBack = () => {
+		if (currentIndex > 0) {
+			const nextIndex = currentIndex - 1;
+			setCurrentIndex(nextIndex);
+
+			scrollViewRef.current?.scrollTo({
+				x: viewWidth * nextIndex,
+				animated: true,
+			});
+			return;
+		}
+
+		router.back();
+	};
+
+	useEffect(() => {
+		return () => {
+			reset();
+		};
+	}, [reset]);
+
+	// Effect to scroll when currentIndex changes (e.g., from header back button)
+	useEffect(() => {
+		scrollViewRef.current?.scrollTo({
+			x: viewWidth * currentIndex,
+			animated: true,
+		});
+	}, [currentIndex, viewWidth]);
+
 	return (
-		<View className="flex-1 relative">
-			<Animated.ScrollView
-				ref={scrollViewRef}
-				horizontal
-				pagingEnabled
-				decelerationRate={"normal"}
-				scrollEnabled={false}
-				showsHorizontalScrollIndicator={false}
-				overScrollMode="never"
-				style={{ flex: 1 }}
+		<Animated.View className="flex-1 relative">
+			<View className="flex-1 ">
+				<ScrollView
+					ref={scrollViewRef}
+					horizontal
+					pagingEnabled
+					scrollEnabled={false}
+					showsHorizontalScrollIndicator={false}
+					className="z-0 flex-1 w-screen h-screen "
+					keyboardShouldPersistTaps="handled"
+					onScroll={calculateProgress}
+					scrollEventThrottle={8}
+					// contentContainerStyle={{
+					// 	alignItems: "center",
+					// 	justifyContent: "center",
+					// }}
+				>
+					{data.map((step, index) => (
+						<View key={index} className="flex-1 !w-screen !h-[80%]">
+							{step()}
+						</View>
+					))}
+				</ScrollView>
+			</View>
+
+			<Animated.View
+				entering={FadeInDown.springify().delay(200)}
+				layout={LinearTransition.springify()}
+				className="z-50"
 			>
-				{/* {data.map((item, index) => (
-					<View
-						key={index}
-						className="flex-1 justify-center items-center"
-						style={{ width: screenWidth }}
-					>
-						<Text className="text-6xl !font-base">{item}</Text>
-					</View>
-				))} */}
-				<View className="flex-1 justify-center items-center">
-					<Text className="text-6xl !font-base">Last page</Text>
-					<Button
-						onPress={async () => {
-							const f = await ImagePicker.requestCameraPermissionsAsync();
-
-							if (!f.granted) {
-								alert("Permission denied");
-								return;
-							}
-
-							await ImagePicker.launchCameraAsync({
-								allowsEditing: true,
-								aspect: [1, 1],
-							});
+				<View className="absolute left-1/2 -translate-x-1/2 bottom-14 justify-center items-center">
+					<AnimatedButton
+						className=" w-[75vw] !h-16 items-center justify-center"
+						onPress={() => {
+							handleContinue();
 						}}
+						layout={LinearTransition.springify()}
 					>
-						<Text>Dismiss</Text>
-					</Button>
+						<Text
+							className="!text-xl text-primary-foreground"
+							style={{
+								fontFamily: "PlayfairDisplay_400Regular",
+							}}
+						>
+							{currentIndex < data.length - 1 ? t("continue") : t("finish")}
+						</Text>
+					</AnimatedButton>
 				</View>
-			</Animated.ScrollView>
-
-			<Animated.View className="absolute bottom-safe-offset-6 left-1/2 -translate-x-1/2">
-				<Animated.View entering={FadeInDown.springify().delay(300)}>
-					<Button className="w-[75vw] !h-16" onPress={handleContinue}>
-						<Text className="!text-xl text-primary-foreground">Continue</Text>
-					</Button>
-				</Animated.View>
 			</Animated.View>
-		</View>
+		</Animated.View>
 	);
 }

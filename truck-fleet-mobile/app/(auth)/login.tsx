@@ -1,10 +1,14 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
+import { Text } from "~/components/ui/text";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
+	const { t } = useTranslation();
+
 	return (
 		<View>
-			<Text>LoginPage</Text>
+			<Text>{t("sign_in_title")}</Text>
 		</View>
 	);
 }

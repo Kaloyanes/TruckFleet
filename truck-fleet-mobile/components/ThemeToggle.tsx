@@ -3,6 +3,7 @@ import { Sun } from "~/lib/icons/Sun";
 import { useColorScheme } from "~/lib/useColorScheme";
 import * as DropdownMenuZ from "zeego/dropdown-menu";
 import { Button } from "~/components/ui/button";
+import { Appearance } from "react-native";
 
 export function ThemeToggle() {
 	const { isDarkColorScheme, setColorScheme } = useColorScheme();
@@ -10,11 +11,11 @@ export function ThemeToggle() {
 	const themes = [
 		{ code: "light", name: "Light" },
 		{ code: "dark", name: "Dark" },
-		{ code: "system", name: "System" },
 	];
 
-	function changeTheme(theme: "light" | "dark" | "system") {
+	function changeTheme(theme: "light" | "dark") {
 		setColorScheme(theme);
+		Appearance.setColorScheme(theme);
 	}
 
 	return (
@@ -35,10 +36,12 @@ export function ThemeToggle() {
 			<DropdownMenuZ.Content className="w-64 native:w-72">
 				{themes.map((theme) => (
 					<DropdownMenuZ.Item
+						style={{
+							backgroundColor: theme.code === "dark" ? "black" : "white",
+							color: theme.code === "dark" ? "white" : "black",
+						}}
 						key={theme.code}
-						onSelect={() =>
-							changeTheme(theme.code as "light" | "dark" | "system")
-						}
+						onSelect={() => changeTheme(theme.code as "light" | "dark")}
 					>
 						<DropdownMenuZ.ItemTitle>{theme.name}</DropdownMenuZ.ItemTitle>
 					</DropdownMenuZ.Item>

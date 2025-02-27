@@ -82,9 +82,12 @@ const Button = React.forwardRef<
 				ref={ref}
 				role="button"
 				{...props}
-				onPressOut={() =>
-					Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-				}
+				onPress={(e) => {
+					if (props.onPress) {
+						Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+						props.onPress(e);
+					}
+				}}
 			/>
 		</TextClassContext.Provider>
 	);
