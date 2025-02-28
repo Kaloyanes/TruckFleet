@@ -79,6 +79,7 @@ export default function RootLayout() {
 			// Adds the background color to the html element to prevent white background on overscroll.
 			document.documentElement.classList.add("bg-background");
 		}
+
 		if (Platform.OS === "android") NavigationBar.setPositionAsync("absolute");
 		setIsColorSchemeLoaded(true);
 		hasMounted.current = true;
@@ -90,12 +91,14 @@ export default function RootLayout() {
 
 	const RegisterBackButton = () => {
 		// Use a hook within the component to ensure it has access to the React context
-		const { currentIndex, setCurrentIndex } = useRegisterStore();
+		const { currentIndex, setCurrentIndex, setButtonDisabled } =
+			useRegisterStore();
 
 		const handleBackPress = () => {
 			impactAsync(ImpactFeedbackStyle.Light);
 			if (currentIndex > 0) {
 				setCurrentIndex(currentIndex - 1);
+				setButtonDisabled(false);
 			} else {
 				router.back();
 			}
@@ -125,17 +128,17 @@ export default function RootLayout() {
 					}}
 				>
 					<Stack.Screen
-						name="(tabs)"
-						options={{
-							title: t("home"),
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
 						name="on-board"
 						options={{
 							headerShown: false,
 							title: "",
+						}}
+					/>
+					<Stack.Screen
+						name="(tabs)"
+						options={{
+							title: t("home"),
+							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
@@ -165,6 +168,22 @@ export default function RootLayout() {
 									<ThemeToggle />
 								</View>
 							),
+						}}
+					/>
+					<Stack.Screen
+						name="(auth)/pick-image"
+						options={{
+							sheetCornerRadius: 50,
+
+							sheetGrabberVisible: true,
+							sheetElevation: 50,
+							presentation: "formSheet",
+							sheetAllowedDetents: [0.75, 1],
+							title: "Pick Method",
+							gestureDirection: "vertical",
+							headerLargeTitle: true,
+							headerShadowVisible: false,
+							headerLargeTitleShadowVisible: false,
 						}}
 					/>
 				</Stack>

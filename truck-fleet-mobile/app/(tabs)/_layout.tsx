@@ -1,6 +1,5 @@
 import { View, Text, useWindowDimensions, Platform } from "react-native";
 import React from "react";
-import { Tabs } from "expo-router";
 import {
 	IconHome,
 	IconList,
@@ -11,6 +10,8 @@ import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { useTranslation } from "react-i18next";
+import { Tabs } from "expo-router";
+// import { Tabs } from "~/components/ui/bottom-tabs";
 
 export default function LayoutTabs() {
 	const { width } = useWindowDimensions();
@@ -33,6 +34,7 @@ export default function LayoutTabs() {
 						<BlurView intensity={20} tint="prominent" className="flex-1" />
 					);
 				},
+
 				tabBarStyle: {
 					borderCurve: "continuous",
 
@@ -40,6 +42,7 @@ export default function LayoutTabs() {
 					position: isTablet ? "relative" : "absolute",
 				},
 				tabBarHideOnKeyboard: true,
+
 				tabBarBackground() {
 					if (Platform.OS === "android")
 						return <View className="bg-background flex-1" />;
@@ -66,6 +69,28 @@ export default function LayoutTabs() {
 					},
 				},
 				tabBarPosition: isTablet ? "left" : "bottom",
+				tabBarVisibilityAnimationConfig: {
+					hide: {
+						animation: "spring",
+						config: {
+							stiffness: 1000,
+							damping: 50,
+							mass: 3,
+							restDisplacementThreshold: 0.01,
+							restSpeedThreshold: 0.01,
+						},
+					},
+					show: {
+						animation: "spring",
+						config: {
+							stiffness: 1000,
+							damping: 50,
+							mass: 3,
+							restDisplacementThreshold: 0.01,
+							restSpeedThreshold: 0.01,
+						},
+					},
+				},
 			}}
 			screenListeners={{
 				tabPress: (e) => {

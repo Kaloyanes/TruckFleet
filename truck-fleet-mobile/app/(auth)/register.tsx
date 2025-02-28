@@ -5,18 +5,34 @@ import {
 	useWindowDimensions,
 	type NativeSyntheticEvent,
 	type NativeScrollEvent,
+	Keyboard,
 } from "react-native";
 import React, { useEffect, useRef, useMemo, useState } from "react";
 import { Text } from "~/components/ui/text";
 import Animated, {
 	FadeInDown,
 	LinearTransition,
+	useAnimatedKeyboard,
+	useAnimatedRef,
+	useAnimatedStyle,
+	useDerivedValue,
+	useSharedValue,
+	scrollTo,
+	withTiming,
+	Easing,
+	ReduceMotion,
+	withSpring,
 } from "react-native-reanimated";
 import { Button } from "~/components/ui/button";
 import { useRegisterStore } from "~/stores/register-store";
 import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { MotiView } from "moti";
+import NameStepPage from "./(registerSteps)/name-step";
+import passwordStep from "./(registerSteps)/password-step";
+import PasswordStepPage from "./(registerSteps)/password-step";
+import ProfilePictureStepPage from "./(registerSteps)/profile-picture-step";
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
@@ -24,10 +40,22 @@ export default function RegisterPage() {
 	const { t } = useTranslation();
 	const { width: viewWidth } = useWindowDimensions();
 	const { bottom, top } = useSafeAreaInsets();
-	const { data, currentIndex, setCurrentIndex, setProgress, reset } =
-		useRegisterStore();
 
-	const scrollViewRef = useRef<ScrollView>(null);
+	const {
+		currentIndex,
+		setCurrentIndex,
+		setProgress,
+		reset,
+		buttonDisabled,
+		setButtonDisabled,
+	} = useRegisterStore();
+
+	useEffect(() => {
+		setButtonDisabled(true);
+	}, [setButtonDisabled]);
+
+	const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
+	const xValue = useSharedValue(0);
 
 	const calculateProgress = (
 		event: NativeSyntheticEvent<NativeScrollEvent>,
@@ -51,34 +79,23 @@ export default function RegisterPage() {
 		setProgress(progress);
 	};
 
+	const data = [
+		ProfilePictureStepPage,
+		NameStepPage,
+		PasswordStepPage,
+		ProfilePictureStepPage,
+	];
+
 	const handleContinue = () => {
+		setButtonDisabled(true);
+		Keyboard.dismiss();
 		if (currentIndex < data.length - 1) {
 			const nextIndex = currentIndex + 1;
 			setCurrentIndex(nextIndex);
-
-			scrollViewRef.current?.scrollTo({
-				x: viewWidth * nextIndex,
-				animated: true,
-			});
 		} else {
 			router.dismissAll();
 			router.replace("/(tabs)");
 		}
-	};
-
-	const handleBack = () => {
-		if (currentIndex > 0) {
-			const nextIndex = currentIndex - 1;
-			setCurrentIndex(nextIndex);
-
-			scrollViewRef.current?.scrollTo({
-				x: viewWidth * nextIndex,
-				animated: true,
-			});
-			return;
-		}
-
-		router.back();
 	};
 
 	useEffect(() => {
@@ -87,64 +104,77 @@ export default function RegisterPage() {
 		};
 	}, [reset]);
 
-	// Effect to scroll when currentIndex changes (e.g., from header back button)
 	useEffect(() => {
-		scrollViewRef.current?.scrollTo({
-			x: viewWidth * currentIndex,
-			animated: true,
-		});
-	}, [currentIndex, viewWidth]);
+		xValue.value = currentIndex * viewWidth;
+		// scrollTo(scrollViewRef, currentIndex * viewWidth, 0, false);
+	}, [currentIndex, viewWidth, xValue]);
+
+	useDerivedValue(() => {
+		scrollTo(scrollViewRef, xValue.value, 0, true);
+	}, [xValue.value]);
+
+	const { height: keyboardHeight } = useAnimatedKeyboard({
+		isNavigationBarTranslucentAndroid: true,
+		isStatusBarTranslucentAndroid: true,
+	});
+
+	const animatedStyles = useAnimatedStyle(() => ({
+		transform: [{ translateY: -keyboardHeight.value }],
+	}));
 
 	return (
 		<Animated.View className="flex-1 relative">
 			<View className="flex-1 ">
-				<ScrollView
+				<Animated.ScrollView
 					ref={scrollViewRef}
 					horizontal
-					pagingEnabled
 					scrollEnabled={false}
 					showsHorizontalScrollIndicator={false}
 					className="z-0 flex-1 w-screen h-screen "
 					keyboardShouldPersistTaps="handled"
 					onScroll={calculateProgress}
-					scrollEventThrottle={8}
-					// contentContainerStyle={{
-					// 	alignItems: "center",
-					// 	justifyContent: "center",
-					// }}
+					scrollEventThrottle={16}
 				>
-					{data.map((step, index) => (
-						<View key={index} className="flex-1 !w-screen !h-[80%]">
-							{step()}
-						</View>
-					))}
-				</ScrollView>
+					{data.map((Component, index) => {
+						return <Component key={index} />;
+					})}
+				</Animated.ScrollView>
 			</View>
 
-			<Animated.View
-				entering={FadeInDown.springify().delay(200)}
-				layout={LinearTransition.springify()}
-				className="z-50"
-			>
-				<View className="absolute left-1/2 -translate-x-1/2 bottom-14 justify-center items-center">
-					<AnimatedButton
-						className=" w-[75vw] !h-16 items-center justify-center"
-						onPress={() => {
-							handleContinue();
+			<MotiView entering={FadeInDown.springify().duration(250)}>
+				<MotiView
+					transition={{
+						type: "timing",
+						delay: 0,
+					}}
+					style={animatedStyles}
+					className="z-50"
+				>
+					<View
+						className="absolute left-1/2 -translate-x-1/2 justify-center items-center"
+						style={{
+							bottom: bottom + 26,
 						}}
-						layout={LinearTransition.springify()}
 					>
-						<Text
-							className="!text-xl text-primary-foreground"
-							style={{
-								fontFamily: "PlayfairDisplay_400Regular",
+						<Button
+							className=" w-[75vw] !h-16 items-center justify-center"
+							onPress={() => {
+								handleContinue();
 							}}
+							disabled={buttonDisabled}
 						>
-							{currentIndex < data.length - 1 ? t("continue") : t("finish")}
-						</Text>
-					</AnimatedButton>
-				</View>
-			</Animated.View>
+							<Text
+								className="!text-xl text-primary-foreground"
+								style={{
+									fontFamily: "PlayfairDisplay_400Regular",
+								}}
+							>
+								{currentIndex < data.length - 1 ? t("continue") : t("finish")}
+							</Text>
+						</Button>
+					</View>
+				</MotiView>
+			</MotiView>
 		</Animated.View>
 	);
 }

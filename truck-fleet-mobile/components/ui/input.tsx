@@ -1,24 +1,44 @@
 import * as React from "react";
-import { TextInput, type TextInputProps } from "react-native";
+import { TextInput, type TextInputProps, View } from "react-native";
+import { useColorScheme } from "~/lib/useColorScheme";
 import { cn } from "~/lib/utils";
 
-const Input = React.forwardRef<
-	React.ElementRef<typeof TextInput>,
-	TextInputProps
->(({ className, placeholderClassName, ...props }, ref) => {
-	return (
-		<TextInput
-			ref={ref}
-			className={cn(
-				"web:flex h-10 native:h-12 web:w-full rounded-xl  border border-input bg-background px-3 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
-				props.editable === false && "opacity-50 web:cursor-not-allowed",
-				className,
-			)}
-			placeholderClassName={cn("text-muted-foreground", placeholderClassName)}
-			{...props}
-		/>
-	);
-});
+interface InputProps extends TextInputProps {
+	icon?: React.ReactNode;
+	iconClassName?: string;
+}
+
+const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
+	({ className, placeholderClassName, icon, iconClassName, ...props }, ref) => {
+		const { isDarkColorScheme } = useColorScheme();
+
+		return (
+			<View className="flex flex-row items-center relative">
+				{icon && (
+					<View className={cn("absolute z-10 left-3", iconClassName)}>
+						{icon}
+					</View>
+				)}
+				<TextInput
+					ref={ref}
+					cursorColor={isDarkColorScheme ? "#fff" : "#000"}
+					selectionColor={isDarkColorScheme ? "#fff" : "#000"}
+					className={cn(
+						"web:flex h-10 native:h-12 web:w-full rounded-xl border border-input bg-background px-3 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
+						props.editable === false && "opacity-50 web:cursor-not-allowed",
+						icon && "pl-10", // Add padding to the left if there's an icon
+						className,
+					)}
+					placeholderClassName={cn(
+						"text-muted-foreground",
+						placeholderClassName,
+					)}
+					{...props}
+				/>
+			</View>
+		);
+	},
+);
 
 Input.displayName = "Input";
 
