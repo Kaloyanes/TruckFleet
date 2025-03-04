@@ -8,6 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconMail, IconUser } from "@tabler/icons-react-native";
+import { useTranslation } from "react-i18next";
 
 // Define validation schema
 const nameStepSchema = z.object({
@@ -18,8 +19,9 @@ const nameStepSchema = z.object({
 type NameStepFormData = z.infer<typeof nameStepSchema>;
 
 export default function NameStepPage() {
+	const { t } = useTranslation();
 	const { isDarkColorScheme } = useColorScheme();
-	const { formData, updateFormData, setButtonDisabled } = useRegisterStore();
+	const { formData, updateFormData, updateValidPage } = useRegisterStore();
 	const emailRef = useRef<TextInput>(null);
 
 	const {
@@ -47,7 +49,7 @@ export default function NameStepPage() {
 			}
 
 			const result = nameStepSchema.safeParse(value);
-			setButtonDisabled(!result.success);
+			updateValidPage(0, result.success);
 
 			// Check form validity against schema
 
@@ -55,11 +57,11 @@ export default function NameStepPage() {
 		});
 
 		return () => subscription.unsubscribe();
-	}, [watch, updateFormData, setButtonDisabled]);
+	}, [watch, updateFormData, updateValidPage]);
 
 	return (
 		<View className="flex-1 items-start justify-start px-5 my-3 flex-col gap-4 w-screen">
-			<Text className="text-6xl">Introduce Yourself</Text>
+			<Text className="text-6xl">{t("introduce_yourself")}</Text>
 
 			<Controller
 				control={control}
@@ -67,7 +69,7 @@ export default function NameStepPage() {
 				render={({ field: { onChange, onBlur, value } }) => (
 					<View className="w-full gap-1">
 						<Input
-							placeholder="Name"
+							placeholder={t("name")}
 							value={value}
 							onChangeText={(text) => {
 								onChange(text);
@@ -103,7 +105,7 @@ export default function NameStepPage() {
 					<View className="w-full gap-1">
 						<Input
 							ref={emailRef}
-							placeholder="Email"
+							placeholder={t("email")}
 							value={value}
 							onChangeText={(text) => {
 								onChange(text);

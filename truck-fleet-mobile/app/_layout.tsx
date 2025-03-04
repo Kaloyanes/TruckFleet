@@ -6,7 +6,7 @@ import {
 	type Theme,
 	ThemeProvider,
 } from "@react-navigation/native";
-import { SplashScreen, Stack } from "expo-router";
+import { Link, Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Platform, View, Pressable } from "react-native";
@@ -15,6 +15,7 @@ import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 import {
 	PlayfairDisplay_400Regular,
 	PlayfairDisplay_400Regular_Italic,
@@ -34,6 +35,7 @@ import { router, usePathname } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 // import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -48,6 +50,13 @@ export {
 	// Catch any errors thrown by the Layout component.
 	ErrorBoundary,
 } from "expo-router";
+
+SplashScreen.preventAutoHideAsync();
+
+export const unstable_settings = {
+	// Ensure any route can link back to `/`
+	initialRouteName: "/on-board",
+};
 
 export default function RootLayout() {
 	const { t } = useTranslation();
@@ -65,7 +74,11 @@ export default function RootLayout() {
 
 	React.useEffect(() => {
 		if (fontsLoaded) {
-			SplashScreen.hideAsync();
+			SplashScreen.setOptions({
+				fade: true,
+				duration: 150,
+			});
+			// SplashScreen.hideAsync();
 			return;
 		}
 	}, [fontsLoaded]);
@@ -116,80 +129,90 @@ export default function RootLayout() {
 
 	return (
 		// <GestureHandlerRootView style={{ flex: 1 }}>
-		<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-			<View className="bg-background flex-1">
-				<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-				<Stack
-					initialRouteName="on-board"
-					screenOptions={{
-						headerLargeTitleStyle: {
-							fontFamily: "PlayfairDisplay_600SemiBold",
-						},
-					}}
-				>
-					<Stack.Screen
-						name="on-board"
-						options={{
-							headerShown: false,
-							title: "",
-						}}
-					/>
-					<Stack.Screen
-						name="(tabs)"
-						options={{
-							title: t("home"),
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name="(auth)/login"
-						options={{
-							title: t("sign_in_title"),
-							headerLargeTitle: true,
-							headerShadowVisible: false,
-						}}
-					/>
-					<Stack.Screen
-						name="(auth)/register"
-						options={{
-							headerShadowVisible: false,
-							headerLeft: () => <RegisterBackButton />,
-							headerTitle(props) {
-								const { progress } = useRegisterStore();
-								return (
-									<View className="items-center justify-center flex-1 mr-4">
-										<Progress value={progress} className="w-full" />
-									</View>
-								);
-							},
-							headerRight: () => (
-								<View className="flex flex-row gap-4">
-									<LanguageSelector />
-									<ThemeToggle />
-								</View>
-							),
-						}}
-					/>
-					<Stack.Screen
-						name="(auth)/pick-image"
-						options={{
-							sheetCornerRadius: 50,
+		<KeyboardProvider>
+			<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+				<View className="bg-background flex-1">
+					<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
 
-							sheetGrabberVisible: true,
-							sheetElevation: 50,
-							presentation: "formSheet",
-							sheetAllowedDetents: [0.75, 1],
-							title: "Pick Method",
-							gestureDirection: "vertical",
-							headerLargeTitle: true,
-							headerShadowVisible: false,
-							headerLargeTitleShadowVisible: false,
+					<Stack
+						screenOptions={{
+							headerLargeTitleStyle: {
+								fontFamily: "PlayfairDisplay_600SemiBold",
+							},
 						}}
-					/>
-				</Stack>
-				<PortalHost />
-			</View>
-		</ThemeProvider>
+					>
+						<Stack.Screen
+							name="(tabs)"
+							options={{
+								title: t("home"),
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name="on-board"
+							options={{
+								headerShown: false,
+								title: "",
+							}}
+						/>
+						<Stack.Screen
+							name="(auth)/login"
+							options={{
+								title: "",
+								headerShadowVisible: false,
+								headerRight: () => (
+									<View className="flex flex-row gap-4">
+										<LanguageSelector />
+										<ThemeToggle />
+									</View>
+								),
+							}}
+						/>
+						<Stack.Screen
+							name="(auth)/register"
+							options={{
+								headerShadowVisible: false,
+								headerLeft: () => <RegisterBackButton />,
+								headerTitle(props) {
+									const { progress } = useRegisterStore();
+									return (
+										<View className="items-center justify-center flex-1 mr-4">
+											<Progress value={progress} className="w-full" />
+										</View>
+									);
+								},
+								headerRight: () => (
+									<View className="flex flex-row gap-4">
+										<LanguageSelector />
+										<ThemeToggle />
+									</View>
+								),
+							}}
+						/>
+						<Stack.Screen
+							name="(auth)/pick-image"
+							options={{
+								sheetCornerRadius: 50,
+
+								sheetGrabberVisible: true,
+								sheetElevation: 50,
+								presentation: "formSheet",
+								sheetAllowedDetents: Platform.OS === "ios" ? [1] : [0.9],
+								gestureDirection: "vertical",
+								headerShadowVisible: false,
+								headerLargeTitleShadowVisible: false,
+								title: t("pick_image"),
+							}}
+						/>
+						<Stack.Screen
+							name="(auth)/forgot-password"
+							options={{ presentation: "modal" }}
+						/>
+					</Stack>
+					<PortalHost />
+				</View>
+			</ThemeProvider>
+		</KeyboardProvider>
 		// </GestureHandlerRootView>
 	);
 }

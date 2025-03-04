@@ -6,6 +6,7 @@ import {
 	type NativeSyntheticEvent,
 	type NativeScrollEvent,
 	Keyboard,
+	Platform,
 } from "react-native";
 import React, { useEffect, useRef, useMemo, useState } from "react";
 import { Text } from "~/components/ui/text";
@@ -33,6 +34,7 @@ import NameStepPage from "./(registerSteps)/name-step";
 import passwordStep from "./(registerSteps)/password-step";
 import PasswordStepPage from "./(registerSteps)/password-step";
 import ProfilePictureStepPage from "./(registerSteps)/profile-picture-step";
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
@@ -40,19 +42,18 @@ export default function RegisterPage() {
 	const { t } = useTranslation();
 	const { width: viewWidth } = useWindowDimensions();
 	const { bottom, top } = useSafeAreaInsets();
+	const { height: keyboardHeight } = useReanimatedKeyboardAnimation();
 
-	const {
-		currentIndex,
-		setCurrentIndex,
-		setProgress,
-		reset,
-		buttonDisabled,
-		setButtonDisabled,
-	} = useRegisterStore();
+	const animatedKeyboardOffset = useDerivedValue(() => {
+		return keyboardHeight.value;
+	}, []);
 
-	useEffect(() => {
-		setButtonDisabled(true);
-	}, [setButtonDisabled]);
+	const animatedStyles = useAnimatedStyle(() => ({
+		transform: [{ translateY: animatedKeyboardOffset.value }],
+	}));
+
+	const { currentIndex, setCurrentIndex, setProgress, reset, buttonDisabled } =
+		useRegisterStore();
 
 	const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
 	const xValue = useSharedValue(0);
@@ -79,19 +80,13 @@ export default function RegisterPage() {
 		setProgress(progress);
 	};
 
-	const data = [
-		ProfilePictureStepPage,
-		NameStepPage,
-		PasswordStepPage,
-		ProfilePictureStepPage,
-	];
+	const data = [NameStepPage, PasswordStepPage, ProfilePictureStepPage];
 
 	const handleContinue = () => {
-		setButtonDisabled(true);
 		Keyboard.dismiss();
 		if (currentIndex < data.length - 1) {
 			const nextIndex = currentIndex + 1;
-			setCurrentIndex(nextIndex);
+			setCurrentIndex(nextIndex); // buttonDisabled is derived from validPages
 		} else {
 			router.dismissAll();
 			router.replace("/(tabs)");
@@ -112,15 +107,6 @@ export default function RegisterPage() {
 	useDerivedValue(() => {
 		scrollTo(scrollViewRef, xValue.value, 0, true);
 	}, [xValue.value]);
-
-	const { height: keyboardHeight } = useAnimatedKeyboard({
-		isNavigationBarTranslucentAndroid: true,
-		isStatusBarTranslucentAndroid: true,
-	});
-
-	const animatedStyles = useAnimatedStyle(() => ({
-		transform: [{ translateY: -keyboardHeight.value }],
-	}));
 
 	return (
 		<Animated.View className="flex-1 relative">
@@ -153,7 +139,7 @@ export default function RegisterPage() {
 					<View
 						className="absolute left-1/2 -translate-x-1/2 justify-center items-center"
 						style={{
-							bottom: bottom + 26,
+							bottom: Platform.OS === "ios" ? bottom : bottom + 25,
 						}}
 					>
 						<Button

@@ -6,14 +6,16 @@ import { Text } from "~/components/ui/text";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useRouter } from "expo-router";
+import { LegendList } from "@legendapp/list";
 export default function List() {
 	const headerHeight = useHeaderHeight();
 	const tabHeight = useBottomTabBarHeight();
 	const router = useRouter();
 	return (
 		<View className="flex-1 ">
-			<FlashList
-				data={new Array(100).fill(null).map((_, i) => (i + 1).toString())}
+			<LegendList
+				recycleItems
+				data={new Array(2500).fill(null).map((_, i) => (i + 1).toString())}
 				ListHeaderComponent={
 					<View
 						style={{

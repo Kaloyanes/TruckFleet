@@ -1,7 +1,7 @@
 import { IconArrowLeft, IconPackages } from "@tabler/icons-react-native";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Image, useWindowDimensions, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import Animated, {
 	useSharedValue,
 	withTiming,
@@ -22,12 +22,14 @@ import * as Haptics from "expo-haptics";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { Text } from "~/components/ui/text";
 import { useRouter } from "expo-router";
+import { Image, ImageSource, useImage } from "expo-image";
 
 export default function OnBoardPage() {
 	const { t } = useTranslation();
 
 	const { width, height } = useWindowDimensions();
 	const lowerHeight = useSharedValue(0); // initially hidden
+	const bgImageHook = useImage(require("~/assets/images/landing.jpg"), {});
 
 	const lowerStyle = useAnimatedStyle(() => ({
 		height: lowerHeight.value,
@@ -61,17 +63,24 @@ export default function OnBoardPage() {
 	});
 
 	const AnimatedButton = Animated.createAnimatedComponent(Button);
+	const AnimatedImage = Animated.createAnimatedComponent(Image);
 	const router = useRouter();
 
 	return (
 		<Animated.View className="flex-1 relative">
 			{/* New full-screen background image with scaling */}
-			<Animated.Image
-				source={require("../assets/images/landing.jpg")}
+			<AnimatedImage
+				source={bgImageHook}
+				transition={{
+					effect: "cross-dissolve",
+					duration: 200,
+					timing: "ease-out",
+				}}
 				style={[
 					{ position: "absolute", width: "100%", height: "100%" },
 					bgImageStyle,
 				]}
+				priority={"high"}
 			/>
 
 			{/* New logo and product text overlay */}

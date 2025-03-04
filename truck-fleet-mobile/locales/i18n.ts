@@ -4,11 +4,16 @@ import * as Localization from "expo-localization";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import bg from "./bg.json";
 import en from "./en.json";
+import { MMKV } from "react-native-mmkv";
 
 const resources = {
   bg: { translation: bg },
   en: { translation: en },
 };
+
+const mmkv = new MMKV({
+  id: "kaloyanes.language",
+});
 
 const initI18n = async () => {
   let savedLanguage = await AsyncStorage.getItem("language");
@@ -29,7 +34,7 @@ const initI18n = async () => {
 };
 
 export async function changeLanguage(language: string) {
-  await AsyncStorage.setItem("language", language);
+  await mmkv.set("language", language);
   i18n.changeLanguage(language);
 }
 
