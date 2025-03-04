@@ -37,6 +37,12 @@
           <string>com.googleusercontent.apps.692358107394-ns94cbfqdfngnc5rql591la4gs2mj6go</string>
         </array>
       </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>exp+truck-fleet-mobile</string>
+        </array>
+      </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>

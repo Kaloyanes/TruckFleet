@@ -27,9 +27,11 @@ const AuthRedirect: React.FC<AuthRedirectProps> = ({ children }) => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		const subscriber = onAuthStateChanged(getApp().auth(), authStateChange);
+		const subscriber = auth().onAuthStateChanged(authStateChange);
 		return subscriber; // unsubscribe on unmount
 	}, []);
+
+	if (initializing) return null;
 
 	if (!user) {
 		return <Redirect href={"/on-board"} />;

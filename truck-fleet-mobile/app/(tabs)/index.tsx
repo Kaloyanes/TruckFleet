@@ -10,6 +10,13 @@ import { BodyScrollView } from "~/components/ui/body-scroll-view";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Redirect } from "expo-router";
 
+const getGreetingKey = () => {
+	const hours = new Date().getHours();
+	if (hours < 12) return "good_morning";
+	if (hours < 17) return "good_afternoon";
+	return "good_evening";
+};
+
 export default function Home() {
 	const { t } = useTranslation();
 	const { isServiceRunning, isLoading, toggleBackgroundService } =
@@ -33,10 +40,15 @@ export default function Home() {
 			/>
 			<BodyScrollView
 				contentContainerClassName=" w-full"
-				scrollIndicatorInsets={{ bottom: tabHeight }}
+				scrollIndicatorInsets={{ bottom: tabHeight, top }}
+				automaticallyAdjustsScrollIndicatorInsets={false}
 			>
 				<View className="h-4" />
-				<Text className="text-5xl">Good Afternoon, Kaloyan</Text>
+				<Text className="text-5xl ">
+					{t(getGreetingKey(), {
+						name: "Kaloyan",
+					})}
+				</Text>
 
 				<Button
 					className="px-4 py-2"

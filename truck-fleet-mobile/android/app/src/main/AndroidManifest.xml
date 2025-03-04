@@ -32,6 +32,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
         <data android:scheme="com.kaloyanes.truck_fleet_mobile"/>
+        <data android:scheme="exp+truck-fleet-mobile"/>
       </intent-filter>
     </activity>
   </application>

@@ -35,6 +35,7 @@ export default function List() {
 				scrollIndicatorInsets={{ top: headerHeight, bottom: tabHeight }}
 				automaticallyAdjustsScrollIndicatorInsets={false}
 				estimatedItemSize={28}
+				drawDistance={500}
 			/>
 		</View>
 	);

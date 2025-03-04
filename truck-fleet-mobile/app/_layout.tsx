@@ -36,6 +36,7 @@ import { ChevronLeft } from "lucide-react-native";
 import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 // import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { getApp } from "@react-native-firebase/app";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -58,6 +59,8 @@ export const unstable_settings = {
 	initialRouteName: "/on-board",
 };
 
+globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
+
 export default function RootLayout() {
 	const { t } = useTranslation();
 	const hasMounted = React.useRef(false);
@@ -78,7 +81,6 @@ export default function RootLayout() {
 				fade: true,
 				duration: 150,
 			});
-			// SplashScreen.hideAsync();
 			return;
 		}
 	}, [fontsLoaded]);
@@ -135,6 +137,21 @@ export default function RootLayout() {
 					<StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
 
 					<Stack
+						screenListeners={{
+							state: async (e) => {
+								const previousRouteName =
+									e.data.state.routes[e.data.state.index - 1].name;
+								const currentRouteName =
+									e.data.state.routes[e.data.state.index].name;
+
+								if (previousRouteName !== currentRouteName) {
+									// await logScreenView(getApp(), {
+									// 	screen_name: currentRouteName,
+									// 	screen_class: currentRouteName,
+									// });
+								}
+							},
+						}}
 						screenOptions={{
 							headerLargeTitleStyle: {
 								fontFamily: "PlayfairDisplay_600SemiBold",

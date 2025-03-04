@@ -35,7 +35,7 @@
   "forgot_password": "Forgot password?",
   "invalid_email": "Please enter a valid email address",
   "password_required": "Password is required",
-  "good_afternoon": "Good Afternoon, {name}",
-  "good_morning": "Good Morning, {name}",
-  "good_evening": "Good Evening, {name}"
+  "good_afternoon": "Good Afternoon, {{name}}",
+  "good_morning": "Good Morning, {{name}}",
+  "good_evening": "Good Evening, {{name}}"
 }

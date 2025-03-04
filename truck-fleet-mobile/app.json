@@ -54,6 +54,9 @@
       "expo-router",
       "expo-font",
       "expo-localization",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics",
       [
         "expo-build-properties",
         {
@@ -79,9 +82,6 @@
           "isAndroidBackgroundLocationEnabled": true
         }
       ],
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
-      "@react-native-firebase/crashlytics",
       [
         "expo-splash-screen",
         {

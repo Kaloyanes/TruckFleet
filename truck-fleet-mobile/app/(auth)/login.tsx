@@ -1,4 +1,4 @@
-import { View, Platform, Keyboard } from "react-native";
+import { View, Platform, Keyboard, Alert } from "react-native";
 import React, { useState } from "react";
 import { Text } from "~/components/ui/text";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { BodyScrollView } from "~/components/ui/body-scroll-view";
 import ForgotPasswordDialog from "./forgot-password";
+import auth from "@react-native-firebase/auth";
 
 export default function LoginPage() {
 	const { t } = useTranslation();
@@ -38,12 +39,31 @@ export default function LoginPage() {
 		mode: "onChange",
 	});
 
-	const onSubmit = (data: LoginFormData) => {
-		console.log(data);
-		// Add your login logic here
-		router.dismissAll();
+	const onSubmit = async (data: LoginFormData) => {
+		try {
+			Keyboard.dismiss();
+			await auth().signInWithEmailAndPassword(data.email, data.password);
+			router.dismissAll();
+			router.replace("/(tabs)", {});
+		} catch (error: any) {
+			let errorMessage = "An error occurred during sign in";
 
-		router.replace("/(tabs)");
+			switch (error.code) {
+				case "auth/invalid-email":
+					errorMessage = "Invalid email address";
+					break;
+				case "auth/user-disabled":
+					errorMessage = "This account has been disabled";
+					break;
+				case "auth/user-not-found":
+				case "auth/wrong-password":
+					errorMessage = "Invalid email or password";
+					break;
+			}
+
+			Alert.alert("Sign In Error", errorMessage);
+			console.error(error);
+		}
 	};
 
 	return (

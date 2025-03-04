@@ -35,7 +35,7 @@
   "forgot_password": "Забравена парола?",
   "invalid_email": "Моля въведете валиден имейл адрес",
   "password_required": "Паролата е задължителна",
-  "good_afternoon": "Добър ден, {name}",
-  "good_morning": "Добро утро, {name}",
-  "good_evening": "Добър вечер, {name}"
+  "good_afternoon": "Добър ден,\n{{name}}",
+  "good_morning": "Добро утро,\n{{name}}",
+  "good_evening": "Добър вечер,\n{{name}}"
 }
