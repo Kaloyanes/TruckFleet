@@ -1,7 +1,7 @@
 {
   "get_started": "Започни",
   "home": "Начало",
-  "messages": "Съобщения",
+  "chat": "Чат",
   "documents": "Документи",
   "settings": "Настройки",
   "truck_tracker": "Проследяване на камиони",
@@ -37,5 +37,12 @@
   "password_required": "Паролата е задължителна",
   "good_afternoon": "Добър ден,\n{{name}}",
   "good_morning": "Добро утро,\n{{name}}",
-  "good_evening": "Добър вечер,\n{{name}}"
+  "good_evening": "Добър вечер,\n{{name}}",
+  "phone_number": "Добави своя телефонен номер",
+  "include_country_code": "Моля, добавете кода на държавата",
+  "phone": "Телефон",
+  "invalid_phone": "Моля, въведете валиден телефонен номер",
+  "phone_too_short": "Телефонният номер е твърде кратък",
+  "phone_too_long": "Телефонният номер е твърде дълъг",
+  "map": "Карта"
 }

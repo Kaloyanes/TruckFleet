@@ -22,8 +22,13 @@ export default function ForgotPasswordDialog() {
 			</DialogTrigger>
 			<MotiView
 				animate={{
-					scale: [0.5, 1],
+					scale: [0, 1],
 					opacity: [0, 1],
+				}}
+				transition={{
+					type: "timing",
+					duration: 300,
+					delay: 150,
 				}}
 			>
 				<DialogContent>

@@ -16,10 +16,10 @@ const mmkv = new MMKV({
 });
 
 const initI18n = async () => {
-  let savedLanguage = await AsyncStorage.getItem("language");
+  let savedLanguage: string | undefined = mmkv.getString("language");
 
   if (!savedLanguage) {
-    savedLanguage = Localization.getLocales()[0].languageCode;
+    savedLanguage = Localization.getLocales()[0].languageCode ?? undefined;
   }
 
   i18n.use(initReactI18next).init({

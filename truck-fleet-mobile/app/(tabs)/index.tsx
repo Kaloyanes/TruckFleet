@@ -9,13 +9,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BodyScrollView } from "~/components/ui/body-scroll-view";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Redirect } from "expo-router";
-
-const getGreetingKey = () => {
-	const hours = new Date().getHours();
-	if (hours < 12) return "good_morning";
-	if (hours < 17) return "good_afternoon";
-	return "good_evening";
-};
+import KmChart from "~/components/KmChart";
+import GreetingText from "~/components/GreetingText";
 
 export default function Home() {
 	const { t } = useTranslation();
@@ -35,40 +30,35 @@ export default function Home() {
 		<View className="flex-1 bg-background">
 			<BlurView
 				intensity={20}
-				className="absolute  inset-0 z-50"
+				className="absolute  inset-0 z-50  overflow-hidden bg-background/50"
 				style={{ height: top }}
+				experimentalBlurMethod="dimezisBlurView"
 			/>
 			<BodyScrollView
 				contentContainerClassName=" w-full"
 				scrollIndicatorInsets={{ bottom: tabHeight, top }}
 				automaticallyAdjustsScrollIndicatorInsets={false}
 			>
-				<View className="h-4" />
-				<Text className="text-5xl ">
-					{t(getGreetingKey(), {
-						name: "Kaloyan",
-					})}
-				</Text>
+				<GreetingText />
+				<KmChart />
 
-				<Button
-					className="px-4 py-2"
-					onPress={handleToggleTracking}
-					disabled={isLoading}
-				>
-					<Text className="text-primary-foreground">
-						{isLoading
-							? t("processing")
-							: isServiceRunning
-								? t("stop_tracking")
-								: t("start_tracking")}
-					</Text>
-				</Button>
-				{new Array(30).fill(0).map((_, index) => (
-					<Text className="text-2xl" key={index}>
-						{index + 1}
-					</Text>
-				))}
-				<View style={{ height: tabHeight }} />
+				<View className="px-5">
+					<Button
+						className="px-4 py-2"
+						onPress={handleToggleTracking}
+						disabled={isLoading}
+					>
+						<Text className="text-primary-foreground">
+							{isLoading
+								? t("processing")
+								: isServiceRunning
+									? t("stop_tracking")
+									: t("start_tracking")}
+						</Text>
+					</Button>
+
+					<View style={{ height: tabHeight }} />
+				</View>
 			</BodyScrollView>
 		</View>
 	);

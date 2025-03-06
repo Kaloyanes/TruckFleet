@@ -1,18 +1,22 @@
 import { View, Text, useWindowDimensions, Platform } from "react-native";
 import React from "react";
 import {
+	IconFile,
 	IconHome,
 	IconList,
+	IconMap,
 	IconMessage,
+	IconSearch,
 	IconSettings,
 } from "@tabler/icons-react-native";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { useTranslation } from "react-i18next";
-import { Tabs } from "expo-router";
+import { router, Tabs, usePathname } from "expo-router";
 import i18n from "~/locales/i18n";
 import AuthRedirect from "~/components/redirects/AuthRedirect";
+import TabBar from "./(components)/tab-bar";
 
 // import { Tabs } from "~/components/ui/bottom-tabs";
 
@@ -31,10 +35,16 @@ export default function LayoutTabs() {
 					headerTransparent: true,
 
 					headerBackground(props) {
-						if (Platform.OS === "android")
-							return <View className="bg-background flex-1" />;
+						// if (Platform.OS === "android")
+						// 	return <View className="bg-background flex-1" />;
 
-						return <BlurView intensity={20} className="flex-1" />;
+						return (
+							<BlurView
+								experimentalBlurMethod="dimezisBlurView"
+								intensity={20}
+								className="flex-1 overflow-hidden !bg-background/50"
+							/>
+						);
 					},
 
 					tabBarStyle: {
@@ -44,11 +54,21 @@ export default function LayoutTabs() {
 					tabBarHideOnKeyboard: true,
 
 					tabBarBackground() {
-						if (Platform.OS === "android")
-							return <View className="bg-background flex-1" />;
+						// if (Platform.OS === "android")
+						// 	return <View className="bg-background flex-1" />;
 
-						return <BlurView intensity={20} className="flex-1" />;
+						const pathName = usePathname();
+						const isMaps = pathName.includes("maps");
+
+						return (
+							<BlurView
+								experimentalBlurMethod="dimezisBlurView"
+								intensity={20}
+								className="flex-1 overflow-hidden !bg-background/50"
+							/>
+						);
 					},
+					freezeOnBlur: false,
 					animation: "shift",
 					popToTopOnBlur: true,
 					sceneStyle: {
@@ -106,11 +126,21 @@ export default function LayoutTabs() {
 					}}
 				/>
 				<Tabs.Screen
-					name="list"
+					name="chat"
 					options={{
-						headerTitle: t("messages"),
-						tabBarLabel: t("messages"),
+						headerTitle: t("chat"),
+						tabBarLabel: t("chat"),
 						tabBarIcon: ({ color }) => <IconMessage color={color} size={24} />,
+					}}
+				/>
+				<Tabs.Screen
+					name="maps"
+					options={{
+						headerShown: false,
+
+						headerTitle: t("map"),
+						tabBarLabel: t("map"),
+						tabBarIcon: ({ color }) => <IconMap color={color} size={24} />,
 					}}
 				/>
 				<Tabs.Screen
@@ -118,7 +148,7 @@ export default function LayoutTabs() {
 					options={{
 						headerTitle: t("documents"),
 						tabBarLabel: t("documents"),
-						tabBarIcon: ({ color }) => <IconList color={color} size={24} />,
+						tabBarIcon: ({ color }) => <IconFile color={color} size={24} />,
 					}}
 				/>
 				<Tabs.Screen

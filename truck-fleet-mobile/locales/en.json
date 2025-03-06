@@ -1,7 +1,7 @@
 {
   "get_started": "Get Started",
   "home": "Home",
-  "messages": "Messages",
+  "chat": "Chat",
   "documents": "Documents",
   "settings": "Settings",
   "truck_tracker": "Truck Tracker",
@@ -37,5 +37,12 @@
   "password_required": "Password is required",
   "good_afternoon": "Good Afternoon, {{name}}",
   "good_morning": "Good Morning, {{name}}",
-  "good_evening": "Good Evening, {{name}}"
+  "good_evening": "Good Evening, {{name}}",
+  "phone_number": "Add your phone number",
+  "include_country_code": "Please include your country code",
+  "phone": "Phone",
+  "invalid_phone": "Please enter a valid phone number",
+  "phone_too_short": "Phone number is too short",
+  "phone_too_long": "Phone number is too long",
+  "map": "Map"
 }

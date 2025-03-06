@@ -35,6 +35,10 @@ import passwordStep from "./(registerSteps)/password-step";
 import PasswordStepPage from "./(registerSteps)/password-step";
 import ProfilePictureStepPage from "./(registerSteps)/profile-picture-step";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
+import { BodyScrollView } from "~/components/ui/body-scroll-view";
+import OrganizationStepPage from "./(registerSteps)/organization-step";
+import PhoneStepPage from "./(registerSteps)/phone-step";
+import { cn } from "~/lib/utils";
 
 const AnimatedButton = Animated.createAnimatedComponent(Button);
 
@@ -52,8 +56,14 @@ export default function RegisterPage() {
 		transform: [{ translateY: animatedKeyboardOffset.value }],
 	}));
 
-	const { currentIndex, setCurrentIndex, setProgress, reset, buttonDisabled } =
-		useRegisterStore();
+	const {
+		currentIndex,
+		setCurrentIndex,
+		setProgress,
+		reset,
+		buttonDisabled,
+		register,
+	} = useRegisterStore();
 
 	const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
 	const xValue = useSharedValue(0);
@@ -80,14 +90,27 @@ export default function RegisterPage() {
 		setProgress(progress);
 	};
 
-	const data = [NameStepPage, PasswordStepPage, ProfilePictureStepPage];
+	const data = [
+		NameStepPage,
+		PasswordStepPage,
+		PhoneStepPage,
+		ProfilePictureStepPage,
+		OrganizationStepPage,
+	];
 
-	const handleContinue = () => {
+	const handleContinue = async () => {
 		Keyboard.dismiss();
 		if (currentIndex < data.length - 1) {
 			const nextIndex = currentIndex + 1;
 			setCurrentIndex(nextIndex); // buttonDisabled is derived from validPages
 		} else {
+			try {
+				await register();
+			} catch (e) {
+				console.error(e);
+				return;
+			}
+
 			router.dismissAll();
 			router.replace("/(tabs)");
 		}
@@ -122,7 +145,11 @@ export default function RegisterPage() {
 					scrollEventThrottle={16}
 				>
 					{data.map((Component, index) => {
-						return <Component key={index} />;
+						return (
+							<BodyScrollView key={index}>
+								<Component />
+							</BodyScrollView>
+						);
 					})}
 				</Animated.ScrollView>
 			</View>

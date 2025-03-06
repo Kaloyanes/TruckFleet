@@ -1,8 +1,21 @@
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-import { doc, serverTimestamp, setDoc } from "@react-native-firebase/firestore";
+import {
+	doc,
+	getFirestore,
+	runTransaction,
+	serverTimestamp,
+	setDoc,
+	collection,
+	query,
+	where,
+	getDocs,
+	updateDoc,
+} from "@react-native-firebase/firestore";
 import { getApp } from "@react-native-firebase/app";
 import { useState, useEffect } from "react";
+import auth from "@react-native-firebase/auth";
+import { getDoc } from "@react-native-firebase/firestore";
 
 export const LOCATION_TASK_NAME = "background-location-fetch";
 
@@ -20,13 +33,16 @@ TaskManager.defineTask(
 			return;
 		}
 
+		const user = auth().currentUser;
 		const { locations } = data;
 		console.log(locations[0]);
 		try {
-			const dc = doc(getApp().firestore(), "locations/1");
-			await setDoc(dc, {
-				location: locations[0],
-				timestamp: serverTimestamp(),
+			const dc = doc(getApp().firestore(), `users/${user?.uid}`);
+			await updateDoc(dc, {
+				location: {
+					...locations[0].coords,
+					timestamp: serverTimestamp(),
+				},
 			});
 		} catch (err) {
 			console.error("Failed to update location in Firestore:", err);
@@ -63,7 +79,7 @@ export const startBackgroundLocationTracking = async (notificationConfig: {
 				notificationTitle: notificationConfig.notificationTitle,
 				notificationBody: notificationConfig.notificationBody,
 			},
-			timeInterval: 1000,
+			distanceInterval: 5,
 		});
 		return true;
 	} catch (error) {

@@ -30,7 +30,7 @@ export default function PickMethodPage() {
 		if (!result.canceled) {
 			setProfilePicture(result.assets[0]);
 			router.back();
-			updateValidPage(2, true);
+			updateValidPage(3, true);
 		}
 	}
 
@@ -50,7 +50,7 @@ export default function PickMethodPage() {
 		if (!result.canceled) {
 			setProfilePicture(result.assets[0]);
 			router.back();
-			updateValidPage(2, true);
+			updateValidPage(3, true);
 		}
 	}
 

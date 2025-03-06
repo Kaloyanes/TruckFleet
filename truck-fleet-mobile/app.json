@@ -43,7 +43,12 @@
         "ACCESS_COARSE_LOCATION"
       ],
       "package": "com.kaloyanes.truck_fleet_mobile",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA9OFlvBEMoJvgxsNc8a9l5H5xOSna71Y4"
+        }
+      },
     },
     "web": {
       "bundler": "metro",
