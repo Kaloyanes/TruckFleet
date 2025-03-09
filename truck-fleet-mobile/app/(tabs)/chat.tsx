@@ -45,7 +45,7 @@ export default function List() {
 				)}
 				scrollIndicatorInsets={{ top: headerHeight, bottom: tabHeight }}
 				automaticallyAdjustsScrollIndicatorInsets={false}
-				estimatedItemSize={28}
+				estimatedItemSize={50}
 				drawDistance={1000}
 				ListEmptyComponent={
 					<View className="h-[65vh] w-full  flex-1 items-center justify-center">

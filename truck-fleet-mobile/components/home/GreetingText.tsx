@@ -2,7 +2,7 @@ import { ActivityIndicator, View } from "react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getDoc, doc } from "firebase/firestore";
-import { Text } from "./ui/text";
+import { Text } from "../ui/text";
 import useProfileDoc from "~/hooks/useProfileDoc";
 import { getAuth } from "@react-native-firebase/auth";
 

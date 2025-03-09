@@ -6,10 +6,14 @@ import { ActivityIndicator } from "react-native";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { View } from "lucide-react-native";
 import { getApp } from "@react-native-firebase/app";
+import { MMKV } from "react-native-mmkv";
 
 interface AuthRedirectProps {
 	children: React.ReactNode;
 }
+const mmkv = new MMKV({
+	id: "kaloyanes.auth",
+});
 
 const AuthRedirect: React.FC<AuthRedirectProps> = ({ children }) => {
 	// Set an initializing state whilst Firebase connects
@@ -18,15 +22,19 @@ const AuthRedirect: React.FC<AuthRedirectProps> = ({ children }) => {
 
 	// Handle user state changes
 	function authStateChange(user: any) {
-		console.log(user);
-
 		setUser(user);
+		if (user) mmkv.set("user", JSON.stringify(user));
+		else mmkv.delete("user");
 		if (initializing) setInitializing(false);
 		SplashScreen.hideAsync();
 	}
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
+		if (mmkv.getAllKeys().includes("user")) {
+			setUser(JSON.parse(mmkv.getString("user") ?? "{}"));
+		}
+
 		const subscriber = auth().onAuthStateChanged(authStateChange);
 		return subscriber; // unsubscribe on unmount
 	}, []);

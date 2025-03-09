@@ -5,7 +5,9 @@ import { Text } from "../ui/text";
 import { getAuth } from "@react-native-firebase/auth";
 import useProfileDoc from "~/hooks/useProfileDoc";
 import { Button } from "../ui/button";
-import { Image, useImage } from "expo-image";
+import { useImage } from "expo-image";
+import { Image } from "react-native";
+import { router } from "expo-router";
 
 export default function ChatLink({ chat }: { chat: Chat }) {
 	const currentUser = getAuth().currentUser;
@@ -16,16 +18,27 @@ export default function ChatLink({ chat }: { chat: Chat }) {
 	if (isLoading) {
 		return null;
 	}
+	console.log(data);
 
 	return (
-		<Button variant={"ghost"} className="w-full flex-row">
+		<Button
+			variant={"ghost"}
+			className="w-full gap-4 !h-16 flex flex-row !items-center"
+			onPress={() => {
+				router.push({
+					pathname: "/(chat)/[id]",
+					params: {
+						id: chat.id,
+						personId: otherUser,
+					},
+				});
+			}}
+		>
 			<Image
 				source={{ uri: data?.photoUrl }}
-				className="w-12 h-12 rounded-full"
+				className="w-14 h-14 rounded-full"
 			/>
-			<View className="flex-1 h-full w-full">
-				<Text className="text-xl">{data?.name}</Text>
-			</View>
+			<Text className="!text-xl flex-1">{data?.name}</Text>
 		</Button>
 	);
 }

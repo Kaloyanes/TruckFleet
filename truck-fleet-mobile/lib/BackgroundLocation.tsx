@@ -16,8 +16,33 @@ import { getApp } from "@react-native-firebase/app";
 import { useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import { getDoc } from "@react-native-firebase/firestore";
+import { MMKV } from "react-native-mmkv";
 
 export const LOCATION_TASK_NAME = "background-location-fetch";
+
+const mmkv = new MMKV({
+	id: "kaloyanes.km",
+});
+
+// Add this function before TaskManager.defineTask
+function calculateDistance(
+	lat1: number,
+	lon1: number,
+	lat2: number,
+	lon2: number,
+): number {
+	const R = 6371; // Earth's radius in km
+	const dLat = ((lat2 - lat1) * Math.PI) / 180;
+	const dLon = ((lon2 - lon1) * Math.PI) / 180;
+	const a =
+		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		Math.cos((lat1 * Math.PI) / 180) *
+			Math.cos((lat2 * Math.PI) / 180) *
+			Math.sin(dLon / 2) *
+			Math.sin(dLon / 2);
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	return R * c;
+}
 
 // Define the background location task
 TaskManager.defineTask(
@@ -33,19 +58,46 @@ TaskManager.defineTask(
 			return;
 		}
 
-		const user = auth().currentUser;
+		const today = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
 		const { locations } = data;
-		console.log(locations[0]);
+		const currentCoords = locations[0].coords;
+
 		try {
-			const dc = doc(getApp().firestore(), `users/${user?.uid}`);
+			// Update Firestore
+			const dc = doc(getApp().firestore(), `users/${auth().currentUser?.uid}`);
 			await updateDoc(dc, {
 				location: {
-					...locations[0].coords,
+					...currentCoords,
 					timestamp: serverTimestamp(),
 				},
 			});
+
+			// Get last coordinates from MMKV
+			const lastCoordsStr = mmkv.getString(`last_coords_${today}`);
+			if (lastCoordsStr) {
+				const lastCoords = JSON.parse(lastCoordsStr);
+				const distance = calculateDistance(
+					lastCoords.latitude,
+					lastCoords.longitude,
+					currentCoords.latitude,
+					currentCoords.longitude,
+				);
+
+				// Update daily total
+				const currentTotal = mmkv.getNumber(`km_${today}`) || 0;
+				mmkv.set(`km_${today}`, currentTotal + distance);
+			}
+
+			// Store current coordinates for next calculation
+			mmkv.set(
+				`last_coords_${today}`,
+				JSON.stringify({
+					latitude: currentCoords.latitude,
+					longitude: currentCoords.longitude,
+				}),
+			);
 		} catch (err) {
-			console.error("Failed to update location in Firestore:", err);
+			console.error("Failed to update location data:", err);
 		}
 	},
 );
@@ -79,7 +131,7 @@ export const startBackgroundLocationTracking = async (notificationConfig: {
 				notificationTitle: notificationConfig.notificationTitle,
 				notificationBody: notificationConfig.notificationBody,
 			},
-			distanceInterval: 5,
+			distanceInterval: 100,
 		});
 		return true;
 	} catch (error) {

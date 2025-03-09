@@ -27,13 +27,15 @@
         "dark": "./assets/icons/ios-dark.png",
         "light": "./assets/icons/ios-light.png",
         "tinted": "./assets/icons/ios-tinted.png"
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyDH6Xblqd-jdUOVyNTmi13GrHUZVeRku9A"
       }
     },
     "android": {
       "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/adaptive-icon.png",
-        // "backgroundImage": "./assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "monochromeImage": "./assets/icons/adaptive-icon.png"
       },
@@ -48,7 +50,7 @@
         "googleMaps": {
           "apiKey": "AIzaSyA9OFlvBEMoJvgxsNc8a9l5H5xOSna71Y4"
         }
-      },
+      }
     },
     "web": {
       "bundler": "metro",
@@ -90,11 +92,11 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#09090B",
+          "backgroundColor": "#ffffff",
           "image": "./assets/icons/splash-icon-dark.png",
           "dark": {
             "image": "./assets/icons/splash-icon-light.png",
-            "backgroundColor": "#000000"
+            "backgroundColor": "#09090B"
           },
           "imageWidth": 200
         }
@@ -105,7 +107,8 @@
           "photosPermission": "The app accesses your photos to show your photo with the company.",
           "cameraPermission": "The app accesses your camera to take a photo for your profile."
         }
-      ]
+      ],
+      "expo-quick-actions"
     ],
     "experiments": {
       "typedRoutes": true

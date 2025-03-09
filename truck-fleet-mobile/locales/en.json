@@ -44,5 +44,14 @@
   "invalid_phone": "Please enter a valid phone number",
   "phone_too_short": "Phone number is too short",
   "phone_too_long": "Phone number is too long",
-  "map": "Map"
+  "map": "Map",
+  "feedback": {
+    "name": "Your Name",
+    "feedback": "Your Feedback",
+    "submit": "Submit Feedback",
+    "nameRequired": "Name is required",
+    "feedbackRequired": "Feedback message is required",
+    "success": "Feedback submitted successfully!",
+    "error": "Failed to submit feedback"
+  }
 }

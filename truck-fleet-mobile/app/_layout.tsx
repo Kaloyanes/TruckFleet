@@ -6,10 +6,10 @@ import {
 	type Theme,
 	ThemeProvider,
 } from "@react-navigation/native";
-import { Link, Redirect, Stack } from "expo-router";
+import { Link, Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform, View, Pressable } from "react-native";
+import { Platform, View, Pressable, PlatformColor } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
@@ -53,6 +53,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { firebase } from "@react-native-firebase/firestore";
+import * as QuickActions from "expo-quick-actions";
+
+import { useQuickActionRouting } from "expo-quick-actions/router";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -82,6 +85,9 @@ export const unstable_settings = {
 globalThis.RNFB_SILENCE_MODULAR_DEPRECATION_WARNINGS = true;
 
 export default function RootLayout() {
+	// register expo quick actions
+	useQuickActionRouting();
+
 	const { top } = useSafeAreaInsets();
 	const { t } = useTranslation();
 	const hasMounted = React.useRef(false);
@@ -102,9 +108,27 @@ export default function RootLayout() {
 				fade: true,
 				duration: 150,
 			});
+			SplashScreen.hideAsync();
 			return;
 		}
 	}, [fontsLoaded]);
+
+	React.useEffect(() => {
+		QuickActions.setItems([
+			{
+				title: "Wait! Don't delete me!",
+				subtitle: "We're here to help",
+				id: "del",
+				icon:
+					Platform.OS === "ios"
+						? "symbol:person.crop.circle.badge.questionmark.fill"
+						: "ic_shortcut",
+				params: {
+					href: "/feedback",
+				},
+			},
+		]);
+	}, []);
 
 	useIsomorphicLayoutEffect(() => {
 		if (hasMounted.current) {
@@ -179,14 +203,19 @@ export default function RootLayout() {
 								},
 								headerShadowVisible: false,
 
-								headerTransparent: true,
+								headerTransparent: Platform.OS === "ios",
+								headerBlurEffect: "prominent",
 
-								headerBackground() {
-									if (Platform.OS === "android")
-										return <View className="bg-background flex-1" />;
-
-									return <BlurView intensity={20} className="flex-1" />;
+								headerLargeStyle: {
+									backgroundColor: "transparent",
 								},
+
+								// headerBackground() {
+								// 	if (Platform.OS === "android")
+								// 		return <View className="bg-background flex-1" />;
+
+								// 	return <BlurView intensity={20} className="flex-1" />;
+								// },
 							}}
 						>
 							<Stack.Screen
@@ -241,7 +270,6 @@ export default function RootLayout() {
 								name="(auth)/pick-image"
 								options={{
 									sheetCornerRadius: 50,
-
 									sheetGrabberVisible: true,
 									sheetElevation: 50,
 									presentation: "formSheet",
@@ -256,6 +284,22 @@ export default function RootLayout() {
 								name="(auth)/forgot-password"
 								options={{ presentation: "modal" }}
 							/>
+							<Stack.Screen
+								name="(chat)/[id]"
+								options={{
+									headerShadowVisible: false,
+									headerLargeTitle: false,
+								}}
+							/>
+							<Stack.Screen
+								name="feedback"
+								options={{
+									headerShadowVisible: false,
+									headerLargeTitle: true,
+									title: "Feedback",
+									presentation: "modal",
+								}}
+							/>
 						</Stack>
 						<PortalHost />
 						<Toaster
@@ -264,7 +308,7 @@ export default function RootLayout() {
 							swipeToDismissDirection="up"
 							gap={15}
 							autoWiggleOnUpdate="always"
-							offset={top - 10}
+							offset={top}
 						/>
 					</View>
 				</ThemeProvider>
