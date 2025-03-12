@@ -18,6 +18,7 @@ import { Button } from "~/components/ui/button";
 import { IconLocation, IconPlus } from "@tabler/icons-react-native";
 import { toast } from "sonner-native";
 import MapViewDirections from "react-native-maps-directions";
+import FabButton from "~/components/FabButton";
 
 export default function maps() {
 	const { top } = useSafeAreaInsets();
@@ -122,21 +123,14 @@ export default function maps() {
 				loadingBackgroundColor={isDarkColorScheme ? "#000" : "#fff"}
 				rotateEnabled={false}
 			/>
-			<MotiView
-				className="absolute"
-				state={states}
-				style={{
-					bottom: tabHeight + 20,
-					right: 20,
-				}}
-				transition={{
-					type: "spring",
-				}}
-			>
-				<Button size={"icon"} className="!p-7" onPress={handleCenter}>
-					<IconLocation size={30} color={isDarkColorScheme ? "#000" : "#fff"} />
-				</Button>
-			</MotiView>
+
+			<FabButton
+				path="maps"
+				icon={() => (
+					<IconLocation size={28} color={isDarkColorScheme ? "#000" : "#fff"} />
+				)}
+				onPress={handleCenter}
+			/>
 		</View>
 	);
 }

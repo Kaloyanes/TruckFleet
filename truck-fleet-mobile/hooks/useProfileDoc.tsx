@@ -3,11 +3,12 @@ import {
 	getFirestore,
 } from "@react-native-firebase/firestore";
 import { useState, useEffect } from "react";
+// Added import for Profile type
+import type { Profile } from "../models/profile";
 
 export default function useProfileDoc(userId: string) {
-	const [data, setData] = useState<
-		FirebaseFirestoreTypes.DocumentData | undefined
-	>(undefined);
+	// Changed state type from FirebaseFirestoreTypes.DocumentData to Profile
+	const [data, setData] = useState<Profile | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [error, setError] = useState<Error | null>(null);
 
@@ -23,7 +24,18 @@ export default function useProfileDoc(userId: string) {
 
 				if (docRef.exists) {
 					const data = docRef.data();
-					setData(data);
+					// Cast the data to Profile
+					if (data)
+						setData({
+							companyId: data.companyId,
+							email: data.email,
+							name: data.name,
+							phone: data.phone,
+							id: data.id,
+							photoUrl: data.photoUrl,
+							type: data.type,
+							location: data.location ? data.location : undefined,
+						});
 				} else {
 					setData(undefined);
 				}

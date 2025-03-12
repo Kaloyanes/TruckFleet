@@ -7,6 +7,8 @@ import { useColorScheme } from "~/lib/useColorScheme";
 import { View } from "lucide-react-native";
 import { getApp } from "@react-native-firebase/app";
 import { MMKV } from "react-native-mmkv";
+import { useProfileStore } from "~/stores/profile-store";
+import { stopBackgroundLocationTracking } from "~/lib/BackgroundLocation";
 
 interface AuthRedirectProps {
 	children: React.ReactNode;
@@ -18,23 +20,20 @@ const mmkv = new MMKV({
 const AuthRedirect: React.FC<AuthRedirectProps> = ({ children }) => {
 	// Set an initializing state whilst Firebase connects
 	const [initializing, setInitializing] = useState(true);
-	const [user, setUser] = useState();
+	const { user, setUser } = useProfileStore();
 
 	// Handle user state changes
-	function authStateChange(user: any) {
+	async function authStateChange(user: any) {
 		setUser(user);
-		if (user) mmkv.set("user", JSON.stringify(user));
-		else mmkv.delete("user");
+		if (!user) {
+			await stopBackgroundLocationTracking();
+		}
 		if (initializing) setInitializing(false);
 		SplashScreen.hideAsync();
 	}
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
-		if (mmkv.getAllKeys().includes("user")) {
-			setUser(JSON.parse(mmkv.getString("user") ?? "{}"));
-		}
-
 		const subscriber = auth().onAuthStateChanged(authStateChange);
 		return subscriber; // unsubscribe on unmount
 	}, []);

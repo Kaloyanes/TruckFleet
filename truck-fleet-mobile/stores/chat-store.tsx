@@ -4,6 +4,7 @@ import {
 	Timestamp,
 } from "@react-native-firebase/firestore";
 import { create } from "zustand";
+import type { Profile } from "~/models/Profile";
 
 export interface Chat {
 	id: string;
@@ -16,31 +17,31 @@ interface ChatState {
 	chatHistory: Chat[];
 	isLoading: boolean;
 	error: string | null;
+	people: Profile[];
 
 	// Actions
 	setChatHistory: (history: Chat[]) => void;
 	addChatToHistory: (chat: Chat) => void;
 	loadChatHistory: () => Promise<void>;
 	updateUnreadCount: (chatId: string, count: number) => void;
+	loadPeople: (companyId: string) => Promise<void>;
 }
 
 export const useChatStore = create<ChatState>((set) => ({
 	chatHistory: [],
 	isLoading: false,
 	error: null,
+	people: [],
 
 	setChatHistory: (history) => set({ chatHistory: history }),
-
 	addChatToHistory: (chat) =>
 		set((state) => ({ chatHistory: [chat, ...state.chatHistory] })),
-
 	updateUnreadCount: (chatId, count) =>
 		set((state) => ({
 			chatHistory: state.chatHistory.map((chat) =>
 				chat.id === chatId ? { ...chat, unreadCount: count } : chat,
 			),
 		})),
-
 	loadChatHistory: async () => {
 		set({ isLoading: true, error: null });
 		try {
@@ -79,6 +80,34 @@ export const useChatStore = create<ChatState>((set) => ({
 				isLoading: false,
 				chatHistory: [],
 			});
+		}
+	},
+	loadPeople: async (companyId: string) => {
+		set({ isLoading: true, error: null });
+		try {
+			const people = await getFirestore()
+				.collection("users")
+				.where("companyId", "==", companyId)
+				.get();
+
+			const profiles = people.docs.map<Profile>((doc) => {
+				const data = doc.data();
+				return {
+					id: doc.id,
+					name: data.name,
+					companyId: data.companyId,
+					email: data.email,
+					phone: data.phone,
+					photoUrl: data.photoUrl,
+					type: data.type as "driver" | "speditor" | "ceo",
+					location: data.location,
+				};
+			});
+
+			set({ people: profiles, isLoading: false });
+		} catch (error) {
+			console.error("People load error:", error);
+			set({ error: (error as Error).message, isLoading: false });
 		}
 	},
 }));

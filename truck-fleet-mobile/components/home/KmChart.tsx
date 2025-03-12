@@ -38,7 +38,8 @@ const getLastNDaysData = (n: number) => {
 	for (let i = n + 1; i >= 0; i--) {
 		const date = new Date(today);
 		date.setDate(date.getDate() - i);
-		const dateStr = date.toISOString().split("T")[0];
+		// Changed: use local formatting to correctly reflect the day at midnight.
+		const dateStr = format(date, "yyyy-MM-dd");
 		const km = mmkv.getNumber(`km_${dateStr}`) || 0;
 
 		data.push({
@@ -200,20 +201,21 @@ export default function KmChart() {
 					yKeys={["km"]}
 					domainPadding={{
 						bottom: 10,
-						top: 40,
+						top: 10,
 						left: 0,
 						right: 0,
 					}}
 					viewport={{
 						x: [0, lastDays + 1.3],
-						y: [-5, Math.max(...chartData.map((d) => d.km), 10)],
+						y: [-5, Math.max(...chartData.map((d) => d.km + d.km * 0.15), 10)],
 					}}
 					xAxis={{
 						labelColor: isDarkColorScheme ? "#fff" : "#000",
 						formatXLabel: (value) => {
 							const item = chartData.find((d) => d.day === value);
 							if (!item) return "";
-							const date = parseISO(item.date);
+							// Changed: Append "T00:00" so the date is parsed in local time.
+							const date = new Date(`${item.date}T00:00`);
 							return format(date, "d MMM");
 						},
 						lineWidth: 0,
@@ -226,7 +228,7 @@ export default function KmChart() {
 					yAxis={[
 						{
 							lineWidth: 0,
-							labelOffset: -50,
+							labelOffset: -25,
 							labelPosition: "outset",
 						},
 					]}
@@ -241,12 +243,11 @@ export default function KmChart() {
 								points={points.km}
 								color={isDarkColorScheme ? "#fff" : "#000"}
 								curveType="monotoneX"
-								strokeWidth={1}
-								animate={{
-									type: "spring",
-									duration: 300,
-								}}
-								antiAlias
+								strokeWidth={2}
+								// animate={{
+								// 	type: "spring",
+								// 	duration: 300,
+								// }}
 							/>
 							{isActive && (
 								<ToolTip

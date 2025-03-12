@@ -19,8 +19,10 @@ import { useRegisterStore } from "~/stores/register-store";
 import Toast from "react-native-toast-message";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
+import { useTranslation } from "react-i18next";
 
 export default function OrganizationStepPage() {
+	const { t } = useTranslation();
 	const [organizationCode, setOrganizationCode] = React.useState("");
 	const { findOrganizationId, updateValidPage } = useRegisterStore();
 	const { top } = useSafeAreaInsets();
@@ -42,10 +44,10 @@ export default function OrganizationStepPage() {
 	const joinOrganization = async () => {
 		try {
 			await findOrganizationId(organizationCode);
-			toast.success("Joined company successfully");
+			toast.success(t("toast_join_success"));
 		} catch (error) {
 			console.error(error);
-			toast.error("Can't find company with this code");
+			toast.error(t("toast_join_error"));
 			return;
 		}
 	};
@@ -55,15 +57,15 @@ export default function OrganizationStepPage() {
 	}, []);
 	return (
 		<View className="flex-1 items-start justify-start px-5 my-3 flex-col gap-4 w-screen">
-			<Text className="text-6xl">Join a company</Text>
+			<Text className="text-6xl">{t("join_company")}</Text>
 			<Text className="text-red-500 dark:text-red-300">
-				This step is optional
+				{t("step_optional")}
 			</Text>
 
 			<View className="flex-row w-full items-center justify-between">
 				<View className="flex-1 h-16">
 					<Input
-						placeholder="Organization code"
+						placeholder={t("organization_code")}
 						className="w-full !h-16"
 						icon={<IconBuilding size={20} color="#71717a" />}
 						onChangeText={(text) => {
@@ -85,8 +87,9 @@ export default function OrganizationStepPage() {
 								scale: isTyped.value ? 1 : 0,
 							}))}
 							transition={timingConfig}
+							className="items-center justify-center flex-row"
 						>
-							<Text>Join</Text>
+							<Text className="text-center self-center w-fit">{t("join")}</Text>
 						</MotiView>
 					</Button>
 				</Animated.View>

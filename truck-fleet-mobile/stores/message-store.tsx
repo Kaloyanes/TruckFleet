@@ -29,10 +29,16 @@ export const useMessageStore = create<MessageStore>((set) => ({
 				.collection(`chats/${id}/messages`)
 				.orderBy("createdAt", "desc")
 				.get();
-			const messages: Message[] = snapshot.docs.map((doc) => ({
-				id: doc.id,
-				...(doc.data() as Omit<Message, "id">),
-			}));
+			const messages: Message[] = snapshot.docs.map((doc) => {
+				const data = doc.data();
+				return {
+					id: doc.id,
+					content: data.content,
+					sender: data.sender,
+					type: data.type,
+					createdAt: data.createdAt,
+				};
+			});
 			set({ messages, loading: false });
 		} catch (error: any) {
 			set({ error: error.message, loading: false });

@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import { getDoc } from "@react-native-firebase/firestore";
 import { MMKV } from "react-native-mmkv";
+import { format } from "date-fns";
 
 export const LOCATION_TASK_NAME = "background-location-fetch";
 
@@ -55,10 +56,12 @@ TaskManager.defineTask(
 	}>) => {
 		if (error) {
 			console.error(`Error in background location task: ${error.message}`);
+
 			return;
 		}
 
-		const today = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
+		// Changed: use local formatting to derive the correct date string.
+		const today = format(new Date(), "yyyy-MM-dd");
 		const { locations } = data;
 		const currentCoords = locations[0].coords;
 
@@ -72,7 +75,6 @@ TaskManager.defineTask(
 				},
 			});
 
-			// Get last coordinates from MMKV
 			const lastCoordsStr = mmkv.getString(`last_coords_${today}`);
 			if (lastCoordsStr) {
 				const lastCoords = JSON.parse(lastCoordsStr);
@@ -88,7 +90,6 @@ TaskManager.defineTask(
 				mmkv.set(`km_${today}`, currentTotal + distance);
 			}
 
-			// Store current coordinates for next calculation
 			mmkv.set(
 				`last_coords_${today}`,
 				JSON.stringify({

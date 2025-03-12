@@ -16,9 +16,6 @@ import { useTranslation } from "react-i18next";
 import { router, Tabs, usePathname } from "expo-router";
 import i18n from "~/locales/i18n";
 import AuthRedirect from "~/components/redirects/AuthRedirect";
-import TabBar from "./(components)/tab-bar";
-
-// import { Tabs } from "~/components/ui/bottom-tabs";
 
 export default function LayoutTabs() {
 	const { width } = useWindowDimensions();
@@ -31,9 +28,7 @@ export default function LayoutTabs() {
 			<Tabs
 				screenOptions={{
 					headerShadowVisible: false,
-
 					headerTransparent: true,
-
 					headerBackground(props) {
 						// if (Platform.OS === "android")
 						// 	return <View className="bg-background flex-1" />;
@@ -68,7 +63,7 @@ export default function LayoutTabs() {
 							/>
 						);
 					},
-					freezeOnBlur: false,
+					freezeOnBlur: true,
 					animation: "shift",
 					popToTopOnBlur: true,
 					sceneStyle: {
@@ -109,6 +104,7 @@ export default function LayoutTabs() {
 							},
 						},
 					},
+					lazy: false,
 				}}
 				screenListeners={{
 					tabPress: (e) => {

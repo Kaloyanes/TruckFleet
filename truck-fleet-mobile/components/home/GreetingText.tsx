@@ -17,10 +17,15 @@ export default function GreetingText() {
 	};
 	const { t } = useTranslation();
 
-	if (isLoading) return <ActivityIndicator />;
+	if (isLoading)
+		return (
+			<View className="h-[100px] items-center justify-center">
+				<ActivityIndicator />
+			</View>
+		);
 
 	return (
-		<Text className="text-6xl px-5 ">
+		<Text className="text-6xl px-5 h-[100px] ">
 			{t(getGreetingKey(), {
 				name: (data?.name as string).split(" ")[0],
 			})}

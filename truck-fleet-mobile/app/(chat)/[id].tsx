@@ -1,4 +1,4 @@
-import { View, Image, RefreshControl, ActivityIndicator } from "react-native";
+import { View, RefreshControl, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { Text } from "~/components/ui/text";
@@ -15,6 +15,7 @@ import {
 } from "react-native-keyboard-controller";
 import { useDerivedValue } from "react-native-reanimated";
 import { useMessageStore } from "~/stores/message-store";
+import { Image } from "~/components/ui/image";
 
 export default function ChatPage() {
 	const { t } = useTranslation();
@@ -30,7 +31,7 @@ export default function ChatPage() {
 	const { loadMessages, loading, messages } = useMessageStore();
 
 	useEffect(() => {
-		loadMessages(id as string);
+		if ((id as string).trim() !== "") loadMessages(id as string);
 	}, [id]);
 
 	if (isLoading) return null;
@@ -55,8 +56,7 @@ export default function ChatPage() {
 						return (
 							<View className="flex-row items-center gap-4">
 								<Image
-									source={{ uri: otherUser.photoUrl }}
-									progressiveRenderingEnabled
+									source={otherUser.photoUrl}
 									className="w-12 h-12 rounded-full"
 								/>
 								<Text className="text-xl font-bold">{otherUser.name}</Text>

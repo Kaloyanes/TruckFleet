@@ -24,6 +24,7 @@ import {
 import Animated from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "~/lib/useColorScheme";
+import CurrentOrder from "~/components/home/CurrentOrder";
 
 export default function Home() {
 	const { t } = useTranslation();
@@ -54,28 +55,35 @@ export default function Home() {
 	return (
 		<View className="flex-1 bg-background">
 			<BlurView
-				intensity={20}
-				className="absolute inset-0 z-10 overflow-hidden bg-background/20"
+				intensity={15}
+				className="absolute inset-0 z-10 overflow-hidden bg-background/5"
 				style={{ height: top + 10 }}
 				experimentalBlurMethod="dimezisBlurView"
 			/>
 			<LinearGradient
-				// Background Linear Gradient
 				colors={[
 					isDarkColorScheme ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
 					"transparent",
 				]}
+				start={{
+					x: 0,
+					y: 0,
+				}}
+				end={{
+					x: 0,
+					y: 0.5,
+				}}
 				style={{
 					position: "absolute",
 					left: 0,
 					right: 0,
 					top: 0,
-					height: 50,
+					height: 100,
 				}}
 			/>
 			<BodyScrollView
 				onScroll={onScroll}
-				scrollIndicatorInsets={{ bottom: tabHeight, top }}
+				scrollIndicatorInsets={{ bottom: tabHeight, top: top + 10 }}
 				automaticallyAdjustsScrollIndicatorInsets={false}
 				bouncesZoom
 				pinchGestureEnabled
@@ -99,14 +107,15 @@ export default function Home() {
 										: t("start_tracking")}
 							</Text>
 						</Button>
-
-						<View style={{ height: tabHeight }} />
 					</View>
+
+					<CurrentOrder />
 					{new Array(10).fill(0).map((_, index) => (
 						<View key={index} className="h-20 bg-background">
 							<Text>{index}</Text>
 						</View>
 					))}
+					<View style={{ height: tabHeight }} />
 				</Animated.View>
 			</BodyScrollView>
 		</View>

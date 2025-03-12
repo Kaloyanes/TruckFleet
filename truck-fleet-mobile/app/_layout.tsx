@@ -56,6 +56,7 @@ import { firebase } from "@react-native-firebase/firestore";
 import * as QuickActions from "expo-quick-actions";
 
 import { useQuickActionRouting } from "expo-quick-actions/router";
+import { enableFreeze } from "react-native-screens";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -66,6 +67,7 @@ const DARK_THEME: Theme = {
 	colors: NAV_THEME.dark,
 };
 
+enableFreeze(false);
 export {
 	// Catch any errors thrown by the Layout component.
 	ErrorBoundary,
@@ -289,6 +291,20 @@ export default function RootLayout() {
 								options={{
 									headerShadowVisible: false,
 									headerLargeTitle: false,
+								}}
+							/>
+							<Stack.Screen
+								name="(chat)/new-chat"
+								options={{
+									sheetCornerRadius: 50,
+									sheetGrabberVisible: true,
+									sheetElevation: 50,
+									presentation: "formSheet",
+									sheetAllowedDetents: Platform.OS === "ios" ? [0.5, 1] : [0.9],
+									gestureDirection: "vertical",
+									headerShadowVisible: false,
+									headerLargeTitleShadowVisible: false,
+									title: t("new_chat"),
 								}}
 							/>
 							<Stack.Screen
