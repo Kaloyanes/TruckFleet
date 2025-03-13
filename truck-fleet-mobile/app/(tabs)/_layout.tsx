@@ -104,6 +104,7 @@ export default function LayoutTabs() {
 							},
 						},
 					},
+					headerShown: false,
 					lazy: false,
 				}}
 				screenListeners={{
@@ -116,7 +117,6 @@ export default function LayoutTabs() {
 				<Tabs.Screen
 					name="index"
 					options={{
-						headerShown: false,
 						tabBarLabel: t("home"),
 						tabBarIcon: ({ color }) => <IconHome color={color} size={24} />,
 					}}
@@ -132,8 +132,6 @@ export default function LayoutTabs() {
 				<Tabs.Screen
 					name="maps"
 					options={{
-						headerShown: false,
-
 						headerTitle: t("map"),
 						tabBarLabel: t("map"),
 						tabBarIcon: ({ color }) => <IconMap color={color} size={24} />,
@@ -142,7 +140,6 @@ export default function LayoutTabs() {
 				<Tabs.Screen
 					name="documents"
 					options={{
-						headerTitle: t("documents"),
 						tabBarLabel: t("documents"),
 						tabBarIcon: ({ color }) => <IconFile color={color} size={24} />,
 					}}

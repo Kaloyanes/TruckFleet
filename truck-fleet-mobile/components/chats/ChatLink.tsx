@@ -5,9 +5,11 @@ import { Text } from "../ui/text";
 import { getAuth } from "@react-native-firebase/auth";
 import useProfileDoc from "~/hooks/useProfileDoc";
 import { Button } from "../ui/button";
-import { useImage } from "expo-image";
-import { Image } from "react-native";
 import { router } from "expo-router";
+import { Image } from "../ui/image";
+import Animated from "react-native-reanimated";
+
+const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 export default function ChatLink({ chat }: { chat: Chat }) {
 	const currentUser = getAuth().currentUser;
@@ -34,8 +36,9 @@ export default function ChatLink({ chat }: { chat: Chat }) {
 				});
 			}}
 		>
-			<Image
-				source={{ uri: data?.photoUrl }}
+			<AnimatedImage
+				sharedTransitionTag={data?.photoUrl}
+				source={data?.photoUrl}
 				className="w-14 h-14 rounded-full"
 			/>
 			<Text className="!text-xl flex-1">{data?.name}</Text>

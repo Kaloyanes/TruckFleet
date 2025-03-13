@@ -3,12 +3,18 @@ import type { ExpoConfig, ConfigContext } from "expo/config";
 export default ({ config }: ConfigContext): ExpoConfig => ({
   name: "Truck Fleet",
   slug: "truck-fleet-mobile",
+  description: "Truck Fleet Mobile App",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/icons/adaptive-icon.png",
   scheme: "myapp",
   userInterfaceStyle: "automatic",
   newArchEnabled: true,
+  locales: {
+    en: "./locales/en.json",
+    bg: "./locales/bg.json",
+  },
+  platforms: ["ios", "android"],
   assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: true,
@@ -111,6 +117,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     "expo-quick-actions",
+    [
+      "expo-video",
+      {
+        supportsBackgroundPlayback: true,
+        supportsPictureInPicture: true,
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

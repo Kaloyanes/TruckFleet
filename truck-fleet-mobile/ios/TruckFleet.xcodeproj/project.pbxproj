@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D2AB2088FF344128710D69C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C9FF6C3A1094419A25D1F50 /* InfoPlist.strings */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		74138AB512104C3D88666F4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE278CA991AA44E49EDFBDDA /* InfoPlist.strings */; };
 		7A4279F4B87E6E27AAEBAF6A /* Pods_TruckFleet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A7CBE580149F620CB1CB0D /* Pods_TruckFleet.framework */; };
 		90B3325F9E38405383AC5267 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7E7583D4D4EEB97276BF0 /* noop-file.swift */; };
 		9190BAD90F4A458A9C950282 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4B69605896541EF929DA5A0 /* GoogleService-Info.plist */; };
@@ -32,9 +34,11 @@
 		6C2E3173556A471DD304B334 /* Pods-TruckFleet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruckFleet.debug.xcconfig"; path = "Target Support Files/Pods-TruckFleet/Pods-TruckFleet.debug.xcconfig"; sourceTree = "<group>"; };
 		7175117837D26B524BEDA9E4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = TruckFleet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-TruckFleet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruckFleet.release.xcconfig"; path = "Target Support Files/Pods-TruckFleet/Pods-TruckFleet.release.xcconfig"; sourceTree = "<group>"; };
+		8C9FF6C3A1094419A25D1F50 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = TruckFleet/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		C4B69605896541EF929DA5A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "TruckFleet/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE278CA991AA44E49EDFBDDA /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-TruckFleet/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,6 +55,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09FA2B713A6C4FD9904FC9E5 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				CE278CA991AA44E49EDFBDDA /* InfoPlist.strings */,
+			);
+			name = en.lproj;
+			path = "";
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* TruckFleet */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +89,15 @@
 				48A7CBE580149F620CB1CB0D /* Pods_TruckFleet.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5D38612EBF9F4C13BAB98988 /* bg.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				8C9FF6C3A1094419A25D1F50 /* InfoPlist.strings */,
+			);
+			name = bg.lproj;
+			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -120,6 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
+				09FA2B713A6C4FD9904FC9E5 /* en.lproj */,
+				5D38612EBF9F4C13BAB98988 /* bg.lproj */,
 			);
 			name = Supporting;
 			path = TruckFleet/Supporting;
@@ -212,6 +236,8 @@
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				9190BAD90F4A458A9C950282 /* GoogleService-Info.plist in Resources */,
 				E8B037DA49F991804A36B740 /* PrivacyInfo.xcprivacy in Resources */,
+				74138AB512104C3D88666F4D /* InfoPlist.strings in Resources */,
+				0D2AB2088FF344128710D69C /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

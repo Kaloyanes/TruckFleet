@@ -5,7 +5,7 @@ import { Text } from "~/components/ui/text";
 
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { LegendList } from "@legendapp/list";
 import { useChatStore } from "~/stores/chat-store";
 import ChatLink from "~/components/chats/ChatLink";
@@ -41,24 +41,17 @@ export default function List() {
 		);
 
 	return (
-		<View className="flex-1 relative ">
+		<>
 			<LegendList
 				data={chatHistory}
 				recycleItems
-				ListHeaderComponent={
-					<View
-						style={{
-							height: headerHeight + 10,
-						}}
-					/>
-				}
-				ListFooterComponent={<View style={{ height: tabHeight + 10 }} />}
 				renderItem={({ item }) => <ChatLink chat={item} />}
 				ItemSeparatorComponent={() => (
 					<View className="h-px my-2 bg-primary-foreground" />
 				)}
 				scrollIndicatorInsets={{ top: headerHeight, bottom: tabHeight }}
 				automaticallyAdjustsScrollIndicatorInsets={false}
+				contentInsetAdjustmentBehavior="automatic"
 				estimatedItemSize={50}
 				drawDistance={1000}
 				ListEmptyComponent={() => (
@@ -82,6 +75,6 @@ export default function List() {
 					router.push("/(chat)/new-chat");
 				}}
 			/>
-		</View>
+		</>
 	);
 }
