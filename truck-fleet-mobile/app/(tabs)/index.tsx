@@ -56,9 +56,8 @@ export default function Home() {
 		<View className="flex-1 bg-background">
 			<BlurView
 				intensity={15}
-				className="absolute inset-0 z-10 overflow-hidden bg-background/5"
+				className="absolute inset-0 z-10 overflow-hidden bg-background/5 android:bg-background"
 				style={{ height: top + 10 }}
-				experimentalBlurMethod="dimezisBlurView"
 			/>
 			<LinearGradient
 				colors={[
@@ -93,7 +92,7 @@ export default function Home() {
 					<GreetingText />
 					<KmChart />
 
-					<View className="px-5">
+					<View className="px-5 mt-6">
 						<Button
 							className="px-4 py-2"
 							onPress={handleToggleTracking}

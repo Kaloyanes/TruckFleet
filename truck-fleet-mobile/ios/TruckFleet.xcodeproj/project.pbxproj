@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D2AB2088FF344128710D69C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C9FF6C3A1094419A25D1F50 /* InfoPlist.strings */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		23BECDC67D504A778C9601A2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC3D3AAD1C9C4370B6881393 /* InfoPlist.strings */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		74138AB512104C3D88666F4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE278CA991AA44E49EDFBDDA /* InfoPlist.strings */; };
-		7A4279F4B87E6E27AAEBAF6A /* Pods_TruckFleet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A7CBE580149F620CB1CB0D /* Pods_TruckFleet.framework */; };
-		90B3325F9E38405383AC5267 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7E7583D4D4EEB97276BF0 /* noop-file.swift */; };
-		9190BAD90F4A458A9C950282 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4B69605896541EF929DA5A0 /* GoogleService-Info.plist */; };
+		428B4FF76CA8C0EB08ED6F50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 21F5F4C24213D989C6265828 /* PrivacyInfo.xcprivacy */; };
+		595F612D1E2148DFBB6AAE39 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AA3C0CAB45440FFB1E14CE7 /* GoogleService-Info.plist */; };
+		7896735239DA4E58B73ACA64 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202C9281218D4D979FFE6A3F /* noop-file.swift */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		E8B037DA49F991804A36B740 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 7175117837D26B524BEDA9E4 /* PrivacyInfo.xcprivacy */; };
+		DC43CBC8E209F75AB62DD659 /* Pods_TruckFleet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4624464F78EEA3C2E912DEC /* Pods_TruckFleet.framework */; };
+		EF217B732BDE475EABBA69E3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A55AA19743E471C92A2AFA0 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,17 +28,17 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TruckFleet/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TruckFleet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TruckFleet/main.m; sourceTree = "<group>"; };
-		1EB7E7583D4D4EEB97276BF0 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "TruckFleet/noop-file.swift"; sourceTree = "<group>"; };
-		2B2EEE31CA7648DA9EA0D64F /* TruckFleet-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "TruckFleet-Bridging-Header.h"; path = "TruckFleet/TruckFleet-Bridging-Header.h"; sourceTree = "<group>"; };
-		48A7CBE580149F620CB1CB0D /* Pods_TruckFleet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TruckFleet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		202C9281218D4D979FFE6A3F /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "TruckFleet/noop-file.swift"; sourceTree = "<group>"; };
+		21F5F4C24213D989C6265828 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = TruckFleet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		5D96B16D1EA146C8B4C718AC /* TruckFleet-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "TruckFleet-Bridging-Header.h"; path = "TruckFleet/TruckFleet-Bridging-Header.h"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-TruckFleet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruckFleet.debug.xcconfig"; path = "Target Support Files/Pods-TruckFleet/Pods-TruckFleet.debug.xcconfig"; sourceTree = "<group>"; };
-		7175117837D26B524BEDA9E4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = TruckFleet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-TruckFleet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TruckFleet.release.xcconfig"; path = "Target Support Files/Pods-TruckFleet/Pods-TruckFleet.release.xcconfig"; sourceTree = "<group>"; };
-		8C9FF6C3A1094419A25D1F50 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7AA3C0CAB45440FFB1E14CE7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "TruckFleet/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9A55AA19743E471C92A2AFA0 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = TruckFleet/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C4B69605896541EF929DA5A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "TruckFleet/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CE278CA991AA44E49EDFBDDA /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CC3D3AAD1C9C4370B6881393 /* InfoPlist.strings */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E4624464F78EEA3C2E912DEC /* Pods_TruckFleet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TruckFleet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-TruckFleet/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -48,22 +48,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A4279F4B87E6E27AAEBAF6A /* Pods_TruckFleet.framework in Frameworks */,
+				DC43CBC8E209F75AB62DD659 /* Pods_TruckFleet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09FA2B713A6C4FD9904FC9E5 /* en.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				CE278CA991AA44E49EDFBDDA /* InfoPlist.strings */,
-			);
-			name = en.lproj;
-			path = "";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* TruckFleet */ = {
 			isa = PBXGroup;
 			children = (
@@ -74,10 +65,10 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				C4B69605896541EF929DA5A0 /* GoogleService-Info.plist */,
-				1EB7E7583D4D4EEB97276BF0 /* noop-file.swift */,
-				2B2EEE31CA7648DA9EA0D64F /* TruckFleet-Bridging-Header.h */,
-				7175117837D26B524BEDA9E4 /* PrivacyInfo.xcprivacy */,
+				7AA3C0CAB45440FFB1E14CE7 /* GoogleService-Info.plist */,
+				202C9281218D4D979FFE6A3F /* noop-file.swift */,
+				5D96B16D1EA146C8B4C718AC /* TruckFleet-Bridging-Header.h */,
+				21F5F4C24213D989C6265828 /* PrivacyInfo.xcprivacy */,
 			);
 			name = TruckFleet;
 			sourceTree = "<group>";
@@ -86,18 +77,9 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				48A7CBE580149F620CB1CB0D /* Pods_TruckFleet.framework */,
+				E4624464F78EEA3C2E912DEC /* Pods_TruckFleet.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5D38612EBF9F4C13BAB98988 /* bg.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				8C9FF6C3A1094419A25D1F50 /* InfoPlist.strings */,
-			);
-			name = bg.lproj;
-			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -142,11 +124,19 @@
 			isa = PBXGroup;
 			children = (
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
-				09FA2B713A6C4FD9904FC9E5 /* en.lproj */,
-				5D38612EBF9F4C13BAB98988 /* bg.lproj */,
+				F20E55927240459AB3832F8A /* en.lproj */,
+				CACCCC2432594FDCBE364857 /* bg.lproj */,
 			);
 			name = Supporting;
 			path = TruckFleet/Supporting;
+			sourceTree = "<group>";
+		};
+		CACCCC2432594FDCBE364857 /* bg.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				9A55AA19743E471C92A2AFA0 /* InfoPlist.strings */,
+			);
+			name = bg.lproj;
 			sourceTree = "<group>";
 		};
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
@@ -166,6 +156,14 @@
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
+		F20E55927240459AB3832F8A /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				CC3D3AAD1C9C4370B6881393 /* InfoPlist.strings */,
+			);
+			name = en.lproj;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -174,15 +172,15 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TruckFleet" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				0AE45A5FF34FB682566B7575 /* [Expo] Configure project */,
+				630E62785CB9E99C3F532012 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				92C48CB801BE3E5A4CE0F170 /* [CP] Embed Pods Frameworks */,
-				F90B444C5D5730D088310A2B /* [CP-User] [RNFB] Core Configuration */,
-				70CA0C4B06365BA9153685BA /* [CP-User] [RNFB] Crashlytics Configuration */,
+				859A59BE3D16FF85EA7B4BE3 /* [CP] Embed Pods Frameworks */,
+				E6E0CC31A02F9BADB76D810F /* [CP-User] [RNFB] Core Configuration */,
+				09BB4DC4F2EDB9F8B2C5A211 /* [CP-User] [RNFB] Crashlytics Configuration */,
 			);
 			buildRules = (
 			);
@@ -202,9 +200,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 3DMKNZNAFT;
 						LastSwiftMigration = 1250;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -234,10 +230,10 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				9190BAD90F4A458A9C950282 /* GoogleService-Info.plist in Resources */,
-				E8B037DA49F991804A36B740 /* PrivacyInfo.xcprivacy in Resources */,
-				74138AB512104C3D88666F4D /* InfoPlist.strings in Resources */,
-				0D2AB2088FF344128710D69C /* InfoPlist.strings in Resources */,
+				23BECDC67D504A778C9601A2 /* InfoPlist.strings in Resources */,
+				EF217B732BDE475EABBA69E3 /* InfoPlist.strings in Resources */,
+				595F612D1E2148DFBB6AAE39 /* GoogleService-Info.plist in Resources */,
+				428B4FF76CA8C0EB08ED6F50 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +277,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0AE45A5FF34FB682566B7575 /* [Expo] Configure project */ = {
+		09BB4DC4F2EDB9F8B2C5A211 /* [CP-User] [RNFB] Crashlytics Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "[CP-User] [RNFB] Crashlytics Configuration";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\nif [[ ${PODS_ROOT} ]]; then\n  echo \"info: Exec FirebaseCrashlytics Run from Pods\"\n  \"${PODS_ROOT}/FirebaseCrashlytics/run\"\nelse\n  echo \"info: Exec FirebaseCrashlytics Run from framework\"\n  \"${PROJECT_DIR}/FirebaseCrashlytics.framework/run\"\nfi\n";
+		};
+		630E62785CB9E99C3F532012 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -299,20 +309,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-TruckFleet/expo-configure-project.sh\"\n";
-		};
-		70CA0C4B06365BA9153685BA /* [CP-User] [RNFB] Crashlytics Configuration */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
-			);
-			name = "[CP-User] [RNFB] Crashlytics Configuration";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\nif [[ ${PODS_ROOT} ]]; then\n  echo \"info: Exec FirebaseCrashlytics Run from Pods\"\n  \"${PODS_ROOT}/FirebaseCrashlytics/run\"\nelse\n  echo \"info: Exec FirebaseCrashlytics Run from framework\"\n  \"${PROJECT_DIR}/FirebaseCrashlytics.framework/run\"\nfi\n";
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -409,7 +405,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruckFleet/Pods-TruckFleet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		92C48CB801BE3E5A4CE0F170 /* [CP] Embed Pods Frameworks */ = {
+		859A59BE3D16FF85EA7B4BE3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -427,7 +423,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TruckFleet/Pods-TruckFleet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F90B444C5D5730D088310A2B /* [CP-User] [RNFB] Core Configuration */ = {
+		E6E0CC31A02F9BADB76D810F /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -450,7 +446,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				90B3325F9E38405383AC5267 /* noop-file.swift in Sources */,
+				7896735239DA4E58B73ACA64 /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,8 +460,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TruckFleet/TruckFleet.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3DMKNZNAFT;
 				ENABLE_BITCODE = NO;
@@ -474,7 +468,6 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = TruckFleet/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -488,7 +481,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaloyanes.truckfleetmobile;
-				PRODUCT_NAME = TruckFleet;
+				PRODUCT_NAME = "TruckFleet";
 				SWIFT_OBJC_BRIDGING_HEADER = "TruckFleet/TruckFleet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -504,12 +497,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TruckFleet/TruckFleet.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3DMKNZNAFT;
 				INFOPLIST_FILE = TruckFleet/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -523,7 +513,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaloyanes.truckfleetmobile;
-				PRODUCT_NAME = TruckFleet;
+				PRODUCT_NAME = "TruckFleet";
 				SWIFT_OBJC_BRIDGING_HEADER = "TruckFleet/TruckFleet-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

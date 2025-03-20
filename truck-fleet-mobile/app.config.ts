@@ -21,7 +21,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: "com.kaloyanes.truckfleetmobile",
     googleServicesFile: "./GoogleService-Info.plist",
     infoPlist: {
-      UIBackgroundModes: ["location", "fetch"],
+      UIBackgroundModes: ["location", "fetch", "audio"],
       NSLocationWhenInUseUsageDescription:
         "We need your location to track the truck position.",
       NSLocationAlwaysAndWhenInUseUsageDescription:
@@ -76,7 +76,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           targetSdkVersion: 35,
           minSdkVersion: 24,
           buildToolsVersion: "35.0.0",
-          kotlinVersion: "1.9.25",
+          // kotlinVersion: "2.0.2",
         },
         ios: {
           useFrameworks: "static",
@@ -122,6 +122,19 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         supportsBackgroundPlayback: true,
         supportsPictureInPicture: true,
+      },
+    ],
+    [
+      "expo-document-picker",
+      {
+        iCloudContainerEnvironment: "Production",
+      },
+    ],
+    [
+      "expo-audio",
+      {
+        microphonePermission:
+          "Allow $(PRODUCT_NAME) to access your microphone.",
       },
     ],
   ],

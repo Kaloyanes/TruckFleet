@@ -70,7 +70,7 @@ export default function LoginPage() {
 		<View className="flex-1">
 			<MotiScrollView
 				animate={useDerivedValue(() => ({
-					translateY: keyboardHeight.value * 0.65,
+					translateY: keyboardHeight.value * 0.4,
 				}))}
 				transition={{
 					type: "no-animation",

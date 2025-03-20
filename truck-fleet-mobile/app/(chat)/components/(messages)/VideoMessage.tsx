@@ -9,14 +9,10 @@ import { cn } from "~/lib/utils";
 import { useTranslation } from "react-i18next";
 import { Image } from "~/components/ui/image";
 import { cssInterop } from "nativewind";
+import type { TextMessageProps } from "./TextMessage";
+import { setStatusBarHidden, StatusBar } from "expo-status-bar";
 
 cssInterop(VideoView, { className: "style" });
-
-interface TextMessageProps {
-	message: Message;
-	userId: string;
-	senderProfile: Profile;
-}
 
 export default function VideoMessage({
 	message,
@@ -37,7 +33,12 @@ export default function VideoMessage({
 				allowsPictureInPicture
 				allowsFullscreen
 				contentFit="cover"
-				startsPictureInPictureAutomatically
+				onFullscreenEnter={() => {
+					setStatusBarHidden(true, "fade");
+				}}
+				onFullscreenExit={() => {
+					setStatusBarHidden(false, "fade");
+				}}
 			/>
 
 			<Image

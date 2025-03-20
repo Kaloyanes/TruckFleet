@@ -11,7 +11,7 @@ import {
 	Circle,
 } from "@shopify/react-native-skia";
 
-import inter from "~/assets/fonts/Playfair.ttf";
+import inter from "~/assets/fonts/Inter.ttf";
 import { MMKV } from "react-native-mmkv";
 import { format, parseISO } from "date-fns";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
@@ -193,6 +193,33 @@ export default function KmChart() {
 					animatedProps={animatedDateText}
 				/>
 			</View>
+			<ToggleGroup
+				type="single"
+				value={lastDays.toString()}
+				onValueChange={(value) => {
+					const newValue = value ?? DEFAULT_LAST_DAYS;
+					setLastDays(Number(newValue));
+					mmkv.set(LAST_DAYS_KEY, newValue);
+				}}
+				className="flex-row justify-evenly gap-3 px-5"
+			>
+				{[
+					{ value: "2", label: "1D" },
+					{ value: "7", label: "1W" },
+					{ value: "14", label: "2W" },
+					{ value: "31", label: "1M" },
+					{ value: "365", label: "1Y" },
+				].map((item, index) => (
+					<ToggleGroupItem
+						key={index.toFixed()}
+						value={item.value}
+						aria-label="Toggle chart range"
+						className="rounded-2xl flex-1 "
+					>
+						<Text>{item.label}</Text>
+					</ToggleGroupItem>
+				))}
+			</ToggleGroup>
 			<View className="flex-1 h-[300px]">
 				<CartesianChart
 					chartPressState={state}
@@ -206,11 +233,11 @@ export default function KmChart() {
 						right: 0,
 					}}
 					viewport={{
-						x: [0, lastDays + 1.3],
+						x: [0, lastDays + 1.5],
 						y: [-5, Math.max(...chartData.map((d) => d.km + d.km * 0.15), 10)],
 					}}
 					xAxis={{
-						labelColor: isDarkColorScheme ? "#fff" : "#000",
+						labelColor: isDarkColorScheme ? "#ffffff75" : "#000000",
 						formatXLabel: (value) => {
 							const item = chartData.find((d) => d.day === value);
 							if (!item) return "";
@@ -221,15 +248,22 @@ export default function KmChart() {
 						lineWidth: 0,
 						font,
 						labelPosition: "inset",
-						axisSide: "top",
+						axisSide: "bottom",
 						tickCount: tickInterval,
 						tickValues: tickValues,
 					}}
 					yAxis={[
 						{
 							lineWidth: 0,
-							labelOffset: -25,
-							labelPosition: "outset",
+							lineColor: isDarkColorScheme ? "#fff" : "#000",
+							labelOffset: 0,
+							labelPosition: "inset",
+							font,
+							labelColor: isDarkColorScheme ? "#ffffff50" : "#000000",
+							tickCount: 5,
+							axisSide: "right",
+
+							// tickFormat: (value) => `${value.toFixed(0)} KM`,
 						},
 					]}
 					frame={{
@@ -260,33 +294,6 @@ export default function KmChart() {
 					)}
 				</CartesianChart>
 			</View>
-			<ToggleGroup
-				type="single"
-				value={lastDays.toString()}
-				onValueChange={(value) => {
-					const newValue = value ?? DEFAULT_LAST_DAYS;
-					setLastDays(Number(newValue));
-					mmkv.set(LAST_DAYS_KEY, newValue);
-				}}
-				className="flex-row justify-evenly gap-3 px-5"
-			>
-				{[
-					{ value: "2", label: "1D" },
-					{ value: "7", label: "1W" },
-					{ value: "14", label: "2W" },
-					{ value: "31", label: "1M" },
-					{ value: "365", label: "1Y" },
-				].map((item, index) => (
-					<ToggleGroupItem
-						key={index.toFixed()}
-						value={item.value}
-						aria-label="Toggle chart range"
-						className="rounded-2xl flex-1 "
-					>
-						<Text>{item.label}</Text>
-					</ToggleGroupItem>
-				))}
-			</ToggleGroup>
 		</>
 	);
 }

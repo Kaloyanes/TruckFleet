@@ -14,6 +14,7 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { Image } from "~/components/ui/image";
 import { Button } from "~/components/ui/button";
 import { firebase } from "@react-native-firebase/firestore";
+import { FlashList } from "@shopify/flash-list";
 
 export default function NewChatModal() {
 	const { t } = useTranslation();
@@ -62,7 +63,7 @@ export default function NewChatModal() {
 					<View className="w-12 h-1 bg-gray-400 rounded-full my-2" />
 				</View>
 			)}
-			<LegendList
+			<FlashList
 				className="flex-1 "
 				data={people}
 				contentInsetAdjustmentBehavior="automatic"
@@ -85,7 +86,6 @@ export default function NewChatModal() {
 						</View>
 					</Button>
 				)}
-				maintainVisibleContentPosition
 				estimatedItemSize={56}
 			/>
 		</View>

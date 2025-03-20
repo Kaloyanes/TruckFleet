@@ -39,9 +39,9 @@
   "forgot_password": "Забравена парола?",
   "invalid_email": "Моля въведете валиден имейл адрес",
   "password_required": "Паролата е задължителна",
-  "good_afternoon": "Добър ден,\n{{name}}",
-  "good_morning": "Добро утро,\n{{name}}",
-  "good_evening": "Добър вечер,\n{{name}}",
+  "good_afternoon": "Добър ден",
+  "good_morning": "Добро утро",
+  "good_evening": "Добър вечер",
   "phone_number": "Добави своя телефонен номер",
   "include_country_code": "Моля, добавете кода на държавата",
   "phone": "Телефон",
@@ -57,5 +57,12 @@
     "feedbackRequired": "Отзивът е задължителен",
     "success": "Отзивът е изпратен успешно!",
     "error": "Грешка при изпращане на отзива"
+  },
+  "toast_join_success": "Успешно се присъединихте към фирма",
+  "toast_join_error": "Не може да се намери фирма с този код",
+  "chats": {
+    "type_message": "Напиши съобщение...",
+    "copy": "Копирай",
+    "copied_to_clipboard": "Копирано в клипборда"
   }
 }

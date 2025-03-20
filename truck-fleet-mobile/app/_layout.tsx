@@ -204,20 +204,19 @@ export default function RootLayout() {
 									fontFamily: "PlayfairDisplay_600SemiBold",
 								},
 								headerShadowVisible: false,
-
-								headerTransparent: Platform.OS === "ios",
-								headerBlurEffect: "prominent",
-
+								headerTransparent: true,
+								headerBackground: () => {
+									return (
+										<BlurView
+											intensity={80}
+											style={{ flex: 1 }}
+											className="android:bg-background"
+										/>
+									);
+								},
 								headerLargeStyle: {
 									backgroundColor: "transparent",
 								},
-
-								// headerBackground() {
-								// 	if (Platform.OS === "android")
-								// 		return <View className="bg-background flex-1" />;
-
-								// 	return <BlurView intensity={20} className="flex-1" />;
-								// },
 							}}
 						>
 							<Stack.Screen
@@ -290,7 +289,15 @@ export default function RootLayout() {
 								name="(chat)/[id]"
 								options={{
 									headerShadowVisible: false,
+									headerBackTitle: t("chat"),
+									headerStyle: {
+										backgroundColor: "transparent",
+									},
+									title: "",
+
 									headerLargeTitle: false,
+									headerBackButtonDisplayMode: "minimal",
+									keyboardHandlingEnabled: true,
 								}}
 							/>
 							<Stack.Screen

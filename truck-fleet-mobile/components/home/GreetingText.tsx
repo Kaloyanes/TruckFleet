@@ -25,10 +25,9 @@ export default function GreetingText() {
 		);
 
 	return (
-		<Text className="text-6xl px-5 h-[100px] ">
-			{t(getGreetingKey(), {
-				name: (data?.name as string).split(" ")[0],
-			})}
-		</Text>
+		<View className="flex flex-col justify-center px-5">
+			<Text className="text-6xl ">{t(getGreetingKey())},</Text>
+			<Text className="text-6xl">{(data?.name as string).split(" ")[0]}</Text>
+		</View>
 	);
 }

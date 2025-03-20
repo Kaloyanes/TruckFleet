@@ -62,7 +62,7 @@
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to use your location.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
+    <string>Allow $(PRODUCT_NAME) to access your microphone.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>The app accesses your photos to show your photo with the company.</string>
     <key>NSUserActivityTypes</key>
@@ -82,8 +82,6 @@
       <string>arm64</string>
     </array>
     <key>UIRequiresFullScreen</key>
-    <false/>
-    <key>UIStatusBarHidden</key>
     <false/>
     <key>UIStatusBarStyle</key>
     <string>UIStatusBarStyleDefault</string>
