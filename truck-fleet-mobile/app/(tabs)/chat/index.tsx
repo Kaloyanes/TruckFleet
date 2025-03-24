@@ -1,4 +1,4 @@
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, RefreshControl, View } from "react-native";
 import React, { useEffect } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { Text } from "~/components/ui/text";
@@ -11,27 +11,42 @@ import { useChatStore } from "~/stores/chat-store";
 import ChatLink from "~/components/chats/ChatLink";
 import { BodyScrollView } from "~/components/ui/body-scroll-view";
 import FabButton from "~/components/FabButton";
-import { IconPlus } from "@tabler/icons-react-native";
+import {
+	IconBox,
+	IconMoodEmpty,
+	IconPlus,
+	IconSearchOff,
+	IconZoomCancel,
+} from "@tabler/icons-react-native";
 import { useColorScheme } from "~/lib/useColorScheme";
 import useProfileDoc from "~/hooks/useProfileDoc";
 import { getAuth } from "@react-native-firebase/auth";
 import { useProfileStore } from "~/stores/profile-store";
+import { useTranslation } from "react-i18next";
 export default function List() {
 	const headerHeight = useHeaderHeight();
 	const tabHeight = useBottomTabBarHeight();
 	const router = useRouter();
-	const { loadChatHistory, loadPeople, isLoading, chatHistory } =
-		useChatStore();
+	const { isLoading, chatHistory, loadPeople, searchTerm } = useChatStore();
 
 	const { user } = useProfileStore();
 	const { data: userProfile } = useProfileDoc(user.uid);
+	const { t } = useTranslation();
+	const { isDarkColorScheme } = useColorScheme();
 
 	useEffect(() => {
-		loadChatHistory();
-		if (userProfile?.companyId) loadPeople(userProfile.companyId);
-	}, [userProfile?.companyId, loadChatHistory, loadPeople]);
+		// Load chat history when component mounts
+		useChatStore.getState().loadChatHistory();
 
-	const { isDarkColorScheme } = useColorScheme();
+		if (userProfile?.companyId) {
+			loadPeople(userProfile.companyId);
+		}
+
+		// Cleanup when component unmounts
+		return () => {
+			useChatStore.getState().cleanupChatHistory();
+		};
+	}, [userProfile?.companyId, loadPeople]);
 
 	if (isLoading)
 		return (
@@ -42,10 +57,10 @@ export default function List() {
 
 	return (
 		<>
-			<LegendList
+			<FlashList
 				data={chatHistory}
-				recycleItems
 				renderItem={({ item }) => <ChatLink chat={item} />}
+				keyExtractor={(item) => item.id}
 				ItemSeparatorComponent={() => (
 					<View className="h-px my-2 bg-primary-foreground" />
 				)}
@@ -53,16 +68,23 @@ export default function List() {
 				automaticallyAdjustsScrollIndicatorInsets={false}
 				contentInsetAdjustmentBehavior="automatic"
 				estimatedItemSize={50}
-				drawDistance={1000}
+				// drawDistance={1000}
 				ListEmptyComponent={() => (
-					<View
-						className="flex-1 items-center justify-center h-[55vh]"
-						style={{
-							marginTop: headerHeight + 10,
-							marginBottom: tabHeight + 10,
-						}}
-					>
-						<Text className="text-2xl">There aren't any chats now</Text>
+					<View className="flex-1 items-center justify-center h-[80vh] flex flex-col gap-4 px-5">
+						{searchTerm ? (
+							<IconZoomCancel
+								size={48}
+								color={isDarkColorScheme ? "#fff" : "#000"}
+							/>
+						) : (
+							<IconMoodEmpty
+								size={48}
+								color={isDarkColorScheme ? "#fff" : "#000"}
+							/>
+						)}
+						<Text className="text-4xl">
+							{searchTerm ? t("chats.no_results") : t("chats.empty")}
+						</Text>
 					</View>
 				)}
 			/>

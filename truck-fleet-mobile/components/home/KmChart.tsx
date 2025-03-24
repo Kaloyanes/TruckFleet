@@ -1,4 +1,4 @@
-import { ActivityIndicator, TextInput, View } from "react-native";
+import { ActivityIndicator, TextInput, View, Platform } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Text } from "~/components/ui/text";
 import { Area, CartesianChart, Line, useChartPressState } from "victory-native";
@@ -9,9 +9,10 @@ import {
 	LinearGradient,
 	useFont,
 	Circle,
+	FontStyle,
 } from "@shopify/react-native-skia";
 
-import inter from "~/assets/fonts/Inter.ttf";
+import Satoshi from "~/assets/fonts/Manrope.ttf";
 import { MMKV } from "react-native-mmkv";
 import { format, parseISO } from "date-fns";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
@@ -22,7 +23,9 @@ import Animated, {
 	type SharedValue,
 	runOnJS,
 } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
 Animated.addWhitelistedNativeProps({ text: true });
+import * as Haptics from "expo-haptics";
 
 const mmkv = new MMKV({
 	id: "kaloyanes.km",
@@ -77,10 +80,32 @@ function ToolTip({
 const AnimatedText = Animated.createAnimatedComponent(Text);
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
-// Add this worklet function before the KmChart component
-const formatDate = (date: Date) => {
-	"worklet";
-	const months = [
+export default function KmChart() {
+	const [chartData, setChartData] = useState<
+		Array<{ day: number; km: number; date: string }>
+	>([]);
+	const font = useFont(Satoshi);
+	const { isDarkColorScheme } = useColorScheme();
+	const { t, i18n } = useTranslation();
+
+	// Get translated month names from i18n
+	const translatedMonths = [
+		t("months.jan"),
+		t("months.feb"),
+		t("months.mar"),
+		t("months.apr"),
+		t("months.may"),
+		t("months.jun"),
+		t("months.jul"),
+		t("months.aug"),
+		t("months.sep"),
+		t("months.oct"),
+		t("months.nov"),
+		t("months.dec"),
+	];
+
+	// English month names for chart labels (to avoid font issues)
+	const chartMonthNames = [
 		"Jan",
 		"Feb",
 		"Mar",
@@ -94,21 +119,17 @@ const formatDate = (date: Date) => {
 		"Nov",
 		"Dec",
 	];
-	const day = date.getDate();
-	const month = months[date.getMonth()];
-	return `${day} ${month}`;
-};
-
-export default function KmChart() {
-	const [chartData, setChartData] = useState<
-		Array<{ day: number; km: number; date: string }>
-	>([]);
-	const font = useFont(inter);
-	const { isDarkColorScheme } = useColorScheme();
 
 	const [lastDays, setLastDays] = useState(
 		Number(mmkv.getString(LAST_DAYS_KEY) || DEFAULT_LAST_DAYS),
 	);
+
+	const formatDate = (date: Date) => {
+		"worklet";
+		const day = date.getDate();
+		const month = translatedMonths[date.getMonth()];
+		return `${day} ${month}`;
+	};
 
 	// Modify the initial state to use the last data point
 	const { state, isActive } = useChartPressState({
@@ -200,6 +221,7 @@ export default function KmChart() {
 					const newValue = value ?? DEFAULT_LAST_DAYS;
 					setLastDays(Number(newValue));
 					mmkv.set(LAST_DAYS_KEY, newValue);
+					Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 				}}
 				className="flex-row justify-evenly gap-3 px-5"
 			>
@@ -241,12 +263,14 @@ export default function KmChart() {
 						formatXLabel: (value) => {
 							const item = chartData.find((d) => d.day === value);
 							if (!item) return "";
-							// Changed: Append "T00:00" so the date is parsed in local time.
 							const date = new Date(`${item.date}T00:00`);
-							return format(date, "d MMM");
+							// Use English month names for chart axis labels to avoid font issues
+							const day = date.getDate();
+							const month = chartMonthNames[date.getMonth()];
+							return `${day} ${month}`;
 						},
 						lineWidth: 0,
-						font,
+						font, // Use the Satoshi font which works correctly
 						labelPosition: "inset",
 						axisSide: "bottom",
 						tickCount: tickInterval,
@@ -258,12 +282,10 @@ export default function KmChart() {
 							lineColor: isDarkColorScheme ? "#fff" : "#000",
 							labelOffset: 0,
 							labelPosition: "inset",
-							font,
+							font, // Use the Satoshi font which works correctly
 							labelColor: isDarkColorScheme ? "#ffffff50" : "#000000",
 							tickCount: 5,
 							axisSide: "right",
-
-							// tickFormat: (value) => `${value.toFixed(0)} KM`,
 						},
 					]}
 					frame={{

@@ -98,9 +98,9 @@ export default function maps() {
 		<View className="flex-1 relative">
 			<BlurView
 				intensity={20}
+				tint="prominent"
 				className="absolute  inset-0 z-50  overflow-hidden bg-transparent"
 				style={{ height: top }}
-				experimentalBlurMethod="dimezisBlurView"
 			/>
 
 			<MapView

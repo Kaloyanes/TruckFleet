@@ -24,10 +24,11 @@ import { useChatStore } from "~/stores/chat-store";
 import { useMessageStore } from "~/stores/message-store";
 import ChatInputMore from "./ChatInputMore";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
+import VoiceMessageButton from "./VoiceMessageButton";
 
 export default function InputToolbar() {
 	const { isDarkColorScheme } = useColorScheme();
-	const { currentMessage, setMessage, sendMessage, isTyped } =
+	const { currentMessage, setMessage, sendMessage, isTyped, isRecording } =
 		useMessageStore();
 	const [inputHeight, setInputHeight] = useState(48); // Default height for single line
 	const [isMultiline, setIsMultiline] = useState(false);
@@ -65,6 +66,7 @@ export default function InputToolbar() {
 		>
 			<BlurView
 				intensity={80}
+				tint="prominent"
 				className="px-2 py-2 android:bg-background pb-safe flex-row items-center w-full min-h-28"
 			>
 				<ChatInputMore isDarkColorScheme={isDarkColorScheme} />
@@ -72,8 +74,10 @@ export default function InputToolbar() {
 				<View className="flex-1 h-auto">
 					<Input
 						ref={inputRef}
-						placeholder={t("chats.type_message")}
-						className="!w-full !h-14 !max-h-28"
+						placeholder={
+							isRecording ? "Recording audio..." : t("chats.type_message")
+						}
+						className="!w-full !h-14 !max-h-28 focus:ring-1 focus:ring-primary focus:ring-opacity-50"
 						value={currentMessage}
 						onChangeText={(text) => {
 							setMessage(text);
@@ -84,34 +88,12 @@ export default function InputToolbar() {
 						multiline
 						numberOfLines={1}
 						trailingIcon={
-							<MotiView
-								from={{
-									opacity: 0,
-									scale: 0.5,
-								}}
-								animate={useDerivedValue(() => ({
-									opacity: !isTyped ? 1 : 0,
-									scale: !isTyped ? 1 : 0.5,
-								}))}
-								transition={{
-									type: "timing",
-									duration: 500,
-									easing: Easing.out(Easing.poly(5)),
-								}}
-							>
-								<Button
-									variant={"ghost"}
-									size="icon"
-									onPress={() => {}}
-									className="h-12 aspect-square "
-								>
-									<IconMicrophone
-										size={24}
-										color={isDarkColorScheme ? "#fff" : "#000"}
-									/>
-								</Button>
-							</MotiView>
+							<VoiceMessageButton
+								isTyped={isTyped}
+								isDarkColorScheme={isDarkColorScheme}
+							/>
 						}
+						readOnly={isRecording}
 					/>
 				</View>
 

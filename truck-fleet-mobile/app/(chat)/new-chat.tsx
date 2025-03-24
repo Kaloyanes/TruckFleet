@@ -25,7 +25,7 @@ export default function NewChatModal() {
 
 	const headerHeight = useHeaderHeight();
 
-	const { people } = useChatStore();
+	const { people, chatHistory, originalChatHistory } = useChatStore();
 
 	function createChat(personId: string) {
 		const currentUser = firebase.auth().currentUser;
@@ -65,14 +65,20 @@ export default function NewChatModal() {
 			)}
 			<FlashList
 				className="flex-1 "
-				data={people}
+				data={people.filter(
+					(person) =>
+						!originalChatHistory.find((chat) =>
+							chat.participants.includes(person.id),
+						),
+				)}
+				keyExtractor={(item) => item.id}
 				contentInsetAdjustmentBehavior="automatic"
 				automaticallyAdjustContentInsets
 				renderItem={({ item }) => (
 					<Button
 						variant={"ghost"}
 						onPress={() => createChat(item.id)}
-						className="flex-row items-center justify-between !p-6 my-2"
+						className="flex-row items-center justify-between !p-6"
 					>
 						<View className="flex-row items-center gap-3">
 							<Image
@@ -86,6 +92,7 @@ export default function NewChatModal() {
 						</View>
 					</Button>
 				)}
+				ItemSeparatorComponent={() => <View className="h-2" />}
 				estimatedItemSize={56}
 			/>
 		</View>

@@ -6,8 +6,7 @@ import {
 	type Theme,
 	ThemeProvider,
 } from "@react-navigation/native";
-import { Link, Redirect, Stack, useLocalSearchParams } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Stack } from "expo-router";
 import * as React from "react";
 import { Platform, View, Pressable, PlatformColor } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
@@ -16,37 +15,17 @@ import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import {
-	PlayfairDisplay_400Regular,
-	PlayfairDisplay_400Regular_Italic,
-	PlayfairDisplay_600SemiBold,
-	PlayfairDisplay_600SemiBold_Italic,
-	PlayfairDisplay_800ExtraBold,
-	PlayfairDisplay_800ExtraBold_Italic,
-} from "@expo-google-fonts/playfair-display";
-import i18n from "~/locales/i18n";
 import * as NavigationBar from "expo-navigation-bar";
 import LanguageSelector from "~/components/LanguageSelector";
 import { useRegisterStore } from "~/stores/register-store";
-import { Text } from "~/components/ui/text";
 import { Progress } from "~/components/ui/progress";
 import { useTranslation } from "react-i18next";
-import { router, usePathname } from "expo-router";
-import { ChevronLeft, TabletSmartphone } from "lucide-react-native";
+import { router } from "expo-router";
+import { ChevronLeft } from "lucide-react-native";
 import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 // import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import Toast, {
-	BaseToast,
-	ErrorToast,
-	type ToastConfig,
-} from "react-native-toast-message";
-import {
-	IconError404,
-	IconExclamationCircle,
-	IconExclamationCircleFilled,
-	IconFaceIdError,
-} from "@tabler/icons-react-native";
+
 import { Toaster } from "sonner-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -57,6 +36,7 @@ import * as QuickActions from "expo-quick-actions";
 
 import { useQuickActionRouting } from "expo-quick-actions/router";
 import { enableFreeze } from "react-native-screens";
+import { Text } from "~/components/ui/text";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -74,10 +54,6 @@ export {
 } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
-firebase.firestore().settings({
-	cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
-	persistence: true,
-});
 
 export const unstable_settings = {
 	// Ensure any route can link back to `/`
@@ -96,12 +72,8 @@ export default function RootLayout() {
 	const { colorScheme, isDarkColorScheme } = useColorScheme();
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 	const [fontsLoaded] = useFonts({
-		PlayfairDisplay_400Regular,
-		PlayfairDisplay_400Regular_Italic,
-		PlayfairDisplay_600SemiBold,
-		PlayfairDisplay_600SemiBold_Italic,
-		PlayfairDisplay_800ExtraBold,
-		PlayfairDisplay_800ExtraBold_Italic,
+		Satoshi: require("~/assets/fonts/Satoshi-Variable.ttf"),
+		Manrope: require("~/assets/fonts/Manrope.ttf"),
 	});
 
 	React.useEffect(() => {
@@ -116,6 +88,13 @@ export default function RootLayout() {
 	}, [fontsLoaded]);
 
 	React.useEffect(() => {
+		(async () => {
+			await firebase.firestore().settings({
+				cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
+				persistence: true,
+			});
+		})();
+
 		QuickActions.setItems([
 			{
 				title: "Wait! Don't delete me!",
@@ -132,7 +111,7 @@ export default function RootLayout() {
 		]);
 	}, []);
 
-	useIsomorphicLayoutEffect(() => {
+	React.useLayoutEffect(() => {
 		if (hasMounted.current) {
 			return;
 		}
@@ -201,22 +180,19 @@ export default function RootLayout() {
 							}}
 							screenOptions={{
 								headerLargeTitleStyle: {
-									fontFamily: "PlayfairDisplay_600SemiBold",
+									fontFamily: "Manrope",
+								},
+								headerTitleStyle: {
+									fontFamily: "Manrope",
 								},
 								headerShadowVisible: false,
 								headerTransparent: true,
-								headerBackground: () => {
-									return (
-										<BlurView
-											intensity={80}
-											style={{ flex: 1 }}
-											className="android:bg-background"
-										/>
-									);
-								},
+								headerBlurEffect: "prominent",
+
 								headerLargeStyle: {
 									backgroundColor: "transparent",
 								},
+								headerTitleAlign: "center",
 							}}
 						>
 							<Stack.Screen
@@ -270,9 +246,8 @@ export default function RootLayout() {
 							<Stack.Screen
 								name="(auth)/pick-image"
 								options={{
-									sheetCornerRadius: 50,
+									sheetCornerRadius: 25,
 									sheetGrabberVisible: true,
-									sheetElevation: 50,
 									presentation: "formSheet",
 									sheetAllowedDetents: Platform.OS === "ios" ? [1] : [0.9],
 									gestureDirection: "vertical",
@@ -298,20 +273,30 @@ export default function RootLayout() {
 									headerLargeTitle: false,
 									headerBackButtonDisplayMode: "minimal",
 									keyboardHandlingEnabled: true,
+									headerBlurEffect: "none",
+									headerBackground: () => (
+										<View className="w-full h-full relative">
+											<BlurView
+												className="w-full h-full pb-4 android:bg-background"
+												intensity={80}
+												tint="prominent"
+											/>
+										</View>
+									),
 								}}
 							/>
 							<Stack.Screen
 								name="(chat)/new-chat"
 								options={{
-									sheetCornerRadius: 50,
+									sheetCornerRadius: 25,
 									sheetGrabberVisible: true,
-									sheetElevation: 50,
 									presentation: "formSheet",
 									sheetAllowedDetents: Platform.OS === "ios" ? [0.5, 1] : [0.9],
 									gestureDirection: "vertical",
 									headerShadowVisible: false,
 									headerLargeTitleShadowVisible: false,
-									title: t("new_chat"),
+									title: t("chats.new_chat"),
+									headerLargeTitle: true,
 								}}
 							/>
 							<Stack.Screen
@@ -339,8 +324,3 @@ export default function RootLayout() {
 		</GestureHandlerRootView>
 	);
 }
-
-const useIsomorphicLayoutEffect =
-	Platform.OS === "web" && typeof window === "undefined"
-		? React.useEffect
-		: React.useLayoutEffect;

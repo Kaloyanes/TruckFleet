@@ -31,6 +31,9 @@ interface MessageStore {
 	unsubscribeMessages: (() => void)[] | null;
 	isRefreshing: boolean;
 	flashListRef: React.RefObject<FlashList<Message>> | null;
+	statusOfMessage: number;
+	isRecording: boolean;
+	setStatusOfMessage: (status: number) => void;
 	setRef: (ref: React.RefObject<FlashList<Message>>) => void;
 	loadMessages: (id: string) => Promise<void>;
 	loadMoreMessages: (id: string) => Promise<void>;
@@ -39,6 +42,9 @@ interface MessageStore {
 	sendPhoto: (type: "image" | "camera") => void;
 	sendFile: () => void;
 	sendLocation: () => void;
+	sendAudio: (assetUri: string) => void;
+	updateLastMessageToNow: () => void;
+	setIsRecording: (isRecording: boolean) => void;
 }
 
 const LIMIT_MESSAGES = 10;
@@ -52,7 +58,16 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 	unsubscribeMessages: null,
 	isRefreshing: false,
 	flashListRef: null,
+	statusOfMessage: 0,
 
+	isRecording: false,
+	setIsRecording: (isRecording) => {
+		set({ isRecording: isRecording });
+	},
+
+	setStatusOfMessage: (status) => {
+		set({ statusOfMessage: status });
+	},
 	setRef: (ref) => {
 		set({ flashListRef: ref });
 	},
@@ -116,37 +131,57 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 		set({ isRefreshing: true, error: null });
 
 		try {
-			// Use a one-time get() instead of onSnapshot to avoid subscription issues
-			const snapshot = await firestore()
+			// Use onSnapshot instead of get() to react to changes in older messages
+			const unsubscribe = firestore()
 				.collection(`chats/${id}/messages`)
 				.orderBy("createdAt")
 				.endBefore(oldestMessage.createdAt)
 				.limitToLast(LIMIT_MESSAGES)
-				.get();
+				.onSnapshot(
+					(snapshot) => {
+						if (snapshot.empty) {
+							set({ isRefreshing: false });
+							return;
+						}
 
-			if (snapshot.empty) {
-				set({ isRefreshing: false });
-				return;
-			}
+						const newMessages: Message[] = snapshot.docs.map((doc) => {
+							const data = doc.data();
+							return {
+								id: doc.id,
+								content: data.content || "",
+								sender: data.sender,
+								type: data.type || "text",
+								createdAt: data.createdAt,
+								updatedAt: data.updatedAt ?? null,
+								fileName: data.fileName ?? null,
+								fileType: data.fileType ?? null,
+							};
+						});
 
-			const newMessages: Message[] = snapshot.docs.map((doc) => {
-				const data = doc.data();
-				return {
-					id: doc.id,
-					content: data.content || "", // Add fallback for empty content
-					sender: data.sender,
-					type: data.type || "text", // Add fallback for empty type
-					createdAt: data.createdAt,
-					updatedAt: data.updatedAt ?? null,
-					fileName: data.fileName ?? null,
-					fileType: data.fileType ?? null,
-				};
-			});
+						// Get the current messages, but filter out any that are in the new batch
+						// to avoid duplicates if a message was both loaded before and again now
+						const currentMessages = get().messages.filter(
+							(msg) => !newMessages.some((newMsg) => newMsg.id === msg.id),
+						);
 
-			// Prepend older messages to the beginning of the array
+						// Prepend older messages to the beginning of the array
+						set({
+							messages: [...newMessages, ...currentMessages],
+							isRefreshing: false,
+						});
+					},
+					(error) => {
+						console.error("Error listening to more messages:", error);
+						set({ error: error, isRefreshing: false });
+					},
+				);
+
+			// Store the unsubscribe function
 			set({
-				messages: [...newMessages, ...messages],
-				isRefreshing: false,
+				unsubscribeMessages: [
+					...(get().unsubscribeMessages ?? []),
+					unsubscribe,
+				],
 			});
 		} catch (error) {
 			console.error("Error loading more messages:", error);
@@ -180,10 +215,11 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 			console.error("Failed to send message:", error);
 		}
 
-		get().flashListRef?.current?.scrollToOffset({
-			offset: 0,
+		get().flashListRef?.current?.scrollToIndex({
+			index: 0,
 			animated: true,
 		});
+		get().updateLastMessageToNow();
 	},
 	sendPhoto: async (type) => {
 		const userId = firebase.auth().currentUser?.uid;
@@ -208,29 +244,47 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 			return;
 		}
 
-		result.assets.map(async (asset) => {
+		result.assets.map(async (asset, index) => {
 			const fileName = asset.fileName;
 
 			const storageRef = firebase
 				.storage()
 				.ref(`chats/${get().chatId}/${asset.type}s/${fileName}`);
 
-			await storageRef.putFile(asset.uri, {
-				cacheControl: "public,max-age=31536000",
-			});
-			const downloadURL = await storageRef.getDownloadURL();
+			storageRef
+				.putFile(asset.uri, {
+					contentType: asset.mimeType,
+				})
+				.on("state_changed", async (snapshot) => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-			// Send message with the download URL
-			const message: Omit<Message, "id"> = {
-				content: downloadURL,
-				sender: userId,
-				type: asset.type as Message["type"],
-				createdAt: Timestamp.now(),
-			};
+					console.log(`Upload is ${progress}% done`);
+					set({ statusOfMessage: progress });
 
-			const doc = await firestore()
-				.collection(`chats/${get().chatId}/messages`)
-				.add(message);
+					if (snapshot.state === "success") {
+						const downloadURL = await snapshot.ref.getDownloadURL();
+
+						// Send message with the download URL
+						const message: Omit<Message, "id"> = {
+							content: downloadURL,
+							sender: userId,
+							type: asset.type as Message["type"],
+							createdAt: Timestamp.now(),
+						};
+
+						await firebase
+							.firestore()
+							.collection(`chats/${get().chatId}/messages`)
+							.add(message);
+
+						if (index === result.assets.length - 1) {
+							get().updateLastMessageToNow();
+							set({ statusOfMessage: 0 });
+						}
+						return;
+					}
+				});
 		});
 	},
 	sendFile: async () => {
@@ -248,31 +302,95 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 
 		if (result.canceled) return;
 
-		result.assets.map(async (asset) => {
+		result.assets.map(async (asset, index) => {
 			const fileName = asset.name;
 			const storageRef = firebase
 				.storage()
 				.ref(`chats/${get().chatId}/files/${fileName}`);
 
-			await storageRef.putFile(asset.uri, {
-				cacheControl: "public,max-age=31536000",
-			});
-			const downloadURL = await storageRef.getDownloadURL();
+			storageRef
+				.putFile(asset.uri, {
+					contentType: asset.mimeType,
+				})
+				.on("state_changed", async (snapshot) => {
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-			// Send message with the download URL
-			const message: Omit<Message, "id"> = {
-				content: downloadURL,
-				sender: userId,
-				type: "file",
-				createdAt: Timestamp.now(),
-				fileName,
-				fileType: asset.mimeType,
-			};
+					console.log(`Upload is ${progress}% done`);
+					set({ statusOfMessage: progress });
 
-			const doc = await firestore()
-				.collection(`chats/${get().chatId}/messages`)
-				.add(message);
+					if (snapshot.state === "success") {
+						const downloadURL = await snapshot.ref.getDownloadURL();
+
+						// Send message with the download URL
+						const message: Omit<Message, "id"> = {
+							content: downloadURL,
+							sender: userId,
+							type: "file",
+							createdAt: Timestamp.now(),
+							fileName,
+							fileType: asset.mimeType,
+						};
+
+						await firestore()
+							.collection(`chats/${get().chatId}/messages`)
+							.add(message);
+
+						if (index === result.assets.length - 1) {
+							get().updateLastMessageToNow();
+							set({ statusOfMessage: 0 });
+						}
+						return;
+					}
+				});
+		});
+	},
+	sendAudio: async (assetUri) => {
+		const userId = firebase.auth().currentUser?.uid;
+
+		if (!userId) {
+			return;
+		}
+
+		const name = assetUri.split("/").pop();
+		if (!name) {
+			console.error("No name found for audio file");
+			return;
+		}
+		const storageRef = firebase
+			.storage()
+			.ref(`chats/${get().chatId}/audio/${name}`);
+
+		storageRef.putFile(assetUri).on("state_changed", async (snapshot) => {
+			const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+			console.log(`Upload is ${progress}% done`);
+			set({ statusOfMessage: progress });
+
+			if (snapshot.state === "success") {
+				const downloadURL = await snapshot.ref.getDownloadURL();
+
+				// Send message with the download URL
+				const message: Omit<Message, "id"> = {
+					content: downloadURL,
+					sender: userId,
+					type: "audio",
+					createdAt: Timestamp.now(),
+				};
+
+				await firestore()
+					.collection(`chats/${get().chatId}/messages`)
+					.add(message);
+
+				get().updateLastMessageToNow();
+				set({ statusOfMessage: 0 });
+				return;
+			}
 		});
 	},
 	sendLocation: async () => {},
+	updateLastMessageToNow: async () => {
+		const chatRef = firestore().doc(`chats/${get().chatId}`);
+		await chatRef.update({ lastMessageAt: Timestamp.now() });
+	},
 }));

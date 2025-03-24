@@ -20,6 +20,12 @@ export default function Layout() {
 					headerLargeStyle: {
 						backgroundColor: "transparent",
 					},
+					headerLargeTitleStyle: {
+						fontFamily: "Manrope",
+					},
+					headerTitleStyle: {
+						fontFamily: "Manrope",
+					},
 				}}
 			/>
 		</Stack>

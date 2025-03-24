@@ -10,7 +10,7 @@ import {
 	KeyboardStickyView,
 	useReanimatedKeyboardAnimation,
 } from "react-native-keyboard-controller";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Animated, { Easing, useAnimatedStyle } from "react-native-reanimated";
 import { type Message, useMessageStore } from "~/stores/message-store";
 import { Image } from "~/components/ui/image";
 
@@ -27,6 +27,7 @@ import { firebase } from "@react-native-firebase/firestore";
 import ImageMessage from "./components/(messages)/ImageMessage";
 import FileMessage from "./components/(messages)/FileMessage";
 import AudioMessage from "./components/(messages)/AudioMessage";
+import { BlurView } from "expo-blur";
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
@@ -52,6 +53,8 @@ export default function ChatPage() {
 		loadMoreMessages,
 		isRefreshing,
 		setRef,
+		statusOfMessage,
+		setStatusOfMessage,
 	} = useMessageStore();
 
 	useEffect(() => {
@@ -90,6 +93,31 @@ export default function ChatPage() {
 				headerBackButtonDisplayMode: "minimal",
 			});
 	}, [otherUser, navigation.setOptions, t]);
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerBackground: () => (
+				<View className="w-full h-full relative ">
+					<BlurView
+						className="w-full h-full pb-4 android:bg-background"
+						intensity={80}
+						tint="prominent"
+					/>
+					<MotiView
+						className={"absolute bottom-0 left-0 right-0 z-10 h-0.5 bg-white"}
+						animate={{
+							width: `${statusOfMessage}%`,
+						}}
+						transition={{
+							type: "timing",
+							easing: Easing.inOut(Easing.poly(4)),
+							duration: 600,
+						}}
+					/>
+				</View>
+			),
+		});
+	}, [navigation.setOptions, statusOfMessage]);
 
 	const style = useAnimatedStyle(() => ({
 		paddingBottom: height.value === 0 ? 0 : Math.abs(height.value + 20),
@@ -178,6 +206,7 @@ export default function ChatPage() {
 								<FileMessage
 									key={item.id}
 									message={item}
+									fileName={item.fileName}
 									senderProfile={sendUser}
 									userId={userId as string}
 								/>

@@ -93,26 +93,30 @@ const TextMessage = ({ message, userId, senderProfile }: TextMessageProps) => {
 							key="delete"
 							destructive
 							onSelect={() => {
-								Alert.alert(t("chats.delete"), t("chats.delete_message"), [
-									{
-										text: t("chats.cancel"),
-										style: "cancel",
-									},
-									{
-										text: t("chats.delete"),
-										style: "destructive",
-										onPress: async () => {
-											// delete the message
-											await firebase
-												.firestore()
-												.collection(`chats/${chatId}/messages`)
-												.doc(message.id)
-												.delete();
-
-											toast.success(t("chats.message_deleted"));
+								Alert.alert(
+									t("chats.deleteMessageQuestion"),
+									t("chats.delete_message"),
+									[
+										{
+											text: t("chats.cancel"),
+											style: "cancel",
 										},
-									},
-								]);
+										{
+											text: t("chats.delete"),
+											style: "destructive",
+											onPress: async () => {
+												// delete the message
+												await firebase
+													.firestore()
+													.collection(`chats/${chatId}/messages`)
+													.doc(message.id)
+													.delete();
+
+												toast.success(t("chats.message_deleted"));
+											},
+										},
+									],
+								);
 							}}
 						>
 							<ContextMenu.ItemTitle>{t("chats.delete")}</ContextMenu.ItemTitle>

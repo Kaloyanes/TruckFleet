@@ -57,14 +57,13 @@ export default function LayoutTabs() {
 
 						return (
 							<BlurView
-								experimentalBlurMethod="dimezisBlurView"
 								intensity={20}
-								className="flex-1 overflow-hidden !bg-background/50"
+								className="flex-1 overflow-hidden !bg-background/50 android:!bg-background"
 							/>
 						);
 					},
 					freezeOnBlur: true,
-					animation: "shift",
+					animation: Platform.OS === "ios" ? "fade" : "shift",
 					popToTopOnBlur: true,
 					sceneStyle: {
 						flex: 1,
@@ -106,13 +105,20 @@ export default function LayoutTabs() {
 					},
 					headerShown: false,
 					lazy: false,
+
+					headerTitleStyle: {
+						fontFamily: "Manrope",
+					},
+					tabBarLabelStyle: {
+						fontFamily: "Manrope",
+					},
 				}}
 				screenListeners={{
 					tabPress: (e) => {
 						Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 					},
 				}}
-				safeAreaInsets={{ left: -5, bottom: bottom }}
+				safeAreaInsets={{ bottom: bottom }}
 			>
 				<Tabs.Screen
 					name="index"

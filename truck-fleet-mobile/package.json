@@ -102,7 +102,7 @@
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
     "victory-native": "^41.16.1",
-    "zeego": "^2.0.4",
+    "zeego": "^3.0.6",
     "zod": "^3.24.2",
     "zustand": "^4.5.6"
   },

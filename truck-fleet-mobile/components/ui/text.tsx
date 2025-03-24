@@ -13,13 +13,13 @@ const Text = React.forwardRef<TextRef, SlottableTextProps>(
 		return (
 			<Component
 				className={cn(
-					"text-base text-foreground web:select-text android:w-fit",
+					"text-base text-foreground web:select-text android:w-fit tracking-tighter",
 					textClass,
 					className,
 				)}
 				style={{
 					...props.style,
-					fontFamily: "Inter_400Regular",
+					fontFamily: "Manrope",
 				}}
 				ref={ref}
 				{...props}
