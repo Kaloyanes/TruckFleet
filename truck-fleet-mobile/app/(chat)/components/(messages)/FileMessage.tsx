@@ -24,12 +24,10 @@ export default function FileMessage({
 	message,
 	userId,
 	senderProfile,
-	fileName,
 }: {
 	message: Message;
 	userId: string;
 	senderProfile: Profile;
-	fileName: string;
 }) {
 	const { isDarkColorScheme } = useColorScheme();
 	const [isDownloading, setIsDownloading] = React.useState(false);
@@ -39,6 +37,11 @@ export default function FileMessage({
 	useEffect(() => {
 		console.log({ ...message });
 	}, [message]);
+
+	const animateProgress = useDerivedValue(() => ({
+		opacity: isDownloading ? 1 : 0,
+		width: interpolate(progress.value, [0, 1], [0, width * 0.65]),
+	}));
 
 	const handleDownload = async () => {
 		setIsDownloading(true);
@@ -97,17 +100,8 @@ export default function FileMessage({
 								</Button>
 							</View>
 
-							{__DEV__ && !message.fileName && (
-								<Text className="text-xs text-red-500 mt-1">
-									Missing filename
-								</Text>
-							)}
-
 							<MotiView
-								animate={useDerivedValue(() => ({
-									opacity: isDownloading ? 1 : 0,
-									width: interpolate(progress.value, [0, 1], [0, width * 0.65]),
-								}))}
+								animate={animateProgress}
 								className="absolute inset-0 bg-primary/10"
 							/>
 						</Card>

@@ -155,14 +155,11 @@ export default function ChatPage() {
 					top: -headerHeight + 100,
 					bottom: headerHeight - 32,
 				}}
-				// Use a more unique key by combining ID with position
-				keyExtractor={(item, index) => `${item.id}-${index}`}
+				keyExtractor={(item) => item.id}
 				inverted
 				estimatedItemSize={134}
 				data={[...messages].reverse()}
 				keyboardDismissMode="interactive"
-				renderToHardwareTextureAndroid
-				shouldRasterizeIOS
 				onEndReached={() => loadMoreMessages(id as string)}
 				refreshing={isRefreshing}
 				fadingEdgeLength={50}
@@ -206,7 +203,6 @@ export default function ChatPage() {
 								<FileMessage
 									key={item.id}
 									message={item}
-									fileName={item.fileName}
 									senderProfile={sendUser}
 									userId={userId as string}
 								/>

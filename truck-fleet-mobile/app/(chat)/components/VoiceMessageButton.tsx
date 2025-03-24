@@ -76,7 +76,7 @@ export default function VoiceMessageButton({
 			animate={useDerivedValue(() => ({
 				opacity: !isTyped ? 1 : 0,
 				scale: !isTyped ? 1 : 0.5,
-				backgroundColor: isRecording ? "#FF162B" : "#ffffff00",
+				backgroundColor: isRecording ? "#FF162B50" : "#ffffff00",
 			}))}
 			transition={{
 				type: "timing",
