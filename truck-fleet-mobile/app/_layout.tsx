@@ -300,6 +300,29 @@ export default function RootLayout() {
 								}}
 							/>
 							<Stack.Screen
+								name="(chat)/send-location"
+								options={{
+									sheetCornerRadius: 25,
+									sheetGrabberVisible: true,
+									presentation: "formSheet",
+									sheetAllowedDetents: Platform.OS === "ios" ? [1] : [0.9],
+									gestureDirection: "vertical",
+									headerShadowVisible: false,
+									headerLargeTitleShadowVisible: false,
+									title: t("chats.actions.location"),
+									headerLargeTitle: false,
+									headerBackground: () => (
+										<View className="w-full h-full relative">
+											<BlurView
+												className="w-full h-full pb-4 android:bg-background"
+												intensity={80}
+												tint="prominent"
+											/>
+										</View>
+									),
+								}}
+							/>
+							<Stack.Screen
 								name="feedback"
 								options={{
 									headerShadowVisible: false,

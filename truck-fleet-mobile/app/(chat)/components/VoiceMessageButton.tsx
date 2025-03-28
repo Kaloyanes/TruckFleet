@@ -32,6 +32,12 @@ export default function VoiceMessageButton({
 		},
 	});
 
+	useEffect(() => {
+		async () => {
+			if (audioRecorder) await audioRecorder.prepareToRecordAsync();
+		};
+	}, [audioRecorder]);
+
 	const record = async () => {
 		await requestPermissions();
 

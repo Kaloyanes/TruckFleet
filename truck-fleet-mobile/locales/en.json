@@ -71,7 +71,29 @@
     "delete": "Delete",
     "empty": "No messages",
     "no_results": "No results found",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "deleteMessageQuestion": "Delete Message?",
+    "delete_message": "Are you sure you want to delete this message?",
+    "message_deleted": "Message deleted successfully",
+    "delete_failed": "Failed to delete message",
+    "edited": "Edited",
+    "open_in_maps": "Open in Maps",
+    "open_in_maps_message": "Choose a map app to view this location",
+    "send-location": "Send Location",
+    "actions": {
+      "gallery": "Gallery",
+      "camera": "Camera",
+      "file": "File",
+      "location": "Location"
+    }
+  },
+  "audio": {
+    "play": "Play",
+    "pause": "Pause",
+    "restart": "Restart"
+  },
+  "file": {
+    "download": "Download"
   },
   "months": {
     "jan": "Jan",

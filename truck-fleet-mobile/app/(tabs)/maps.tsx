@@ -22,40 +22,17 @@ import FabButton from "~/components/FabButton";
 
 export default function maps() {
 	const { top } = useSafeAreaInsets();
-	const [isMapReady, setIsMapReady] = useState(false);
+	const mapRef = React.useRef<MapView>(null);
+
+	const tabHeight = useBottomTabBarHeight();
+	const { isDarkColorScheme } = useColorScheme();
+
 	const [region, setRegion] = useState({
 		latitude: 42.698334,
 		longitude: 23.319941,
 		latitudeDelta: 0.0922,
 		longitudeDelta: 0.0421,
 	});
-
-	const [followsUserLocation, setFollowsUserLocation] = useState(true);
-
-	const mapRef = React.useRef<MapView>(null);
-
-	const tabHeight = useBottomTabBarHeight();
-	const { isDarkColorScheme } = useColorScheme();
-	const pathName = usePathname();
-
-	const states = useAnimationState({
-		from: {
-			scale: 0.2,
-			translateY: 200,
-		},
-		to: {
-			scale: 1,
-			translateY: 0,
-		},
-	});
-
-	useEffect(() => {
-		if (pathName.includes("maps")) {
-			states.transitionTo("to");
-		} else {
-			states.transitionTo("from");
-		}
-	}, [pathName, states.transitionTo]);
 
 	useEffect(() => {
 		(async () => {
@@ -89,7 +66,6 @@ export default function maps() {
 			altitude: 10000,
 			zoom: 10,
 		});
-		setFollowsUserLocation(true);
 	}
 
 	const googleMapsApi = process.env.EXPO_PUBLIC_GOOGLE_API_KEY ?? "";

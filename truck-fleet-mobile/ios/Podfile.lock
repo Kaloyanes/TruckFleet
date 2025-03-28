@@ -2904,6 +2904,49 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-slider (4.5.5):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - react-native-slider/common (= 4.5.5)
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - react-native-slider/common (4.5.5):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-webview (13.13.4):
     - DoubleConversion
     - glog
@@ -3307,7 +3350,7 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController (~> 2.7.4)
-  - RNLiveMarkdown (0.1.254):
+  - RNLiveMarkdown (0.1.256):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3595,6 +3638,7 @@ DEPENDENCIES:
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -3832,6 +3876,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-skia:
     :path: "../node_modules/@shopify/react-native-skia"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-nativeconfig:
@@ -4031,6 +4077,7 @@ SPEC CHECKSUMS:
   react-native-mmkv: bca4733c90d21ce8b1629860213504cf40ff1dbf
   react-native-safe-area-context: fc459d62fa26be4d3e304ee713251b7f57cdc9a7
   react-native-skia: 785b8e271b1d6a6761194da4437315210e0ccbbe
+  react-native-slider: 07ae35a2287ee98993c284f7bcd87ed949a89392
   react-native-webview: ced9a7a8e01b3aafd4913c647f93f4b89593a537
   React-nativeconfig: 1290b585850b8465f56f54a48b04968eefed0dd4
   React-NativeModulesApple: d8120bb2e641a064db0390c9f40cc4453a307c66
@@ -4071,7 +4118,7 @@ SPEC CHECKSUMS:
   RNFlashList: f832facfc91d28650f73e75648267badc76b2b1c
   RNGestureHandler: 75a1894590b15c560094c2b09c5dce6a64eefa29
   RNImageCropPicker: 64b6bec9ec185ee59b71a93d7058816bd0e1916e
-  RNLiveMarkdown: 840011c199507cd21081c5bc82421ff59d5fa234
+  RNLiveMarkdown: 292182e0f908ece64c564eedcda46c4c16c77da5
   RNReanimated: 5c268cff742e86416974907d8596b173683e9ce6
   RNScreens: 6ce56b0e106dc2cffa856e9abdaf0f0fe356f93a
   RNSVG: 575e518e8e550511e7c1572513d841bc7a6cbce4

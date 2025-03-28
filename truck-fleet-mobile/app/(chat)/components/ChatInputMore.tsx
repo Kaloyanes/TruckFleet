@@ -6,39 +6,42 @@ import { Button } from "~/components/ui/button";
 import { IconPlus } from "@tabler/icons-react-native";
 import * as DropdownMenu from "zeego/dropdown-menu";
 import { useMessageStore } from "~/stores/message-store";
+import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 export default function ChatInputMore({
 	isDarkColorScheme,
 }: { isDarkColorScheme: boolean }) {
 	const { sendPhoto, sendFile } = useMessageStore();
+	const { t } = useTranslation();
 
 	const actions = [
 		{
-			title: "Gallery",
+			title: t("chats.actions.gallery"),
 			ios: "photo",
 			onSelect: () => {
 				sendPhoto("image");
 			},
 		},
 		{
-			title: "Camera",
+			title: t("chats.actions.camera"),
 			ios: "camera",
 			onSelect: () => {
 				sendPhoto("camera");
 			},
 		},
 		{
-			title: "File",
+			title: t("chats.actions.file"),
 			ios: "document",
 			onSelect: () => {
 				sendFile();
 			},
 		},
 		{
-			title: "Location",
+			title: t("chats.actions.location"),
 			ios: "location",
 			onSelect: () => {
-				console.log("location");
+				router.push("/(chat)/send-location");
 			},
 		},
 	];

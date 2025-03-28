@@ -9,6 +9,7 @@ import { toast } from "sonner-native";
 import { firebase } from "@react-native-firebase/firestore";
 import { useMessageStore } from "~/stores/message-store";
 import { useTranslation } from "react-i18next";
+import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 
 export default function ImageMessage({
 	message,
@@ -20,7 +21,11 @@ export default function ImageMessage({
 	const { t } = useTranslation();
 	return (
 		<View className="flex flex-row-reverse items-end justify-end gap-2">
-			<ContextMenu.Root>
+			<ContextMenu.Root
+				onOpenChange={() => {
+					impactAsync(ImpactFeedbackStyle.Light);
+				}}
+			>
 				<ContextMenu.Trigger asChild>
 					<Galeria urls={[url]} closeIconName="xmark">
 						<Galeria.Image>
@@ -53,14 +58,7 @@ export default function ImageMessage({
 											text: t("chats.delete"),
 											style: "destructive",
 											onPress: async () => {
-												// delete the message
-												await firebase
-													.firestore()
-													.collection(`chats/${chatId}/messages`)
-													.doc(message.id)
-													.delete();
-
-												toast.success(t("chats.message_deleted"));
+												await useMessageStore.getState().deleteMessage(message);
 											},
 										},
 									],
@@ -75,7 +73,7 @@ export default function ImageMessage({
 									weight: "semibold",
 									scale: "large",
 								}}
-								androidIconName="progress_horizontal"
+								androidIconName="delete"
 							/>
 						</ContextMenu.Item>
 					)}
@@ -86,7 +84,16 @@ export default function ImageMessage({
 							console.log("Download image");
 						}}
 					>
-						Download
+						<ContextMenu.ItemTitle>{t("file.download")}</ContextMenu.ItemTitle>
+						<ContextMenu.ItemIcon
+							ios={{
+								name: "arrow.down.circle",
+								pointSize: 10,
+								weight: "semibold",
+								scale: "large",
+							}}
+							androidIconName="download"
+						/>
 					</ContextMenu.Item>
 				</ContextMenu.Content>
 			</ContextMenu.Root>

@@ -16,12 +16,13 @@
   "dependencies": {
     "@bacons/apple-targets": "^0.2.1",
     "@bottom-tabs/react-navigation": "^0.8.9",
-    "@expensify/react-native-live-markdown": "^0.1.254",
+    "@expensify/react-native-live-markdown": "^0.1.256",
     "@expo-google-fonts/playfair-display": "^0.2.3",
     "@hookform/resolvers": "^3.10.0",
     "@legendapp/list": "^1.0.0-beta.21",
     "@nandorojo/galeria": "^1.1.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
+    "@react-native-community/slider": "4.5.5",
     "@react-native-firebase/app": "^21.12.0",
     "@react-native-firebase/auth": "^21.12.0",
     "@react-native-firebase/crashlytics": "^21.12.0",
@@ -45,7 +46,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "expensify-common": "^2.0.126",
+    "expensify-common": "^2.0.127",
     "expo": "^52.0.39",
     "expo-audio": "~0.3.5",
     "expo-blur": "~14.0.3",
@@ -71,6 +72,7 @@
     "expo-task-manager": "~12.0.5",
     "expo-video": "~2.0.6",
     "expo-video-thumbnails": "~9.0.3",
+    "html-entities": "^2.5.3",
     "i18n-js": "^4.5.1",
     "i18next": "^24.2.3",
     "lucide-react-native": "^0.378.0",
@@ -87,8 +89,10 @@
     "react-native-ios-context-menu": "3.1.0",
     "react-native-ios-utilities": "5.1.2",
     "react-native-keyboard-controller": "^1.16.7",
+    "react-native-map-link": "^3.8.0",
     "react-native-maps": "1.18.0",
     "react-native-maps-directions": "^1.9.0",
+    "react-native-markdown-display": "^7.0.2",
     "react-native-mmkv": "^3.2.0",
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "~5.1.0",
@@ -124,5 +128,8 @@
         "react-native-webview@~13.12.5"
       ]
     }
+  },
+  "patchedDependencies": {
+    "html-entities@2.5.3": "patches/html-entities@2.5.3.patch"
   }
 }

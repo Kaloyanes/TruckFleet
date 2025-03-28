@@ -1,5 +1,5 @@
 import * as ContextMenu from "zeego/context-menu";
-import { useWindowDimensions, View } from "react-native";
+import { useWindowDimensions, View, Alert } from "react-native";
 import React, { useEffect } from "react";
 import { Text } from "~/components/ui/text";
 import { Card } from "~/components/ui/card";
@@ -19,6 +19,9 @@ import {
 } from "react-native-reanimated";
 import type { Message } from "~/stores/message-store";
 import type { Profile } from "~/models/profile";
+import { useMessageStore } from "~/stores/message-store";
+import { useTranslation } from "react-i18next";
+import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 
 export default function FileMessage({
 	message,
@@ -33,6 +36,7 @@ export default function FileMessage({
 	const [isDownloading, setIsDownloading] = React.useState(false);
 	const progress = useSharedValue(0);
 	const { width } = useWindowDimensions();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		console.log({ ...message });
@@ -67,11 +71,15 @@ export default function FileMessage({
 	return (
 		<View className="flex flex-row-reverse items-end justify-end gap-2">
 			{message.fileName && (
-				<ContextMenu.Root>
+				<ContextMenu.Root
+					onOpenChange={() => {
+						impactAsync(ImpactFeedbackStyle.Light);
+					}}
+				>
 					<ContextMenu.Trigger asChild>
 						<Card
 							className={cn(
-								"p-3 max-w-[65vw]",
+								"p-3 w-[65vw] overflow-hidden",
 								message.sender === userId ? "bg-card" : "bg-muted",
 							)}
 						>
@@ -102,14 +110,65 @@ export default function FileMessage({
 
 							<MotiView
 								animate={animateProgress}
-								className="absolute inset-0 bg-primary/10"
+								className="absolute inset-0 bg-primary/15"
 							/>
 						</Card>
 					</ContextMenu.Trigger>
 					<ContextMenu.Content>
 						<ContextMenu.Item key="download" onSelect={handleDownload}>
-							Download
+							<ContextMenu.ItemTitle>
+								{t("file.download")}
+							</ContextMenu.ItemTitle>
+							<ContextMenu.ItemIcon
+								ios={{
+									name: "arrow.down.circle",
+									pointSize: 10,
+									weight: "semibold",
+									scale: "large",
+								}}
+								androidIconName="download"
+							/>
 						</ContextMenu.Item>
+						{userId === message.sender && (
+							<ContextMenu.Item
+								key="delete"
+								destructive
+								onSelect={() => {
+									Alert.alert(
+										t("chats.deleteMessageQuestion"),
+										t("chats.delete_message"),
+										[
+											{
+												text: t("chats.cancel"),
+												style: "cancel",
+											},
+											{
+												text: t("chats.delete"),
+												style: "destructive",
+												onPress: async () => {
+													await useMessageStore
+														.getState()
+														.deleteMessage(message);
+												},
+											},
+										],
+									);
+								}}
+							>
+								<ContextMenu.ItemTitle>
+									{t("chats.delete")}
+								</ContextMenu.ItemTitle>
+								<ContextMenu.ItemIcon
+									ios={{
+										name: "trash",
+										pointSize: 10,
+										weight: "semibold",
+										scale: "large",
+									}}
+									androidIconName="delete"
+								/>
+							</ContextMenu.Item>
+						)}
 					</ContextMenu.Content>
 				</ContextMenu.Root>
 			)}

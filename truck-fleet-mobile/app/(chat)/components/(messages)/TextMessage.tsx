@@ -10,6 +10,7 @@ import * as ContextMenu from "zeego/context-menu";
 import * as Clipboard from "expo-clipboard";
 import { toast } from "sonner-native";
 import { firebase } from "@react-native-firebase/firestore";
+import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 
 export interface TextMessageProps {
 	message: Message;
@@ -48,11 +49,15 @@ const TextMessage = ({ message, userId, senderProfile }: TextMessageProps) => {
 
 	return (
 		<View className="flex flex-row-reverse items-end justify-end gap-2">
-			<ContextMenu.Root>
+			<ContextMenu.Root
+				onOpenChange={() => {
+					impactAsync(ImpactFeedbackStyle.Light);
+				}}
+			>
 				<ContextMenu.Trigger>
 					<Card
 						className={cn(
-							"p-3 max-w-[80vw]",
+							"p-3 max-w-[65vw] rounded-2xl",
 							message.sender === userId ? "bg-card" : "bg-muted",
 						)}
 					>
@@ -105,14 +110,7 @@ const TextMessage = ({ message, userId, senderProfile }: TextMessageProps) => {
 											text: t("chats.delete"),
 											style: "destructive",
 											onPress: async () => {
-												// delete the message
-												await firebase
-													.firestore()
-													.collection(`chats/${chatId}/messages`)
-													.doc(message.id)
-													.delete();
-
-												toast.success(t("chats.message_deleted"));
+												await useMessageStore.getState().deleteMessage(message);
 											},
 										},
 									],
@@ -127,7 +125,7 @@ const TextMessage = ({ message, userId, senderProfile }: TextMessageProps) => {
 									weight: "semibold",
 									scale: "large",
 								}}
-								androidIconName="progress_horizontal"
+								androidIconName="delete"
 							/>
 						</ContextMenu.Item>
 					)}

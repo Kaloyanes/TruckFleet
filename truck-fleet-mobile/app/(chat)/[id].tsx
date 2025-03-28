@@ -1,5 +1,5 @@
 import { View, ActivityIndicator, RefreshControl } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Text } from "~/components/ui/text";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,14 @@ import {
 	KeyboardStickyView,
 	useReanimatedKeyboardAnimation,
 } from "react-native-keyboard-controller";
-import Animated, { Easing, useAnimatedStyle } from "react-native-reanimated";
+import Animated, {
+	Easing,
+	useAnimatedStyle,
+	interpolate,
+	useDerivedValue,
+	withTiming,
+	withSpring,
+} from "react-native-reanimated";
 import { type Message, useMessageStore } from "~/stores/message-store";
 import { Image } from "~/components/ui/image";
 
@@ -27,6 +34,7 @@ import { firebase } from "@react-native-firebase/firestore";
 import ImageMessage from "./components/(messages)/ImageMessage";
 import FileMessage from "./components/(messages)/FileMessage";
 import AudioMessage from "./components/(messages)/AudioMessage";
+import LocationMessage from "./components/(messages)/LocationMessage";
 import { BlurView } from "expo-blur";
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
@@ -36,6 +44,7 @@ export default function ChatPage() {
 	const { id, personId } = useLocalSearchParams();
 	const headerHeight = useHeaderHeight();
 	const { height, progress } = useReanimatedKeyboardAnimation();
+	const insets = useSafeAreaInsets();
 
 	const { data: otherUser, isLoading } = useProfileDoc(personId as string);
 
@@ -55,7 +64,27 @@ export default function ChatPage() {
 		setRef,
 		statusOfMessage,
 		setStatusOfMessage,
+		inputHeight,
 	} = useMessageStore();
+
+	// Calculate dynamic header height based on input height
+	const listHeaderHeight = useDerivedValue(() => {
+		// Base height (36) + additional height based on input expansion
+		const additionalHeight = inputHeight - 48; // 48 is the default input height
+		const calculatedHeight = 36 + Math.max(0, additionalHeight) + insets.bottom;
+
+		// Use withTiming for smooth transitions
+		return withTiming(calculatedHeight, {
+			duration: 150,
+			easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+		});
+	}, [inputHeight, insets.bottom]);
+
+	// Create animated style for header component
+	const headerStyle = useAnimatedStyle(() => ({
+		height: listHeaderHeight.value + 25,
+		width: "auto",
+	}));
 
 	useEffect(() => {
 		if (flashListRef.current) setRef(flashListRef);
@@ -79,13 +108,13 @@ export default function ChatPage() {
 
 				headerTitle() {
 					return (
-						<View className="flex-row items-center justify-start gap-4 w-full ">
+						<View className="w-full flex-row items-center justify-start gap-4 ">
 							<AnimatedImage
 								sharedTransitionTag={otherUser.photoUrl}
 								source={otherUser.photoUrl}
-								className="w-10 h-10 rounded-full"
+								className="h-10 w-10 rounded-full"
 							/>
-							<Text className="text-xl font-bold">{otherUser.name}</Text>
+							<Text className="font-bold text-xl">{otherUser.name}</Text>
 						</View>
 					);
 				},
@@ -97,14 +126,14 @@ export default function ChatPage() {
 	useEffect(() => {
 		navigation.setOptions({
 			headerBackground: () => (
-				<View className="w-full h-full relative ">
+				<View className="relative h-full w-full">
 					<BlurView
-						className="w-full h-full pb-4 android:bg-background"
+						className="h-full w-full android:bg-background pb-4"
 						intensity={80}
 						tint="prominent"
 					/>
 					<MotiView
-						className={"absolute bottom-0 left-0 right-0 z-10 h-0.5 bg-white"}
+						className={"absolute right-0 bottom-0 left-0 z-10 h-0.5 bg-white"}
 						animate={{
 							width: `${statusOfMessage}%`,
 						}}
@@ -127,7 +156,7 @@ export default function ChatPage() {
 
 	if (loading || isLoading || userProfileLoading) {
 		return (
-			<View className="flex-1 justify-center items-center">
+			<View className="flex-1 items-center justify-center">
 				<ActivityIndicator size="large" color="#fff" />
 			</View>
 		);
@@ -216,6 +245,15 @@ export default function ChatPage() {
 									userId={userId as string}
 								/>
 							);
+						case "location":
+							return (
+								<LocationMessage
+									key={item.id}
+									message={item}
+									senderProfile={sendUser}
+									userId={userId as string}
+								/>
+							);
 						default:
 							return (
 								<View>
@@ -224,7 +262,16 @@ export default function ChatPage() {
 							);
 					}
 				}}
-				ListHeaderComponent={<View className="h-36 pb-safe" />}
+				ListHeaderComponent={
+					<MotiView
+						style={headerStyle}
+						transition={{
+							type: "timing",
+							duration: 400,
+							easing: Easing.inOut(Easing.poly(4)),
+						}}
+					/>
+				}
 				ItemSeparatorComponent={() => <View className="h-4" />}
 				getItemType={(item) => item.type}
 			/>

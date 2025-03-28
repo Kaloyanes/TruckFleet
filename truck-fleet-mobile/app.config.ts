@@ -22,10 +22,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     googleServicesFile: "./GoogleService-Info.plist",
     infoPlist: {
       UIBackgroundModes: ["location", "fetch", "audio"],
-      NSLocationWhenInUseUsageDescription:
-        "We need your location to track the truck position.",
-      NSLocationAlwaysAndWhenInUseUsageDescription:
-        "We need your location to track the truck position.",
+      NSLocationWhenInUseUsageDescription: {
+        en: "We need your location to track the truck position.",
+        bg: "Нуждаем се от местоположението ви за проследяване на позицията на камиона.",
+      },
+      NSLocationAlwaysAndWhenInUseUsageDescription: {
+        en: "We need your location to track the truck position.",
+        bg: "Нуждаем се от местоположението ви за проследяване на позицията на камиона.",
+      },
     },
     icon: {
       dark: "./assets/icons/ios-dark.png",
@@ -86,11 +90,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-location",
       {
-        locationAlwaysAndWhenInUsePermission:
-          "Allow $(PRODUCT_NAME) to use your location to track trucks.",
-        locationAlwaysPermission: "Allow $(PRODUCT_NAME) to use your location.",
-        locationWhenInUsePermission:
-          "Allow $(PRODUCT_NAME) to use your location.",
+        locationAlwaysAndWhenInUsePermission: {
+          en: "Allow $(PRODUCT_NAME) to use your location to track trucks.",
+          bg: "Позволете на $(PRODUCT_NAME) да използва местоположението ви за проследяване на камиона.",
+        },
+        locationAlwaysPermission: {
+          en: "Allow $(PRODUCT_NAME) to use your location.",
+          bg: "Позволете на $(PRODUCT_NAME) да използва местоположението ви.",
+        },
+        locationWhenInUsePermission: {
+          en: "Allow $(PRODUCT_NAME) to use your location.",
+          bg: "Позволете на $(PRODUCT_NAME) да използва местоположението ви.",
+        },
         isIosBackgroundLocationEnabled: true,
         isAndroidBackgroundLocationEnabled: true,
       },
@@ -110,10 +121,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-image-picker",
       {
-        photosPermission:
-          "The app accesses your photos to show your photo with the company.",
-        cameraPermission:
-          "The app accesses your camera to take a photo for your profile.",
+        photosPermission: {
+          en: "The app accesses your photos to show your photo with the company.",
+          bg: "Приложението достъпва снимките ви, за да покаже вашата снимка с компанията.",
+        },
+        cameraPermission: {
+          en: "The app accesses your camera to take a photo for your profile.",
+          bg: "Приложението достъпва камерата ви, за да направи снимка за вашия профил.",
+        },
       },
     ],
     "expo-quick-actions",
@@ -133,10 +148,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       "expo-audio",
       {
-        microphonePermission:
-          "Allow $(PRODUCT_NAME) to access your microphone.",
+        microphonePermission: {
+          en: "Allow $(PRODUCT_NAME) to access your microphone.",
+          bg: "Позволете на $(PRODUCT_NAME) да достъпва вашия микрофон.",
+        },
       },
     ],
+    "react-native-map-link",
   ],
   experiments: {
     typedRoutes: true,

@@ -9,6 +9,9 @@ import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import { useRef } from "react";
 import type { FlashList } from "@shopify/flash-list";
+import { toast } from "sonner-native";
+import { t } from "i18next";
+import { router } from "expo-router";
 
 export type Message = {
 	id: string;
@@ -33,6 +36,9 @@ interface MessageStore {
 	flashListRef: React.RefObject<FlashList<Message>> | null;
 	statusOfMessage: number;
 	isRecording: boolean;
+	inputHeight: number;
+
+	setInputHeight: (height: number) => void;
 	setStatusOfMessage: (status: number) => void;
 	setRef: (ref: React.RefObject<FlashList<Message>>) => void;
 	loadMessages: (id: string) => Promise<void>;
@@ -41,10 +47,11 @@ interface MessageStore {
 	sendMessage: () => void;
 	sendPhoto: (type: "image" | "camera") => void;
 	sendFile: () => void;
-	sendLocation: () => void;
 	sendAudio: (assetUri: string) => void;
+	sendLocation: (latitude: number, longitude: number) => void;
 	updateLastMessageToNow: () => void;
 	setIsRecording: (isRecording: boolean) => void;
+	deleteMessage: (message: Message) => Promise<void>;
 }
 
 const LIMIT_MESSAGES = 10;
@@ -59,8 +66,13 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 	isRefreshing: false,
 	flashListRef: null,
 	statusOfMessage: 0,
-
 	isRecording: false,
+	inputHeight: 48, // Default input height
+
+	setInputHeight: (height) => {
+		set({ inputHeight: height });
+	},
+
 	setIsRecording: (isRecording) => {
 		set({ isRecording: isRecording });
 	},
@@ -388,9 +400,62 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 			}
 		});
 	},
-	sendLocation: async () => {},
+	sendLocation: async (latitude: number, longitude: number) => {
+		const userId = firebase.auth().currentUser?.uid;
+
+		if (!userId) {
+			return;
+		}
+
+		const locationObject = {
+			lat: latitude,
+			lng: longitude,
+		};
+
+		const message: Omit<Message, "id"> = {
+			content: JSON.stringify(locationObject),
+			sender: userId,
+			type: "location",
+			createdAt: Timestamp.now(),
+		};
+
+		await firestore().collection(`chats/${get().chatId}/messages`).add(message);
+
+		get().updateLastMessageToNow();
+		router.back();
+	},
 	updateLastMessageToNow: async () => {
 		const chatRef = firestore().doc(`chats/${get().chatId}`);
 		await chatRef.update({ lastMessageAt: Timestamp.now() });
+	},
+	deleteMessage: async (message: Message) => {
+		try {
+			// Delete the message from Firestore
+			await firebase
+				.firestore()
+				.collection(`chats/${get().chatId}/messages`)
+				.doc(message.id)
+				.delete();
+
+			// If it's not a text message, also delete the file from storage
+			if (message.type !== "text" && message.type !== "location") {
+				try {
+					// Get reference to the file in Firebase Storage from URL
+					const storageRef = firebase.storage().refFromURL(message.content);
+
+					// Delete the file
+					await storageRef.delete();
+					console.log("File deleted from storage:", message.type);
+				} catch (storageError) {
+					console.error("Error deleting file from storage:", storageError);
+					// We still consider the deletion successful even if storage deletion fails
+				}
+			}
+
+			toast.success(t("chats.message_deleted"));
+		} catch (error) {
+			console.error("Error deleting message:", error);
+			toast.error(t("chats.delete_failed") || "Failed to delete message");
+		}
 	},
 }));

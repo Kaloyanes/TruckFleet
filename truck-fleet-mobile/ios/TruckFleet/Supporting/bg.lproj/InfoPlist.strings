@@ -52,3 +52,4 @@ feedback = "[object Object]";
 toast_join_success = "Успешно се присъединихте към фирма";
 toast_join_error = "Не може да се намери фирма с този код";
 chats = "[object Object]";
+months = "[object Object]";
