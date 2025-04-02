@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import type { Message } from "@/types/message";
 import { IconDownload, IconFile } from "@tabler/icons-react";
 import Image from "next/image";

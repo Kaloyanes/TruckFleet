@@ -1,5 +1,5 @@
 import { FormLabel } from "@/components/ui/form";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 
 function AutoFormLabel({
 	label,

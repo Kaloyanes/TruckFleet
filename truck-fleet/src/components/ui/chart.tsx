@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 
 // Format: { THEME_NAME: CSS_SELECTOR }

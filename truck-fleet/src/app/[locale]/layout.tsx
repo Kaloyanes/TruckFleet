@@ -8,6 +8,7 @@ import { Manrope, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
 import "../globals.css";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
+import localFont from "next/font/local";
 
 // const jakarta = Plus_Jakarta_Sans({
 // 	preload: true,
@@ -21,10 +22,18 @@ const manrope = Manrope({
 	weight: ["400", "500", "600", "700", "800"],
 	subsets: ["cyrillic", "latin"],
 	display: "swap",
+	variable: "--font-manrope",
+});
+
+const satoshi = localFont({
+	src: "../../fonts/Satoshi-Variable.ttf",
+	variable: "--font-satoshi",
 });
 
 const roboto_mono = Roboto_Mono({
-	subsets: ["latin"],
+	preload: true,
+	weight: ["400", "500", "600", "700"],
+	subsets: ["cyrillic", "latin"],
 	display: "swap",
 	variable: "--font-roboto-mono",
 });
@@ -87,8 +96,7 @@ export default async function RootLayout({
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body
-				className={manrope.className}
-				// className={params.locale === "en" ? poppins.className : noto.className}
+				className={`${manrope.className} ${roboto_mono.variable} ${satoshi.variable}`}
 			>
 				<MotionConfigProvider
 					props={{

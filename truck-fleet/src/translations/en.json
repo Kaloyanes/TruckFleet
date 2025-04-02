@@ -3,6 +3,11 @@
     "loading": "Loading...",
     "welcome": "Welcome to Truck Fleet"
   },
+  "hero": {
+    "title": "Seamless Fleet Management for *Dispatchers, *Drivers, and *Owners",
+    "subtitle": "Unify your dispatching, tracking, and invoicing in one powerful platform. Real-time data, automated processes, and effortless communication – all in one place.",
+    "getStarted": "Optimize Your Fleet Now"
+  },
   "General": {
     "copiedToClipboard": "Copied to clipboard",
     "close": "Close"
@@ -341,5 +346,30 @@
     "addTruck": "Add Truck",
     "truckUpdatedSuccess": "Truck updated successfully",
     "truckCreatedSuccess": "Truck created successfully"
+  },
+  "Header": {
+    "problem": "The Problem",
+    "pricing": "Pricing",
+    "features": "Features",
+    "fleet": "Fleet",
+    "analytics": "Analytics"
+  },
+  "problem": {
+    "title": "Problem",
+    "heading": "Manually |organizing your fleet is *impossible",
+    "problems": {
+      "disconnected": {
+        "title": "Disconnected Systems Slow You Down",
+        "description": "Managing orders, trucks, and drivers across multiple platforms leads to delays and inefficiencies."
+      },
+      "visibility": {
+        "title": "No Real-Time Fleet Visibility",
+        "description": "Without instant access to fuel consumption, GPS tracking, and vehicle health, you're always one step behind."
+      },
+      "manual": {
+        "title": "Manual Processes Waste Time",
+        "description": "Spreadsheets and outdated methods create errors, slow workflows, and reduce productivity."
+      }
+    }
   }
 }

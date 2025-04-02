@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from "motion/react";
 
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 
 interface WordPullUpProps {
 	words: string;

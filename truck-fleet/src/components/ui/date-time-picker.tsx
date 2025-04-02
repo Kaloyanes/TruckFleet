@@ -7,7 +7,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { IconCalendarClock } from "@tabler/icons-react";
 import { addDays, format } from "date-fns";
 import { useTranslations } from "next-intl";

@@ -24,7 +24,7 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/DropdownMenuVariants";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { useTruckStore } from "@/stores/Trucks/TrucksStore";
 
 export const TruckColumns: ColumnDef<Truck>[] = [

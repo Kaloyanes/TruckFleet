@@ -3,9 +3,17 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { auth, db } from "@/lib/Firebase";
-import { collection, doc, orderBy, query } from "firebase/firestore";
+import {
+	collection,
+	doc,
+	orderBy,
+	query,
+	limit,
+	startAfter,
+	getDocs,
+} from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
 	useCollectionData,
@@ -25,13 +33,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { IconDots, IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { ChatConverter } from "@/lib/converters/ChatConverter";
 import { MessageConverter } from "@/lib/converters/MessageConverter";
 
 export default function ChatWindow() {
 	const chatId = useParams().chatId as string;
 	const [user, userLoading] = useAuthState(auth);
+	const [messages, setMessages] = useState<Message[]>([]);
+	const [loadingMore, setLoadingMore] = useState(false);
+	const [hasMore, setHasMore] = useState(true);
+	const lastMessageRef = useRef<Message | null>(null);
+	const observerRef = useRef<IntersectionObserver | null>(null);
+	const loadingRef = useRef<HTMLDivElement>(null);
 
 	const scrollAreaRef = useRef<HTMLDivElement>(null);
 	const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -48,12 +62,76 @@ export default function ChatWindow() {
 	const { profile: participantProfile, loading: profileLoading } =
 		useProfileDoc(participantId);
 
-	const [messages, messagesLoading, messagesError] = useCollectionData(
+	// Initial messages query
+	const [initialMessages, messagesLoading, messagesError] = useCollectionData(
 		query(
 			collection(db, "chats", chatId, "messages"),
-			orderBy("createdAt"),
+			orderBy("createdAt", "desc"),
+			limit(20),
 		).withConverter(MessageConverter),
 	);
+
+	// Load more messages when scrolling to top
+	const loadMoreMessages = useCallback(async () => {
+		if (loadingMore || !hasMore || !lastMessageRef.current) return;
+
+		setLoadingMore(true);
+		try {
+			const messagesRef = collection(db, "chats", chatId, "messages");
+			const q = query(
+				messagesRef,
+				orderBy("createdAt", "desc"),
+				startAfter(lastMessageRef.current.createdAt),
+				limit(10),
+			);
+
+			const snapshot = await getDocs(q);
+			const newMessages = snapshot.docs.map((doc) => doc.data() as Message);
+
+			if (newMessages.length > 0) {
+				setMessages((prev) => [...prev, ...newMessages]);
+				lastMessageRef.current = newMessages[newMessages.length - 1];
+			} else {
+				setHasMore(false);
+			}
+		} catch (error) {
+			console.error("Error loading more messages:", error);
+		} finally {
+			setLoadingMore(false);
+		}
+	}, [chatId, loadingMore, hasMore]);
+
+	// Set up intersection observer for infinite scroll
+	useEffect(() => {
+		if (!loadingRef.current) return;
+
+		observerRef.current = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting) {
+					loadMoreMessages();
+				}
+			},
+			{ threshold: 0.1 },
+		);
+
+		observerRef.current.observe(loadingRef.current);
+
+		return () => {
+			if (observerRef.current) {
+				observerRef.current.disconnect();
+			}
+		};
+	}, [loadMoreMessages]);
+
+	// Initialize messages when initial data is loaded
+	useEffect(() => {
+		if (initialMessages) {
+			setMessages(initialMessages);
+			if (initialMessages.length > 0) {
+				lastMessageRef.current = initialMessages[initialMessages.length - 1];
+			}
+		}
+	}, [initialMessages]);
 
 	const scrollToBottom = useCallback(() => {
 		requestAnimationFrame(() => {
@@ -67,7 +145,7 @@ export default function ChatWindow() {
 	// Add effect to scroll when messages change
 	useEffect(() => {
 		scrollToBottom();
-	}, [scrollToBottom]);
+	}, [scrollToBottom, messages]);
 
 	if (userLoading || messagesLoading || chatLoading || profileLoading) {
 		return <Spinner />;
@@ -147,6 +225,11 @@ export default function ChatWindow() {
 				className="h-screen pt-20"
 			>
 				<div className="space-y-4 pb-14 px-2">
+					{hasMore && (
+						<div ref={loadingRef} className="flex justify-center py-2">
+							{loadingMore && <Spinner />}
+						</div>
+					)}
 					{messages.map((message: Message, index: number) => {
 						return (
 							<div key={message.id}>

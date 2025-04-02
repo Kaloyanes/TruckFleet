@@ -16,7 +16,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/useMobile";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { PanelLeft } from "lucide-react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";

@@ -72,7 +72,7 @@ export default function RootLayout() {
 	const { colorScheme, isDarkColorScheme } = useColorScheme();
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 	const [fontsLoaded] = useFonts({
-		Satoshi: require("~/assets/fonts/Satoshi-Variable.ttf"),
+		"Satoshi-Variable": require("~/assets/fonts/Satoshi-Variable.ttf"),
 		Manrope: require("~/assets/fonts/Manrope.ttf"),
 	});
 
@@ -126,7 +126,7 @@ export default function RootLayout() {
 		hasMounted.current = true;
 	}, []);
 
-	if (!isColorSchemeLoaded) {
+	if (!isColorSchemeLoaded || !fontsLoaded) {
 		return null;
 	}
 
@@ -146,9 +146,9 @@ export default function RootLayout() {
 		};
 
 		return (
-			<Pressable onPress={handleBackPress} className="ml-2 p-2">
+			<Pressable onPress={handleBackPress} className="-ml-2">
 				<ChevronLeft
-					size={24}
+					size={28}
 					color={colorScheme === "dark" ? "white" : "black"}
 				/>
 			</Pressable>
@@ -170,12 +170,9 @@ export default function RootLayout() {
 									const currentRouteName =
 										e.data.state.routes[e.data.state.index].name;
 
-									if (previousRouteName !== currentRouteName) {
-										// await logScreenView(getApp(), {
-										// 	screen_name: currentRouteName,
-										// 	screen_class: currentRouteName,
-										// });
-									}
+									// if (previousRouteName !== currentRouteName) {
+
+									// }
 								},
 							}}
 							screenOptions={{
@@ -269,7 +266,6 @@ export default function RootLayout() {
 										backgroundColor: "transparent",
 									},
 									title: "",
-
 									headerLargeTitle: false,
 									headerBackButtonDisplayMode: "minimal",
 									keyboardHandlingEnabled: true,
@@ -278,8 +274,13 @@ export default function RootLayout() {
 										<View className="w-full h-full relative">
 											<BlurView
 												className="w-full h-full pb-4 android:bg-background"
-												intensity={80}
-												tint="prominent"
+												intensity={Platform.OS === "ios" ? 80 : 20}
+												tint={Platform.OS === "ios" ? "prominent" : "light"}
+												experimentalBlurMethod={
+													Platform.OS === "android"
+														? "dimezisBlurView"
+														: undefined
+												}
 											/>
 										</View>
 									),

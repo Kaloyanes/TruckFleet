@@ -98,30 +98,23 @@ export default function OnBoardPage() {
 					size={52}
 					color={"white"}
 				/>
-				<Text
-					className="text-white text-4xl  "
-					style={{
-						fontFamily: "PlayfairDisplay_600SemiBold",
-					}}
-				>
-					Truck Fleet
-				</Text>
+				<Text className="font-[600] text-4xl text-white">Truck Fleet</Text>
 			</Animated.View>
 
 			<Animated.View
 				entering={FadeInUp.springify()}
-				className="absolute flex-1 flex flex-row gap-4 top-20 right-6 scale-110 z-50"
+				className="absolute top-20 right-6 z-50 flex flex-1 scale-110 flex-row gap-4"
 			>
 				<LanguageSelector />
 				<ThemeToggle />
 			</Animated.View>
 
 			<Animated.View className="flex-1">
-				<Animated.View className="absolute left-1/2 -translate-x-1/2 bottom-14 justify-center items-center">
+				<Animated.View className="-translate-x-1/2 absolute bottom-14 left-1/2 items-center justify-center">
 					<Animated.View entering={FadeInDown.springify().delay(200)}>
 						<AnimatedButton
 							style={getStartedButtonStyle}
-							className=" w-[75vw] !h-16 items-center justify-center"
+							className=" !h-16 w-[75vw] items-center justify-center"
 							onPress={() => {
 								lowerHeight.value = withTiming(height * 0.4, {
 									duration: 600,
@@ -130,12 +123,7 @@ export default function OnBoardPage() {
 								});
 							}}
 						>
-							<Text
-								className="!text-xl text-primary-foreground"
-								style={{
-									fontFamily: "PlayfairDisplay_400Regular",
-								}}
-							>
+							<Text className="!text-xl font-normal text-primary-foreground">
 								{t("get_started")}
 							</Text>
 						</AnimatedButton>
@@ -145,19 +133,13 @@ export default function OnBoardPage() {
 
 			<Animated.View
 				style={lowerStyle}
-				className="items-center bg-background overflow-hidden flex flex-col justify-evenly"
+				className="flex flex-col items-center justify-evenly overflow-hidden bg-background"
 			>
-				<View className="flex flex-row items-center justify-center w-full px-4 gap-2">
+				<View className="flex w-full flex-row items-center justify-center gap-2 px-4">
 					<Text className="text-3xl">{t("create_account")}</Text>
-					<Text
-						className="text-3xl italic"
-						style={{
-							fontFamily: "PlayfairDisplay_600SemiBold_Italic",
-						}}
-					>
-						{t("account")}
-					</Text>
+					<Text className="font-semibold text-3xl italic">{t("account")}</Text>
 				</View>
+
 				<Button
 					onPress={() => {
 						router.push("/(auth)/register");
@@ -179,7 +161,7 @@ export default function OnBoardPage() {
 						variant={"link"}
 						className="!h-16"
 					>
-						<Text className="!text-lg">{t("sign_in")}</Text>
+						<Text className="!text-lg font-bold">{t("sign_in")}</Text>
 					</Button>
 				</View>
 			</Animated.View>

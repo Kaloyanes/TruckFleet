@@ -33,7 +33,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/DropdownMenuVariants";
 import { Link, usePathname } from "@/i18n/routing";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import {
 	IconBell,
 	IconChartPie,

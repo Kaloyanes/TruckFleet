@@ -8,7 +8,10 @@ import { View } from "lucide-react-native";
 import { getApp } from "@react-native-firebase/app";
 import { MMKV } from "react-native-mmkv";
 import { useProfileStore } from "~/stores/profile-store";
-import { stopBackgroundLocationTracking } from "~/lib/BackgroundLocation";
+import {
+	stopBackgroundLocationTracking,
+	isBackgroundLocationTrackingRunning,
+} from "~/lib/BackgroundLocation";
 
 interface AuthRedirectProps {
 	children: React.ReactNode;
@@ -25,7 +28,11 @@ const AuthRedirect: React.FC<AuthRedirectProps> = ({ children }) => {
 	// Handle user state changes
 	async function authStateChange(user: any) {
 		setUser(user);
-		if (!user) {
+		if (
+			!user &&
+			!initializing &&
+			(await isBackgroundLocationTrackingRunning())
+		) {
 			await stopBackgroundLocationTracking();
 		}
 		if (initializing) setInitializing(false);

@@ -25,7 +25,7 @@ import {
 import useCompanyId from "@/hooks/useCompanyId";
 import { useInvoiceValuesStore } from "@/stores/Invoices/AddInvoiceValuesStore";
 import { motion } from "motion/react";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,

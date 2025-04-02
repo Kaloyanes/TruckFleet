@@ -29,7 +29,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/DropdownMenuVariants";
 import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import type { Order } from "@/types/orders";
 import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import {
