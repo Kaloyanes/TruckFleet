@@ -348,7 +348,7 @@
     "truckCreatedSuccess": "Truck created successfully"
   },
   "Header": {
-    "problem": "The Problem",
+    "problem": "Problem",
     "pricing": "Pricing",
     "features": "Features",
     "fleet": "Fleet",
@@ -369,6 +369,32 @@
       "manual": {
         "title": "Manual Processes Waste Time",
         "description": "Spreadsheets and outdated methods create errors, slow workflows, and reduce productivity."
+      }
+    }
+  },
+  "solution": {
+    "title": "Solution",
+    "heading": "Automate your *fleet management with *intelligent solutions",
+    "features": {
+      "dashboard": {
+        "title": "One Dashboard for Everything",
+        "description": "No more switching between platforms—manage orders, trucks, and drivers in one place."
+      },
+      "gps": {
+        "title": "Live GPS & Fuel Monitoring",
+        "description": "Track your fleet's exact location, fuel usage, and performance in real time."
+      },
+      "automation": {
+        "title": "Automated Order & Invoice Management",
+        "description": "Create, send, and track invoices automatically—no manual input needed."
+      },
+      "communication": {
+        "title": "Instant Driver & Dispatcher Communication",
+        "description": "Keep drivers, dispatchers, and managers connected with real-time messaging."
+      },
+      "maintenance": {
+        "title": "Predictive Maintenance & Alerts",
+        "description": "Get automatic notifications for maintenance needs before breakdowns happen."
       }
     }
   }

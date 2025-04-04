@@ -26,6 +26,21 @@ const itemVariants: Variants = {
 	},
 };
 
+const photoVariants: Variants = {
+	hidden: { opacity: 0, x: 150, filter: "blur(10px)" },
+	visible: {
+		opacity: 1,
+		x: 0,
+		filter: "blur(0px)",
+		transition: {
+			type: "spring",
+			mass: 0.7,
+			damping: 10,
+			stiffness: 100,
+		},
+	},
+};
+
 export default function Hero() {
 	const { resolvedTheme } = useTheme();
 	const t = useTranslations("hero");
@@ -35,7 +50,7 @@ export default function Hero() {
 		<motion.div
 			initial="hidden"
 			animate="visible"
-			transition={{ staggerChildren: 0.07, delayChildren: 0.7 }}
+			transition={{ staggerChildren: 0.07, delayChildren: 0.5 }}
 			className=""
 		>
 			<motion.div
@@ -51,19 +66,19 @@ export default function Hero() {
 					staggerChildren: 0.07,
 					delayChildren: 0.5,
 				}}
-				className="relative mt-32 h-full overflow-hidden rounded-4xl bg-foreground/[0.10] pt-20 dark:bg-foreground/[0.05]"
+				className="relative mt-32 h-[85vh] overflow-hidden rounded-4xl bg-foreground/[0.10] dark:bg-foreground/[0.05]"
 			>
 				<Particles
-					className="absolute inset-0 z-0"
-					quantity={100}
+					className="absolute inset-0 z-0 h-full w-full"
+					quantity={200}
 					ease={20}
 					staticity={20}
 					color={resolvedTheme === "dark" ? "#fff" : "#000"}
 					refresh
 				/>
-				<motion.div className="relative mx-auto flex h-full max-w-[120rem] flex-col items-center justify-center gap-10">
-					<div className="flex flex-[1.2] flex-col items-center justify-center gap-6">
-						<motion.h1 className="max-w-[85rem] text-center text-7xl leading-[1.15] tracking-tight">
+				<motion.div className="relative mx-auto flex h-full max-w-[120rem] flex-row items-center justify-between gap-10 px-24 py-32">
+					<div className="flex flex-1 flex-col items-start justify-center gap-6">
+						<motion.h1 className="max-w-[40rem] text-left text-7xl leading-[1.05] tracking-tight">
 							{text.split(" ").map((word, index) => (
 								<motion.span
 									key={index}
@@ -79,7 +94,7 @@ export default function Hero() {
 						</motion.h1>
 						<motion.p
 							variants={itemVariants}
-							className="text-center text-2xl text-muted-foreground max-w-4xl"
+							className="max-w-2xl text-left text-2xl text-muted-foreground"
 						>
 							{t("subtitle")}
 						</motion.p>
@@ -96,28 +111,32 @@ export default function Hero() {
 						</motion.div>
 					</div>
 
-					<div className="relative flex-[1]">
-						<motion.div variants={itemVariants}>
+					<div className="relative flex-[0.8]">
+						<motion.div variants={photoVariants}>
 							<Image
 								src="/images/hero.png"
 								fetchPriority="high"
 								alt="Hero Image"
 								width={1000}
 								height={1000}
-								className="rounded-xl pb-2"
+								className="h-full w-full"
+								placeholder="blur"
+								blurDataURL="/images/hero.png"
 							/>
 						</motion.div>
 						<motion.div
-							variants={itemVariants}
-							className="absolute bottom-4 right-0"
+							variants={photoVariants}
+							className="-bottom-8 absolute right-0"
 						>
 							<Image
 								src="/images/phone-hero.png"
 								fetchPriority="high"
 								alt="Hero Image"
-								width={250}
-								height={250}
+								width={200}
+								height={200}
 								className="rounded-xl"
+								placeholder="blur"
+								blurDataURL="/images/phone-hero.png"
 							/>
 						</motion.div>
 					</div>

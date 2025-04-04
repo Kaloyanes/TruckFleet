@@ -4,8 +4,8 @@ export function OptimizationText() {
 	return (
 		<div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden">
 			<VelocityScroll
-				numRows={5}
-				defaultVelocity={3}
+				numRows={10}
+				defaultVelocity={1}
 				className="font-bold text-4xl"
 			>
 				Organization Efficiency

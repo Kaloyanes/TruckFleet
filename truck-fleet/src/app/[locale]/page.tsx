@@ -11,12 +11,13 @@ import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Hero from "./components/Hero";
-import Pricing from "./components/Pricing";
+import Hero from "./components/sections/Hero";
+import Pricing from "./components/sections/Pricing";
 import Footer from "./components/Footer";
-import Problem from "./components/Problem";
-import Solution from "./components/Solution";
-import { OptimizationText } from "./components/OptimizationText";
+import Problem from "./components/sections/Problem";
+import Solution from "./components/sections/Solution";
+import { OptimizationText } from "./components/sections/OptimizationText";
+import Team from "./components/sections/Team";
 
 export default function HomePage() {
 	const t = useTranslations("Home");
@@ -24,14 +25,20 @@ export default function HomePage() {
 	return (
 		<main className="flex h-full w-full flex-col gap-20 ">
 			<Header />
-			<div className="px-6">
+
+			<div className="space-y-20 px-6">
 				<Hero />
 			</div>
+
 			<OptimizationText />
-			<div className="px-6">
+
+			<div className="space-y-20 px-6">
 				<Problem />
 				<Solution />
+				{/* <Team /> */}
 			</div>
+			<Pricing />
+
 			<Footer />
 		</main>
 	);

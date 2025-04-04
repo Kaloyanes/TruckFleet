@@ -52,19 +52,18 @@ export default function Problem() {
 			whileInView="visible"
 			viewport={{
 				once: true,
-				margin: "0px 0px 50px 0px",
+				margin: "0px 0px 100px 0px",
 				amount: 0.7,
 			}}
 			transition={{
 				staggerChildren: 0.07,
-				delayChildren: 0.7,
 			}}
 			className="flex flex-col gap-4 py-20"
 		>
 			<motion.h3
 				variants={itemVariants}
 				id="problem"
-				className="text-center font-medium text-primary text-sm uppercase tracking-wide "
+				className="scroll-mt-36 text-center font-medium text-lg text-primary uppercase tracking-wide"
 			>
 				{t("title")}
 			</motion.h3>
@@ -90,7 +89,7 @@ export default function Problem() {
 							key={problem.translationKey}
 						>
 							<div className="flex items-center gap-2">
-								<div className="rounded-full bg-primary/25 p-4 text-primary">
+								<div className="rounded-full bg-primary/15 p-4 text-primary">
 									{problem.icon}
 								</div>
 							</div>
