@@ -10,9 +10,9 @@ import type { TextMessageProps } from "./TextMessage";
 import * as ContextMenu from "zeego/context-menu";
 import * as Linking from "expo-linking";
 import { useTranslation } from "react-i18next";
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 import { Pressable } from "react-native-gesture-handler";
 import { showLocation } from "react-native-map-link";
+import { trigger } from "react-native-haptic-feedback";
 
 export default function LocationMessage({
 	message,
@@ -52,7 +52,7 @@ export default function LocationMessage({
 		<View className="flex flex-row-reverse items-end justify-end gap-2">
 			<ContextMenu.Root
 				onOpenChange={() => {
-					impactAsync(ImpactFeedbackStyle.Light);
+					trigger("impactLight");
 				}}
 			>
 				<ContextMenu.Trigger>

@@ -1,0 +1,750 @@
+name: abseil, nameSpecified: 
+body: 
+                   …
+version: 1.20240116.2
+
+name: boost, nameSpecified: 
+body: Boost Software Licen…
+version: 1.84.0
+
+name: BoringSSL-GRPC, nameSpecified: 
+body: BoringSSL is a fork …
+version: 0.0.36
+
+name: ComputableLayout, nameSpecified: 
+body: Copyright (c) 2023 D…
+version: 0.7.0
+
+name: ContextMenuAuxiliaryPreview, nameSpecified: 
+body: Copyright (c) 2023 d…
+version: 0.5.2
+
+name: DGSwiftUtilities, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 0.46.3
+
+name: DoubleConversion, nameSpecified: 
+body: Copyright 2006-2011,…
+version: 1.1.6
+
+name: fast_float, nameSpecified: 
+body:                     …
+version: 6.1.4
+
+name: Firebase, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseAppCheckInterop, nameSpecified: 
+body: 
+                   …
+version: 11.9.0
+
+name: FirebaseAuth, nameSpecified: 
+body: 
+                   …
+version: 11.8.1
+
+name: FirebaseAuthInterop, nameSpecified: 
+body: 
+                   …
+version: 11.9.0
+
+name: FirebaseCore, nameSpecified: 
+body: 
+                   …
+version: 11.8.1
+
+name: FirebaseCoreExtension, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseCoreInternal, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseCrashlytics, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseFirestore, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseFirestoreInternal, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseInstallations, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseRemoteConfigInterop, nameSpecified: 
+body: 
+                   …
+version: 11.9.0
+
+name: FirebaseSessions, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: FirebaseSharedSwift, nameSpecified: 
+body: 
+                   …
+version: 11.9.0
+
+name: FirebaseStorage, nameSpecified: 
+body: 
+                   …
+version: 11.8.0
+
+name: fmt, nameSpecified: 
+body: Copyright (c) 2012 -…
+version: 11.0.2
+
+name: glog, nameSpecified: 
+body: Copyright (c) 2008, …
+version: 0.3.5
+
+name: Google-Maps-iOS-Utils, nameSpecified: 
+body: Apache License
+Versi…
+version: 4.2.2
+
+name: GoogleDataTransport, nameSpecified: 
+body: 
+                   …
+version: 10.1.0
+
+name: GoogleMaps, nameSpecified: 
+body: Copyright 2023 Googl…
+version: 7.4.0
+
+name: GoogleUtilities, nameSpecified: 
+body: 
+                   …
+version: 8.0.2
+
+name: gRPC-C++, nameSpecified: 
+body: 
+                   …
+version: 
+
+name: gRPC-Core, nameSpecified: 
+body: 
+                   …
+version: 1.65.5
+
+name: GTMSessionFetcher, nameSpecified: 
+body: 
+                   …
+version: 4.4.0
+
+name: hermes-engine, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 0.77.1
+
+name: ImageViewer.swift, nameSpecified: 
+body: Copyright (c) 2013 M…
+version: 3.3.8
+
+name: leveldb-library, nameSpecified: 
+body: Copyright (c) 2011 T…
+version: 1.22.6
+
+name: libavif, nameSpecified: 
+body: Copyright 2019 Joe D…
+version: 0.11.1
+
+name: LicensePlist, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 3.27.1
+
+name: nanopb, nameSpecified: 
+body: Copyright (c) 2011 P…
+version: 3.30910.0
+
+name: PromisesObjC, nameSpecified: 
+body: 
+                   …
+version: 2.4.0
+
+name: PromisesSwift, nameSpecified: 
+body: 
+                   …
+version: 2.4.0
+
+name: RCT-Folly, nameSpecified: 
+body: 
+                   …
+version: 2024.11.18.00
+
+name: React, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 0.77.1
+
+name: React-Core, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 0.77.1
+
+name: react-native-google-maps, nameSpecified: 
+body: The MIT License (MIT…
+version: 1.18.0
+
+name: react-native-ios-context-menu, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 3.1.0
+
+name: react-native-ios-utilities, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 5.1.2
+
+name: react-native-keyboard-controller, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 1.16.7
+
+name: react-native-maps, nameSpecified: 
+body: The MIT License (MIT…
+version: 1.18.0
+
+name: react-native-menu, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 1.2.2
+
+name: react-native-safe-area-context, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 5.1.0
+
+name: react-native-skia, nameSpecified: 
+body: Copyright 2021-prese…
+version: 1.5.0
+
+name: react-native-webview, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 13.13.4
+
+name: ReactNativeLegal, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 1.1.1
+
+name: RecaptchaInterop, nameSpecified: 
+body: 
+                   …
+version: 100.0.0
+
+name: RNCAsyncStorage, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 1.24.0
+
+name: RNFBApp, nameSpecified: 
+body: Apache-2.0 License
+-…
+version: 21.12.0
+
+name: RNFBAuth, nameSpecified: 
+body: Apache-2.0 License
+-…
+version: 21.12.0
+
+name: RNFBCrashlytics, nameSpecified: 
+body: Apache-2.0 License
+-…
+version: 21.12.0
+
+name: RNFBFirestore, nameSpecified: 
+body: Apache-2.0 License
+-…
+version: 21.12.0
+
+name: RNFBStorage, nameSpecified: 
+body: Apache-2.0 License
+-…
+version: 21.12.0
+
+name: RNFlashList, nameSpecified: 
+body: Copyright 2022-prese…
+version: 1.7.3
+
+name: RNGestureHandler, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.22.1
+
+name: RNImageCropPicker, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 0.42.0
+
+name: RNLiveMarkdown, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 0.1.256
+
+name: RNReactNativeHapticFeedback, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.3.3
+
+name: RNReanimated, nameSpecified: 
+body: The MIT License (MIT…
+version: 3.16.7
+
+name: RNScreens, nameSpecified: 
+body: The MIT License (MIT…
+version: 4.8.0
+
+name: RNSVG, nameSpecified: 
+body: The MIT License (MIT…
+version: 15.8.0
+
+name: SDWebImage, nameSpecified: 
+body: Copyright (c) 2009-2…
+version: 5.19.7
+
+name: SDWebImageAVIFCoder, nameSpecified: 
+body: Copyright (c) 2019 l…
+version: 0.11.0
+
+name: SDWebImageSVGCoder, nameSpecified: 
+body: Copyright (c) 2018 l…
+version: 1.7.0
+
+name: SocketRocket, nameSpecified: 
+body: BSD License
+
+For Soc…
+version: 0.7.1
+
+name: TOCropViewController, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.7.4
+
+name: @bacons_apple-targets, nameSpecified: @bacons/apple-targets, version: 0.2.1
+body: MIT License
+
+Copyrig…
+
+name: @bottom-tabs_react-navigation, nameSpecified: @bottom-tabs/react-navigation, version: 0.8.9
+body: MIT…
+
+name: @expensify_react-native-live-markdown, nameSpecified: @expensify/react-native-live-markdown, version: 0.1.256
+body: MIT License
+
+Copyrig…
+
+name: @expo-google-fonts_playfair-display, nameSpecified: @expo-google-fonts/playfair-display, version: 0.2.3
+body: MIT…
+
+name: @hookform_resolvers, nameSpecified: @hookform/resolvers, version: 3.10.0
+body: MIT License
+
+Copyrig…
+
+name: @legendapp_list, nameSpecified: @legendapp/list, version: 1.0.0-beta.21
+body: MIT License
+
+Copyrig…
+
+name: @nandorojo_galeria, nameSpecified: @nandorojo/galeria, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @react-native-async-storage_async-storage, nameSpecified: @react-native-async-storage/async-storage, version: 1.24.0
+body: MIT License
+
+Copyrig…
+
+name: @react-native-community_slider, nameSpecified: @react-native-community/slider, version: 4.5.5
+body: MIT…
+
+name: @react-native-firebase_app, nameSpecified: @react-native-firebase/app, version: 21.12.0
+body: Apache-2.0 License
+-…
+
+name: @react-native-firebase_auth, nameSpecified: @react-native-firebase/auth, version: 21.12.0
+body: Apache-2.0 License
+-…
+
+name: @react-native-firebase_crashlytics, nameSpecified: @react-native-firebase/crashlytics, version: 21.12.0
+body: Apache-2.0 License
+-…
+
+name: @react-native-firebase_firestore, nameSpecified: @react-native-firebase/firestore, version: 21.12.0
+body: Apache-2.0 License
+-…
+
+name: @react-native-firebase_storage, nameSpecified: @react-native-firebase/storage, version: 21.12.0
+body: Apache-2.0 License
+-…
+
+name: @react-native-menu_menu, nameSpecified: @react-native-menu/menu, version: 1.2.2
+body: MIT License
+
+Copyrig…
+
+name: @react-navigation_native, nameSpecified: @react-navigation/native, version: 7.0.15
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_avatar, nameSpecified: @rn-primitives/avatar, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_dialog, nameSpecified: @rn-primitives/dialog, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_dropdown-menu, nameSpecified: @rn-primitives/dropdown-menu, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_portal, nameSpecified: @rn-primitives/portal, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_progress, nameSpecified: @rn-primitives/progress, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_slot, nameSpecified: @rn-primitives/slot, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_toggle, nameSpecified: @rn-primitives/toggle, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_toggle-group, nameSpecified: @rn-primitives/toggle-group, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_tooltip, nameSpecified: @rn-primitives/tooltip, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @rn-primitives_types, nameSpecified: @rn-primitives/types, version: 1.1.0
+body: MIT License
+
+Copyrig…
+
+name: @shopify_flash-list, nameSpecified: @shopify/flash-list, version: 1.7.3
+body: Copyright 2022-prese…
+
+name: @shopify_react-native-skia, nameSpecified: @shopify/react-native-skia, version: 1.5.0
+body: Copyright 2021-prese…
+
+name: @tabler_icons-react-native, nameSpecified: @tabler/icons-react-native, version: 3.31.0
+body: MIT License
+
+Copyrig…
+
+name: class-variance-authority, nameSpecified: , version: 0.7.1
+body:                     …
+
+name: clsx, nameSpecified: , version: 2.1.1
+body: MIT License
+
+Copyrig…
+
+name: date-fns, nameSpecified: , version: 4.1.0
+body: MIT License
+
+Copyrig…
+
+name: expensify-common, nameSpecified: , version: 2.0.127
+body: MIT License
+
+Copyrig…
+
+name: expo, nameSpecified: , version: 52.0.39
+body: MIT…
+
+name: expo-audio, nameSpecified: , version: 0.3.5
+body: MIT…
+
+name: expo-blur, nameSpecified: , version: 14.0.3
+body: MIT…
+
+name: expo-build-properties, nameSpecified: , version: 0.13.2
+body: MIT…
+
+name: expo-clipboard, nameSpecified: , version: 7.0.1
+body: MIT…
+
+name: expo-document-picker, nameSpecified: , version: 13.0.3
+body: MIT…
+
+name: expo-file-system, nameSpecified: , version: 18.0.11
+body: MIT…
+
+name: expo-font, nameSpecified: , version: 13.0.4
+body: MIT…
+
+name: expo-haptics, nameSpecified: , version: 14.0.1
+body: MIT…
+
+name: expo-image, nameSpecified: , version: 2.0.6
+body: MIT…
+
+name: expo-image-picker, nameSpecified: , version: 16.0.6
+body: MIT…
+
+name: expo-linear-gradient, nameSpecified: , version: 14.0.2
+body: MIT…
+
+name: expo-linking, nameSpecified: , version: 7.0.5
+body: MIT…
+
+name: expo-localization, nameSpecified: , version: 16.0.1
+body: MIT…
+
+name: expo-location, nameSpecified: , version: 18.0.8
+body: MIT…
+
+name: expo-media-library, nameSpecified: , version: 17.0.6
+body: MIT…
+
+name: expo-modules-autolinking, nameSpecified: , version: 2.0.8
+body: MIT…
+
+name: expo-navigation-bar, nameSpecified: , version: 4.0.8
+body: MIT…
+
+name: expo-quick-actions, nameSpecified: , version: 4.0.2
+body: MIT License
+
+Copyrig…
+
+name: expo-router, nameSpecified: , version: 4.0.18
+body: MIT…
+
+name: expo-splash-screen, nameSpecified: , version: 0.29.22
+body: MIT…
+
+name: expo-status-bar, nameSpecified: , version: 2.0.1
+body: MIT…
+
+name: expo-system-ui, nameSpecified: , version: 4.0.8
+body: MIT…
+
+name: expo-task-manager, nameSpecified: , version: 12.0.5
+body: MIT…
+
+name: expo-video, nameSpecified: , version: 2.0.6
+body: MIT…
+
+name: expo-video-thumbnails, nameSpecified: , version: 9.0.3
+body: MIT…
+
+name: html-entities, nameSpecified: , version: 2.5.3
+body: Copyright (c) 2021 D…
+
+name: i18n-js, nameSpecified: , version: 4.5.1
+body: # The MIT License (M…
+
+name: i18next, nameSpecified: , version: 24.2.3
+body: The MIT License (MIT…
+
+name: lucide-react-native, nameSpecified: , version: 0.378.0
+body: ISC License
+
+Copyrig…
+
+name: moti, nameSpecified: , version: 0.30.0
+body: MIT…
+
+name: nativewind, nameSpecified: , version: 4.1.23
+body: MIT License
+
+Copyrig…
+
+name: react, nameSpecified: , version: 18.3.1
+body: MIT License
+
+Copyrig…
+
+name: react-dom, nameSpecified: , version: 18.3.1
+body: MIT License
+
+Copyrig…
+
+name: react-hook-form, nameSpecified: , version: 7.54.2
+body: MIT License
+
+Copyrig…
+
+name: react-i18next, nameSpecified: , version: 15.4.1
+body: The MIT License (MIT…
+
+name: react-native, nameSpecified: , version: 0.77.1
+body: MIT License
+
+Copyrig…
+
+name: react-native-awesome-gallery, nameSpecified: , version: 0.4.3
+body: MIT License
+
+Copyrig…
+
+name: react-native-gesture-handler, nameSpecified: , version: 2.22.1
+body: The MIT License (MIT…
+
+name: react-native-image-crop-picker, nameSpecified: , version: 0.42.0
+body: MIT License
+
+Copyrig…
+
+name: react-native-ios-context-menu, nameSpecified: , version: 3.1.0
+body: MIT License
+
+Copyrig…
+
+name: react-native-ios-utilities, nameSpecified: , version: 5.1.2
+body: MIT License
+
+Copyrig…
+
+name: react-native-keyboard-controller, nameSpecified: , version: 1.16.7
+body: MIT License
+
+Copyrig…
+
+name: react-native-legal, nameSpecified: , version: 1.1.1
+body: MIT License
+
+Copyrig…
+
+name: react-native-map-link, nameSpecified: , version: 3.8.0
+body: MIT License
+
+Copyrig…
+
+name: react-native-maps, nameSpecified: , version: 1.18.0
+body: The MIT License (MIT…
+
+name: react-native-maps-directions, nameSpecified: , version: 1.9.0
+body: Copyright (c) 2017 B…
+
+name: react-native-markdown-display, nameSpecified: , version: 7.0.2
+body: MIT License
+
+Copyrig…
+
+name: react-native-mmkv, nameSpecified: , version: 3.2.0
+body: (MIT AND BSD-3-Claus…
+
+name: react-native-reanimated, nameSpecified: , version: 3.16.7
+body: The MIT License (MIT…
+
+name: react-native-safe-area-context, nameSpecified: , version: 5.1.0
+body: MIT License
+
+Copyrig…
+
+name: react-native-screens, nameSpecified: , version: 4.8.0
+body: The MIT License (MIT…
+
+name: react-native-skia, nameSpecified: , version: 0.0.1
+body: MIT…
+
+name: react-native-svg, nameSpecified: , version: 15.8.0
+body: The MIT License (MIT…
+
+name: react-native-web, nameSpecified: , version: 0.19.13
+body: MIT License
+
+Copyrig…
+
+name: react-native-webview, nameSpecified: , version: 13.13.4
+body: MIT License
+
+Copyrig…
+
+name: sonner-native, nameSpecified: , version: 0.17.0
+body: MIT License
+
+Copyrig…
+
+name: tailwind-merge, nameSpecified: , version: 2.6.0
+body: MIT License
+
+Copyrig…
+
+name: tailwindcss, nameSpecified: , version: 3.4.17
+body: MIT License
+
+Copyrig…
+
+name: tailwindcss-animate, nameSpecified: , version: 1.0.7
+body: MIT License
+
+Copyrig…
+
+name: victory-native, nameSpecified: , version: 41.16.1
+body: MIT…
+
+name: zeego, nameSpecified: , version: 3.0.6
+body: MIT License
+
+Copyrig…
+
+name: zod, nameSpecified: , version: 3.24.2
+body: MIT License
+
+Copyrig…
+
+name: zustand, nameSpecified: , version: 4.5.6
+body: MIT License
+
+Copyrig…
+
+add-version-numbers: false
+
+LicensePlist Version: 3.27.1

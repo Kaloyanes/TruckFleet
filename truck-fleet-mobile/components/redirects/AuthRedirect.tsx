@@ -11,7 +11,7 @@ import { useProfileStore } from "~/stores/profile-store";
 import {
 	stopBackgroundLocationTracking,
 	isBackgroundLocationTrackingRunning,
-} from "~/lib/BackgroundLocation";
+} from "~/services/background-location-service";
 
 interface AuthRedirectProps {
 	children: React.ReactNode;

@@ -1,7 +1,10 @@
 import { View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Text } from "../ui/text";
-import { Card, CardHeader } from "../ui/card";
+import { Card, CardFooter, CardHeader } from "../ui/card";
+import { Button } from "../ui/button";
+import { router } from "expo-router";
+import { trigger } from "react-native-haptic-feedback";
 
 export default function CurrentOrder() {
 	const [order, setOrder] = useState(null);
@@ -18,6 +21,17 @@ export default function CurrentOrder() {
 				<CardHeader>
 					<Text className="text-xl">Current Order</Text>
 				</CardHeader>
+				<CardFooter>
+					<Button
+						variant={"link"}
+						className="!p-0"
+						onPress={() => {
+							router.push("/(tabs)/orders/");
+						}}
+					>
+						<Text>See All Orders</Text>
+					</Button>
+				</CardFooter>
 			</Card>
 		</View>
 	);

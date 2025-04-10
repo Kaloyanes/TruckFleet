@@ -21,7 +21,7 @@ import type { Message } from "~/stores/message-store";
 import type { Profile } from "~/models/profile";
 import { useMessageStore } from "~/stores/message-store";
 import { useTranslation } from "react-i18next";
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
+import { trigger } from "react-native-haptic-feedback";
 
 export default function FileMessage({
 	message,
@@ -73,7 +73,7 @@ export default function FileMessage({
 			{message.fileName && (
 				<ContextMenu.Root
 					onOpenChange={() => {
-						impactAsync(ImpactFeedbackStyle.Light);
+						trigger("impactLight");
 					}}
 				>
 					<ContextMenu.Trigger asChild>

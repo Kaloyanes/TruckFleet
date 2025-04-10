@@ -10,7 +10,6 @@ import * as ContextMenu from "zeego/context-menu";
 import * as Clipboard from "expo-clipboard";
 import { toast } from "sonner-native";
 import { firebase } from "@react-native-firebase/firestore";
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 
 export interface TextMessageProps {
 	message: Message;
@@ -51,7 +50,7 @@ const TextMessage = ({ message, userId, senderProfile }: TextMessageProps) => {
 		<View className="flex flex-row-reverse items-end justify-end gap-2">
 			<ContextMenu.Root
 				onOpenChange={() => {
-					impactAsync(ImpactFeedbackStyle.Light);
+					trigger("impactLight");
 				}}
 			>
 				<ContextMenu.Trigger>

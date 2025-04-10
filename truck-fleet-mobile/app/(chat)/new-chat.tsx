@@ -5,7 +5,6 @@ import { IconCamera, IconPhoto } from "@tabler/icons-react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useRegisterStore } from "~/stores/register-store";
 import { useColorScheme } from "~/lib/useColorScheme";
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { LegendList } from "@legendapp/list";

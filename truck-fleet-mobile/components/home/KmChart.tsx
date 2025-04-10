@@ -26,6 +26,7 @@ import Animated, {
 import { useTranslation } from "react-i18next";
 Animated.addWhitelistedNativeProps({ text: true });
 import * as Haptics from "expo-haptics";
+import { trigger } from "react-native-haptic-feedback";
 
 const mmkv = new MMKV({
 	id: "kaloyanes.km",
@@ -221,7 +222,7 @@ export default function KmChart() {
 					const newValue = value ?? DEFAULT_LAST_DAYS;
 					setLastDays(Number(newValue));
 					mmkv.set(LAST_DAYS_KEY, newValue);
-					Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+					trigger("impactLight");
 				}}
 				className="flex-row justify-evenly gap-3 px-5"
 			>

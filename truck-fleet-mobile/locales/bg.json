@@ -49,6 +49,11 @@
   "phone_too_short": "Телефонният номер е твърде кратък",
   "phone_too_long": "Телефонният номер е твърде дълъг",
   "map": "Карта",
+  "new_document": "Нов документ",
+  "document_name": "Име на документа",
+  "document_name_required": "Името на документа е задължително",
+  "document_selected": "Документ избран",
+  "create_document": "Създай документ",
   "feedback": {
     "name": "Вашето име",
     "feedback": "Вашият отзив",

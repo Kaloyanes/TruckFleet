@@ -155,6 +155,21 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     "react-native-map-link",
+    [
+      "expo-media-library",
+      {
+        photosPermission: {
+          en: "Allow $(PRODUCT_NAME) to access your photos.",
+          bg: "Позволете на $(PRODUCT_NAME) да достъпва вашите снимки.",
+        },
+        savePhotosPermission: {
+          en: "Allow $(PRODUCT_NAME) to save photos.",
+          bg: "Позволете на $(PRODUCT_NAME) да запазва вашите снимки.",
+        },
+        isAccessMediaLocationEnabled: true,
+      },
+    ],
+    "react-native-legal",
   ],
   experiments: {
     typedRoutes: true,

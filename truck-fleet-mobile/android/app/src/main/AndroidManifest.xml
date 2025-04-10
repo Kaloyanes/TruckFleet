@@ -36,6 +36,7 @@
         <data android:scheme="com.kaloyanes.truck_fleet_mobile"/>
       </intent-filter>
     </activity>
+    <activity android:name="com.reactnativelegal.ReactNativeLegalActivity" android:exported="false" android:launchMode="singleTask"/>
     <uses-library android:name="org.apache.http.legacy" android:required="false"/>
   </application>
 </manifest>

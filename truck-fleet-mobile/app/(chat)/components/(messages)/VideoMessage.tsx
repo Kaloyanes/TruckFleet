@@ -13,7 +13,6 @@ import type { TextMessageProps } from "./TextMessage";
 import { setStatusBarHidden, StatusBar } from "expo-status-bar";
 import * as ContextMenu from "zeego/context-menu";
 import { useMessageStore } from "~/stores/message-store";
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 
 cssInterop(VideoView, { className: "style" });
 
@@ -33,7 +32,7 @@ export default function VideoMessage({
 		<View className="flex flex-row-reverse items-end justify-end gap-2">
 			<ContextMenu.Root
 				onOpenChange={() => {
-					impactAsync(ImpactFeedbackStyle.Light);
+					trigger("impactLight");
 				}}
 			>
 				<ContextMenu.Trigger>

@@ -7,7 +7,7 @@ import React from "react";
 import { Text } from "~/components/ui/text";
 import { Button } from "~/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { useBackgroundLocation } from "~/lib/BackgroundLocation";
+import { useBackgroundLocation } from "~/services/background-location-service";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BodyScrollView } from "~/components/ui/body-scroll-view";
@@ -54,23 +54,15 @@ export default function Home() {
 
 	return (
 		<View className="flex-1 bg-background">
-			<BlurView
-				intensity={15}
-				className="absolute inset-0 z-10 overflow-hidden bg-background/5 android:bg-background"
-				style={{ height: top + 10 }}
-			/>
 			<LinearGradient
-				colors={[
-					isDarkColorScheme ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
-					"transparent",
-				]}
+				colors={["rgba(0,0,0,0.8)", "transparent"]}
 				start={{
 					x: 0,
 					y: 0,
 				}}
 				end={{
 					x: 0,
-					y: 0.5,
+					y: 0.9,
 				}}
 				style={{
 					position: "absolute",
@@ -78,6 +70,7 @@ export default function Home() {
 					right: 0,
 					top: 0,
 					height: 100,
+					zIndex: 100,
 				}}
 			/>
 			<BodyScrollView

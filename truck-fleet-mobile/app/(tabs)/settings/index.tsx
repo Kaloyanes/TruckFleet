@@ -5,6 +5,7 @@ import LanguageSelector from "~/components/LanguageSelector";
 import { Button } from "~/components/ui/button";
 import auth from "@react-native-firebase/auth";
 import { useRouter } from "expo-router";
+import { ReactNativeLegal } from "react-native-legal";
 
 export default function SettingsPage() {
 	const router = useRouter();
@@ -20,6 +21,13 @@ export default function SettingsPage() {
 				}}
 			>
 				<Text>Sign Out</Text>
+			</Button>
+			<Button
+				onPress={() => {
+					ReactNativeLegal.launchLicenseListScreen("Licenses");
+				}}
+			>
+				<Text>Licenses</Text>
 			</Button>
 		</View>
 	);

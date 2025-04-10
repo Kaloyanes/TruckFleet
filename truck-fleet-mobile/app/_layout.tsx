@@ -22,7 +22,6 @@ import { Progress } from "~/components/ui/progress";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 // import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
@@ -37,6 +36,7 @@ import * as QuickActions from "expo-quick-actions";
 import { useQuickActionRouting } from "expo-quick-actions/router";
 import { enableFreeze } from "react-native-screens";
 import { Text } from "~/components/ui/text";
+import { trigger } from "react-native-haptic-feedback";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -136,7 +136,7 @@ export default function RootLayout() {
 			useRegisterStore();
 
 		const handleBackPress = () => {
-			impactAsync(ImpactFeedbackStyle.Light);
+			trigger("impactLight");
 			if (currentIndex > 0) {
 				setCurrentIndex(currentIndex - 1);
 				setButtonDisabled(false);

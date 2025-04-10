@@ -9,7 +9,7 @@ import { toast } from "sonner-native";
 import { firebase } from "@react-native-firebase/firestore";
 import { useMessageStore } from "~/stores/message-store";
 import { useTranslation } from "react-i18next";
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
+import { trigger } from "react-native-haptic-feedback";
 
 export default function ImageMessage({
 	message,
@@ -23,7 +23,7 @@ export default function ImageMessage({
 		<View className="flex flex-row-reverse items-end justify-end gap-2">
 			<ContextMenu.Root
 				onOpenChange={() => {
-					impactAsync(ImpactFeedbackStyle.Light);
+					trigger("impactLight");
 				}}
 			>
 				<ContextMenu.Trigger asChild>

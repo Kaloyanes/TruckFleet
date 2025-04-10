@@ -1,43 +1,42 @@
 import { View } from "react-native";
-import React, { useEffect } from "react";
-import { Button } from "~/components/ui/button";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { IconCamera, IconPlus } from "@tabler/icons-react-native";
-import { MotiView, useAnimationState, useDynamicAnimation } from "moti";
+import React from "react";
+import { IconCamera, IconFilePlus } from "@tabler/icons-react-native";
 import { Text } from "~/components/ui/text";
 import { useColorScheme } from "~/lib/useColorScheme";
-import { usePathname } from "expo-router";
-import { Easing } from "react-native-reanimated";
 import FabButton from "~/components/FabButton";
+import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
+import { useDocumentStore } from "~/stores/document-store";
 
 export default function DocumentsPage() {
 	const { isDarkColorScheme } = useColorScheme();
+	const { t } = useTranslation();
+	const { documents } = useDocumentStore();
 
 	return (
 		<View className="flex-1 items-center justify-center relative">
-			<Text>DocumentsPage</Text>
+			{documents.length > 0 ? (
+				<View className="flex-1 items-center justify-center">
+					{documents.map((document) => (
+						<View key={document.id}>
+							<Text>{document.name}</Text>
+						</View>
+					))}
+				</View>
+			) : (
+				<View className="flex-1 items-center justify-center">
+					<Text>No documents found</Text>
+				</View>
+			)}
 
-			{/* <MotiView
-				className="absolute"
-				state={states}
-				style={{
-					bottom: bottomBar + 20,
-					right: 20,
-				}}
-				transition={{
-					type: "spring",
-				}}
-			>
-				<Button size={"icon"} className="!rounded-2xl">
-					<IconPlus size={28} color={isDarkColorScheme ? "#000" : "#fff"} />
-				</Button>
-			</MotiView> */}
 			<FabButton
 				path="documents"
 				icon={() => (
-					<IconCamera size={28} color={isDarkColorScheme ? "#000" : "#fff"} />
+					<IconFilePlus size={28} color={isDarkColorScheme ? "#000" : "#fff"} />
 				)}
-				onPress={() => {}}
+				onPress={() => {
+					router.push("/(tabs)/documents/new-document");
+				}}
 			/>
 		</View>
 	);

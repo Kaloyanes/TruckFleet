@@ -15,6 +15,7 @@
 		462711C7AF304167A5FC45E0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78650727A92444908B36375D /* InfoPlist.strings */; };
 		522E1973F56946998B5BCD1D /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE89A9241F64EB39349DC72 /* noop-file.swift */; };
 		7108D89399894F768DF60FD2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CCEAB824A7640A9812AC2FB /* InfoPlist.strings */; };
+		7660CD0B2ACD4BF2B9DEBA0E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FC4A8D4058EC4D9AA92474CB /* Settings.bundle */; };
 		79520EAD350647A0A028DAE9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4A4929FFD92A4BF68384603B /* GoogleService-Info.plist */; };
 		859DBE2B9756632B74D8CE74 /* Pods_TruckFleet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B31816E52A3434AC360275AD /* Pods_TruckFleet.framework */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
@@ -41,6 +42,7 @@
 		CBE89A9241F64EB39349DC72 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "TruckFleet/noop-file.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-TruckFleet/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		FC4A8D4058EC4D9AA92474CB /* Settings.bundle */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				CBE89A9241F64EB39349DC72 /* noop-file.swift */,
 				4ACBCB9256E64D8685E397B6 /* TruckFleet-Bridging-Header.h */,
 				AD3DFCF612FAC9D276AE97C0 /* PrivacyInfo.xcprivacy */,
+				FC4A8D4058EC4D9AA92474CB /* Settings.bundle */,
 			);
 			name = TruckFleet;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TruckFleet" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				530BB76505BC4DEC902AF28E /* Generate licenses with LicensePlist */,
 				F22F6F956B100099B4A90855 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -234,6 +238,7 @@
 				462711C7AF304167A5FC45E0 /* InfoPlist.strings in Resources */,
 				79520EAD350647A0A028DAE9 /* GoogleService-Info.plist in Resources */,
 				150007CA1A0300AFADC4E922 /* PrivacyInfo.xcprivacy in Resources */,
+				7660CD0B2ACD4BF2B9DEBA0E /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +282,20 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		530BB76505BC4DEC902AF28E /* Generate licenses with LicensePlist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate licenses with LicensePlist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/LicensePlist/license-plist --output-path ./Settings.bundle";
+		};
 		721CFFE75162A2702318CE8D /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -303,6 +322,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXTaskManager/ExpoTaskManager_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoLocalization/ExpoLocalization_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoMediaLibrary/ExpoMediaLibrary_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoSystemUI/ExpoSystemUI_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseAuth/FirebaseAuth_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore_Privacy.bundle",
@@ -346,6 +366,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoTaskManager_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoLocalization_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoMediaLibrary_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoSystemUI_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuth_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCore_Privacy.bundle",

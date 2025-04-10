@@ -177,3 +177,9 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.mikepenz.aboutlibraries.plugin'
+
+aboutLibraries {
+    configPath = "config"
+    prettyPrint = true
+}
