@@ -7,16 +7,26 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { IconEye, IconEyeOff, IconMail } from "@tabler/icons-react-native";
+import {
+	IconEye,
+	IconEyeOff,
+	IconMail,
+	IconMoodSmile,
+} from "@tabler/icons-react-native";
 import { Lock } from "lucide-react-native";
-import { MotiScrollView, MotiView, ScrollView } from "moti";
-import { FadeInDown, useDerivedValue } from "react-native-reanimated";
+import { AnimatePresence, MotiScrollView, MotiView, ScrollView } from "moti";
+import {
+	FadeInDown,
+	LinearTransition,
+	useDerivedValue,
+} from "react-native-reanimated";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { BodyScrollView } from "~/components/ui/body-scroll-view";
 import ForgotPasswordDialog from "./forgot-password";
 import auth from "@react-native-firebase/auth";
+import { useColorScheme } from "~/lib/useColorScheme";
 
 export default function LoginPage() {
 	const { t } = useTranslation();
@@ -65,10 +75,12 @@ export default function LoginPage() {
 			console.error(error);
 		}
 	};
+	const { isDarkColorScheme } = useColorScheme();
 
 	return (
 		<View className="flex-1">
 			<MotiScrollView
+				layout={LinearTransition.springify().damping(10).stiffness(100)}
 				animate={useDerivedValue(() => ({
 					translateY: keyboardHeight.value * 0.4,
 				}))}
@@ -78,7 +90,14 @@ export default function LoginPage() {
 				contentContainerClassName="flex-1 justify-center items-center gap-4"
 				className=" flex-1 px-5 my-3 flex-col gap-4"
 			>
-				<Text className="text-6xl text-center">{t("welcome_back")}</Text>
+				<View className="flex w-full flex-row items-center justify-between ">
+					<Text className="text-5xl flex-1">Login To Your Account</Text>
+					<IconMoodSmile
+						size={64}
+						style={{ flex: 1 }}
+						color={isDarkColorScheme ? "#fff" : "#000"}
+					/>
+				</View>
 
 				<Controller
 					control={control}
@@ -96,11 +115,28 @@ export default function LoginPage() {
 								autoCapitalize="none"
 								icon={<IconMail size={20} color="#71717a" />}
 							/>
-							{errors.email && (
-								<Text className="text-red-500 text-sm px-1 mt-1">
-									{errors.email.message}
-								</Text>
-							)}
+							<AnimatePresence presenceAffectsLayout>
+								{errors.email && (
+									<MotiView
+										from={{
+											height: 0,
+											opacity: 0,
+										}}
+										animate={{
+											height: 15,
+											opacity: 1,
+										}}
+										exit={{
+											opacity: 0,
+											height: 0,
+										}}
+									>
+										<Text className="text-red-500 text-sm px-1 mt-1">
+											{errors.email.message}
+										</Text>
+									</MotiView>
+								)}
+							</AnimatePresence>
 						</View>
 					)}
 				/>
@@ -140,7 +176,11 @@ export default function LoginPage() {
 						</View>
 					)}
 				/>
-				<ForgotPasswordDialog />
+				<Link href="/(auth)/forgot-password" asChild>
+					<Button variant="link" className="self-end px-0">
+						<Text className="text-primary">{t("forgot_password")}</Text>
+					</Button>
+				</Link>
 			</MotiScrollView>
 
 			<MotiView

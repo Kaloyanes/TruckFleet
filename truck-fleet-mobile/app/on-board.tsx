@@ -1,7 +1,7 @@
 import { IconArrowLeft, IconPackages } from "@tabler/icons-react-native";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { useWindowDimensions, View } from "react-native";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 import Animated, {
 	useSharedValue,
 	withTiming,
@@ -14,6 +14,7 @@ import Animated, {
 	FadeInUp,
 	FadeInDown,
 	FadeIn,
+	withSpring,
 } from "react-native-reanimated";
 import { IconMail } from "~/lib/icons/Mail";
 import LanguageSelector from "~/components/LanguageSelector";
@@ -26,41 +27,53 @@ import { Image, ImageSource, useImage } from "expo-image";
 
 export default function OnBoardPage() {
 	const { t } = useTranslation();
-
-	const { width, height } = useWindowDimensions();
+	const { height } = useWindowDimensions();
 	const lowerHeight = useSharedValue(0); // initially hidden
 	const bgImageHook = useImage(require("~/assets/images/landing.jpg"), {});
 
 	const lowerStyle = useAnimatedStyle(() => ({
-		height: lowerHeight.value,
+		height: lowerHeight.get(),
 	}));
 
-	const getStartedButtonStyle = useAnimatedStyle(() => ({
-		transform: [
-			{
-				translateY: interpolate(
-					lowerHeight.value,
-					[0, height * 0.4],
-					[0, height * 0.15],
-				),
-			},
-		],
-	}));
+	const getStartedButtonStyle = useAnimatedStyle(() => {
+		const translateY = interpolate(
+			lowerHeight.get(),
+			[0, height * 0.4],
+			[0, height * 0.15],
+		);
 
-	// New animated style for scaling the background image
-	const bgImageStyle = useAnimatedStyle(() => {
-		const radius = interpolate(lowerHeight.value, [0, height * 0.4], [0, 40]);
 		return {
-			height: interpolate(
-				lowerHeight.value,
-				[0, height * 0.4],
-				[height, height * 0.6],
-			),
-			borderBottomRightRadius: radius,
-			borderBottomLeftRadius: radius,
-			borderCurve: "continuous",
+			transform: [{ translateY }],
 		};
 	});
+
+	const bgImageStyle = useAnimatedStyle(() => {
+		const radius = interpolate(lowerHeight.get(), [0, height * 0.4], [0, 40]);
+		const imageHeight = interpolate(
+			lowerHeight.get(),
+			[0, height * 0.4],
+			[height, height * 0.6],
+		);
+
+		return {
+			height: imageHeight,
+			borderBottomRightRadius: radius,
+			borderBottomLeftRadius: radius,
+			borderCurve: "circular",
+		};
+	});
+
+	function getStarted() {
+		lowerHeight.set(
+			withSpring(height * 0.4, {
+				mass: 0.3,
+				damping: 10,
+				stiffness: 100,
+				restSpeedThreshold: 0.01,
+				restDisplacementThreshold: 0.01,
+			}),
+		);
+	}
 
 	const AnimatedButton = Animated.createAnimatedComponent(Button);
 	const AnimatedImage = Animated.createAnimatedComponent(Image);
@@ -68,7 +81,6 @@ export default function OnBoardPage() {
 
 	return (
 		<Animated.View className="flex-1 relative">
-			{/* New full-screen background image with scaling */}
 			<AnimatedImage
 				source={bgImageHook}
 				transition={{
@@ -76,14 +88,10 @@ export default function OnBoardPage() {
 					duration: 200,
 					timing: "ease-out",
 				}}
-				style={[
-					{ position: "absolute", width: "100%", height: "100%" },
-					bgImageStyle,
-				]}
+				style={[StyleSheet.absoluteFillObject, bgImageStyle]}
 				priority={"high"}
 			/>
 
-			{/* New logo and product text overlay */}
 			<Animated.View
 				entering={FadeInDown.springify()}
 				style={bgImageStyle}
@@ -102,28 +110,28 @@ export default function OnBoardPage() {
 			</Animated.View>
 
 			<Animated.View
-				entering={FadeInUp.springify()}
+				entering={FadeInUp.springify().mass(0.5).damping(10).stiffness(100)}
 				className="absolute top-20 right-6 z-50 flex flex-1 scale-110 flex-row gap-4"
 			>
 				<LanguageSelector />
 				<ThemeToggle />
 			</Animated.View>
 
-			<Animated.View className="flex-1">
+			<Animated.View
+				entering={FadeInDown.springify()
+					.mass(0.5)
+					.damping(10)
+					.stiffness(100)
+					.delay(200)}
+				className="flex-1"
+			>
 				<Animated.View className="-translate-x-1/2 absolute bottom-14 left-1/2 items-center justify-center">
-					<Animated.View entering={FadeInDown.springify().delay(200)}>
+					<Animated.View style={getStartedButtonStyle}>
 						<AnimatedButton
-							style={getStartedButtonStyle}
 							className=" !h-16 w-[75vw] items-center justify-center"
-							onPress={() => {
-								lowerHeight.value = withTiming(height * 0.4, {
-									duration: 600,
-									easing: Easing.out(Easing.bezierFn(0.92, 0, 0.75, 0.44)),
-									reduceMotion: ReduceMotion.System,
-								});
-							}}
+							onPress={getStarted}
 						>
-							<Text className="!text-xl font-normal text-primary-foreground">
+							<Text className="!text-2xl font-semibold">
 								{t("get_started")}
 							</Text>
 						</AnimatedButton>

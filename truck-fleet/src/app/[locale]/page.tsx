@@ -18,6 +18,8 @@ import Problem from "./components/sections/Problem";
 import Solution from "./components/sections/Solution";
 import { OptimizationText } from "./components/sections/OptimizationText";
 import Team from "./components/sections/Team";
+import { TextReveal } from "@/components/magicui/text-reveal";
+import MobileApp from "./components/sections/MobileApp";
 
 export default function HomePage() {
 	const t = useTranslations("Home");
@@ -35,10 +37,15 @@ export default function HomePage() {
 			<div className="space-y-20 px-6">
 				<Problem />
 				<Solution />
-				{/* <Team /> */}
-			</div>
-			<Pricing />
 
+				<MobileApp />
+			</div>
+
+			<TextReveal>{t("changeManagement")}</TextReveal>
+
+			<div id="pricing" className="scroll-mt-36">
+				<Pricing />
+			</div>
 			<Footer />
 		</main>
 	);

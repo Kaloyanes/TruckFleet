@@ -52,8 +52,8 @@
   "new_document": "Нов документ",
   "document_name": "Име на документа",
   "document_name_required": "Името на документа е задължително",
-  "document_selected": "Документ избран",
-  "create_document": "Създай документ",
+  "documents_selected": "Избрани документи",
+  "create_documents": "Създай документи",
   "feedback": {
     "name": "Вашето име",
     "feedback": "Вашият отзив",
@@ -113,5 +113,6 @@
     "oct": "Окт",
     "nov": "Ное",
     "dec": "Дек"
-  }
+  },
+  "orders": "Поръчки"
 }

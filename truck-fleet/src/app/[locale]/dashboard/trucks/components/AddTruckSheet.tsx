@@ -92,7 +92,7 @@ const AddTruckSheet = () => {
 				await editTruck(true, data);
 				toast({
 					title: t("truckUpdatedSuccess"),
-					description: t("truckUpdatedSuccessDescription"),
+					// description: t("truckUpdatedSuccessDescription"),
 					variant: "success",
 				});
 				setOpen(false);
@@ -107,7 +107,7 @@ const AddTruckSheet = () => {
 			await createTruck(companyId, data);
 			toast({
 				title: t("truckCreatedSuccess"),
-				description: t("truckCreatedSuccessDescription"),
+				// description: t("truckCreatedSuccessDescription"),
 				variant: "success",
 			});
 			setOpen(false);

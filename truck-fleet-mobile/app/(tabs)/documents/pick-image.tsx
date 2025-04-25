@@ -7,17 +7,19 @@ import { useTranslation } from "react-i18next";
 
 export default function PickImageView() {
 	const { t } = useTranslation();
-	const { setCurrentDoc } = useDocumentStore();
+	const { addCurrentDoc } = useDocumentStore();
 
 	return (
 		<ImagePickerComponent
-			onImageSelected={async (asset) => {
-				setCurrentDoc({
-					name:
-						asset.fileName || `${t("pick_image")} ${new Date().toISOString()}`,
-					type: "picture",
-					uri: asset.uri,
-				});
+			allowsMultipleSelection
+			onImagesSelected={async (assets) => {
+				for (const asset of assets) {
+					addCurrentDoc({
+						name: asset.fileName ?? `Image ${new Date().toISOString()}`,
+						type: "picture",
+						uri: asset.uri,
+					});
+				}
 
 				router.back();
 			}}

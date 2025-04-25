@@ -75,16 +75,19 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 			}, [clipboard, toast, value, t]);
 
 			return (
-				<span
+				<button
+					type="button"
+					className="cursor-pointer text-left hover:underline"
 					onClick={() => setClipboard(value)}
 					onKeyUp={(e) => {
 						if (e.key === "Enter" || e.key === " ") {
 							setClipboard(value);
 						}
 					}}
+					aria-label={t("copyToClipboardAria", { value })}
 				>
 					{value}
-				</span>
+				</button>
 			);
 		},
 	},
@@ -111,16 +114,19 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 			}, [clipboard, toast, value, t]);
 
 			return (
-				<span
+				<button
+					type="button"
+					className="cursor-pointer text-left hover:underline"
 					onClick={() => setClipboard(value)}
 					onKeyUp={(e) => {
 						if (e.key === "Enter" || e.key === " ") {
 							setClipboard(value);
 						}
 					}}
+					aria-label={t("copyToClipboardAria", { value })}
 				>
 					{value}
-				</span>
+				</button>
 			);
 		},
 	},
@@ -144,11 +150,12 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 			const { view, setConfirm, setSelectedDriver } = useDriverOptionsStore();
 			const router = useRouter();
 			const [user, userLoading] = useAuthState(auth);
+			const t = useTranslations("DriverActions");
 
 			async function createChat() {
 				if (userLoading || !user) {
 					toast({
-						title: "Couldn't create chat. Try again later.",
+						title: t("chatCreationFailed"),
 						variant: "destructive",
 					});
 					return;
@@ -156,7 +163,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 
 				if (user.uid === row.original.id) {
 					toast({
-						title: "You can't chat with yourself.",
+						title: t("chatWithSelfError"),
 						variant: "destructive",
 					});
 					return;

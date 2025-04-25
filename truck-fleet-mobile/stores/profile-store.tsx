@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { mmkvStorage } from "~/models/MMKVStorage";
+import { createJSONStorage } from "~/models/MMKVStorage";
 import type { Profile } from "~/models/Profile";
 
 interface ProfileState {
@@ -21,7 +21,7 @@ export const useProfileStore = create<
 		}),
 		{
 			name: "profile-store",
-			getStorage: () => mmkvStorage,
+			storage: createJSONStorage<ProfileState>(),
 		},
 	),
 );

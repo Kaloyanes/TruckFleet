@@ -157,21 +157,6 @@ export default function DashboardSidebar() {
 						<span className="truncate font-semibold">Truck Fleet</span>
 					</div>
 				</SidebarMenuButton>
-				<SidebarMenuButton
-					size={"lg"}
-					className=""
-					tooltip={"Notifications"}
-					asChild
-				>
-					<Link href="/dashboard/notifications" className="flex gap-2">
-						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-							<IconBell className="size-6" />
-						</div>
-						<div className="grid flex-1 text-left leading-tight">
-							<span className="truncate">Notifications</span>
-						</div>
-					</Link>
-				</SidebarMenuButton>
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>

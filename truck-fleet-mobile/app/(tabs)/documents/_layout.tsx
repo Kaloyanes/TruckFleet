@@ -13,8 +13,8 @@ export default function Layout() {
 				options={{
 					headerLargeTitle: true,
 					headerTitle: t("documents"),
-					headerBlurEffect: "systemMaterial",
-					headerTransparent: true,
+					// headerBlurEffect: "systemMaterial", // Temporarily removed
+					// headerTransparent: true, // Temporarily removed
 					headerShadowVisible: false,
 					headerLargeTitleShadowVisible: false,
 					headerLargeStyle: {
@@ -37,14 +37,15 @@ export default function Layout() {
 					headerLargeStyle: {
 						backgroundColor: "transparent",
 					},
+					headerLargeTitle: true,
 					sheetCornerRadius: 25,
 					sheetGrabberVisible: true,
 					presentation: "formSheet",
-					sheetAllowedDetents: Platform.OS === "ios" ? [0.5, 1] : [0.9],
+					sheetAllowedDetents: Platform.OS === "ios" ? [1] : [0.9],
 					gestureDirection: "vertical",
 					headerShadowVisible: false,
 					headerLargeTitleShadowVisible: false,
-					title: t("pick_image"),
+					// title: t("pick_image"),
 				}}
 			/>
 			<Stack.Screen
@@ -60,7 +61,7 @@ export default function Layout() {
 					sheetCornerRadius: 25,
 					sheetGrabberVisible: true,
 					presentation: "formSheet",
-					sheetAllowedDetents: Platform.OS === "ios" ? [0.5, 1] : [0.9],
+					sheetAllowedDetents: Platform.OS === "ios" ? [1] : [0.9],
 					gestureDirection: "vertical",
 					headerShadowVisible: false,
 					headerLargeTitleShadowVisible: false,

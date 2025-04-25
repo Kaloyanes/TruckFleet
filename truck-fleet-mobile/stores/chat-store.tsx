@@ -8,7 +8,7 @@ import type { Profile } from "~/models/Profile";
 
 export interface Chat {
 	id: string;
-	createdAt: Date;
+	createdAt: Date;   
 	lastMessageAt: Date;
 	participants: string[];
 }

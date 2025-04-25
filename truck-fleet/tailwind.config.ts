@@ -26,8 +26,8 @@ const config = {
     extend: {
       fontFamily: {
         mono: ["var(--font-roboto-mono)"],
-        sans: ["var(--font-satoshi)"],
-        serif: ["var(--font-manrope)"],
+        sans: ["var(--font-manrope)"],
+        serif: ["var(--font-playfair)"],
       },
       colors: {
         border: "hsl(var(--border))",

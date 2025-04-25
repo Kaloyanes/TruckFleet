@@ -4,7 +4,12 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { Manrope, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
+import {
+	Manrope,
+	Playfair_Display,
+	Plus_Jakarta_Sans,
+	Roboto_Mono,
+} from "next/font/google";
 import "../globals.css";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
@@ -36,6 +41,14 @@ const roboto_mono = Roboto_Mono({
 	subsets: ["cyrillic", "latin"],
 	display: "swap",
 	variable: "--font-roboto-mono",
+});
+
+const playfair = Playfair_Display({
+	preload: true,
+	weight: ["400", "500", "600", "700", "800", "900"],
+	subsets: ["cyrillic", "latin"],
+	display: "swap",
+	variable: "--font-playfair",
 });
 
 export function generateStaticParams() {
@@ -96,7 +109,7 @@ export default async function RootLayout({
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body
-				className={`${manrope.className} ${roboto_mono.variable} ${satoshi.variable}`}
+				className={`${manrope.className} ${roboto_mono.variable} ${satoshi.variable} ${playfair.variable}`}
 			>
 				<MotionConfigProvider
 					props={{

@@ -43,7 +43,9 @@ export default function Header() {
 		e.preventDefault();
 		const element = document.querySelector(sectionId);
 		if (element) {
-			element.scrollIntoView({ behavior: "smooth" });
+			setTimeout(() => {
+				element.scrollIntoView({ behavior: "smooth", block: "start" });
+			}, 100);
 		}
 	};
 
@@ -56,10 +58,14 @@ export default function Header() {
 			link: "#solution",
 			label: t("solution.title"),
 		},
-		// {
-		// 	link: "#pricing",
-		// 	label: t("pricing"),
-		// },
+		{
+			link: "#mobile-app",
+			label: t("mobileApp.title"),
+		},
+		{
+			link: "#pricing",
+			label: t("pricing.title"),
+		},
 		// {
 		// 	link: "#features",
 		// 	label: t("features"),
@@ -83,10 +89,11 @@ export default function Header() {
 					staggerChildren: 0.1,
 				}}
 				className={cn(
-					"fixed top-0 right-0 left-0 z-50 mx-auto my-5 w-[90%] rounded-3xl border px-6 py-4 transition-all duration-300 ease-out-quad ",
-					isScrolled && " border-primary/5 bg-background/50 backdrop-blur-lg",
+					"fixed top-0 right-0 left-0 z-50 mx-auto my-5 w-full rounded-3xl border px-6 py-4 transition-all duration-300 ease-out-quart shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] ",
+					isScrolled &&
+						"max-w-7xl border-primary/20 bg-background/50 backdrop-blur-lg shadow-primary/20",
 					!isScrolled &&
-						" border-transparent bg-background/0 backdrop-blur-none",
+						"max-w-[90%] border-transparent bg-background/0 backdrop-blur-none shadow-transparent",
 				)}
 			>
 				<div className="flex items-center justify-between">

@@ -14,6 +14,8 @@ export default function PickMethodPage() {
 
 	return (
 		<ImagePickerComponent
+			allowsMultipleSelection={false}
+			allowsEditing={true}
 			onImageSelected={(asset) => {
 				setProfilePicture(asset);
 				router.back();

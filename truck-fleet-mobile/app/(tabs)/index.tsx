@@ -32,7 +32,6 @@ export default function Home() {
 		useBackgroundLocation();
 	const { top } = useSafeAreaInsets();
 	const tabHeight = useBottomTabBarHeight();
-	const { isDarkColorScheme } = useColorScheme();
 
 	const handleToggleTracking = async () => {
 		await toggleBackgroundService({
@@ -62,7 +61,7 @@ export default function Home() {
 				}}
 				end={{
 					x: 0,
-					y: 0.9,
+					y: 0.8,
 				}}
 				style={{
 					position: "absolute",
@@ -103,7 +102,7 @@ export default function Home() {
 
 					<CurrentOrder />
 					{new Array(10).fill(0).map((_, index) => (
-						<View key={index} className="h-20 bg-background">
+						<View key={index.toString()} className="h-20 bg-background">
 							<Text>{index}</Text>
 						</View>
 					))}

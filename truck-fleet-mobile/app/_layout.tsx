@@ -37,6 +37,7 @@ import { useQuickActionRouting } from "expo-quick-actions/router";
 import { enableFreeze } from "react-native-screens";
 import { Text } from "~/components/ui/text";
 import { trigger } from "react-native-haptic-feedback";
+import { ImmersiveOverlay } from "~/components/ui/immersive-overlay";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -255,7 +256,16 @@ export default function RootLayout() {
 							/>
 							<Stack.Screen
 								name="(auth)/forgot-password"
-								options={{ presentation: "modal" }}
+								options={{
+									sheetCornerRadius: 25,
+									sheetGrabberVisible: true,
+									presentation: "formSheet",
+									sheetAllowedDetents: Platform.OS === "ios" ? [1] : [0.9],
+									gestureDirection: "vertical",
+									headerShadowVisible: false,
+									headerLargeTitleShadowVisible: false,
+									title: t("forgot_password"),
+								}}
 							/>
 							<Stack.Screen
 								name="(chat)/[id]"

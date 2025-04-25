@@ -3,15 +3,9 @@ import React from "react";
 
 export default function Footer() {
 	return (
-		<div className="h-52 bg-muted">
+		<div className="h-52 border-t border-primary/20 shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] shadow-primary/20">
 			<div className="flex flex-row justify-between">
-				<div className="flex flex-col">
-					<h3 className="text-lg font-medium">Contact</h3>
-					<p className="text-sm text-muted-foreground">
-						Email:{" "}
-						<Link href="mailto:hello@example.com">hello@example.com</Link>
-					</p>
-				</div>
+				<div className="flex flex-col"></div>
 			</div>
 		</div>
 	);
