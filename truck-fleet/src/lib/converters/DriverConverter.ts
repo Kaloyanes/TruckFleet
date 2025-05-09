@@ -10,6 +10,7 @@ export const DriverConverter: FirestoreDataConverter<Driver> = {
       phone: driver.phone,
       photoUrl: driver.photoUrl,
       type: driver.type,
+      location: driver.location,
     };
   },
   fromFirestore(snapshot, options) {
@@ -23,6 +24,7 @@ export const DriverConverter: FirestoreDataConverter<Driver> = {
       photoUrl: data.photoUrl,
       type: data.type,
       address: data.address,
+      location: data.location,
     };
   },
 };

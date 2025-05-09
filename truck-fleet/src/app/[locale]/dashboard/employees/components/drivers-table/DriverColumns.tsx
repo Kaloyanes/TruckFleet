@@ -19,7 +19,7 @@ import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCopyToClipboard } from "react-use";
 
-export const DriverColumns: ColumnDef<Driver>[] = [
+export const EmployeeColumns: ColumnDef<Driver>[] = [
 	{
 		id: "name",
 		accessorFn: (row) => row.name,
@@ -84,7 +84,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 							setClipboard(value);
 						}
 					}}
-					aria-label={t("copyToClipboardAria", { value })}
+					aria-label={t("copiedToClipboard", { value })}
 				>
 					{value}
 				</button>
@@ -123,7 +123,7 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 							setClipboard(value);
 						}
 					}}
-					aria-label={t("copyToClipboardAria", { value })}
+					aria-label={t("copiedToClipboard", { value })}
 				>
 					{value}
 				</button>
@@ -156,12 +156,34 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 				if (userLoading || !user) {
 					toast({
 						title: t("chatCreationFailed"),
+						description: t("userNotLoggedIn"),
 						variant: "destructive",
 					});
 					return;
 				}
 
-				if (user.uid === row.original.id) {
+				const driverId = row.original.id;
+				const currentUserId = user.uid;
+
+				if (!driverId || typeof driverId !== "string") {
+					toast({
+						title: t("chatCreationFailed"),
+						description: t("invalidDriverId"),
+						variant: "destructive",
+					});
+					return;
+				}
+
+				if (!currentUserId || typeof currentUserId !== "string") {
+					toast({
+						title: t("chatCreationFailed"),
+						description: t("invalidUserId"),
+						variant: "destructive",
+					});
+					return;
+				}
+
+				if (currentUserId === driverId) {
 					toast({
 						title: t("chatWithSelfError"),
 						variant: "destructive",
@@ -169,39 +191,43 @@ export const DriverColumns: ColumnDef<Driver>[] = [
 					return;
 				}
 
+				const participants = [driverId, currentUserId].sort();
+
 				const chatQuery = query(
 					collection(db, "chats"),
-					where("participants", "array-contains", user.uid),
+					where("participants", "==", participants),
 				);
 
-				const chatSnapshot = await getDocs(chatQuery);
-				console.log("chatSnapshot", chatSnapshot);
-				if (!chatSnapshot.empty) {
-					for (const doc of chatSnapshot.docs) {
-						const chat = doc.data();
+				try {
+					const chatSnapshot = await getDocs(chatQuery);
 
-						if (!chat.participants.includes(row.original.id)) {
-							continue;
-						}
-
-						router.push(`/dashboard/chat/${doc.id}`);
+					if (!chatSnapshot.empty) {
+						const chatId = chatSnapshot.docs[0].id;
+						router.push(`/dashboard/chat/${chatId}`);
 						return;
 					}
+
+					const chatValues = {
+						createdAt: new Date(),
+						lastMessagedAt: new Date(),
+						participants: participants, // Corrected object syntax
+					};
+					const chatRef = await addDoc(collection(db, "chats"), chatValues);
+
+					router.push(`/dashboard/chat/${chatRef.id}`);
+				} catch (error) {
+					console.error("Error creating or finding chat:", error);
+					toast({
+						title: t("chatOperationFailed"),
+						description: error instanceof Error ? error.message : String(error),
+						variant: "destructive",
+					});
 				}
-
-				const chatValues = {
-					createdAt: new Date(),
-					lastMessagedAt: new Date(),
-					participants: [row.original.id, user.uid].sort(),
-				};
-				const chatRef = await addDoc(collection(db, "chats"), chatValues);
-
-				router.push(`/dashboard/chat/${chatRef.id}`);
 			}
 
 			return (
 				<div className="flex justify-end gap-2">
-					<Link href={`/dashboard/drivers/${row.original.id}/stats`}>
+					<Link href={`/dashboard/employees/${row.original.id}/stats`}>
 						<Button variant="outline" size="icon">
 							<IconGraphFilled />
 						</Button>

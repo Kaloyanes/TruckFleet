@@ -25,6 +25,7 @@ export default function GenerateNewCodeButton({
 
 	const handleAgree = () => {
 		generateCompanyCode(companyRef);
+		setOpen(false);
 	};
 
 	return (
@@ -38,8 +39,16 @@ export default function GenerateNewCodeButton({
 				</DialogHeader>
 				<DialogDescription>{t("generateNewCodeDescription")}</DialogDescription>
 				<DialogFooter>
-					<Button variant={"outline"}>{t("cancel")}</Button>
-					<Button variant={"destructive"}>{t("yes")}</Button>
+					<Button variant={"outline"} className="min-w-24">
+						{t("cancel")}
+					</Button>
+					<Button
+						variant={"destructive"}
+						className="min-w-24"
+						onClick={handleAgree}
+					>
+						{t("yes")}
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

@@ -15,7 +15,7 @@ export default function BackButton() {
 	const [visible, setVisible] = useState(false);
 
 	useEffect(() => {
-		setVisible(route !== "/dashboard/drivers");
+		setVisible(route !== "/dashboard/employees");
 	}, [route]);
 
 	const t = useTranslations("EmployeePage");
@@ -37,15 +37,9 @@ export default function BackButton() {
 			>
 				{visible && (
 					<motion.div
-						initial={{ opacity: 1, x: -100, scale: 0 }}
-						animate={{ opacity: 1, x: 0, scale: 1 }}
-						exit={{ opacity: 1, x: -100, scale: 0 }}
-						transition={{
-							duration: 0.2,
-							type: "spring",
-							bounce: 0.6,
-							damping: 20,
-						}}
+						initial={{ opacity: 1, x: -100, scale: 0, filter: "blur(10px)" }}
+						animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+						exit={{ opacity: 1, x: -100, scale: 0, filter: "blur(10px)" }}
 					>
 						<Button
 							size={"icon"}
@@ -59,11 +53,11 @@ export default function BackButton() {
 					</motion.div>
 				)}
 				<motion.h1
-					layoutId="drivers-title"
+					layoutId="employees-title"
 					layout
 					className="font-bold text-2xl"
 				>
-					<LetterPullup words={t("drivers")} delay={0.1} />
+					<LetterPullup words={t("employees")} delay={0.1} />
 				</motion.h1>
 			</motion.div>
 		</AnimatePresence>

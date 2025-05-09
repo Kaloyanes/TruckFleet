@@ -1,53 +1,56 @@
 "use client";
 import { Spinner } from "@/components/ui/loading-spinner";
-import { auth, db } from "@/lib/Firebase";
-import { collection, orderBy, query, where } from "firebase/firestore";
+import { auth } from "@/lib/Firebase"; // Removed db import
 import { motion } from "motion/react";
-import { useMemo } from "react";
+import { useEffect } from "react"; // Added useEffect
 import { useAuthState } from "react-firebase-hooks/auth";
-import {
-	useCollection,
-	useCollectionData,
-} from "react-firebase-hooks/firestore";
 import ChatItem from "./ChatItem";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatConverter } from "@/lib/converters/ChatConverter";
+import { useChatStore } from "@/stores/Chats/ChatStore"; // Import the store
 
 export default function ChatUsers() {
 	const [user, loadingAuth, errorAuth] = useAuthState(auth);
+	const { chats, isLoadingChats, chatsError, loadChats } = useChatStore(); // Use the store
 
-	const chatQuery = useMemo(() => {
-		if (!user?.uid) return null;
-		console.log("Creating query for user:", user.uid);
+	// Load chats when user is available
+	useEffect(() => {
+		if (user?.uid) {
+			console.log("Loading chats for user:", user.uid);
+			const unsubscribe = loadChats(user.uid);
+			// Cleanup listener on component unmount or user change
+			return () => {
+				console.log("Unsubscribing from chat updates for user:", user?.uid); // Use optional chaining for safety on unmount
+				unsubscribe();
+			};
+		}
+	}, [user?.uid, loadChats]); // Depend on user ID and loadChats action
 
-		return query(
-			collection(db, "chats"),
-			where("participants", "array-contains", user.uid),
-			orderBy("lastMessageAt", "desc"),
-		).withConverter(ChatConverter);
-	}, [user?.uid]);
+	// Combine loading states
+	const isLoading = loadingAuth || isLoadingChats;
+	// Combine error states
+	const error = errorAuth || chatsError;
 
-	const [snapshot, chatLoading, error] = useCollection(chatQuery, {
-		snapshotListenOptions: { includeMetadataChanges: true },
-	});
-
-	if (!user?.uid || loadingAuth || chatLoading) return <Spinner />;
-	if (errorAuth || error) {
-		console.error("Error:", errorAuth || error);
-		return <div>Error loading chats</div>;
+	if (isLoading) return <Spinner />;
+	if (error) {
+		console.error("Error:", error);
+		// Display specific error from store if available
+		return (
+			<div>{typeof error === "string" ? error : "Error loading chats"}</div>
+		);
+	}
+	if (!user?.uid) {
+		// Should ideally not happen if loadingAuth is false, but good practice
+		return <div>Please log in.</div>;
 	}
 
-	const chats =
-		snapshot?.docs.map((doc) => ({
-			...doc.data(),
-		})) ?? [];
-
-	if (chats.length === 0) {
+	// Check isLoading again to avoid flash of "No chats"
+	if (chats.length === 0 && !isLoading) {
 		return <div>No chats available</div>;
 	}
 
 	return (
 		<ScrollArea className="h-[calc(100vh-130px)] w-full pl-3">
+			{/* Use chats array from the store */}
 			{chats.map((chat, index) => (
 				<motion.div
 					key={chat.id}
@@ -69,11 +72,7 @@ export default function ChatUsers() {
 					}}
 					className="overflow-hidden"
 				>
-					<ChatItem
-						chatId={chat.id}
-						chat={chat}
-						currentUserId={user.uid} // Use user.uid directly from auth state
-					/>
+					<ChatItem chatId={chat.id} chat={chat} currentUserId={user.uid} />
 				</motion.div>
 			))}
 		</ScrollArea>

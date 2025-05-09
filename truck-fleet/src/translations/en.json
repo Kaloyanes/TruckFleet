@@ -40,14 +40,14 @@
     "map": "Map",
     "Fleet Managment": "Fleet Managment",
     "orders": "Orders",
-    "drivers": "Drivers",
     "trucks": "Trucks",
     "settings": "Settings",
     "account": "Account",
     "sign out": "Sign Out",
     "collapse": "Collapse",
     "invoices": "Invoices",
-    "clients": "Clients"
+    "clients": "Clients",
+    "employees": "Employees"
   },
   "LocaleSwitcher": {
     "bg": "Bulgarian",
@@ -178,7 +178,9 @@
     "speditors": "Speditors",
     "inviteCode": "Invite Code: {code}",
     "ceo": "CEO",
-    "ceos": "CEOs"
+    "ceos": "CEOs",
+    "employees": "Employees",
+    "filterEmployees": "Filter Employees"
   },
   "EmployeeList": {
     "name": "Name",
@@ -227,7 +229,19 @@
     "createInvoice": "Create Invoice",
     "noResultsFound": "No results found",
     "editInvoice": "Edit Invoice",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "selectCustomer": "Select Customer"
+  },
+  "AddInvoiceOptions": {
+    "options": "Options",
+    "VAT": "VAT",
+    "Discount": "Discount",
+    "Decimals": "Decimals",
+    "DateFormat": "Date Format",
+    "Currency": "Currency",
+    "SearchCurrency": "Search currency",
+    "yes": "yes",
+    "no": "no"
   },
   "InvoiceList": {
     "invoices": "{invoices, plural, =0 {No Invoices Yet} =1 {Invoice} other {Invoices}}",

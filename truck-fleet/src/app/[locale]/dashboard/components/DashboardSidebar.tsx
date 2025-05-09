@@ -91,8 +91,8 @@ export default function DashboardSidebar() {
 					icon: IconReceiptDollar,
 				},
 				{
-					title: "drivers",
-					url: "/dashboard/drivers",
+					title: "employees",
+					url: "/dashboard/employees",
 					icon: IconUsersGroup,
 				},
 				{

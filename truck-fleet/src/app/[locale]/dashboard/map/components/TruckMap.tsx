@@ -21,7 +21,7 @@ import { useTheme } from "next-themes";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import TruckDirections from "./TruckDirections";
 import { OrderConverter } from "@/lib/converters/OrderConverter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	Popover,
 	PopoverContent,
@@ -29,9 +29,13 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { IconMessage, IconPhone } from "@tabler/icons-react";
-import router from "next/router";
+import { useRouter } from "@/i18n/routing"; // Import useRouter
 import { toast } from "@/components/ui/use-toast";
 import { useTranslations } from "next-intl";
+import { useAuthState } from "react-firebase-hooks/auth"; // Import useAuthState
+import { useChatStore } from "@/stores/Chats/ChatStore"; // Import the chat store
+import { DriverConverter } from "@/lib/converters/DriverConverter";
+import UserPin from "./UserPin";
 
 export default function TruckMap() {
 	const { companyId } = useCompanyId();
@@ -42,15 +46,23 @@ export default function TruckMap() {
 			orderBy("createdAt", "desc"),
 		).withConverter(OrderConverter),
 	);
-	const t = useTranslations("DriverActions");
+	const router = useRouter(); // Instantiate useRouter
+	const [currentUser, currentUserLoading] = useAuthState(auth); // Get current user
 
 	const [users, loadingUsers, errorUsers] = useCollectionData(
-		query(collection(db, "users"), where("companyId", "==", companyId)),
+		query(
+			collection(db, "users"),
+			where("companyId", "==", companyId),
+		).withConverter(DriverConverter),
 	);
 
 	const { resolvedTheme } = useTheme();
 	const mapId =
 		resolvedTheme === "dark" ? "71b489216afed105" : "41fca17a46fdb39e";
+
+	useEffect(() => {
+		console.log(users);
+	}, [users]);
 
 	if (loading || loadingUsers) return <Spinner />;
 	if (error || errorUsers)
@@ -71,8 +83,10 @@ export default function TruckMap() {
 			minZoom={3}
 			gestureHandling={"greedy"}
 			disableDefaultUI={true}
+			clickableIcons={false} // Add this line
 			reuseMaps
 			renderingType={RenderingType.VECTOR}
+			noClear={false}
 		>
 			{orders?.map((order) => {
 				const waypoints = [];
@@ -111,83 +125,17 @@ export default function TruckMap() {
 				);
 			})}
 
-			{users.map((user) => {
-				if (user.location === undefined) return <></>;
-				async function createChat() {
-					if (!user) {
-						toast({
-							title: t("chatCreationFailed"),
-							variant: "destructive",
-						});
-						return;
-					}
+			{users.map((user, index) => {
+				if (user.location === undefined) return <div key={user.id} />;
 
-					const userIds = [user.uid, auth.currentUser?.uid].sort();
-
-					const chatQuery = query(
-						collection(db, "chats"),
-						where("participants", "array-contains", user.uid),
-					);
-
-					const chatSnapshot = await getDocs(chatQuery);
-
-					if (!chatSnapshot.empty) {
-						for (const doc of chatSnapshot.docs) {
-							const chat = doc.data();
-
-							if (!chat.participants.includes(user.uid)) {
-								continue;
-							}
-
-							router.push(`/dashboard/chat/${doc.id}`);
-							return;
-						}
-					}
-
-					const chatValues = {
-						createdAt: new Date(),
-						lastMessagedAt: new Date(),
-						participants: userIds,
-					};
-					const chatRef = await addDoc(collection(db, "chats"), chatValues);
-
-					router.push(`/dashboard/chat/${chatRef.id}`);
-				}
 				return (
-					<Popover key={user.id}>
-						<PopoverTrigger asChild>
-							<AdvancedMarker
-								position={{
-									lat: user.location.latitude,
-									lng: user.location.longitude,
-								}}
-								className="relative cursor-pointer"
-							>
-								<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-7 w-7 rounded-full bg-chart-1/30" />
-								<div
-									className="flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-chart-1 transition-all duration-300"
-									style={{
-										transform: `rotate(${Math.round(user.location.heading)}deg)`,
-									}}
-								/>
-							</AdvancedMarker>
-						</PopoverTrigger>
-						<PopoverContent className="flex w-auto flex-col items-start justify-center text-sm">
-							<div className="flex items-center justify-between gap-6">
-								<p className="font-semibold">{user.name ?? "Unnamed User"}</p>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="size-5"
-									onClick={createChat}
-								>
-									<IconMessage />
-								</Button>
-							</div>
-							<p className="text-muted-foreground">{user.email}</p>
-							<p className="text-muted-foreground">{user.phone}</p>
-						</PopoverContent>
-					</Popover>
+					<UserPin
+						key={user.id}
+						user={user}
+						currentUser={currentUser}
+						currentUserLoading={currentUserLoading}
+						index={index}
+					/>
 				);
 			})}
 		</GoogleMap>

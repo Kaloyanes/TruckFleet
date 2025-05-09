@@ -39,7 +39,7 @@
     "dashboard": "Табло",
     "map": "Карта",
     "orders": "Поръчки",
-    "drivers": "Шофьори",
+    "employees": "Работници",
     "trucks": "Камиони",
     "account": "Акаунт",
     "Fleet Managment": "Управление",
@@ -178,7 +178,9 @@
     "speditors": "Спедитори",
     "inviteCode": "Код за покана: {code}",
     "ceo": "Собственик",
-    "ceos": "Собственици"
+    "ceos": "Собственици",
+    "employees": "Работници",
+    "filterEmployees": "Търси работници"
   },
   "EmployeeList": {
     "name": "Име",
@@ -229,7 +231,19 @@
     "pickDate": "Изберете дата",
     "noResultsFound": "Няма намерени резултати",
     "editInvoice": "Редактиране на фактура",
-    "saveChanges": "Запази промените"
+    "saveChanges": "Запази промените",
+    "selectCustomer": "Изберете клиент"
+  },
+  "AddInvoiceOptions": {
+    "options": "Опции",
+    "VAT": "ДДС",
+    "Discount": "Отстъпка",
+    "Decimals": "Десетични",
+    "DateFormat": "Формат на дата",
+    "Currency": "Валута",
+    "SearchCurrency": "Търси валута",
+    "yes": "да",
+    "no": "не"
   },
   "Calendar": {
     "January": "Януари",

@@ -3,5 +3,5 @@ export type Customer = {
   name: string;
   email: string;
   phone?: string | undefined;
-  address: string;
+  address?: string;
 };

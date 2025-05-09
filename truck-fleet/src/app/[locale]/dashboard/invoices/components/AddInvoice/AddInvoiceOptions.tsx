@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -41,6 +42,7 @@ const AnimatedInput = motion.create(Input);
 const AnimatedDropdownMenuSubContent = motion.create(DropdownMenuSubContent);
 
 export default function AddInvoiceOptions() {
+	const t = useTranslations("AddInvoiceOptions");
 	const {
 		options,
 		setDateFormat,
@@ -113,21 +115,21 @@ export default function AddInvoiceOptions() {
 
 	const actions = [
 		{
-			label: "VAT",
+			label: t("VAT"),
 			icon: IconCalculator,
 			items: ["yes", "no"],
 			value: options.vat,
 			setValue: setVat,
 		},
 		{
-			label: "Discount",
+			label: t("Discount"),
 			icon: IconDiscount2,
 			items: ["yes", "no"],
 			value: options.discount,
 			setValue: setDiscount,
 		},
 		{
-			label: "Decimals",
+			label: t("Decimals"),
 			icon: IconDecimal,
 			items: ["yes", "no"],
 			value: options.decimals,
@@ -146,7 +148,7 @@ export default function AddInvoiceOptions() {
 							</Button>
 						</TooltipTrigger>
 					</DropdownMenuTrigger>
-					<TooltipContent>Options</TooltipContent>
+					<TooltipContent>{t("options")}</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
 			<DropdownMenuContent className="*:gap-2 *:font-semibold *:text-sm">
@@ -174,7 +176,7 @@ export default function AddInvoiceOptions() {
 												key={item}
 												className="capitalize"
 											>
-												{item}
+												{t(item)}
 											</DropdownMenuCheckboxItem>
 										))}
 									</AnimatedDropdownMenuSubContent>
@@ -187,13 +189,13 @@ export default function AddInvoiceOptions() {
 						<DropdownMenuSub>
 							<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
 								<IconCalendar size={18} />
-								<span>Date Format</span>
+								<span>{t("DateFormat")}</span>
 							</DropdownMenuSubTrigger>
 							<DropdownMenuPortal>
 								<DropdownMenuSubContent className="min-w-64 *:gap-2">
 									{dateFormats.map((item) => (
 										<DropdownMenuCheckboxItem
-											key={item?.toString()}
+											key={item.label}
 											onClick={(e) => {
 												e.preventDefault();
 												setDateFormat(item.value);
@@ -217,13 +219,13 @@ export default function AddInvoiceOptions() {
 						<DropdownMenuSub>
 							<DropdownMenuSubTrigger className="gap-2 font-semibold text-sm">
 								<IconCurrency size={18} />
-								<span>Currency</span>
+								<span>{t("Currency")}</span>
 							</DropdownMenuSubTrigger>
 							<DropdownMenuPortal>
 								<DropdownMenuSubContent className="min-w-64 *:gap-2">
 									<Input
 										type="text"
-										placeholder="Search currency"
+										placeholder={t("SearchCurrency")}
 										className="w-full border-none"
 										value={searchCurrency}
 										onKeyDown={(e) => e.stopPropagation()}
@@ -232,7 +234,6 @@ export default function AddInvoiceOptions() {
 									<ScrollArea className="max-h-80 overflow-y-auto">
 										{filteredCurrencies.map((currency) => {
 											if (!currency) return null;
-
 											return (
 												<DropdownMenuCheckboxItem
 													key={currency.code}

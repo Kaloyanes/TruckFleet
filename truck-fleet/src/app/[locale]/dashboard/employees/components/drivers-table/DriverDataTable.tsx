@@ -27,7 +27,7 @@ interface DataTableProps<TData, TValue> {
 	data: TData[];
 }
 
-export default function DriverDataTable<TData, TValue>({
+export default function EmployeeGridTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {

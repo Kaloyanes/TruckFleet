@@ -39,11 +39,8 @@ export const useTruckStore = create<TruckStore>()(
 		isEditingTruck: false,
 		selectedTruck: null,
 		loadTrucks: (companyId: string) => {
-			const trucksRef = collection(db, "trucks");
-			const trucksQuery = query(
-				trucksRef,
-				where("companyId", "==", companyId),
-			).withConverter(TruckConverter);
+			const trucksRef = collection(db, "companies", companyId, "trucks");
+			const trucksQuery = query(trucksRef).withConverter(TruckConverter);
 
 			const unsubscribe = onSnapshot(trucksQuery, (querySnapshot) => {
 				const trucks = querySnapshot.docs.map((doc) => ({
@@ -90,10 +87,9 @@ export const useTruckStore = create<TruckStore>()(
 			companyId: string,
 			data: Omit<Truck, "id" | "createdAt">,
 		) => {
-			const trucksRef = collection(db, "trucks");
+			const trucksRef = collection(db, "companies", companyId, "trucks");
 			await addDoc(trucksRef, {
 				...data,
-				companyId,
 				createdAt: serverTimestamp(),
 			});
 		},
