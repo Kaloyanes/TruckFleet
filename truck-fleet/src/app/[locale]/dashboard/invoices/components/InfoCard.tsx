@@ -42,7 +42,7 @@ export default function InfoCard({
 	}, [invoicesFiltered.length]);
 
 	return (
-		<Card className="min-h-40 flex-1">
+		<Card className="min-h-40 flex-1 hover:bg-card/25 hover:rounded-3xl transition-all duration-300 ease-out-quad">
 			<CardHeader className="border-none mb-0">
 				<CardTitle>
 					<NumberFlow

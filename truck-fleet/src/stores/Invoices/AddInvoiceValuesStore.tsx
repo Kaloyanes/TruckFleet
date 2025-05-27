@@ -1,6 +1,6 @@
 import { CustomerConverter } from "@/lib/converters/CustomerConverter";
 import { db, storage } from "@/lib/Firebase";
-import type { Customer } from "@/types/customer";
+import type { Customer } from "@/types/client";
 import type { Invoice, InvoiceItem } from "@/types/invoice";
 import {
 	addDoc,

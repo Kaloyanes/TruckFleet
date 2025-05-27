@@ -1,17 +1,16 @@
-"use server";
 import { updateDoc, type DocumentReference } from "firebase/firestore";
 import crypto from "node:crypto";
 
-export async function generateCompanyCode(companyRefernce: DocumentReference) {
-	console.log(companyRefernce.path);
+export async function generateCompanyCode(companyReference: DocumentReference) {
+	console.log(companyReference.path);
 
 	const saltToPassword = crypto.randomBytes(255).toString("hex");
 	const hash = crypto
-		.createHmac("sha256", `kaloyanes.truck.fleet${saltToPassword}`, {})
-		.update(companyRefernce.path)
+		.createHmac("sha512", `kaloyanes.truck.fleet${saltToPassword}`, {})
+		.update(companyReference.path)
 		.digest("hex");
 
-	await updateDoc(companyRefernce, {
+	await updateDoc(companyReference, {
 		companyCode: hash.substring(0, 6),
 		saltToPassword,
 	});

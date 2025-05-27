@@ -1,7 +1,7 @@
 "use client";
 
 import { Spinner } from "@/components/ui/loading-spinner";
-import { db } from "@/lib/Firebase";
+import { auth, db } from "@/lib/Firebase";
 import useCompanyId from "@/hooks/useCompanyId";
 import {
 	AdvancedMarker,
@@ -9,11 +9,33 @@ import {
 	Marker,
 	RenderingType,
 } from "@vis.gl/react-google-maps";
-import { collection, orderBy, query, where } from "firebase/firestore";
+import {
+	addDoc,
+	collection,
+	getDocs,
+	orderBy,
+	query,
+	where,
+} from "firebase/firestore";
 import { useTheme } from "next-themes";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import TruckDirections from "./TruckDirections";
 import { OrderConverter } from "@/lib/converters/OrderConverter";
+import { useEffect, useState } from "react";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { IconMessage, IconPhone } from "@tabler/icons-react";
+import { useRouter } from "@/i18n/routing"; // Import useRouter
+import { toast } from "@/components/ui/use-toast";
+import { useTranslations } from "next-intl";
+import { useAuthState } from "react-firebase-hooks/auth"; // Import useAuthState
+import { useChatStore } from "@/stores/Chats/ChatStore"; // Import the chat store
+import { DriverConverter } from "@/lib/converters/DriverConverter";
+import UserPin from "./UserPin";
 
 export default function TruckMap() {
 	const { companyId } = useCompanyId();
@@ -24,14 +46,23 @@ export default function TruckMap() {
 			orderBy("createdAt", "desc"),
 		).withConverter(OrderConverter),
 	);
+	const router = useRouter(); // Instantiate useRouter
+	const [currentUser, currentUserLoading] = useAuthState(auth); // Get current user
 
 	const [users, loadingUsers, errorUsers] = useCollectionData(
-		query(collection(db, "users"), where("companyId", "==", companyId)),
+		query(
+			collection(db, "users"),
+			where("companyId", "==", companyId),
+		).withConverter(DriverConverter),
 	);
 
 	const { resolvedTheme } = useTheme();
 	const mapId =
 		resolvedTheme === "dark" ? "71b489216afed105" : "41fca17a46fdb39e";
+
+	useEffect(() => {
+		console.log(users);
+	}, [users]);
 
 	if (loading || loadingUsers) return <Spinner />;
 	if (error || errorUsers)
@@ -52,8 +83,10 @@ export default function TruckMap() {
 			minZoom={3}
 			gestureHandling={"greedy"}
 			disableDefaultUI={true}
+			clickableIcons={false} // Add this line
 			reuseMaps
 			renderingType={RenderingType.VECTOR}
+			noClear={false}
 		>
 			{orders?.map((order) => {
 				const waypoints = [];
@@ -92,30 +125,17 @@ export default function TruckMap() {
 				);
 			})}
 
-			<Marker position={{ lat: 53.54992, lng: 10.00678 }} />
-
-			{users.map((user) => {
-				if (user.location === undefined) return <></>;
-				console.log(user.location);
+			{users.map((user, index) => {
+				if (user.location === undefined) return <div key={user.id} />;
 
 				return (
-					<AdvancedMarker
+					<UserPin
 						key={user.id}
-						position={{
-							lat: user.location.latitude,
-							lng: user.location.longitude,
-						}}
-						className="relative"
-					>
-						<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-7 w-7 rounded-full bg-chart-1/30" />
-						<div
-							className="flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-chart-1 transition-all duration-300"
-							style={{
-								transform: `rotate(${Math.round(user.location.heading)}deg)`,
-							}}
-						/>
-						{/* <IconNavigation /> */}
-					</AdvancedMarker>
+						user={user}
+						currentUser={currentUser}
+						currentUserLoading={currentUserLoading}
+						index={index}
+					/>
 				);
 			})}
 		</GoogleMap>

@@ -33,7 +33,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/DropdownMenuVariants";
 import { Link, usePathname } from "@/i18n/routing";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import {
 	IconBell,
 	IconChartPie,
@@ -91,8 +91,8 @@ export default function DashboardSidebar() {
 					icon: IconReceiptDollar,
 				},
 				{
-					title: "drivers",
-					url: "/dashboard/drivers",
+					title: "employees",
+					url: "/dashboard/employees",
 					icon: IconUsersGroup,
 				},
 				{
@@ -156,21 +156,6 @@ export default function DashboardSidebar() {
 					<div className="grid flex-1 text-left text-lg leading-tight">
 						<span className="truncate font-semibold">Truck Fleet</span>
 					</div>
-				</SidebarMenuButton>
-				<SidebarMenuButton
-					size={"lg"}
-					className=""
-					tooltip={"Notifications"}
-					asChild
-				>
-					<Link href="/dashboard/notifications" className="flex gap-2">
-						<div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-							<IconBell className="size-6" />
-						</div>
-						<div className="grid flex-1 text-left leading-tight">
-							<span className="truncate">Notifications</span>
-						</div>
-					</Link>
 				</SidebarMenuButton>
 			</SidebarHeader>
 			<SidebarContent>

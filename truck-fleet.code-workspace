@@ -1,12 +1,12 @@
 {
-	"folders": [
-		{
-			"path": "truck-fleet"
-		},
-		{
-			"path": "truck_fleet_mobile"
-		}
-	],
+  "folders": [
+    {
+      "path": "truck-fleet"
+    },
+    {
+      "path": "truck-fleet-mobile"
+    }
+  ],
   "settings": {
     "typescript.tsdk": "node_modules\\typescript\\lib"
   }

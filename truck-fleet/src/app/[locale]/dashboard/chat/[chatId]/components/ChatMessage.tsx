@@ -12,7 +12,7 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/DropdownMenuVariants";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import type { Message } from "@/types/message";
 import { useChatOptionsStore } from "@/stores/Chats/ChatOptionsStore";
 import {

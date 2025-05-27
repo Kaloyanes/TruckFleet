@@ -3,12 +3,14 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
 	IconGraphFilled,
 	IconEdit,
 	IconTrash,
 	IconDotsVertical,
 	IconListDetails,
+	IconFilter,
 } from "@tabler/icons-react";
 // Import dropdown menu components from your UI library
 import {
@@ -24,16 +26,42 @@ import {
 	dropdownMenuParentVariants,
 	dropdownMenuVariants,
 } from "@/lib/DropdownMenuVariants";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { useTruckStore } from "@/stores/Trucks/TrucksStore";
+import { format } from "date-fns";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 
 export const TruckColumns: ColumnDef<Truck>[] = [
 	{
 		accessorKey: "licensePlate",
-		header() {
+		header({ column }) {
 			const t = useTranslations("TruckList");
-			return <span>{t("licensePlate")}</span>;
+			return (
+				<div className="flex items-center gap-2">
+					<span>{t("licensePlate")}</span>
+					<Popover>
+						<PopoverTrigger asChild>
+							<Button variant="ghost" size="icon" className="h-6 w-6">
+								<IconFilter className="h-4 w-4" />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="w-72 p-2">
+							<Input
+								value={(column.getFilterValue() as string) ?? ""}
+								onChange={(event) => column.setFilterValue(event.target.value)}
+								placeholder={t("filterLicensePlate")}
+								className="h-8"
+							/>
+						</PopoverContent>
+					</Popover>
+				</div>
+			);
 		},
+		filterFn: "includesString",
 	},
 	{
 		accessorKey: "model",
@@ -56,6 +84,11 @@ export const TruckColumns: ColumnDef<Truck>[] = [
 			const t = useTranslations("TruckList");
 			return <span>{t("status")}</span>;
 		},
+		cell: ({ getValue }) => {
+			const status = getValue() as string;
+			const t = useTranslations("TruckList");
+			return <span>{t(status.replaceAll(" ", "") as any)}</span>;
+		},
 	},
 	{
 		accessorKey: "year",
@@ -72,15 +105,13 @@ export const TruckColumns: ColumnDef<Truck>[] = [
 		},
 		cell: ({ getValue }) => {
 			const date = getValue() as Date;
-			return <span>{date.toLocaleDateString()}</span>;
+			return <span>{format(date, "dd/MM/yyyy")}</span>;
 		},
 	},
 	{
 		accessorKey: "actions",
 		header: "",
 		cell: ({ row }) => {
-			// const { setOpen, setOrder } = useEditOrderContext();
-			// const { setConfirm, setOrder: setOrderConfirm } = useDeleteOrderContext();
 			const { deleteTruckDialog, editTruckDialog } = useTruckStore();
 			const t = useTranslations("OrderList");
 

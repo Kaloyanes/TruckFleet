@@ -1,24 +1,28 @@
+"use client";
 import SignOutButton from "@/app/[locale]/dashboard/components/SignOutButton";
-import { setRequestLocale } from "next-intl/server";
+import OrderCharts from "./components/OrderCharts";
+import TrucksExpenses from "./components/TrucksExpenses";
+import useProfileDoc from "@/hooks/useProfileDoc";
 
-export default async function DashboardPage(
-  props: {
-    params: Promise<{ locale: string }>;
-  }
-) {
-  const params = await props.params;
+export default function DashboardPage() {
+	const { profile, loading, profilePromise } = useProfileDoc();
 
-  const {
-    locale
-  } = params;
-
-  setRequestLocale(locale);
-  return (
-    <>
-      <div className="flex h-20 w-20">
-        <h1>Dashboard Page</h1>
-        <SignOutButton />
-      </div>
-    </>
-  );
+	return (
+		<div className="mx-5 mt-4 h-full w-full space-y-4">
+			<h1 className="font-semibold text-4xl">
+				<span className="font-normal">Welcome</span>
+				{profile && <span className="font-bold">, {profile?.name}</span>}
+			</h1>
+			<div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+				{/* <OrderCharts /> */}
+				<TrucksExpenses />
+				{/* <TrucksExpenses /> */}
+				{/* <TrucksExpenses /> */}
+				{/* <OrderCharts /> */}
+				{/* <OrderCharts /> */}
+				{/* <TrucksExpenses /> */}
+				{/* <OrderCharts /> */}
+			</div>
+		</div>
+	);
 }

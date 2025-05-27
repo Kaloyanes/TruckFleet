@@ -43,18 +43,8 @@ export default function TimeTitle() {
 							minimumIntegerDigits: 2,
 						}}
 					/>
-					:
-					<NumberFlow
-						value={time.getSeconds()}
-						format={{
-							style: "decimal",
-							unit: "second",
-							maximumFractionDigits: 0,
-							minimumIntegerDigits: 2,
-						}}
-					/>
 				</div>
-				{/* <div>{format(time, "aa").toLowerCase()}</div> */}
+				{/* <div>{format(time, "aa").toUpperCase()}</div> */}
 			</h1>
 
 			<div className="flex items-end gap-3 ">

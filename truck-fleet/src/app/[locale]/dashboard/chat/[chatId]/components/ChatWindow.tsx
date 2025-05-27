@@ -3,9 +3,18 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/loading-spinner";
 import { auth, db } from "@/lib/Firebase";
-import { collection, doc, orderBy, query } from "firebase/firestore";
+import {
+	collection,
+	doc,
+	orderBy,
+	query,
+	limit,
+	startAfter,
+	getDocs,
+	getDoc,
+} from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
 	useCollectionData,
@@ -25,16 +34,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { IconDots, IconDotsVertical, IconTrash } from "@tabler/icons-react";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { ChatConverter } from "@/lib/converters/ChatConverter";
 import { MessageConverter } from "@/lib/converters/MessageConverter";
+import { useChatStore } from "@/stores/Chats/ChatStore";
+import { useRouter } from "@/i18n/routing";
 
 export default function ChatWindow() {
+	// --- Hooks moved to the top ---
 	const chatId = useParams().chatId as string;
 	const [user, userLoading] = useAuthState(auth);
-
+	const [messages, setMessages] = useState<Message[]>([]);
+	const [loadingMore, setLoadingMore] = useState(false);
+	const [hasMore, setHasMore] = useState(true);
+	const lastVisibleDocRef = useRef<any>(null); // Ref to store the last document snapshot for pagination
+	const observerRef = useRef<IntersectionObserver | null>(null);
+	const loadingRef = useRef<HTMLDivElement>(null);
 	const scrollAreaRef = useRef<HTMLDivElement>(null);
-	const messagesContainerRef = useRef<HTMLDivElement>(null);
+	const { deleteChat, isDeleting } = useChatStore();
+	const router = useRouter();
 
 	// Get chat document with participant info
 	const [chatDoc, chatLoading, chatError] = useDocumentData(
@@ -48,47 +66,143 @@ export default function ChatWindow() {
 	const { profile: participantProfile, loading: profileLoading } =
 		useProfileDoc(participantId);
 
-	const [messages, messagesLoading, messagesError] = useCollectionData(
-		query(
-			collection(db, "chats", chatId, "messages"),
-			orderBy("createdAt"),
-		).withConverter(MessageConverter),
-	);
+	// Initial messages query
+	const initialMessagesQuery = query(
+		collection(db, "chats", chatId, "messages"),
+		orderBy("createdAt", "desc"),
+		limit(20),
+	).withConverter(MessageConverter);
 
+	const [initialMessages, messagesLoading, messagesError] =
+		useCollectionData(initialMessagesQuery);
+
+	// --- End of hooks ---
+
+	// Load more messages function
+	const loadMoreMessages = useCallback(async () => {
+		if (loadingMore || !hasMore || !lastVisibleDocRef.current) return;
+
+		setLoadingMore(true);
+		try {
+			const messagesRef = collection(db, "chats", chatId, "messages");
+			// Fetch the actual snapshot to use with startAfter
+			const lastSnapshot = await getDoc(
+				doc(messagesRef, lastVisibleDocRef.current.id),
+			);
+
+			const q = query(
+				messagesRef,
+				orderBy("createdAt", "desc"),
+				startAfter(lastSnapshot), // Use the actual snapshot
+				limit(10),
+			).withConverter(MessageConverter);
+
+			const snapshot = await getDocs(q);
+			const newMessages = snapshot.docs.map((doc) => doc.data());
+
+			if (snapshot.docs.length > 0) {
+				lastVisibleDocRef.current = snapshot.docs[snapshot.docs.length - 1]; // Update last visible doc snapshot
+				// Prepend new messages to maintain order (since query is desc)
+				setMessages((prev) => [...newMessages.reverse(), ...prev]);
+			} else {
+				setHasMore(false);
+			}
+		} catch (error) {
+			console.error("Error loading more messages:", error);
+		} finally {
+			setLoadingMore(false);
+		}
+	}, [chatId, loadingMore, hasMore]); // Keep dependencies as they affect the function logic
+
+	// Set up intersection observer
+	useEffect(() => {
+		const currentLoadingRef = loadingRef.current;
+		if (!currentLoadingRef) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && hasMore && !loadingMore) {
+					loadMoreMessages();
+				}
+			},
+			{ threshold: 0.1, root: scrollAreaRef.current },
+		);
+
+		observer.observe(currentLoadingRef);
+		observerRef.current = observer;
+
+		return () => {
+			if (currentLoadingRef) {
+				observer.unobserve(currentLoadingRef);
+			}
+			observer.disconnect();
+			observerRef.current = null;
+		};
+	}, [loadMoreMessages, hasMore, loadingMore]); // Keep dependencies as they control the effect's execution
+
+	// Initialize messages and last visible doc ref
+	useEffect(() => {
+		if (initialMessages) {
+			// Reverse initial messages to display oldest first at the top
+			setMessages(initialMessages.slice().reverse());
+			if (initialMessages.length > 0) {
+				// Fetch initial docs again to get snapshots for pagination
+				getDocs(initialMessagesQuery).then((snapshot) => {
+					if (!snapshot.empty) {
+						lastVisibleDocRef.current = snapshot.docs[snapshot.docs.length - 1];
+					}
+				});
+			} else {
+				setHasMore(false);
+			}
+		}
+	}, [initialMessages]); // Remove initialMessagesQuery, only depends on the data itself
+
+	// Scroll to bottom function
 	const scrollToBottom = useCallback(() => {
 		requestAnimationFrame(() => {
-			const viewport = document.querySelector("[data-chat-container]");
-			if (!viewport) return;
-
-			viewport.scrollTop = viewport.scrollHeight;
+			const viewport = scrollAreaRef.current?.querySelector(
+				"[data-radix-scroll-area-viewport]",
+			);
+			if (viewport) {
+				viewport.scrollTop = viewport.scrollHeight;
+			}
 		});
 	}, []);
 
-	// Add effect to scroll when messages change
+	// Scroll to bottom effect
 	useEffect(() => {
-		scrollToBottom();
-	}, [scrollToBottom]);
+		if (messages.length > 0 && !loadingMore) {
+			scrollToBottom();
+		}
+	}, [messages, scrollToBottom]); // Remove loadingMore, scroll should happen when messages change
 
-	if (userLoading || messagesLoading || chatLoading || profileLoading) {
+	// --- Conditional returns ---
+	if (userLoading || chatLoading || profileLoading || messagesLoading) {
 		return <Spinner />;
 	}
 
-	if (messagesError) return <div>Error: {messagesError.message}</div>;
-	if (chatError) return <div>Error: {chatError.message}</div>;
-	if (!messages) return <div>Get the conversation going</div>;
+	if (messagesError)
+		return <div>Error loading messages: {messagesError.message}</div>;
+	if (chatError) return <div>Error loading chat: {chatError.message}</div>;
 	if (!participantProfile) return <div>Could not load participant info</div>;
+
+	// --- Component logic using hooks ---
+	const handleDeleteChat = async () => {
+		const navigateHome = () => router.push("/dashboard/chat");
+		await deleteChat(chatId, navigateHome);
+	};
 
 	const actions = [
 		{
 			label: "Delete Chat",
-			icon: <IconTrash />,
+			icon: IconTrash,
 			danger: true,
-			onClick: () => {
-				console.log("Delete chat");
-			},
+			onClick: handleDeleteChat,
 		},
 	];
 
+	// --- Return JSX ---
 	return (
 		<>
 			<div className="absolute top-0 z-50 flex h-16 w-full items-center justify-between border-sidebar-border border-b bg-sidebar px-3">
@@ -109,55 +223,59 @@ export default function ChatWindow() {
 				<div className="justify-self-end">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" size={"icon"}>
-								<IconDotsVertical />
+							<Button variant="ghost" size={"icon"} disabled={isDeleting}>
+								{isDeleting ? <Spinner size="small" /> : <IconDotsVertical />}{" "}
+								{/* Fixed spinner size */}
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
-							{actions.map((action, index) => {
-								return (
-									<>
-										{action.danger && actions.length > 1 && (
-											<DropdownMenuSeparator key={index} />
+							{actions.map((action) => (
+								<div key={action.label}>
+									{action.danger && actions.length > 1 && (
+										<DropdownMenuSeparator />
+									)}
+									<DropdownMenuItem
+										onClick={action.onClick}
+										disabled={isDeleting}
+										className={cn(
+											"gap-2",
+											action.danger
+												? "border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
+												: "",
 										)}
-										<DropdownMenuItem
-											key={index}
-											onClick={action.onClick}
-											className={cn(
-												"gap-2",
-												action.danger
-													? "border-red-500/50 bg-red-500/5 text-red-800 hover:bg-red-500/50 focus:bg-red-500/50 dark:text-red-200"
-													: "",
-											)}
-										>
-											{action.icon}
-											<span>{action.label}</span>
-										</DropdownMenuItem>
-									</>
-								);
-							})}
+									>
+										<action.icon className="h-4 w-4" />{" "}
+										{/* Instantiated icon */}
+										<span>{action.label}</span>
+									</DropdownMenuItem>
+								</div>
+							))}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
 			</div>
 
-			<ScrollArea
-				ref={scrollAreaRef}
-				data-chat-container
-				className="h-screen pt-20"
-			>
-				<div className="space-y-4 pb-14 px-2">
-					{messages.map((message: Message, index: number) => {
-						return (
-							<div key={message.id}>
-								<ChatMessage
-									message={message}
-									userId={user?.uid ?? ""}
-									key={message.id + index.toString()}
-								/>
-							</div>
-						);
-					})}
+			<ScrollArea ref={scrollAreaRef} className="h-screen pt-16">
+				<div className="flex flex-col-reverse space-y-4 space-y-reverse p-4 pb-20">
+					{/* Messages rendered in reverse order */}
+					{messages.map((message) => (
+						<ChatMessage
+							message={message}
+							userId={user?.uid ?? ""}
+							key={message.id}
+						/>
+					))}
+					{/* Loading indicator at the top (bottom visually due to reverse) */}
+					{hasMore && (
+						<div ref={loadingRef} className="flex justify-center py-2">
+							{loadingMore && <Spinner />}
+						</div>
+					)}
+					{!hasMore && messages.length === 0 && (
+						<div className="text-center text-muted-foreground">
+							Start the conversation!
+						</div>
+					)}
 				</div>
 			</ScrollArea>
 		</>

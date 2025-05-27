@@ -3,7 +3,7 @@ import type { Message } from "@/types/message";
 import { useTranslations } from "next-intl";
 import { CustomAudioPlayer } from "../CustomAudioPlayer";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 
 interface AudioMessageProps {
 	message: Message;

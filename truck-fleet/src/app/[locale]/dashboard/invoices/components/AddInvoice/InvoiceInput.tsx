@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import SelectCustomerComboBox from "./SelectCustomerComboBox";
+import { AnimatePresence } from "motion/react";
 
 interface InvoiceInputProps {
 	initialValue?: string | number;
@@ -51,8 +52,10 @@ export default function InvoiceInput({
 			<div className="relative flex flex-col">
 				<Textarea
 					className={cn(
-						"relative flex w-full resize-none border-0 border-transparent border-b border-none bg-transparent p-0 transition-colors placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
-						value.length < 1 && !customerButton ? "!w-full bg-dot-white" : "",
+						"relative flex w-full resize-none rounded-none border-0 border-transparent border-b border-none bg-transparent p-0 transition-all ease-in-out-quad placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
+						value.length < 1 && !customerButton
+							? "!w-full bg-dot-white rounded-sm"
+							: "",
 						error ? "border-destructive" : "",
 						className,
 					)}
@@ -72,9 +75,11 @@ export default function InvoiceInput({
 						}
 					}}
 				/>
-				{customerButton && value.length < 1 && (
-					<SelectCustomerComboBox tabIndex={tabIndex} />
-				)}
+				<AnimatePresence mode="wait">
+					{customerButton && value.length < 1 && (
+						<SelectCustomerComboBox tabIndex={tabIndex} />
+					)}
+				</AnimatePresence>
 				{error && (
 					<span className="mt-3 -bottom-5 left-0 text-xs text-destructive">
 						{error}
@@ -89,7 +94,7 @@ export default function InvoiceInput({
 			<div className="inline-flex items-center whitespace-nowrap">
 				<Input
 					className={cn(
-						"h-6 min-w-0 border-0 border-transparent border-b border-none bg-transparent p-0 px-1 font-mono transition-colors file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
+						"!rounded- h-6 min-w-0 border-0 border-transparent border-b border-none bg-transparent p-0 px-1 font-mono transition-all ease-in-out-quad file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-accent focus-visible:ring-opacity-50 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:cursor-not-allowed disabled:opacity-50",
 						value.length < 1 ? "!w-full bg-dot-white" : "",
 						className,
 					)}
@@ -114,7 +119,7 @@ export default function InvoiceInput({
 				)}
 			</div>
 			{error && (
-				<span className=" mt-3  left-0 text-xs text-destructive">{error}</span>
+				<span className="left-0 mt-3 text-destructive text-xs">{error}</span>
 			)}
 		</div>
 	);

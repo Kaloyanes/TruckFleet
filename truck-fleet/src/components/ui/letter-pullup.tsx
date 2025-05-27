@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 
 interface LetterPullupProps {
 	className?: string;

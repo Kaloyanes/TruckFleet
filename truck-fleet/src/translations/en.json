@@ -1,7 +1,13 @@
 {
   "Home": {
     "loading": "Loading...",
-    "welcome": "Welcome to Truck Fleet"
+    "welcome": "Welcome to Truck Fleet",
+    "changeManagement": "Truck Fleet will change the way you manage your fleet"
+  },
+  "hero": {
+    "title": "Seamless Fleet Management for *Dispatchers, *Drivers, and *Owners",
+    "subtitle": "Unify your dispatching, tracking, and invoicing in one powerful platform. Real-time data, automated processes, and effortless communication – all in one place.",
+    "getStarted": "Optimize Your Fleet Now"
   },
   "General": {
     "copiedToClipboard": "Copied to clipboard",
@@ -34,14 +40,14 @@
     "map": "Map",
     "Fleet Managment": "Fleet Managment",
     "orders": "Orders",
-    "drivers": "Drivers",
     "trucks": "Trucks",
     "settings": "Settings",
     "account": "Account",
     "sign out": "Sign Out",
     "collapse": "Collapse",
     "invoices": "Invoices",
-    "clients": "Clients"
+    "clients": "Clients",
+    "employees": "Employees"
   },
   "LocaleSwitcher": {
     "bg": "Bulgarian",
@@ -171,7 +177,10 @@
     "drivers": "Drivers",
     "speditors": "Speditors",
     "inviteCode": "Invite Code: {code}",
-    "ceos": "CEO"
+    "ceo": "CEO",
+    "ceos": "CEOs",
+    "employees": "Employees",
+    "filterEmployees": "Filter Employees"
   },
   "EmployeeList": {
     "name": "Name",
@@ -220,7 +229,19 @@
     "createInvoice": "Create Invoice",
     "noResultsFound": "No results found",
     "editInvoice": "Edit Invoice",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "selectCustomer": "Select Customer"
+  },
+  "AddInvoiceOptions": {
+    "options": "Options",
+    "VAT": "VAT",
+    "Discount": "Discount",
+    "Decimals": "Decimals",
+    "DateFormat": "Date Format",
+    "Currency": "Currency",
+    "SearchCurrency": "Search currency",
+    "yes": "yes",
+    "no": "no"
   },
   "InvoiceList": {
     "invoices": "{invoices, plural, =0 {No Invoices Yet} =1 {Invoice} other {Invoices}}",
@@ -318,7 +339,13 @@
     "confirmDeletionTitle": "Delete Truck: {licensePlate}",
     "confirmDeletionDescription": "Are you sure you want to delete this truck? This action cannot be undone.",
     "cancel": "Cancel",
-    "confirm": "Delete Truck"
+    "confirm": "Delete Truck",
+    "Available": "Available",
+    "InRepair": "In Repair",
+    "OnRoute": "On Route",
+    "InLoading": "In Loading",
+    "InDelivery": "In Delivery",
+    "filterLicensePlate": "Search by license plate"
   },
   "AddTruckSheet": {
     "editTruckTitle": "Edit Truck",
@@ -341,5 +368,140 @@
     "addTruck": "Add Truck",
     "truckUpdatedSuccess": "Truck updated successfully",
     "truckCreatedSuccess": "Truck created successfully"
+  },
+  "Header": {
+    "problem": "Problem",
+    "pricing": "Pricing",
+    "features": "Features",
+    "fleet": "Fleet",
+    "analytics": "Analytics"
+  },
+  "problem": {
+    "title": "Problem",
+    "heading": "Manually |organizing your fleet is *impossible",
+    "problems": {
+      "disconnected": {
+        "title": "Disconnected Systems Slow You Down",
+        "description": "Managing orders, trucks, and drivers across multiple platforms leads to delays and inefficiencies."
+      },
+      "visibility": {
+        "title": "No Real-Time Fleet Visibility",
+        "description": "Without instant access to fuel consumption, GPS tracking, and vehicle health, you're always one step behind."
+      },
+      "manual": {
+        "title": "Manual Processes Waste Time",
+        "description": "Spreadsheets and outdated methods create errors, slow workflows, and reduce productivity."
+      }
+    }
+  },
+  "solution": {
+    "title": "Solution",
+    "heading": "Automate your *fleet management with *intelligent solutions",
+    "features": {
+      "dashboard": {
+        "title": "One Dashboard for Everything",
+        "description": "No more switching between platforms—manage orders, trucks, and drivers in one place."
+      },
+      "gps": {
+        "title": "Live GPS & Fuel Monitoring",
+        "description": "Track your fleet's exact location, fuel usage, and performance in real time."
+      },
+      "automation": {
+        "title": "Automated Order & Invoice Management",
+        "description": "Create, send, and track invoices automatically—no manual input needed."
+      },
+      "communication": {
+        "title": "Instant Driver & Dispatcher Communication",
+        "description": "Keep drivers, dispatchers, and managers connected with real-time messaging."
+      },
+      "maintenance": {
+        "title": "Predictive Maintenance & Alerts",
+        "description": "Get automatic notifications for maintenance needs before breakdowns happen."
+      }
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "heading": "Pricing that moves with you",
+    "plans": {
+      "starter": {
+        "name": "Starter Pack",
+        "price": "50",
+        "features": [
+          "Access to core features",
+          "Up to 10 trucks",
+          "Basic fleet management",
+          "Limited reports & analytics",
+          "Email support"
+        ]
+      },
+      "medium": {
+        "name": "Medium Fleet",
+        "price": "200",
+        "pricePerTruck": "10",
+        "minTrucks": "11",
+        "maxTrucks": "250",
+        "features": [
+          "Everything in Starter Pack",
+          "Real-time GPS tracking",
+          "Automated dispatching",
+          "Multi-user access",
+          "API access & integrations",
+          "Advanced analytics"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "features": [
+          "Unlimited trucks",
+          "Custom integrations",
+          "Dedicated support team",
+          "Custom reporting",
+          "SLA guarantees"
+        ]
+      }
+    },
+    "billing": {
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "perMonth": "per month",
+      "perMonthBilledAnnually": "per month, billed annually",
+      "contactUs": "Contact Us",
+      "getStarted": "Get Started",
+      "contactSales": "Contact Sales"
+    }
+  },
+  "mobileApp": {
+    "title": "Mobile App",
+    "heading": "Mobile App your drivers will love",
+    "features": {
+      "tracking": {
+        "title": "Real-time Tracking",
+        "description": "Track your fleet in real-time with live GPS updates and route optimization"
+      },
+      "notifications": {
+        "title": "Smart Notifications",
+        "description": "Get instant alerts for route changes, delays, and important updates"
+      },
+      "documents": {
+        "title": "Document Management",
+        "description": "Upload and manage all your important documents on the go"
+      },
+      "communication": {
+        "title": "Driver Communication",
+        "description": "Seamless communication between drivers and dispatchers"
+      }
+    }
+  },
+  "ConfirmDialog": {
+    "title": "Are you absolutely sure?",
+    "description": "This action cannot be undone. This will permanently delete the user and remove their data from our servers.",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "DriverActions": {
+    "chatCreationFailed": "Couldn't create chat. Try again later.",
+    "chatWithSelfError": "You can't chat with yourself."
   }
 }

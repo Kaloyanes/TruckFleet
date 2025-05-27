@@ -26,6 +26,8 @@ const config = {
     extend: {
       fontFamily: {
         mono: ["var(--font-roboto-mono)"],
+        sans: ["var(--font-manrope)"],
+        serif: ["var(--font-playfair)"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -83,6 +85,8 @@ const config = {
         },
       },
       borderRadius: {
+        "4xl": "calc(var(--radius) + 8px)",
+        "3xl": "calc(var(--radius) + 6px)",
         "2xl": "calc(var(--radius) + 4px)",
         xl: "calc(var(--radius) + 2px)",
         lg: "var(--radius)",
@@ -91,8 +95,12 @@ const config = {
       },
       keyframes: {
         shine: {
-          from: { backgroundPosition: "200% 0" },
-          to: { backgroundPosition: "-200% 0" },
+          from: {
+            backgroundPosition: "200% 0",
+          },
+          to: {
+            backgroundPosition: "-200% 0",
+          },
         },
         "accordion-down": {
           from: {
@@ -110,11 +118,35 @@ const config = {
             height: "0",
           },
         },
+        "background-position-spin": {
+          "0%": {
+            backgroundPosition: "top center",
+          },
+          "100%": {
+            backgroundPosition: "bottom center",
+          },
+        },
+        meteor: {
+          "0%": {
+            transform: "rotate(var(--angle)) translateX(0)",
+            opacity: "1",
+          },
+          "70%": {
+            opacity: "1",
+          },
+          "100%": {
+            transform: "rotate(var(--angle)) translateX(-500px)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         shine: "shine 8s ease-in-out infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "background-position-spin":
+          "background-position-spin 3000ms infinite alternate",
+        meteor: "meteor 5s linear infinite",
       },
     },
   },

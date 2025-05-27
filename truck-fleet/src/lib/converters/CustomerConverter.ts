@@ -1,4 +1,4 @@
-import type { Customer } from "@/types/customer";
+import type { Customer } from "@/types/client";
 import type { FirestoreDataConverter } from "firebase/firestore";
 
 export const CustomerConverter: FirestoreDataConverter<Customer> = {

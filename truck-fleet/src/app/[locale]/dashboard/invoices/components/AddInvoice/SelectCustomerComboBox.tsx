@@ -3,7 +3,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import useMediaQuery from "@/hooks/useMediaQuery";
 
 import React, { useState } from "react";
-import DriverList from "../../../drivers/components/DriverList";
+import DriverList from "../../../employees/components/DriverList";
 import {
 	Command,
 	CommandEmpty,
@@ -31,6 +31,7 @@ export default function SelectCustomerComboBox({
 }: InvoiceInputProps) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 	const [open, setOpen] = useState(false);
+	const t = useTranslations("InvoicesPage");
 
 	const triggerButton = (
 		<Button
@@ -49,7 +50,7 @@ export default function SelectCustomerComboBox({
 				}
 			}}
 		>
-			Select Customer
+			{t("selectCustomer")}
 		</Button>
 	);
 
@@ -57,14 +58,34 @@ export default function SelectCustomerComboBox({
 
 	if (isDesktop) {
 		return (
-			<>
+			<motion.div
+				initial={{
+					opacity: 0,
+					filter: "blur(10px)",
+					scale: 0.7,
+					transformOrigin: "left",
+				}}
+				animate={{
+					opacity: 1,
+					filter: "blur(0px)",
+					scale: 1,
+					transformOrigin: "left",
+				}}
+				exit={{
+					opacity: 0,
+					filter: "blur(10px)",
+					scale: 0.7,
+					transformOrigin: "left",
+				}}
+				className="absolute z-100 flex w-full flex-col gap-4 px-6"
+			>
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
 					<PopoverContent className="w-full p-0" align="start">
 						{list}
 					</PopoverContent>
 				</Popover>
-			</>
+			</motion.div>
 		);
 	}
 

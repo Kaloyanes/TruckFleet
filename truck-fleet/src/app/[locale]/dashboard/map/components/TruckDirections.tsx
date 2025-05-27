@@ -1,5 +1,5 @@
 "use client";
-import { getCssVariableValue } from "@/lib/Utils";
+import { getCssVariableValue } from "@/lib/utils";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";

@@ -1,18 +1,52 @@
 "use client";
+import LanguageSelector from "@/components/settings/LanguageSelector";
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import Header from "./components/Header";
+import { Particles } from "@/components/magicui/particles";
+import { color, motion } from "motion/react";
+import { Card, CardContent } from "@/components/ui/card";
+import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
+import { BorderBeam } from "@/components/magicui/border-beam";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Hero from "./components/sections/Hero";
+import Pricing from "./components/sections/Pricing";
+import Footer from "./components/Footer";
+import Problem from "./components/sections/Problem";
+import Solution from "./components/sections/Solution";
+import { OptimizationText } from "./components/sections/OptimizationText";
+import Team from "./components/sections/Team";
+import { TextReveal } from "@/components/magicui/text-reveal";
+import MobileApp from "./components/sections/MobileApp";
 
 export default function HomePage() {
 	const t = useTranslations("Home");
 
 	return (
-		<main>
-			<div className="absolute top-5 right-5">
-				<ThemeToggle />
+		<main className="flex h-full w-full flex-col gap-20 ">
+			<Header />
+
+			<div className="space-y-20 px-6">
+				<Hero />
 			</div>
-			<h1>{t("welcome")}</h1>
-			<Link href="/dashboard">Go To Dashboard</Link>
+
+			<OptimizationText />
+
+			<div className="space-y-20 px-6">
+				<Problem />
+				<Solution />
+
+				<MobileApp />
+			</div>
+
+			<TextReveal>{t("changeManagement")}</TextReveal>
+
+			<div id="pricing" className="scroll-mt-36">
+				<Pricing />
+			</div>
+			<Footer />
 		</main>
 	);
 }

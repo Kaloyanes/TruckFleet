@@ -29,7 +29,7 @@ import {
 	dropdownMenuVariants,
 } from "@/lib/DropdownMenuVariants";
 import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/Utils";
+import { cn } from "@/lib/utils";
 import type { Order } from "@/types/orders";
 import { useOrderOptionsStore } from "@/stores/Orders/OrdersOptionsStore";
 import {
@@ -113,11 +113,11 @@ export const OrderColumns: ColumnDef<Order>[] = [
 		cell: ({ getValue }) => {
 			const { toast } = useToast();
 			const [state, copyToClipboard] = useCopyToClipboard();
-
+			const tGeneral = useTranslations("General");
 			function handleCopy() {
 				copyToClipboard((getValue() as string).trim());
 				toast({
-					title: "Copied to clipboard",
+					title: tGeneral("copiedToClipboard"),
 					variant: "success",
 					duration: 2000,
 				});
@@ -399,11 +399,11 @@ export const OrderColumns: ColumnDef<Order>[] = [
 
 			const { toast } = useToast();
 			const [clipboard, copyToClipboard] = useCopyToClipboard();
-
+			const tGeneral = useTranslations("General");
 			function handleCopy(value: string) {
 				copyToClipboard(value);
 				toast({
-					title: "Copied to clipboard",
+					title: tGeneral("copiedToClipboard"),
 					variant: "success",
 					duration: 2000,
 				});
@@ -498,6 +498,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 							<motion.div
 								variants={dropdownMenuVariants}
 								className="flex items-center gap-2"
+								key={"palets"}
 							>
 								<IconPackage />
 								<span className="font-semibold">{t("palletes")}</span>
@@ -660,7 +661,7 @@ export const OrderColumns: ColumnDef<Order>[] = [
 										variants={dropdownMenuVariants}
 									>
 										{action.type === "label" && (
-											<DropdownMenuLabel>
+											<DropdownMenuLabel key={index}>
 												{t(action.label as any)}
 											</DropdownMenuLabel>
 										)}
