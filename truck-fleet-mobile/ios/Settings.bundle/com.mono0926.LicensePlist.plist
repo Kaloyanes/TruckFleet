@@ -244,6 +244,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>com.mono0926.LicensePlist/@types_tinycolor2</string>
+			<key>Title</key>
+			<string>@types/tinycolor2</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>com.mono0926.LicensePlist/abseil</string>
 			<key>Title</key>
 			<string>abseil</string>
@@ -940,9 +948,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/react-native-image-crop-picker</string>
+			<string>com.mono0926.LicensePlist/react-native-haptic-feedback</string>
 			<key>Title</key>
-			<string>react-native-image-crop-picker</string>
+			<string>react-native-haptic-feedback</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -991,14 +999,6 @@
 			<string>com.mono0926.LicensePlist/react-native-maps</string>
 			<key>Title</key>
 			<string>react-native-maps</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>com.mono0926.LicensePlist/react-native-maps-directions</string>
-			<key>Title</key>
-			<string>react-native-maps-directions</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -1164,14 +1164,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/RNImageCropPicker</string>
-			<key>Title</key>
-			<string>RNImageCropPicker</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>com.mono0926.LicensePlist/RNLiveMarkdown</string>
 			<key>Title</key>
 			<string>RNLiveMarkdown</string>
@@ -1276,9 +1268,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/TOCropViewController</string>
+			<string>com.mono0926.LicensePlist/tinycolor2</string>
 			<key>Title</key>
-			<string>TOCropViewController</string>
+			<string>tinycolor2</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

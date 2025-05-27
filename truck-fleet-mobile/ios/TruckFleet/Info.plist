@@ -42,6 +42,32 @@
     <string>1</string>
     <key>GMSApiKey</key>
     <string>AIzaSyBRU9KykZOPi_q7A9N2eD5EWQ9DZUwO-cE</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>comgooglemaps</string>
+      <string>citymapper</string>
+      <string>uber</string>
+      <string>lyft</string>
+      <string>transit</string>
+      <string>truckmap</string>
+      <string>waze</string>
+      <string>yandexnavi</string>
+      <string>moovit</string>
+      <string>yandextaxi</string>
+      <string>yandexmaps</string>
+      <string>kakaomap</string>
+      <string>tmap</string>
+      <string>szn-mapy</string>
+      <string>mapsme</string>
+      <string>osmandmaps</string>
+      <string>gett</string>
+      <string>nmap</string>
+      <string>dgis</string>
+      <string>lftgpas</string>
+      <string>petalmaps</string>
+      <string>sygic</string>
+      <string>here-route</string>
+    </array>
     <key>LSMinimumSystemVersion</key>
     <string>12.0</string>
     <key>LSRequiresIPhoneOS</key>
@@ -54,17 +80,54 @@
       <true/>
     </dict>
     <key>NSCameraUsageDescription</key>
-    <string>The app accesses your camera to take a photo for your profile.</string>
+    <dict>
+      <key>en</key>
+      <string>The app accesses your camera to take a photo for your profile.</string>
+      <key>bg</key>
+      <string>Приложението достъпва камерата ви, за да направи снимка за вашия профил.</string>
+    </dict>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to use your location to track trucks.</string>
+    <dict>
+      <key>en</key>
+      <string>Allow $(PRODUCT_NAME) to use your location to track trucks.</string>
+      <key>bg</key>
+      <string>Позволете на $(PRODUCT_NAME) да използва местоположението ви за проследяване на камиона.</string>
+    </dict>
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to use your location.</string>
+    <dict>
+      <key>en</key>
+      <string>Allow $(PRODUCT_NAME) to use your location.</string>
+      <key>bg</key>
+      <string>Позволете на $(PRODUCT_NAME) да използва местоположението ви.</string>
+    </dict>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to use your location.</string>
+    <dict>
+      <key>en</key>
+      <string>Allow $(PRODUCT_NAME) to use your location.</string>
+      <key>bg</key>
+      <string>Позволете на $(PRODUCT_NAME) да използва местоположението ви.</string>
+    </dict>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your microphone.</string>
+    <dict>
+      <key>en</key>
+      <string>Allow $(PRODUCT_NAME) to access your microphone.</string>
+      <key>bg</key>
+      <string>Позволете на $(PRODUCT_NAME) да достъпва вашия микрофон.</string>
+    </dict>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <dict>
+      <key>en</key>
+      <string>Allow $(PRODUCT_NAME) to save photos.</string>
+      <key>bg</key>
+      <string>Позволете на $(PRODUCT_NAME) да запазва вашите снимки.</string>
+    </dict>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>The app accesses your photos to show your photo with the company.</string>
+    <dict>
+      <key>en</key>
+      <string>The app accesses your photos to show your photo with the company.</string>
+      <key>bg</key>
+      <string>Приложението достъпва снимките ви, за да покаже вашата снимка с компанията.</string>
+    </dict>
     <key>NSUserActivityTypes</key>
     <array>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>

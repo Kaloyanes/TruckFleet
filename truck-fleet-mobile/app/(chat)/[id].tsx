@@ -1,6 +1,6 @@
 import { View, ActivityIndicator, RefreshControl } from "react-native";
 import React, { useEffect, useRef, useMemo } from "react";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { Stack, useLocalSearchParams, useNavigation } from "expo-router";
 import { Text } from "~/components/ui/text";
 import { useTranslation } from "react-i18next";
 import useProfileDoc from "~/hooks/useProfileDoc";
@@ -125,6 +125,9 @@ export default function ChatPage() {
 
 	useEffect(() => {
 		navigation.setOptions({
+			headerBackButtonDisplayMode: "minimal",
+			keyboardHandlingEnabled: true,
+			headerBlurEffect: "none",
 			headerBackground: () => (
 				<View className="relative h-full w-full">
 					<BlurView
@@ -167,116 +170,118 @@ export default function ChatPage() {
 	}
 
 	return (
-		<MotiView
-			style={style}
-			transition={{
-				type: "no-animation",
-			}}
-		>
-			<FlashList
-				ref={flashListRef}
-				contentContainerStyle={{
-					paddingTop: 16,
-					paddingBottom: headerHeight + 16,
-					paddingHorizontal: 16,
+		<>
+			<MotiView
+				style={style}
+				transition={{
+					type: "no-animation",
 				}}
-				scrollIndicatorInsets={{
-					top: -headerHeight + 100,
-					bottom: headerHeight - 32,
-				}}
-				keyExtractor={(item) => item.id}
-				inverted
-				estimatedItemSize={134}
-				data={[...messages].reverse()}
-				keyboardDismissMode="interactive"
-				onEndReached={() => loadMoreMessages(id as string)}
-				refreshing={isRefreshing}
-				fadingEdgeLength={50}
-				renderItem={({ item, index }) => {
-					if (!item || !item.content) {
-						console.log(`Empty message at index ${index}:`, item);
-						return null;
-					}
+			>
+				<FlashList
+					ref={flashListRef}
+					contentContainerStyle={{
+						paddingTop: 16,
+						paddingBottom: headerHeight + 16,
+						paddingHorizontal: 16,
+					}}
+					scrollIndicatorInsets={{
+						top: -headerHeight + 100,
+						bottom: headerHeight - 32,
+					}}
+					keyExtractor={(item) => item.id}
+					inverted
+					estimatedItemSize={134}
+					data={[...messages].reverse()}
+					keyboardDismissMode="interactive"
+					onEndReached={() => loadMoreMessages(id as string)}
+					refreshing={isRefreshing}
+					fadingEdgeLength={50}
+					renderItem={({ item, index }) => {
+						if (!item || !item.content) {
+							console.log(`Empty message at index ${index}:`, item);
+							return null;
+						}
 
-					const sendUser = item.sender === userId ? user : otherUser;
-					switch (item.type) {
-						case "text":
-							return (
-								<TextMessage
-									key={item.id}
-									message={item}
-									senderProfile={sendUser}
-									userId={userId as string}
-								/>
-							);
-						case "video":
-							return (
-								<VideoMessage
-									key={item.id}
-									message={item}
-									senderProfile={sendUser}
-									userId={userId as string}
-								/>
-							);
-						case "image":
-							return (
-								<ImageMessage
-									key={item.id}
-									message={item}
-									senderProfile={sendUser}
-									userId={userId as string}
-								/>
-							);
-						case "file":
-							return (
-								<FileMessage
-									key={item.id}
-									message={item}
-									senderProfile={sendUser}
-									userId={userId as string}
-								/>
-							);
-						case "audio":
-							return (
-								<AudioMessage
-									key={item.id}
-									message={item}
-									senderProfile={sendUser}
-									userId={userId as string}
-								/>
-							);
-						case "location":
-							return (
-								<LocationMessage
-									key={item.id}
-									message={item}
-									senderProfile={sendUser}
-									userId={userId as string}
-								/>
-							);
-						default:
-							return (
-								<View>
-									<Text>{item.type}</Text>
-								</View>
-							);
+						const sendUser = item.sender === userId ? user : otherUser;
+						switch (item.type) {
+							case "text":
+								return (
+									<TextMessage
+										key={item.id}
+										message={item}
+										senderProfile={sendUser}
+										userId={userId as string}
+									/>
+								);
+							case "video":
+								return (
+									<VideoMessage
+										key={item.id}
+										message={item}
+										senderProfile={sendUser}
+										userId={userId as string}
+									/>
+								);
+							case "image":
+								return (
+									<ImageMessage
+										key={item.id}
+										message={item}
+										senderProfile={sendUser}
+										userId={userId as string}
+									/>
+								);
+							case "file":
+								return (
+									<FileMessage
+										key={item.id}
+										message={item}
+										senderProfile={sendUser}
+										userId={userId as string}
+									/>
+								);
+							case "audio":
+								return (
+									<AudioMessage
+										key={item.id}
+										message={item}
+										senderProfile={sendUser}
+										userId={userId as string}
+									/>
+								);
+							case "location":
+								return (
+									<LocationMessage
+										key={item.id}
+										message={item}
+										senderProfile={sendUser}
+										userId={userId as string}
+									/>
+								);
+							default:
+								return (
+									<View>
+										<Text>{item.type}</Text>
+									</View>
+								);
+						}
+					}}
+					ListHeaderComponent={
+						<MotiView
+							style={headerStyle}
+							transition={{
+								type: "timing",
+								duration: 400,
+								easing: Easing.inOut(Easing.poly(4)),
+							}}
+						/>
 					}
-				}}
-				ListHeaderComponent={
-					<MotiView
-						style={headerStyle}
-						transition={{
-							type: "timing",
-							duration: 400,
-							easing: Easing.inOut(Easing.poly(4)),
-						}}
-					/>
-				}
-				ItemSeparatorComponent={() => <View className="h-4" />}
-				getItemType={(item) => item.type}
-			/>
+					ItemSeparatorComponent={() => <View className="h-4" />}
+					getItemType={(item) => item.type}
+				/>
 
-			<InputToolbar />
-		</MotiView>
+				<InputToolbar />
+			</MotiView>
+		</>
 	);
 }

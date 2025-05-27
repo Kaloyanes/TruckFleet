@@ -1,4 +1,4 @@
-import type { Customer } from "./customer";
+import type { Customer } from "./client";
 
 export type Driver = Customer & {
   companyId: string;
